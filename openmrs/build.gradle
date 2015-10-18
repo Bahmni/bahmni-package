@@ -1,0 +1,161 @@
+plugins {
+    id "nebula.os-package" version "2.2.6"
+}
+
+repositories {
+    mavenCentral()
+    jcenter()
+    maven {
+        url 'http://mavenrepo.openmrs.org/nexus/content/repositories/public'
+    }
+    maven {
+        url 'https://oss.sonatype.org/content/repositories'
+    }
+    mavenLocal()
+}
+
+group 'org.bahmni.openmrs'
+version '1.11.4'
+
+project.ext.jarBaseName = 'openmrs'
+project.ext.tomcatVersion = "8.0.12";
+project.ext.openmrsVersion = "1.11.4";
+
+apply plugin: 'java'
+apply plugin: 'rpm'
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.4'
+}
+
+task extractWar(dependsOn: 'downloadMRSWar', type: Copy) {
+    from zipTree(file("${buildDir}/resources/main/openmrs.war"))
+    into file("${buildDir}/openmrs")
+}
+
+task launch(dependsOn: ['build', 'extractWar'], type: JavaExec) {
+    def properties = new Properties()
+    properties.setProperty("SERVER_PORT", "8080")
+    properties.setProperty("BASE_DIR", "${buildDir}")
+    properties.setProperty("CONTEXT_PATH", "openmrs")
+    properties.setProperty("WAR_DIRECTORY", "${buildDir}/openmrs")
+
+    main "org.bahmni.openmrs.launch.Main"
+    classpath sourceSets.main.runtimeClasspath
+    environment properties
+}
+
+task execute(dependsOn: 'build', type: JavaExec) {
+    main = "org.bahmni.openmrs.launch.Main"
+    classpath = sourceSets.main.runtimeClasspath
+    standardOutput = System.out
+}
+
+task normalizeJarName(type: Copy) {
+    from "${buildDir}" + "/libs/"
+    into "${buildDir}" + "/libs/"
+    include("${jarBaseName}" + '-' + "${openmrsVersion}" + '.jar')
+    rename("${jarBaseName}" + '-' + "${openmrsVersion}" + '.jar', 'openmrs.jar')
+}
+
+task dist(dependsOn: ['build','normalizeJarName', 'downloadMRSWar'], type: Rpm) {
+    packageName 'openmrs'
+    release "1"
+    arch NOARCH
+    os LINUX
+    user 'root'
+
+    into '/opt/openmrs'
+
+    requires('unzip')
+
+    postInstall file("${projectDir}/scripts/postinstall.sh")
+    preUninstall file("${projectDir}/scripts/preuninstall.sh")
+    postUninstall file("${projectDir}/scripts/postuninstall.sh")
+
+    from("${buildDir}/libs/openmrs.jar") {
+        fileMode = 0755
+        createDirectoryEntry = true
+        into 'lib/'
+    }
+
+    from("${projectDir}/resources/") {
+        fileMode = 0755
+        createDirectoryEntry = true
+        into 'etc'
+    }
+
+    from("${projectDir}/scripts/rpm/") {
+        fileMode = 0755
+        createDirectoryEntry  = true
+        into 'bin'
+    }
+
+    from("${projectDir}/resources/placeholder") {
+        fileMode = 0755
+        createDirectoryEntry  = true
+        into 'run'
+    }
+
+    from("${projectDir}/resources/placeholder") {
+        fileMode = 0755
+        createDirectoryEntry  = true
+        into 'log'
+    }
+
+    from("${buildDir}/resources/main/openmrs.war") {
+        fileMode = 0755
+        createDirectoryEntry  = true
+        into '.'
+    }
+
+    from("${projectDir}/resources/placeholder") {
+        fileMode = 0755
+        createDirectoryEntry  = true
+        into 'modules'
+    }
+
+    from("${projectDir}/resources/placeholder") {
+        fileMode = 0755
+        createDirectoryEntry  = true
+        into 'openmrs'
+    }
+}
+
+configurations {
+    all*.exclude(group: 'com.sun.jdmk', module: 'jmxtools')
+    all*.exclude(group: 'com.sun.jmx', module: 'jmxri')
+    all*.exclude(group: 'javax.jms', module: 'jms')
+    all*.exclude(group: 'javax.mail', module: 'mail')
+}
+
+task downloadMRSWar << {
+    new File("${buildDir}/resources/main").mkdirs();
+    configurations.mrsWar.resolve().each { file ->
+        if (file.getName().contains("openmrs")) {
+            file.renameTo(new File("${buildDir}/resources/main/openmrs.war"))
+        }
+    }
+}
+
+configurations {
+    mrsWar
+}
+
+downloadMRSWar.onlyIf{ !(new File("${buildDir}/resources/main/openmrs.war").exists())}
+
+dependencies {
+    compile "org.bahmni.deployment:core:1.0-SNAPSHOT"
+    mrsWar "org.openmrs.web:openmrs-webapp:${openmrsVersion}@war"
+}
+
+jar {
+    manifest {
+        attributes 'Main-Class': "org.bahmni.openmrs.launch.Main"
+    }
+    from {
+        configurations.compile.collect {
+            it.isDirectory() ? it : zipTree(it)
+        }
+    }
+}

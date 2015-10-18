@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+    <appender name="CONSOLE" class="org.apache.log4j.ConsoleAppender">
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern"
+                   value="%d{dd-MM-yyyy HH:mm:ss} [%-5p] %c{1} - %m%n" />
+        </layout>
+    </appender>
+   
+   <appender name="fileAppender" class="org.apache.log4j.RollingFileAppender">
+        <param name="File" value="/var/log/openmrs/openmrs.log"/>
+       <param name="MaxFileSize" value="5000KB" />
+       <param name="MaxBackupIndex" value="10" />
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{dd-MM-yyyy HH:mm:ss} [%-5p] %c{1} - %m%n"/>
+        </layout>
+    </appender>
+
+    <logger name="org.apache">
+        <level value="WARN" />
+    </logger>
+
+    <logger name="org.hibernate">
+        <level value="ERROR" />
+    </logger>
+
+    <logger name="net.sf.ehcache">
+        <level value="ERROR" />
+    </logger>
+
+    <logger name="org.springframework">
+        <level value="WARN" />
+    </logger>
+
+    <logger name="org.openmrs">
+        <level value="WARN" />
+    </logger>
+
+    <logger name="org.bahmni">
+        <level value="WARN" />
+    </logger>
+
+    <!--
+         This controls the LoggingAdvice class that wraps around the OpenMRS services
+         WARN == don't log anything special for the services
+         INFO == log all setters
+         DEBUG == log all setters & log all getters & log execution time
+     -->
+    <logger name="org.openmrs.api">
+        <level value="WARN" />
+    </logger>
+
+    <logger name="org.apache.fop">
+        <level value="ERROR" />
+    </logger>
+
+    <!-- Hide the useless MissingResourceException -->
+    <logger name="org.springframework.context.support.ResourceBundleMessageSource">
+        <level value="ERROR" />
+    </logger>
+
+    <root>
+        <level value="WARN" />
+        <appender-ref ref="fileAppender" />
+    </root>
+</log4j:configuration>

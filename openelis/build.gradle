@@ -1,0 +1,127 @@
+plugins {
+    id "nebula.os-package" version "2.2.6"
+}
+
+repositories {
+    mavenCentral()
+    jcenter()
+    maven {
+        url 'http://mavenrepo.openmrs.org/nexus/content/repositories/public'
+    }
+    maven {
+        url 'https://oss.sonatype.org/content/repositories'
+    }
+    mavenLocal()
+}
+
+group 'org.bahmni.openelis'
+version '0.77'
+
+project.ext.jarBaseName = 'openelis'
+project.ext.openelisVersion = "0.77";
+
+apply plugin: 'java'
+apply plugin: 'rpm'
+
+//The openelis.war file will be copied by the CI server after the artifacts are built.
+task extractWar(type: Copy) {
+    from zipTree(file("${projectDir}/resources/openelis.war"))
+    into file("${buildDir}/openelis")
+}
+
+task normalizeJarName(type: Copy) {
+    from "${buildDir}" + "/libs/"
+    into "${buildDir}" + "/libs/"
+    include("${jarBaseName}" + '-' + "${openelisVersion}" + '.jar')
+    rename("${jarBaseName}" + '-' + "${openelisVersion}" + '.jar', 'openelis.jar')
+}
+
+task dist(dependsOn: ['build','normalizeJarName','extractWar'], type: Rpm) {
+    packageName 'openelis'
+    release "1"
+    arch NOARCH
+    os LINUX
+    user 'root'
+
+    into '/opt/openelis'
+
+    requires('unzip')
+
+    postInstall file("${projectDir}/scripts/postinstall.sh")
+    preUninstall file("${projectDir}/scripts/preuninstall.sh")
+    postUninstall file("${projectDir}/scripts/postuninstall.sh")
+
+    from("${buildDir}/libs/openelis.jar") {
+        fileMode = 0755
+        createDirectoryEntry = true
+        into 'lib/'
+    }
+
+    from("${projectDir}/resources/") {
+        fileMode = 0755
+        createDirectoryEntry = true
+        into 'etc'
+    }
+
+    from("${projectDir}/scripts/rpm/") {
+        fileMode = 0755
+        createDirectoryEntry  = true
+        into 'bin'
+    }
+
+    from("${projectDir}/resources/placeholder") {
+        fileMode = 0755
+        createDirectoryEntry  = true
+        into 'run'
+    }
+
+    from("${projectDir}/resources/placeholder") {
+        fileMode = 0755
+        createDirectoryEntry  = true
+        into 'log'
+    }
+
+    from("${buildDir}/openelis/") {
+        println("Copying from ${buildDir}/openelis ");
+        fileMode = 0755
+        createDirectoryEntry  = true
+        into 'openelis'
+    }
+
+    from("${projectDir}/resources/placeholder") {
+        fileMode = 0755
+        createDirectoryEntry  = true
+        into 'openelis'
+    }
+}
+
+configurations {
+    all*.exclude(group: 'com.sun.jdmk', module: 'jmxtools')
+    all*.exclude(group: 'com.sun.jmx', module: 'jmxri')
+    all*.exclude(group: 'javax.jms', module: 'jms')
+    all*.exclude(group: 'javax.mail', module: 'mail')
+}
+
+//task downloadElis << {
+//    new File("${buildDir}/resources/main").mkdirs();
+//    def openelisCIUrl = "https://ci-bahmni.thoughtworks.com/go/files/OpenElis_Latest/Latest/Build/Latest/build/deployables/openelis.war";
+//    File openelisWar = new File("${buildDir}/resources/main","openelis.war");
+//    new URL(openelisCIUrl).withInputStream{ i -> openelisWar.withOutputStream{ it << i }}
+//}
+
+//downloadElis.onlyIf{ !(new File("${buildDir}/resources/main/openelis.war").exists())}
+
+dependencies {
+    compile "org.bahmni.deployment:core:1.0-SNAPSHOT"
+}
+
+jar {
+    manifest {
+        attributes 'Main-Class': "org.bahmni.openmrs.launch.Main"
+    }
+    from {
+        configurations.compile.collect {
+            it.isDirectory() ? it : zipTree(it)
+        }
+    }
+}
