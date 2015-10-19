@@ -11,12 +11,15 @@ groupadd bahmni
 [ $? -eq 1 ]
 useradd -g bahmni bahmni
 
+mkdir -p /opt/elis/uploaded-files
+
 #create links
 ln -s /opt/openelis/etc /etc/openelis
 ln -s /opt/openelis/bin/openelis /etc/init.d/openelis
 ln -s /opt/openelis/run /var/run/openelis
 ln -s /opt/openelis/openelis /var/run/openelis/openelis
 ln -s /opt/openelis/log /var/log/openelis
+ln -s /opt/openelis/uploaded-files /home/bahmni/uploaded-files/elis
 
 (cd /opt/openelis/openelis && unzip ../openelis.war)
 

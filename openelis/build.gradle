@@ -51,6 +51,12 @@ task dist(dependsOn: ['build','normalizeJarName','extractWar'], type: Rpm) {
     preUninstall file("${projectDir}/scripts/preuninstall.sh")
     postUninstall file("${projectDir}/scripts/postuninstall.sh")
 
+    from("${projectDir}/resources/log4j.xml") {
+        fileMode = 0755
+        createDirectoryEntry = true
+        into 'openelis/WEB-INF/classes'
+    }
+
     from("${buildDir}/libs/openelis.jar") {
         fileMode = 0755
         createDirectoryEntry = true
