@@ -15,10 +15,7 @@ repositories {
 }
 
 group 'org.bahmni.lab'
-version '0.77'
-
-project.ext.jarBaseName = 'bahmni-lab'
-project.ext.openelisVersion = "0.77";
+version project.bahmniRelease
 
 apply plugin: 'java'
 apply plugin: 'rpm'
@@ -37,13 +34,13 @@ task extractMigrations(type: Copy) {
 task normalizeJarName(type: Copy) {
     from "${buildDir}" + "/libs/"
     into "${buildDir}" + "/libs/"
-    include("${jarBaseName}" + '-' + "${openelisVersion}" + '.jar')
-    rename("${jarBaseName}" + '-' + "${openelisVersion}" + '.jar', 'bahmni-lab.jar')
+    include(project.name + '-' + project.bahmniRelease + '.jar')
+    rename(project.name + '-' + project.bahmniRelease + '.jar', project.name + '.jar')
 }
 
 task dist(dependsOn: ['build', 'normalizeJarName', 'extractWar', 'extractMigrations'], type: Rpm) {
     packageName 'bahmni-lab'
-    release System.getenv('GO_PIPELINE_COUNTER')
+    release project.goPipeline
     arch NOARCH
     os LINUX
     user 'root'

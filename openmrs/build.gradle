@@ -15,11 +15,7 @@ repositories {
 }
 
 group 'org.bahmni.openmrs'
-version '1.11.4'
-
-project.ext.jarBaseName = 'openmrs'
-project.ext.tomcatVersion = "8.0.12";
-project.ext.openmrsVersion = "1.11.4";
+version project.openmrsVersion
 
 apply plugin: 'java'
 apply plugin: 'rpm'
@@ -32,13 +28,13 @@ task extractWar(dependsOn: 'downloadMRSWar', type: Copy) {
 task normalizeJarName(type: Copy) {
     from "${buildDir}" + "/libs/"
     into "${buildDir}" + "/libs/"
-    include("${jarBaseName}" + '-' + "${openmrsVersion}" + '.jar')
-    rename("${jarBaseName}" + '-' + "${openmrsVersion}" + '.jar', 'openmrs.jar')
+    include(project.name + '-' + project.openmrsVersion + '.jar')
+    rename(project.name + '-' + project.openmrsVersion + '.jar', 'openmrs.jar')
 }
 
 task dist(dependsOn: ['build', 'normalizeJarName', 'downloadMRSWar'], type: Rpm) {
     packageName 'openmrs'
-    release System.getenv('GO_PIPELINE_COUNTER')
+    release project.goPipeline
     arch NOARCH
     os LINUX
     user 'root'
