@@ -25,12 +25,12 @@ apply plugin: 'rpm'
 
 //The openelis.war & OpenElis.zip file will be copied by the CI server after the artifacts are built.
 task extractWar(type: Copy) {
-    from zipTree(file("${projectDir}/resources/openelis.war"))
+    from zipTree(file("${projectDir}/resources/deployables/openelis.war"))
     into file("${buildDir}/bahmni-lab")
 }
 
 task extractMigrations(type: Copy) {
-    from zipTree(file("${projectDir}/resources/OpenElis.zip"))
+    from zipTree(file("${projectDir}/resources/deployables/OpenElis.zip"))
     into file("${buildDir}/migrations")
 }
 
