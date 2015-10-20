@@ -43,7 +43,7 @@ task normalizeJarName(type: Copy) {
 
 task dist(dependsOn: ['build', 'normalizeJarName', 'extractWar', 'extractMigrations'], type: Rpm) {
     packageName 'bahmni-lab'
-    release System.getProperty('cruise_pipeline_counter', 'Unknown')
+    release System.getProperty('GO_PIPELINE_COUNTER', 'Unknown')
     arch NOARCH
     os LINUX
     user 'root'
