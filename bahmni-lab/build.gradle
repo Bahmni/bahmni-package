@@ -42,8 +42,9 @@ task normalizeJarName(type: Copy) {
 }
 
 task dist(dependsOn: ['build', 'normalizeJarName', 'extractWar', 'extractMigrations'], type: Rpm) {
+    println("The value of GO_PIPELINE_COUNTER is "+ System.getProperty('GO_PIPELINE_COUNTER', 'Unknown'));
     packageName 'bahmni-lab'
-    release System.getProperty('GO_PIPELINE_COUNTER', 'Unknown')
+    release System.getenv('GO_PIPELINE_COUNTER')
     arch NOARCH
     os LINUX
     user 'root'
