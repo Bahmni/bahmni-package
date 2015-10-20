@@ -19,6 +19,8 @@ ln -s /opt/openmrs/openmrs /var/run/openmrs/openmrs
 ln -s /opt/openmrs/log /var/log/openmrs
 
 (cd /opt/openmrs/openmrs && unzip ../openmrs.war)
+# restore mrs db dump if database doesn't exists
+(cd /opt/openmrs/openmrs && scripts/initDB.sh)
 
 chkconfig --add openmrs
 

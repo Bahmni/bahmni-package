@@ -22,7 +22,7 @@ ln -s /opt/bahmni-lab/bahmni-lab /var/run/bahmni-lab/bahmni-lab
 ln -s /opt/bahmni-lab/log /var/log/bahmni-lab
 ln -s /opt/bahmni-lab/uploaded-files/elis /home/bahmni/uploaded-files/elis
 
-#create a database if it doesn't exist.  TODO: define the dependency on pgsql client
+#create a database if it doesn't exist.
 (cd /opt/bahmni-lab/migrations && scripts/initDB.sh bahmni-base.dump)
 (cd /opt/bahmni-lab/migrations/liquibase/ && /opt/bahmni-lab/migrations/scripts/migrateDb.sh)
 

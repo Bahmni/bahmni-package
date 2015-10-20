@@ -36,7 +36,7 @@ task normalizeJarName(type: Copy) {
     rename("${jarBaseName}" + '-' + "${openmrsVersion}" + '.jar', 'openmrs.jar')
 }
 
-task dist(dependsOn: ['build','normalizeJarName', 'downloadMRSWar'], type: Rpm) {
+task dist(dependsOn: ['build', 'normalizeJarName', 'downloadMRSWar'], type: Rpm) {
     packageName 'openmrs'
     release System.getenv('GO_PIPELINE_COUNTER')
     arch NOARCH
@@ -66,38 +66,50 @@ task dist(dependsOn: ['build','normalizeJarName', 'downloadMRSWar'], type: Rpm) 
 
     from("${projectDir}/scripts/rpm/") {
         fileMode = 0755
-        createDirectoryEntry  = true
+        createDirectoryEntry = true
         into 'bin'
     }
 
     from("${projectDir}/resources/placeholder") {
         fileMode = 0755
-        createDirectoryEntry  = true
+        createDirectoryEntry = true
         into 'run'
     }
 
     from("${projectDir}/resources/placeholder") {
         fileMode = 0755
-        createDirectoryEntry  = true
+        createDirectoryEntry = true
         into 'log'
     }
 
     from("${buildDir}/resources/main/openmrs.war") {
         fileMode = 0755
-        createDirectoryEntry  = true
+        createDirectoryEntry = true
         into '.'
     }
 
     from("${projectDir}/resources/placeholder") {
         fileMode = 0755
-        createDirectoryEntry  = true
+        createDirectoryEntry = true
         into 'modules'
     }
 
     from("${projectDir}/resources/placeholder") {
         fileMode = 0755
-        createDirectoryEntry  = true
+        createDirectoryEntry = true
         into 'openmrs'
+    }
+
+    from("${projectDir}/resources/initDB.sh") {
+        fileMode = 0755
+        createDirectoryEntry = true
+        into 'openmrs/scripts'
+    }
+
+    from("${projectDir}/resources/mrs_base.sql") {
+        fileMode = 0755
+        createDirectoryEntry = true
+        into 'openmrs/scripts'
     }
 }
 
@@ -114,7 +126,7 @@ configurations {
     mrsWar
 }
 
-downloadMRSWar.onlyIf{ !(new File("${buildDir}/resources/main/openmrs.war").exists())}
+downloadMRSWar.onlyIf { !(new File("${buildDir}/resources/main/openmrs.war").exists()) }
 
 dependencies {
     compile project(":core")
