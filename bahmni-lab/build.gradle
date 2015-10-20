@@ -43,7 +43,7 @@ task normalizeJarName(type: Copy) {
 
 task dist(dependsOn: ['build', 'normalizeJarName', 'extractWar', 'extractMigrations'], type: Rpm) {
     packageName 'bahmni-lab'
-    release "1"
+    release System.getProperty('cruise_pipeline_counter', 'Unknown')
     arch NOARCH
     os LINUX
     user 'root'
@@ -121,13 +121,6 @@ task dist(dependsOn: ['build', 'normalizeJarName', 'extractWar', 'extractMigrati
         createDirectoryEntry = true
         into 'migrations/scripts/'
     }
-}
-
-configurations {
-    all*.exclude(group: 'com.sun.jdmk', module: 'jmxtools')
-    all*.exclude(group: 'com.sun.jmx', module: 'jmxri')
-    all*.exclude(group: 'javax.jms', module: 'jms')
-    all*.exclude(group: 'javax.mail', module: 'mail')
 }
 
 dependencies {
