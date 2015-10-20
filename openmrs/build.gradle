@@ -38,7 +38,7 @@ task normalizeJarName(type: Copy) {
 
 task dist(dependsOn: ['build','normalizeJarName', 'downloadMRSWar'], type: Rpm) {
     packageName 'openmrs'
-    release "1"
+    release System.getenv('GO_PIPELINE_COUNTER')
     arch NOARCH
     os LINUX
     user 'root'
@@ -117,7 +117,7 @@ configurations {
 downloadMRSWar.onlyIf{ !(new File("${buildDir}/resources/main/openmrs.war").exists())}
 
 dependencies {
-    compile "org.bahmni.deployment:core:1.0-SNAPSHOT"
+    compile project(":core")
     mrsWar "org.openmrs.web:openmrs-webapp:${openmrsVersion}@war"
 }
 
