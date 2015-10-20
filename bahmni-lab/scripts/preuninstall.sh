@@ -1,6 +1,6 @@
 #!/bin/bash
 
 #stop the server
-service openelis stop || true
+service bahmni-lab stop || true
 
 

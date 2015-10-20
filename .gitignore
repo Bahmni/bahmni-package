@@ -46,4 +46,4 @@ out
 atlassian-ide-plugin.xml
 
 # Other artifacts from CI
-openelis/resources/openelis.war
+*.war

@@ -39,32 +39,6 @@ jar {
     }
 }
 
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            from components.java
-        }
-    }
-}
-
-task launch(dependsOn: ['build'], type: JavaExec) {
-    def properties = new Properties()
-    properties.setProperty("SERVER_PORT", "8080")
-    properties.setProperty("BASE_DIR", "${buildDir}")
-    properties.setProperty("CONTEXT_PATH", "openmrs")
-    properties.setProperty("WAR_DIRECTORY", "${buildDir}/openmrs")
-
-    main "org.bahmni.openmrs.launch.Main"
-    classpath sourceSets.main.runtimeClasspath
-    environment properties
-}
-
-task execute(dependsOn: 'build', type: JavaExec) {
-    main = "org.bahmni.openmrs.launch.Main"
-    classpath = sourceSets.main.runtimeClasspath
-    standardOutput = System.out
-}
-
 configurations {
     all*.exclude(group: 'com.sun.jdmk', module: 'jmxtools')
     all*.exclude(group: 'com.sun.jmx', module: 'jmxri')

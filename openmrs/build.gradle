@@ -24,10 +24,6 @@ project.ext.openmrsVersion = "1.11.4";
 apply plugin: 'java'
 apply plugin: 'rpm'
 
-task wrapper(type: Wrapper) {
-    gradleVersion = '2.4'
-}
-
 task extractWar(dependsOn: 'downloadMRSWar', type: Copy) {
     from zipTree(file("${buildDir}/resources/main/openmrs.war"))
     into file("${buildDir}/openmrs")
@@ -68,6 +64,7 @@ task dist(dependsOn: ['build','normalizeJarName', 'downloadMRSWar'], type: Rpm) 
     into '/opt/openmrs'
 
     requires('unzip')
+    requires('MySQL-client')
 
     postInstall file("${projectDir}/scripts/postinstall.sh")
     preUninstall file("${projectDir}/scripts/preuninstall.sh")

@@ -14,38 +14,44 @@ repositories {
     mavenLocal()
 }
 
-group 'org.bahmni.openelis'
+group 'org.bahmni.lab'
 version '0.77'
 
-project.ext.jarBaseName = 'openelis'
+project.ext.jarBaseName = 'bahmni-lab'
 project.ext.openelisVersion = "0.77";
 
 apply plugin: 'java'
 apply plugin: 'rpm'
 
-//The openelis.war file will be copied by the CI server after the artifacts are built.
+//The openelis.war & OpenElis.zip file will be copied by the CI server after the artifacts are built.
 task extractWar(type: Copy) {
     from zipTree(file("${projectDir}/resources/openelis.war"))
-    into file("${buildDir}/openelis")
+    into file("${buildDir}/bahmni-lab")
+}
+
+task extractMigrations(type: Copy) {
+    from zipTree(file("${projectDir}/resources/OpenElis.zip"))
+    into file("${buildDir}/migrations")
 }
 
 task normalizeJarName(type: Copy) {
     from "${buildDir}" + "/libs/"
     into "${buildDir}" + "/libs/"
     include("${jarBaseName}" + '-' + "${openelisVersion}" + '.jar')
-    rename("${jarBaseName}" + '-' + "${openelisVersion}" + '.jar', 'openelis.jar')
+    rename("${jarBaseName}" + '-' + "${openelisVersion}" + '.jar', 'bahmni-lab.jar')
 }
 
-task dist(dependsOn: ['build','normalizeJarName','extractWar'], type: Rpm) {
-    packageName 'openelis'
+task dist(dependsOn: ['build', 'normalizeJarName', 'extractWar', 'extractMigrations'], type: Rpm) {
+    packageName 'bahmni-lab'
     release "1"
     arch NOARCH
     os LINUX
     user 'root'
 
-    into '/opt/openelis'
+    into '/opt/bahmni-lab'
 
     requires('unzip')
+    requires('postgresql')
 
     postInstall file("${projectDir}/scripts/postinstall.sh")
     preUninstall file("${projectDir}/scripts/preuninstall.sh")
@@ -54,10 +60,10 @@ task dist(dependsOn: ['build','normalizeJarName','extractWar'], type: Rpm) {
     from("${projectDir}/resources/log4j.xml") {
         fileMode = 0755
         createDirectoryEntry = true
-        into 'openelis/WEB-INF/classes'
+        into 'bahmni-lab/WEB-INF/classes'
     }
 
-    from("${buildDir}/libs/openelis.jar") {
+    from("${buildDir}/libs/bahmni-lab.jar") {
         fileMode = 0755
         createDirectoryEntry = true
         into 'lib/'
@@ -71,33 +77,49 @@ task dist(dependsOn: ['build','normalizeJarName','extractWar'], type: Rpm) {
 
     from("${projectDir}/scripts/rpm/") {
         fileMode = 0755
-        createDirectoryEntry  = true
+        createDirectoryEntry = true
         into 'bin'
     }
 
     from("${projectDir}/resources/placeholder") {
         fileMode = 0755
-        createDirectoryEntry  = true
+        createDirectoryEntry = true
         into 'run'
     }
 
     from("${projectDir}/resources/placeholder") {
         fileMode = 0755
-        createDirectoryEntry  = true
+        createDirectoryEntry = true
         into 'log'
     }
 
-    from("${buildDir}/openelis/") {
-        println("Copying from ${buildDir}/openelis ");
+    from("${buildDir}/bahmni-lab/") {
         fileMode = 0755
-        createDirectoryEntry  = true
-        into 'openelis'
+        createDirectoryEntry = true
+        into 'bahmni-lab'
     }
 
     from("${projectDir}/resources/placeholder") {
         fileMode = 0755
-        createDirectoryEntry  = true
-        into 'openelis'
+        createDirectoryEntry = true
+        into 'bahmni-lab'
+    }
+
+    from("${buildDir}/migrations/OpenElis") {
+        fileMode = 0755
+        createDirectoryEntry = true
+        into 'migrations'
+        include('db_backup/*')
+        include('liquibase/*')
+        include('liquibase/lib/*')
+        include('liquibase/Bahmni/*')
+        include('scripts/*')
+    }
+
+    from("${projectDir}/resources/migrateDb.sh") {
+        fileMode = 0755
+        createDirectoryEntry = true
+        into 'migrations/scripts/'
     }
 }
 
@@ -108,17 +130,8 @@ configurations {
     all*.exclude(group: 'javax.mail', module: 'mail')
 }
 
-//task downloadElis << {
-//    new File("${buildDir}/resources/main").mkdirs();
-//    def openelisCIUrl = "https://ci-bahmni.thoughtworks.com/go/files/OpenElis_Latest/Latest/Build/Latest/build/deployables/openelis.war";
-//    File openelisWar = new File("${buildDir}/resources/main","openelis.war");
-//    new URL(openelisCIUrl).withInputStream{ i -> openelisWar.withOutputStream{ it << i }}
-//}
-
-//downloadElis.onlyIf{ !(new File("${buildDir}/resources/main/openelis.war").exists())}
-
 dependencies {
-    compile "org.bahmni.deployment:core:1.0-SNAPSHOT"
+    compile project(":core")
 }
 
 jar {
