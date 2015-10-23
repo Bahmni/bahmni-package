@@ -1,0 +1,98 @@
+plugins {
+    id "nebula.os-package" version "2.2.6"
+}
+
+group 'org.bahmni.emr'
+version project.bahmniRelease
+
+apply plugin: 'rpm'
+
+task extractOmods(type: Copy) {
+    from zipTree(file("${projectDir}/resources/distro-"+project.bahmniRelease+"-SNAPSHOT-distro.zip"))
+    into file("${buildDir}/distro/")
+}
+
+task extractBahmniEnvironment(type: Copy) {
+    from zipTree(file("${projectDir}/resources/bahmni-environment.zip"))
+    into file("${buildDir}")
+}
+
+task dist(dependsOn: ['build', 'extractOmods','extractBahmniEnvironment'], type: Rpm) {
+    packageName 'bahmni-emr'
+    release System.getenv('GO_PIPELINE_COUNTER')
+    arch NOARCH
+    os LINUX
+    user 'bahmni'
+
+    into '/opt/openmrs'
+
+    requires('unzip')
+    requires('openmrs',project.openmrsVersion,EQUAL)
+
+    postInstall file("${projectDir}/scripts/postinstall.sh")
+    postUninstall file("${projectDir}/scripts/postuninstall.sh")
+
+    from("${buildDir}/distro/distro-"+project.bahmniRelease+"-SNAPSHOT") {
+        fileMode = 0755
+        user 'bahmni'
+        createDirectoryEntry = true
+        into 'modules'
+        include('addresshierarchy-*.omod')
+        include('appframework-*.omod')
+        include('bahmnicore-*.omod')
+        include('bedmanagement-*.omod')
+        include('calculation-*.omod')
+        include('emrapi-*.omod')
+        include('event-*.omod')
+        include('htmlwidgets-*.omod')
+        include('idgen-*.omod')
+        include('idgen-webservices-*.omod')
+        include('metadatamapping-*.omod')
+        include('metadatasharing-*.omod')
+        include('openmrs-atomfeed-*.omod')
+        include('providermanagement-*.omod')
+        include('reference-data-*.omod')
+        include('reporting-*.omod')
+        include('serialization.xstream-*.omod')
+        include('uicommons-*.omod')
+        include('uiframework-*.omod')
+        include('uilibrary-*.omod')
+        include('webservices.rest-*.omod')
+    }
+
+    from("${projectDir}/resources/") {
+        fileMode = 0755
+        user 'bahmni'
+        createDirectoryEntry = true
+        into 'etc'
+        include('bahmni-emr.conf')
+        include('bahmnicore.properties')
+        include('openmrs-predeploy.sql')
+        include('run-liquibase.sh')
+        include('run-snapshot-liquibase.sh')
+    }
+
+    from("${buildDir}/bahmni-environment/puppet/modules/bahmni_snapshot_migrations") {
+        fileMode = 0755
+        user 'bahmni'
+        createDirectoryEntry = true
+        into 'etc/migrations'
+    }
+
+//  TODO:These things will go into the relevant bahmni-lab & bahmni-erp rpms.  Also install the atomfeed client migrations in openmrs
+//    #run_openmrs_dependent_liquibase <%= @temp_dir%>/$1/lib/<%= @atomfeed_client %>.jar sql/db_migrations.xml
+//    if $bahmni_openelis_required == "true" {
+//        bahmni_omods::bahmni_atomfeed_client { "deploy_openelis_atomfeed_client":
+//            atomfeed_client_name => "openelis",
+//            require => Exec["run_core_bahmni_modules_liquibase"]
+//        }
+//    }
+//
+//    if $bahmni_openerp_required == "true" {
+//        bahmni_omods::bahmni_atomfeed_client { "deploy_openerp_atomfeed_client":
+//            atomfeed_client_name => "openerp",
+//            require => Exec["run_core_bahmni_modules_liquibase"]
+//        }
+//    }
+
+}
