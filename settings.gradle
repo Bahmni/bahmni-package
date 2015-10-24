@@ -1,6 +1,8 @@
 rootProject.name = 'bahmni'
+
 include 'core'
 include 'openmrs'
 include 'bahmni-lab'
 include 'bahmni-emr'
 include 'bahmni-erp-connect'
+include 'bahmni-erp'

@@ -1,0 +1,34 @@
+plugins {
+    id "nebula.os-package" version "2.2.6"
+}
+
+group 'org.bahmni.erp'
+version project.bahmniRelease
+
+apply plugin: 'rpm'
+
+//The openerp-modules.zip file will be copied by the CI server after the artifacts are built.
+task extractAddons(type: Copy) {
+    from zipTree(file("${projectDir}/resources/openerp-modules.zip"))
+    into file("${buildDir}/addons")
+}
+
+task dist(dependsOn: ['extractAddons'], type: Rpm) {
+    packageName 'bahmni-erp'
+    release project.goPipeline
+    arch NOARCH
+    os LINUX
+    user 'root'
+
+    requires('openerp', '7.0', EQUAL)
+    into '/opt/bahmni-erp'
+
+    postInstall file("${projectDir}/scripts/postinstall.sh")
+    postUninstall file("${projectDir}/scripts/postuninstall.sh")
+
+    from("${buildDir}/addons/openerp-modules/") {
+        fileMode = 0755
+        createDirectoryEntry = true
+        into 'bahmni-addons'
+    }
+}
