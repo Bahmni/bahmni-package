@@ -4,7 +4,6 @@
 
 . /etc/openmrs/bahmni-emr.conf
 
-chkconfig --add bahmni-mrs
 
 link_dirs(){
     rm -rf /home/$OPENMRS_SERVER_USER/.OpenMRS/modules

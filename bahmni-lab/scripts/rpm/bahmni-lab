@@ -4,7 +4,7 @@
 #
 # chkconfig: - 64 36
 # processname: bahmni-lab
-# config: /etc/default/openmrs
+# config: /etc/default/bahmni-lab
 # pidfile: /var/run/bahmni-lab/bahmni-lab.pid
 
 export BAHMNI_LAB_SERVER_USER=bahmni

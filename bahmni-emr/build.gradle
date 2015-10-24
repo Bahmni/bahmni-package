@@ -66,10 +66,15 @@ task dist(dependsOn: ['build', 'extractOmods','extractBahmniEnvironment'], type:
         createDirectoryEntry = true
         into 'etc'
         include('bahmni-emr.conf')
-        include('bahmnicore.properties')
         include('openmrs-predeploy.sql')
         include('run-liquibase.sh')
         include('run-snapshot-liquibase.sh')
+    }
+
+    from("${projectDir}/resources/"){
+        fileMode = 0755
+        user 'bahmni'
+        include('bahmnicore.properties')
     }
 
     from("${buildDir}/bahmni-environment/puppet/modules/bahmni_snapshot_migrations") {

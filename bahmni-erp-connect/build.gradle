@@ -1,0 +1,108 @@
+plugins {
+    id "nebula.os-package" version "2.2.6"
+}
+
+repositories {
+    mavenCentral()
+    jcenter()
+    maven {
+        url 'http://mavenrepo.openmrs.org/nexus/content/repositories/public'
+    }
+    maven {
+        url 'https://oss.sonatype.org/content/repositories'
+    }
+    mavenLocal()
+}
+
+group 'org.bahmni.erp'
+version project.bahmniRelease
+
+apply plugin: 'java'
+apply plugin: 'rpm'
+
+//The openerp-atomfeed-service.war will be copied by the CI server after the artifacts are built.
+task extractWar(type: Copy) {
+    from zipTree(file("${projectDir}/resources/openerp-atomfeed-service.war"))
+    into file("${buildDir}/bahmni-erp-connect")
+}
+
+task normalizeJarName(type: Copy) {
+    from "${buildDir}" + "/libs/"
+    into "${buildDir}" + "/libs/"
+    include(project.name + '-' + project.bahmniRelease + '.jar')
+    rename(project.name + '-' + project.bahmniRelease + '.jar', project.name + '.jar')
+}
+
+task dist(dependsOn: ['build', 'normalizeJarName', 'extractWar'], type: Rpm) {
+    packageName 'bahmni-erp-connect'
+    release System.getenv('GO_PIPELINE_COUNTER')
+    arch NOARCH
+    os LINUX
+    user 'root'
+
+    into '/opt/bahmni-erp-connect'
+
+    requires('unzip')
+    requires('postgresql')
+
+    postInstall file("${projectDir}/scripts/postinstall.sh")
+    preUninstall file("${projectDir}/scripts/preuninstall.sh")
+    postUninstall file("${projectDir}/scripts/postuninstall.sh")
+
+    from("${projectDir}/resources/log4j.xml") {
+        fileMode = 0755
+        createDirectoryEntry = true
+        into 'bahmni-erp-connect/WEB-INF/classes'
+    }
+
+    from("${buildDir}/libs/bahmni-erp-connect.jar") {
+        fileMode = 0755
+        createDirectoryEntry = true
+        into 'lib/'
+    }
+
+    from("${projectDir}/resources/") {
+        fileMode = 0755
+        createDirectoryEntry = true
+        into 'etc'
+    }
+
+    from("${projectDir}/scripts/rpm/") {
+        fileMode = 0755
+        createDirectoryEntry = true
+        into 'bin'
+    }
+
+    from("${projectDir}/resources/placeholder") {
+        fileMode = 0755
+        createDirectoryEntry = true
+        into 'run'
+    }
+
+    from("${projectDir}/resources/placeholder") {
+        fileMode = 0755
+        createDirectoryEntry = true
+        into 'log'
+    }
+
+    from("${buildDir}/bahmni-erp-connect/") {
+        fileMode = 0755
+        createDirectoryEntry = true
+        into 'bahmni-erp-connect'
+    }
+}
+
+dependencies {
+    compile project(":core")
+}
+
+jar {
+    manifest {
+        attributes 'Main-Class': "org.bahmni.openmrs.launch.Main"
+    }
+    from {
+        configurations.compile.collect {
+            it.isDirectory() ? it : zipTree(it)
+        }
+    }
+}
