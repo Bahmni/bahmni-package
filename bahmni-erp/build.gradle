@@ -15,7 +15,7 @@ task extractAddons(type: Copy) {
 
 task dist(dependsOn: ['extractAddons'], type: Rpm) {
     packageName 'bahmni-erp'
-    release project.goPipeline
+    release System.getenv('GO_PIPELINE_COUNTER')
     arch NOARCH
     os LINUX
     user 'root'
