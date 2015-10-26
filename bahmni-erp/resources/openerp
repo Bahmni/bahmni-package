@@ -68,10 +68,10 @@ start() {
     echo -n $"Starting $desc ($prog): "
     daemon --user openerp --check openerp-server \
     "/usr/bin/setsid /usr/bin/openerp-server \
-    -c /etc/openerp/openerp-server.conf \
+    -c /etc/openerp-server.conf \
     --update all \
     --database openerp \
-    --addons /opt/bahmni-erp/bahmni-addons/
+    --addons /opt/bahmni-erp/bahmni-addons/ \
     --without-demo all \
     --pidfile=$PIDFILE \
     --logfile=$LOGFILE &"

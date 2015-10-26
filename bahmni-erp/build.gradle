@@ -1,6 +1,9 @@
 plugins {
     id "nebula.os-package" version "2.2.6"
+    id "de.undercouch.download" version "2.0.0"
 }
+
+import de.undercouch.gradle.tasks.download.Download
 
 group 'org.bahmni.erp'
 version project.bahmniRelease
@@ -13,7 +16,7 @@ task extractAddons(type: Copy) {
     into file("${buildDir}/addons")
 }
 
-task dist(dependsOn: ['extractAddons'], type: Rpm) {
+task dist(dependsOn: ['downloadOpenERP', 'extractAddons'], type: Rpm) {
     packageName 'bahmni-erp'
     release System.getenv('GO_PIPELINE_COUNTER')
     arch NOARCH
@@ -59,7 +62,7 @@ task dist(dependsOn: ['extractAddons'], type: Rpm) {
     requires('pywebdav')
     requires('postgresql92-libs')
     requires('postgresql92')
-    requires('openerp', '7.0.post20151025-1', EQUAL)
+//    requires('openerp', '7.0.post20151025-1', EQUAL)
 //    requires('python-gdata')
 //    requires('flashplugin-nonfree')
 //    requires('hippo-canvas-python')
@@ -67,6 +70,7 @@ task dist(dependsOn: ['extractAddons'], type: Rpm) {
     into '/opt/bahmni-erp'
 
     postInstall file("${projectDir}/scripts/postinstall.sh")
+    preUninstall file("${projectDir}/scripts/preuninstall.sh")
     postUninstall file("${projectDir}/scripts/postuninstall.sh")
 
     from("${buildDir}/addons/openerp-modules/") {
@@ -82,4 +86,16 @@ task dist(dependsOn: ['extractAddons'], type: Rpm) {
         include('openerp')
     }
 
+    from("${buildDir}/openerp-7.0-20130301-002301.tar.gz") {
+        fileMode = 0755
+        createDirectoryEntry = true
+        into "."
+    }
 }
+
+task downloadOpenERP(type: Download) {
+    src 'https://bahmni-repo.twhosted.com/packages/servers/openerp-7.0-20130301-002301.tar.gz'
+    dest buildDir
+}
+
+downloadOpenERP.onlyIf { !(new File("${buildDir}/openerp-7.0-20130301-002301.tar.gz").exists()) }
