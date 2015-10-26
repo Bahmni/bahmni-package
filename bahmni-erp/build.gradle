@@ -20,7 +20,50 @@ task dist(dependsOn: ['extractAddons'], type: Rpm) {
     os LINUX
     user 'root'
 
-    requires('openerp', '7.0', EQUAL)
+    requires('python-psycopg2')
+    requires('python-lxml')
+    requires('PyXML')
+    requires('python-setuptools')
+    requires('libxslt-python')
+    requires('python-matplotlib')
+    requires('python-babel')
+    requires('python-mako')
+    requires('python-dateutil')
+    requires('python-psycopg2')
+    requires('pychart')
+    requires('pydot')
+    requires('python-reportlab')
+    requires('python-devel')
+    requires('python-imaging')
+    requires('python-vobject')
+    requires('mx')
+    requires('python-ldap')
+    requires('python-openid')
+    requires('python-werkzeug')
+    requires('python-vatnumber')
+    requires('python-dateutil')
+    requires('pygtk2')
+    requires('glade3')
+    requires('pydot')
+    requires('python-matplotlib')
+    requires('python')
+    requires('python-psutil')
+    requires('python-docutils')
+    requires('make')
+    requires('automake')
+    requires('gcc')
+    requires('gcc-c++')
+    requires('kernel-devel')
+    requires('byacc')
+    requires('poppler-utils')
+    requires('pywebdav')
+    requires('postgresql92-libs')
+    requires('postgresql92')
+    requires('openerp', '7.0.post20151025-1', EQUAL)
+//    requires('python-gdata')
+//    requires('flashplugin-nonfree')
+//    requires('hippo-canvas-python')
+
     into '/opt/bahmni-erp'
 
     postInstall file("${projectDir}/scripts/postinstall.sh")
@@ -31,4 +74,12 @@ task dist(dependsOn: ['extractAddons'], type: Rpm) {
         createDirectoryEntry = true
         into 'bahmni-addons'
     }
+
+    from("${projectDir}/resources/") {
+        fileMode = 0755
+        createDirectoryEntry = true
+        into 'etc'
+        include('openerp')
+    }
+
 }
