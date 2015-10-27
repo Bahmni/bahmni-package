@@ -3,7 +3,7 @@
 # backing up existing startup script for openerp
 mv /etc/init.d/openerp /etc/init.d/openerp.bak
 # copying patched startup script for openerp
-cp /opt/bahmni-erp/etc/openerp /etc/init.d/
+cp -f /opt/bahmni-erp/etc/openerp /etc/init.d/openerp
 
 adduser openerp
 DIR="/var/run/openerp /var/log/openerp"

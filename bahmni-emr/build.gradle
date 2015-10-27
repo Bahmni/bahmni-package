@@ -1,6 +1,9 @@
 plugins {
     id "nebula.os-package" version "2.2.6"
+    id "de.undercouch.download" version "2.0.0"
 }
+
+import de.undercouch.gradle.tasks.download.Download
 
 group 'org.bahmni.emr'
 version project.bahmniRelease
@@ -17,7 +20,14 @@ task extractBahmniEnvironment(type: Copy) {
     into file("${buildDir}")
 }
 
-task dist(dependsOn: ['build', 'extractOmods','extractBahmniEnvironment'], type: Rpm) {
+task downloadAtomFeedClient(type: Download) {
+    src 'https://oss.sonatype.org/content/repositories/releases/org/ict4h/atomfeed-client/'+project.atomFeedClient+'/atomfeed-client-'+project.atomFeedClient+'.jar'
+    dest "${projectDir}/resources/"
+}
+
+downloadAtomFeedClient.onlyIf { !(new File("${projectDir}/resources/atomfeed-client-"+project.atomFeedClient+".jar").exists()) }
+
+task dist(dependsOn: ['build', 'extractOmods','extractBahmniEnvironment','downloadAtomFeedClient'], type: Rpm) {
     packageName 'bahmni-emr'
     release System.getenv('GO_PIPELINE_COUNTER')
     arch NOARCH
@@ -69,6 +79,8 @@ task dist(dependsOn: ['build', 'extractOmods','extractBahmniEnvironment'], type:
         include('openmrs-predeploy.sql')
         include('run-liquibase.sh')
         include('run-snapshot-liquibase.sh')
+        include('atomfeed-client-*.jar')
+        rename('atomfeed-client-'+project.atomFeedClient+'.jar', 'atomfeed-client.jar')
     }
 
     from("${projectDir}/resources/"){
@@ -83,21 +95,4 @@ task dist(dependsOn: ['build', 'extractOmods','extractBahmniEnvironment'], type:
         createDirectoryEntry = true
         into 'etc/migrations'
     }
-
-//  TODO:These things will go into the relevant bahmni-lab & bahmni-erp rpms.  Also install the atomfeed client migrations in openmrs
-//    #run_openmrs_dependent_liquibase <%= @temp_dir%>/$1/lib/<%= @atomfeed_client %>.jar sql/db_migrations.xml
-//    if $bahmni_openelis_required == "true" {
-//        bahmni_omods::bahmni_atomfeed_client { "deploy_openelis_atomfeed_client":
-//            atomfeed_client_name => "openelis",
-//            require => Exec["run_core_bahmni_modules_liquibase"]
-//        }
-//    }
-//
-//    if $bahmni_openerp_required == "true" {
-//        bahmni_omods::bahmni_atomfeed_client { "deploy_openerp_atomfeed_client":
-//            atomfeed_client_name => "openerp",
-//            require => Exec["run_core_bahmni_modules_liquibase"]
-//        }
-//    }
-
 }

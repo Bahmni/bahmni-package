@@ -4,6 +4,11 @@ set -e -x
 . /etc/openmrs/bahmni-emr.conf
 
 
+function run-atomfeed-client-liquibase-migration {
+    echo "Running the atomfeed client liquibase migration"
+    java  $CHANGE_LOG_TABLE -jar $LIQUIBASE_JAR --driver=$DRIVER --classpath=/opt/openmrs/etc/atomfeed-client.jar:$COMMON_CLASSPATH --changeLogFile=sql/db_migrations.xml $CREDS update
+}
+
 function run-liquibase-migration {
     CHANGE_LOG_DIR=$1
     CHANGE_LOG_FILE=$2
@@ -30,12 +35,8 @@ function run-snapshot-migrations {
     run-liquibase-migration $SNAPSHOTS_DIR/$1/openmrs-module-bahmniapps/resources liquibase.xml
     run-liquibase-migration $SNAPSHOTS_DIR/$1 liquibase.xml
     run-liquibase-migration $SNAPSHOTS_DIR/$1/atomfeed sql/db_migrations.xml -DschemaName=openmrs
-#    <% if @bahmni_openelis_required == "true" %>
-#        run-liquibase-migration $SNAPSHOTS_DIR/$1/bahmni-core/openmrs-elis-atomfeed-client-omod liquibase.xml
-#    <% end %>
-#    <% if @bahmni_openerp_required == "true" %>
-#        run-liquibase-migration $SNAPSHOTS_DIR/$1/bahmni-core/openerp-atomfeed-client-omod liquibase.xml
-#    <% end %>
+    run-liquibase-migration $SNAPSHOTS_DIR/$1/bahmni-core/openmrs-elis-atomfeed-client-omod liquibase.xml
+    run-liquibase-migration $SNAPSHOTS_DIR/$1/bahmni-core/openerp-atomfeed-client-omod liquibase.xml
 }
 
 for dir in  `ls $SNAPSHOTS_DIR | sort -t- -n`
@@ -43,4 +44,4 @@ do
     run-snapshot-migrations $dir
 done
 
-exit 0
+run-atomfeed-client-liquibase-migration
