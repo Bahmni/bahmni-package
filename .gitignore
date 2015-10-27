@@ -48,3 +48,6 @@ atlassian-ide-plugin.xml
 *.war
 *.jar
 *.omod
+bahmni-web/resources/client_side_logging
+bahmni-web/resources/bahmniapps
+bahmni-web/resources/bahmni_config
