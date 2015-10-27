@@ -49,6 +49,7 @@ task dist(dependsOn: ['build', 'normalizeJarName', 'extractWar', 'extractMigrati
 
     requires('unzip')
     requires('postgresql')
+    requires('bahmni-emr')
 
     postInstall file("${projectDir}/scripts/postinstall.sh")
     preUninstall file("${projectDir}/scripts/preuninstall.sh")
@@ -117,6 +118,13 @@ task dist(dependsOn: ['build', 'normalizeJarName', 'extractWar', 'extractMigrati
         fileMode = 0755
         createDirectoryEntry = true
         into 'migrations/scripts/'
+    }
+
+    from ("${projectDir}/resources/") {
+        fileMode = 0755
+        createDirectoryEntry = true
+        into "/opt/openmrs/modules"
+        include("openelis-atomfeed-client-*.omod")
     }
 }
 
