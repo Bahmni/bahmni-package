@@ -46,3 +46,4 @@ atlassian-ide-plugin.xml
 
 # Other artifacts from CI
 *.war
+*.omod

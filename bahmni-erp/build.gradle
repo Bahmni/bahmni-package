@@ -91,6 +91,13 @@ task dist(dependsOn: ['downloadOpenERP', 'extractAddons'], type: Rpm) {
         createDirectoryEntry = true
         into "."
     }
+
+    from ("${projectDir}/resources/") {
+        fileMode = 0755
+        createDirectoryEntry = true
+        into "/opt/openmrs/modules"
+        include("openerp-atomfeed-client-*.omod")
+    }
 }
 
 task downloadOpenERP(type: Download) {
