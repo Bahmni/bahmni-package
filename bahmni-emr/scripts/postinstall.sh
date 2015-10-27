@@ -23,7 +23,8 @@ run_snapshot_migration(){
 
 run_migrations(){
     echo "Running openmrs liquibase-core-data.xml and liquibase-update-to-latest.xml"
-    /opt/openmrs/etc/run-liquibase.sh  >> /bahmni_temp/logs/bahmni_deploy.log 2>> /bahmni_temp/logs/bahmni_deploy.log
+    /opt/openmrs/etc/run-liquibase.sh liquibase-core-data.xml
+    /opt/openmrs/etc/run-liquibase.sh liquibase-update-to-latest.xml
 }
 
 # TODO: this part will be moved to ansible.  Remove once its done

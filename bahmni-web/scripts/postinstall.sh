@@ -41,7 +41,13 @@ setupAppsAndConfig(){
     ln -s /opt/bahmni-web/etc/bahmni_config/ /var/www/bahmni_config
 }
 
+runConfigMigrations(){
+    echo "Running bahmni_config migrations"
+    cd /opt/bahmni-web/etc/bahmni_config/openmrs/migrations/ && /opt/openmrs/etc/run-liquibase.sh /opt/bahmni-web/etc/bahmni_config/openmrs/migrations/liquibase.xml
+}
+
 setupConfFiles
 setupCacheDir
 setupClientSideLogging
 setupAppsAndConfig
+runConfigMigrations
