@@ -62,6 +62,7 @@ task dist(dependsOn: ['downloadOpenERP', 'extractAddons'], type: Rpm) {
     requires('pywebdav')
     requires('postgresql92-libs')
     requires('postgresql92')
+    requires('bahmni-emr')
 //    requires('openerp', '7.0.post20151025-1', EQUAL)
 //    requires('python-gdata')
 //    requires('flashplugin-nonfree')
