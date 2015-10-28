@@ -1,4 +1,4 @@
-package org.bahmni.openmrs.launch;
+package org.bahmni.deployment.launch;
 
 import org.apache.catalina.Context;
 import org.apache.catalina.LifecycleException;

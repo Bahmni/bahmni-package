@@ -134,7 +134,7 @@ dependencies {
 
 jar {
     manifest {
-        attributes 'Main-Class': "org.bahmni.openmrs.launch.Main"
+        attributes 'Main-Class': "org.bahmni.deployment.launch.Main"
     }
     from {
         configurations.compile.collect {
