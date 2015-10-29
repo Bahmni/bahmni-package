@@ -46,8 +46,17 @@ runConfigMigrations(){
     cd /opt/bahmni-web/etc/bahmni_config/openmrs/migrations/ && /opt/openmrs/etc/run-liquibase.sh /opt/bahmni-web/etc/bahmni_config/openmrs/migrations/liquibase.xml
 }
 
+manage_permissions(){
+    # permissions
+    chown -R bahmni:bahmni /opt/bahmni-web
+    chown -R bahmni:bahmni /var/www/bahmniapps
+    chown -R bahmni:bahmni /var/www/bahmni_config
+    chown -R bahmni:bahmni /var/www/client_side_logging
+}
+
 setupConfFiles
 setupCacheDir
 setupClientSideLogging
 setupAppsAndConfig
 runConfigMigrations
+manage_permissions
