@@ -36,7 +36,6 @@ task dist(dependsOn: ['build', 'extractOmods','extractBahmniEnvironment','downlo
 
     into '/opt/openmrs'
 
-    requires('unzip')
     requires('openmrs',project.openmrsVersion,EQUAL)
 
     postInstall file("${projectDir}/scripts/postinstall.sh")

@@ -43,8 +43,6 @@ task dist(dependsOn: ['build','normalizeJarName', 'extractWar'], type: Rpm) {
 
     into '/opt/bahmni-reports'
 
-    requires('unzip')
-    requires('bahmni-emr')
     requires('bahmni-web')
 
     postInstall file("${projectDir}/scripts/postinstall.sh")

@@ -47,7 +47,6 @@ task dist(dependsOn: ['build', 'normalizeJarName', 'extractWar', 'extractMigrati
 
     into '/opt/bahmni-lab'
 
-    requires('unzip')
     requires('postgresql')
     requires('bahmni-emr')
 

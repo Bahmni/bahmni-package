@@ -40,7 +40,6 @@ task dist(dependsOn: ['build', 'normalizeJarName', 'extractWar'], type: Rpm) {
 
     into '/opt/bahmni-pacs'
 
-    requires('unzip')
     requires('postgresql')
     requires('bahmni-emr')
 
