@@ -13,6 +13,7 @@ link_dirs(){
 
 predeploy(){
     echo "Running the openmrs-predeploy.sql script"
+    mkdir -p /bahmni_temp/logs
     mysql -h${DB_SERVER} -uroot -p${DB_PASSWORD} < /opt/openmrs/etc/openmrs-predeploy.sql >> /bahmni_temp/logs/bahmni_deploy.log 2>> /bahmni_temp/logs/bahmni_deploy.log
 }
 

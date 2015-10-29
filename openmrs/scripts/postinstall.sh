@@ -11,6 +11,7 @@ groupadd bahmni
 [ $? -eq 1 ]
 useradd -g bahmni bahmni
 
+mkdir -p /bahmni_temp/logs
 #create links
 ln -s /opt/openmrs/etc /etc/openmrs
 ln -s /opt/openmrs/bin/openmrs /etc/init.d/openmrs
