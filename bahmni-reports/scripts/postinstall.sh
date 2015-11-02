@@ -38,6 +38,7 @@ run_migrations(){
 
 link_properties_file(){
     echo "Linking properties file"
+    mkdir -p /home/$USERID/.bahmni-reports
     ln -s /opt/bahmni-reports/etc/bahmni-reports.properties /home/$USERID/.bahmni-reports/bahmni-reports.properties
 }
 

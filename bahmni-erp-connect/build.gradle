@@ -42,9 +42,6 @@ task dist(dependsOn: ['build', 'normalizeJarName', 'extractWar'], type: Rpm) {
 
     into '/opt/bahmni-erp-connect'
 
-    requires('unzip')
-    requires('postgresql')
-
     postInstall file("${projectDir}/scripts/postinstall.sh")
     preUninstall file("${projectDir}/scripts/preuninstall.sh")
     postUninstall file("${projectDir}/scripts/postuninstall.sh")

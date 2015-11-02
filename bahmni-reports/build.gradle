@@ -43,8 +43,6 @@ task dist(dependsOn: ['build','normalizeJarName', 'extractWar'], type: Rpm) {
 
     into '/opt/bahmni-reports'
 
-    requires('bahmni-web')
-
     postInstall file("${projectDir}/scripts/postinstall.sh")
     preUninstall file("${projectDir}/scripts/preuninstall.sh")
     postUninstall file("${projectDir}/scripts/postuninstall.sh")

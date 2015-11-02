@@ -42,8 +42,9 @@ setupAppsAndConfig(){
 }
 
 runConfigMigrations(){
+    ln -s /opt/bahmni-web/etc /etc/bahmni-web
     echo "Running bahmni_config migrations"
-    cd /opt/bahmni-web/etc/bahmni_config/openmrs/migrations/ && /opt/openmrs/etc/run-liquibase.sh /opt/bahmni-web/etc/bahmni_config/openmrs/migrations/liquibase.xml
+    cd /opt/bahmni-web/etc/bahmni_config/openmrs/migrations/ && /opt/bahmni-web/etc/run-liquibase.sh
 }
 
 manage_permissions(){

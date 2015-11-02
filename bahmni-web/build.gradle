@@ -31,7 +31,6 @@ task dist(dependsOn: ["extractBahmniApps", "extractBahmniConfig"], type: Rpm) {
     requires('mod_ssl')
     requires('mod_wsgi')
     requires('python-flask') //This is required for client_side_logging
-    requires('bahmni-emr') //This is required for running migrations
 
     postInstall file("${projectDir}/scripts/postinstall.sh")
     postUninstall file("${projectDir}/scripts/postuninstall.sh")

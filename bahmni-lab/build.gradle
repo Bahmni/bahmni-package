@@ -47,8 +47,7 @@ task dist(dependsOn: ['build', 'normalizeJarName', 'extractWar', 'extractMigrati
 
     into '/opt/bahmni-lab'
 
-    requires('postgresql')
-    requires('bahmni-emr')
+    requires('postgresql92')
 
     postInstall file("${projectDir}/scripts/postinstall.sh")
     preUninstall file("${projectDir}/scripts/preuninstall.sh")
