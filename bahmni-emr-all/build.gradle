@@ -1,0 +1,24 @@
+plugins {
+    id "nebula.os-package" version "2.2.6"
+}
+
+
+group 'org.bahmni.emr.all'
+version project.bahmniRelease
+
+apply plugin: 'rpm'
+
+
+task dist(dependsOn: ['build'], type: Rpm) {
+    packageName 'bahmni-emr-all'
+    release System.getenv('GO_PIPELINE_COUNTER')
+    arch NOARCH
+    os LINUX
+    user 'bahmni'
+
+    requires('bahmni-emr', project.bahmniRelease,EQUAL)
+    requires('bahmni-web', project.bahmniRelease,EQUAL)
+    requires('bahmni-reports', project.bahmniRelease,EQUAL)
+    requires('mysql-community-server')
+
+}
