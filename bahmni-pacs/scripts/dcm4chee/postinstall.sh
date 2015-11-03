@@ -1,6 +1,7 @@
 #!/bin/bash
 
 dcm4chee_path=/var/lib/bahmni/dcm4chee-2.18.1-psql
+chown -R bahmni:bahmni /var/lib/bahmni/dcm4chee-2.18.1-psql
 
 sudo /opt/bahmni-pacs/etc/initDCM4CHEE-DB.sh
 sudo $dcm4chee_path/bin/install_jboss.sh /usr/share/jboss-4.2.3.GA

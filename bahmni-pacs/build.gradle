@@ -130,7 +130,7 @@ task dist_dcm4chee(dependsOn: ['extractDCM4CHEE', 'extractJBoss', 'extractOviyam
     os LINUX
     user 'root'
 
-    requires('postgresql')
+    requires('postgresql92')
 
     postInstall file("${projectDir}/scripts/dcm4chee/postinstall.sh")
     preUninstall file("${projectDir}/scripts/dcm4chee/preuninstall.sh")
