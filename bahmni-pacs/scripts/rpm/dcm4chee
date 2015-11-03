@@ -1,0 +1,120 @@
+#!/bin/bash
+#
+# DCM4CHEE start/stop/status script
+# @author: Swathi, Hemanth
+#
+# chkconfig: 2345 65 35
+# description: DCM4CHEE server
+#
+### BEGIN INIT INFO
+# Provides: jboss
+# Required-Start: mysqld
+# Default-Start: 2 3 4 5
+# Default-Stop: 0 1 6
+# Description: DCM4CHEE init script
+### END INIT INFO
+
+# Source function library.
+source /etc/environment
+source /etc/init.d/functions
+
+#DCM4CHEE_HOME is the location of the bin files of DCM4CHEE
+DCM4CHEE_HOME=/var/lib/bahmni/dcm4chee-2.18.1-psql/
+
+#DCM4CHEE_USER is the default user of DCM4CHEE
+DCM4CHEE_USER=bahmni
+
+#DCM4CHEE_USAGE is the message if this script is called without any options
+DCM4CHEE_USAGE="Usage: $0 {\e[00;32mstart\e[00m|\e[00;31mstop\e[00m|\e[00;32mstatus\e[00m|\e[00;31mrestart\e[00m}"
+
+#SHUTDOWN_WAIT is wait time in seconds for java proccess to stop
+SHUTDOWN_WAIT=20
+
+dcm4chee_pid() {
+   echo `ps -fe | grep app.name=dcm4chee | grep -v grep | tr -s " "|cut -d" " -f2`
+}
+
+start() {
+  pid=$(dcm4chee_pid)
+  if [ -n "$pid" ]
+  then
+    echo -e "\e[00;31mDCM4CHEE is already running (pid: $pid)\e[00m"
+    exit 0
+  else
+    echo -e "\e[00;32mStarting DCM4CHEE\e[00m"
+    su -c "/bin/bash $DCM4CHEE_HOME/bin/run.sh" $DCM4CHEE_USER > /dev/null &
+  fi
+  return 0
+}
+
+status(){
+  pid=$(dcm4chee_pid)
+  if [ -n "$pid" ]; then
+    echo -e "\e[00;32mDCM4CHEE is running with pid: $pid\e[00m"
+    exit 0
+  else
+    echo -e "\e[00;31mDCM4CHEE is not running\e[00m"
+    exit 3
+  fi
+}
+
+stop() {
+  pid=$(dcm4chee_pid)
+  if [ -n "$pid" ]
+  then
+    echo -e "\e[00;31mStoping DCM4CHEE\e[00m"
+    sh $DCM4CHEE_HOME/bin/shutdown.sh
+
+    let kwait=$SHUTDOWN_WAIT
+    count=0;
+    until [ `ps -p $pid | grep -c $pid` = '0' ] || [ $count -gt $kwait ]
+    do
+      echo -n -e "\n\e[00;31mwaiting for processes to exit\e[00m";
+      sleep 1
+      let count=$count+1;
+    done
+
+    if [ $count -gt $kwait ]; then
+      echo -n -e "\n\e[00;31mkilling processes which didn't stop after $SHUTDOWN_WAIT seconds\e[00m"
+      kill -9 $pid
+    fi
+  else
+    echo -e "\e[00;31mDCM4CHEE is not running\e[00m"
+  fi
+
+  return 0
+}
+
+user_exists(){
+        if id -u $1 >/dev/null 2>&1; then
+        echo "1"
+        else
+                echo "0"
+        fi
+}
+
+case $1 in
+
+        start)
+          start
+        ;;
+
+        stop)
+          stop
+        ;;
+
+        restart)
+          stop
+          start
+        ;;
+
+        status)
+                status
+
+        ;;
+
+        *)
+            echo -e $DCM4CHEE_USAGE
+        ;;
+esac
+exit 0

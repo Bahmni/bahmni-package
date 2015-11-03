@@ -1,6 +1,9 @@
 plugins {
     id "nebula.os-package" version "2.2.6"
+    id "de.undercouch.download" version "2.0.0"
 }
+
+import de.undercouch.gradle.tasks.download.Download
 
 version project.bahmniRelease
 
@@ -31,8 +34,50 @@ task normalizeJarName(type: Copy) {
     rename(project.name + '-' + project.bahmniRelease + '.jar', 'pacs-integration.jar')
 }
 
+task downloadDCM4CHEE(type: Download) {
+    src 'http://172.18.2.14/packages/build/dcm4chee-2.18.1-psql.zip'
+    dest buildDir
+}
+
+downloadDCM4CHEE.onlyIf {
+    !(new File("${buildDir}/dcm4chee-2.18.1-psql.zip").exists())
+}
+
+task extractDCM4CHEE(dependsOn: ["downloadDCM4CHEE"], type: Copy) {
+    from zipTree("${buildDir}/dcm4chee-2.18.1-psql.zip")
+    into file(buildDir)
+}
+
+task downloadJBoss(type: Download) {
+    src 'http://172.18.2.14/packages/servers/jboss-4.2.3.GA-jdk6.zip'
+    dest buildDir
+}
+
+downloadJBoss.onlyIf {
+    !(new File("${buildDir}/jboss-4.2.3.GA-jdk6.zip").exists())
+}
+
+task extractJBoss(dependsOn: ["downloadJBoss"], type: Copy) {
+    from zipTree("${buildDir}/jboss-4.2.3.GA-jdk6.zip")
+    into file(buildDir)
+}
+
+task downloadOviyam2(type: Download) {
+    src 'http://172.18.2.14/packages/build/oviyam2.war'
+    dest buildDir
+}
+
+downloadOviyam2.onlyIf {
+    !(new File("${buildDir}/oviyam2.war").exists())
+}
+
+task extractOviyam2(dependsOn: ["downloadOviyam2"], type: Copy) {
+    from zipTree("${buildDir}/oviyam2.war")
+    into file("${projectDir}/resources/oviyam2.war")
+}
+
 task dist(dependsOn: ['build', 'normalizeJarName', 'extractWar'], type: Rpm) {
-    packageName 'bahmni-pacs'
+    packageName 'pacs-integration'
     release System.getenv('GO_PIPELINE_COUNTER')
     arch NOARCH
     os LINUX
@@ -42,9 +87,10 @@ task dist(dependsOn: ['build', 'normalizeJarName', 'extractWar'], type: Rpm) {
 
     requires('postgresql92')
 
-    postInstall file("${projectDir}/scripts/postinstall.sh")
-    preUninstall file("${projectDir}/scripts/preuninstall.sh")
-    postUninstall file("${projectDir}/scripts/postuninstall.sh")
+    preInstall file("${projectDir}/scripts/bahmni-pacs/preinstall.sh")
+    postInstall file("${projectDir}/scripts/bahmni-pacs/postinstall.sh")
+    preUninstall file("${projectDir}/scripts/bahmni-pacs/preuninstall.sh")
+    postUninstall file("${projectDir}/scripts/bahmni-pacs/postuninstall.sh")
 
     from("${projectDir}/scripts/rpm/") {
         fileMode = 0755
@@ -58,6 +104,12 @@ task dist(dependsOn: ['build', 'normalizeJarName', 'extractWar'], type: Rpm) {
         into 'etc'
     }
 
+    from("${projectDir}/resources/log4j.xml") {
+        fileMode = 0755
+        createDirectoryEntry = true
+        into "${buildDir}/pacs-integration/WEB-INF/classes/log4j.xml"
+    }
+
     from("${buildDir}/libs/pacs-integration.jar") {
         fileMode = 0755
         createDirectoryEntry = true
@@ -68,6 +120,44 @@ task dist(dependsOn: ['build', 'normalizeJarName', 'extractWar'], type: Rpm) {
         fileMode = 0755
         createDirectoryEntry = true
         into 'pacs-integration'
+    }
+}
+
+task dist_dcm4chee(dependsOn: ['extractDCM4CHEE', 'extractJBoss', 'extractOviyam2'], type: Rpm) {
+    packageName 'dcm4chee'
+    release System.getenv('GO_PIPELINE_COUNTER')
+    arch NOARCH
+    os LINUX
+    user 'root'
+
+    requires('postgresql')
+
+    postInstall file("${projectDir}/scripts/dcm4chee/postinstall.sh")
+    preUninstall file("${projectDir}/scripts/dcm4chee/preuninstall.sh")
+    postUninstall file("${projectDir}/scripts/dcm4chee/postuninstall.sh")
+
+    from("${buildDir}/dcm4chee-2.18.1-psql") {
+        fileMode = 0755
+        createDirectoryEntry = true
+        into '/var/lib/bahmni/dcm4chee-2.18.1-psql'
+    }
+
+    from("${buildDir}/dcm4che-2.0.28-bin") {
+        fileMode = 0755
+        createDirectoryEntry = true
+        into '/var/lib/bahmni/dcm4che-2.0.28-bin'
+    }
+
+    from("${buildDir}/dcm4chee-2.18.1-psql") {
+        fileMode = 0755
+        createDirectoryEntry = true
+        into '/var/lib/bahmni/dcm4chee-2.18.1-psql'
+    }
+
+    from("${buildDir}/jboss-4.2.3.GA") {
+        fileMode = 0755
+        createDirectoryEntry = true
+        into '/usr/share/jboss-4.2.3.GA'
     }
 }
 

@@ -1,0 +1,73 @@
+<configuration>
+    <users class="java.util.ArrayList">
+        <user>
+            <user-name>user</user-name>
+            <search-params>
+                <buttons class="java.util.ArrayList">
+                    <button>
+                        <button-label>Today CT</button-label>
+                        <date-criteria>t</date-criteria>
+                        <modality>CT</modality>
+                        <auto-refresh>0</auto-refresh>
+                    </button>
+                </buttons>
+            </search-params>
+            <theme>Dark Hive</theme>
+            <viewer-slider>hide</viewer-slider>
+            <session-timeout>1800</session-timeout>
+        </user>
+        <user>
+            <user-name>admin</user-name>
+            <search-params>
+                <buttons class="java.util.ArrayList">
+                    <button>
+                        <button-label>Today CT</button-label>
+                        <date-criteria>t</date-criteria>
+                        <modality>CT</modality>
+                        <auto-refresh>0</auto-refresh>
+                    </button>
+                </buttons>
+            </search-params>
+            <theme>Dark Hive</theme>
+            <viewer-slider>hide</viewer-slider>
+            <session-timeout>1800</session-timeout>
+        </user>
+    </users>
+    <servers class="java.util.ArrayList">
+        <server>
+            <logicalname>dcm4chee</logicalname>
+            <aetitle>DCM4CHEE</aetitle>
+            <hostname>localhost</hostname>
+            <port>11112</port>
+            <retrieve>C-GET</retrieve>
+            <wadocontext></wadocontext>
+            <wadoport></wadoport>
+            <previews>true</previews>
+        </server>
+    </servers>
+    <listener>
+        <aetitle>OVIYAM2</aetitle>
+        <port>1025</port>
+    </listener>
+    <languages class="java.util.ArrayList">
+        <language>
+            <lang>English</lang>
+            <country>United Kingdom</country>
+            <localeID>en_GB</localeID>
+            <selected>true</selected>
+        </language>
+        <language>
+            <lang>Tamil</lang>
+            <country>India</country>
+            <localeID>ta_IN</localeID>
+            <selected>false</selected>
+        </language>
+        <language>
+            <lang>German</lang>
+            <country>Germany</country>
+            <localeID>de_DE</localeID>
+            <selected>false</selected>
+        </language>
+    </languages>
+    <ioviyam-context>/ioviyam2</ioviyam-context>
+</configuration>
