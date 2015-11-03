@@ -1,9 +1,8 @@
 #!/bin/bash
 
-# backing up existing startup script for openerp
-mv /etc/init.d/openerp /etc/init.d/openerp.bak
 # copying patched startup script for openerp
 cp -f /opt/bahmni-erp/etc/openerp /etc/init.d/openerp
+ln -s /opt/bahmni-erp /etc/openerp
 
 adduser openerp
 DIR="/var/run/openerp /var/log/openerp"
@@ -25,6 +24,7 @@ set -e -x
 cd /opt/bahmni-erp
 tar -xvzf openerp-7.0-20130301-002301.tar.gz
 cd openerp-7.0-20130301-002301
-sudo python setup.py install
-cd ..
-rm -rf openerp-7.0-20130301-002301
+sudo python setup.py -q install
+cp openerp-server /opt/bahmni-erp
+cp install/openerp-server.conf /opt/bahmni-erp
+cp -r /opt/bahmni-erp/bahmni-addons/* /usr/lib/python2.6/site-packages/openerp-7.0_20130301_002301-py2.6.egg/openerp/addons

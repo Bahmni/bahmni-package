@@ -33,8 +33,8 @@ desc="OpenERP Server Daemon"
 SHUTDOWN_WAIT=20
 
 # check if the openerp-server conf file is present, then use it
-if [ -f /etc/openerp/openerp-server.conf ]; then
-    OPTS="$OPTS -c /etc/openerp/openerp-server.conf"
+if [ -f /opt/bahmni-erp/openerp-server.conf ]; then
+    OPTS="$OPTS -c /opt/bahmni-erp/openerp-server.conf"
 fi
 
 # Source function library
@@ -68,10 +68,9 @@ start() {
     echo -n $"Starting $desc ($prog): "
     daemon --user openerp --check openerp-server \
     "/usr/bin/setsid /usr/bin/openerp-server \
-    -c /etc/openerp-server.conf \
+    -c /opt/bahmni-erp/openerp-server.conf \
     --update all \
     --database openerp \
-    --addons /opt/bahmni-erp/bahmni-addons/ \
     --without-demo all \
     --pidfile=$PIDFILE \
     --logfile=$LOGFILE &"
