@@ -26,6 +26,8 @@ ln -s /opt/bahmni-lab/uploaded-files/elis /home/bahmni/uploaded-files/elis
 (cd /opt/bahmni-lab/migrations && scripts/initDB.sh bahmni-base.dump)
 (cd /opt/bahmni-lab/migrations/liquibase/ && /opt/bahmni-lab/migrations/scripts/migrateDb.sh)
 
+cp -f /opt/bahmni-lab/etc/atomfeed.properties /opt/bahmni-lab/bahmni-lab/WEB-INF/classes/atomfeed.properties
+cp -f /opt/bahmni-lab/etc/hibernate.cfg.xml /opt/bahmni-lab/bahmni-lab/WEB-INF/classes/us/mn/state/health/lims/hibernate/hibernate.cfg.xml
 
 chkconfig --add bahmni-lab
 

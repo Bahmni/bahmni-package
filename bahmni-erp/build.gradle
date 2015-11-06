@@ -51,6 +51,7 @@ task dist(dependsOn: ['downloadOpenERP', 'extractAddons'], type: Rpm) {
     requires('python-matplotlib')
     requires('python')
     requires('python-psutil')
+    requires('python-gdata')
     requires('python-docutils')
     requires('make')
     requires('automake')
@@ -62,11 +63,13 @@ task dist(dependsOn: ['downloadOpenERP', 'extractAddons'], type: Rpm) {
     requires('pywebdav')
     requires('postgresql92-libs')
     requires('postgresql92')
+    requires('python-unittest2')
+    requires('python-simplejson')
+    requires('PyYAML')
+    requires('python-mock')
+    requires('python-pip')
+    requires('python-feedparser')
     requires('bahmni-erp-connect',project.bahmniRelease, EQUAL)
-//    requires('openerp', '7.0.post20151025-1', EQUAL)
-//    requires('python-gdata')
-//    requires('flashplugin-nonfree')
-//    requires('hippo-canvas-python')
 
     into '/opt/bahmni-erp'
 
@@ -91,13 +94,6 @@ task dist(dependsOn: ['downloadOpenERP', 'extractAddons'], type: Rpm) {
         fileMode = 0755
         createDirectoryEntry = true
         into "."
-    }
-
-    from ("${projectDir}/resources/") {
-        fileMode = 0755
-        createDirectoryEntry = true
-        into "/opt/openmrs/modules"
-        include("openerp-atomfeed-client-*.omod")
     }
 }
 

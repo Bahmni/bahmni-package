@@ -1,6 +1,5 @@
 #!/bin/bash
 
-# copying patched startup script for openerp
 cp -f /opt/bahmni-erp/etc/openerp /etc/init.d/openerp
 ln -s /opt/bahmni-erp /etc/openerp
 
