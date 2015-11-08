@@ -67,6 +67,7 @@ task dist(dependsOn: ['build', 'extractOmods','extractBahmniEnvironment','downlo
         include('uiframework-*.omod')
         include('uilibrary-*.omod')
         include('webservices.rest-*.omod')
+        include('bacteriology-*.omod')
     }
 
     from("${projectDir}/resources/") {
