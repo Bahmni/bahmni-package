@@ -58,6 +58,7 @@ manage_permissions(){
     chown -R bahmni:bahmni /var/www/bahmniapps
     chown -R bahmni:bahmni /var/www/bahmni_config
     chown -R bahmni:bahmni /var/www/client_side_logging
+    chown -R bahmni:bahmni /opt/openmrs
 }
 
 setupConfFiles
