@@ -15,11 +15,6 @@ task extractOmods(type: Copy) {
     into file("${buildDir}/distro/")
 }
 
-task extractBahmniEnvironment(type: Copy) {
-    from zipTree(file("${projectDir}/resources/bahmni-environment.zip"))
-    into file("${buildDir}")
-}
-
 task downloadAtomFeedClient(type: Download) {
     src 'https://oss.sonatype.org/content/repositories/releases/org/ict4h/atomfeed-client/'+project.atomFeedClient+'/atomfeed-client-'+project.atomFeedClient+'.jar'
     dest "${projectDir}/resources/"
@@ -27,7 +22,7 @@ task downloadAtomFeedClient(type: Download) {
 
 downloadAtomFeedClient.onlyIf { !(new File("${projectDir}/resources/atomfeed-client-"+project.atomFeedClient+".jar").exists()) }
 
-task dist(dependsOn: ['build', 'extractOmods','extractBahmniEnvironment','downloadAtomFeedClient'], type: Rpm) {
+task dist(dependsOn: ['build', 'extractOmods','downloadAtomFeedClient'], type: Rpm) {
     packageName 'bahmni-emr'
     release System.getenv('GO_PIPELINE_COUNTER')
     arch NOARCH
@@ -42,7 +37,7 @@ task dist(dependsOn: ['build', 'extractOmods','extractBahmniEnvironment','downlo
     postUninstall file("${projectDir}/scripts/postuninstall.sh")
 
     from("${buildDir}/distro/distro-"+project.bahmniRelease+"-SNAPSHOT") {
-        fileMode = 0755
+        fileMode = 0644
         user 'bahmni'
         createDirectoryEntry = true
         into 'modules'
@@ -75,22 +70,29 @@ task dist(dependsOn: ['build', 'extractOmods','extractBahmniEnvironment','downlo
         user 'bahmni'
         createDirectoryEntry = true
         into 'etc'
-        include('bahmni-emr.conf')
-        include('openmrs-predeploy.sql')
         include('run-liquibase.sh')
         include('run-snapshot-liquibase.sh')
+    }
+
+    from("${projectDir}/resources/") {
+        fileMode = 0644
+        user 'bahmni'
+        createDirectoryEntry = true
+        into 'etc'
+        include('bahmni-emr.conf')
+        include('openmrs-predeploy.sql')
         include('atomfeed-client-*.jar')
         rename('atomfeed-client-'+project.atomFeedClient+'.jar', 'atomfeed-client.jar')
     }
 
     from("${projectDir}/resources/"){
-        fileMode = 0755
+        fileMode = 0644
         user 'bahmni'
         include('bahmnicore.properties')
     }
 
-    from("${buildDir}/bahmni-environment/puppet/modules/bahmni_snapshot_migrations") {
-        fileMode = 0755
+    from("${projectDir}/resources/migrations/snapshots") {
+        fileMode = 0644
         user 'bahmni'
         createDirectoryEntry = true
         into 'etc/migrations'

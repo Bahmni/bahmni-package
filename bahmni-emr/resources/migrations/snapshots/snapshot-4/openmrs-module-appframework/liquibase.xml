@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog/1.9"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog/1.9
+                  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-1.9.xsd">
+    <!--
+        See http://www.liquibase.org/manual/home#available_database_refactorings
+        for a list of supported elements and attributes
+    -->
+    <changeSet id="appframework-1" author="djazayeri">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<tableExists tableName="appframework_app_enabled"/>
+			</not>
+		</preConditions>
+		<comment>Create table for AppEnabled</comment>
+		<createTable tableName="appframework_app_enabled">
+			<column name="app_enabled_id" type="int" autoIncrement="true">
+				<constraints primaryKey="true" nullable="false"/>
+			</column>
+			<column name="uuid" type="char(38)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="app_name" type="varchar(100)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="user" type="int(11)"/>
+			<column name="role" type="varchar(50)"/>
+		</createTable>
+		<addForeignKeyConstraint constraintName="app_enabled_for_user"
+			baseTableName="appframework_app_enabled" baseColumnNames="user"
+			referencedTableName="users" referencedColumnNames="user_id" />
+		<addForeignKeyConstraint constraintName="app_enabled_for_role"
+			baseTableName="appframework_app_enabled" baseColumnNames="role"
+			referencedTableName="role" referencedColumnNames="role" />
+	</changeSet>
+
+	<changeSet id="appframework-2" author="djazayeri">
+		<preConditions onFail="MARK_RAN">
+			<tableExists tableName="appframework_app_enabled"/>
+		</preConditions>
+		<comment>Drop table for AppEnabled, since we'll be using privileges instead</comment>
+		<dropTable tableName="appframework_app_enabled"/>
+	</changeSet>
+
+    <changeSet id="appframework-3" author="nutsiepully">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="appframework_component_enabled"/>
+            </not>
+        </preConditions>
+        <comment>Create table to track which AppFramework components are enabled</comment>
+        <createTable tableName="appframework_component_state">
+            <column name="component_state_id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="uuid" type="char(38)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="component_id" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="component_type" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="enabled" type="boolean" />
+        </createTable>
+    </changeSet>
+
+    <changeSet id="appframework-4" author="Wyclif">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="appframework_user_app" />
+            </not>
+        </preConditions>
+        <comment>Create table to store user defined apps</comment>
+        <createTable tableName="appframework_user_app">
+            <column name="app_id" type="varchar(50)">
+                <constraints primaryKey="true" nullable="false" />
+            </column>
+            <column name="json" type="mediumtext">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>
