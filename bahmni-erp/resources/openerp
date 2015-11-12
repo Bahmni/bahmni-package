@@ -25,17 +25,11 @@ PIDFILE=/var/run/openerp/openerp-server.pid
 LOCKFILE=/var/lock/subsys/openerp-server
 LOGFILE=/var/log/openerp/openerp-server.log
 
-OPTS="--pidfile=$PIDFILE --logfile=$LOGFILE"
-
 prog="openerp-server"
 desc="OpenERP Server Daemon"
 
 SHUTDOWN_WAIT=20
 
-# check if the openerp-server conf file is present, then use it
-if [ -f /opt/bahmni-erp/openerp-server.conf ]; then
-    OPTS="$OPTS -c /opt/bahmni-erp/openerp-server.conf"
-fi
 
 # Source function library
 if [ -f /etc/init.d/functions ] ; then
@@ -68,7 +62,7 @@ start() {
     echo -n $"Starting $desc ($prog): "
     daemon --user openerp --check openerp-server \
     "/usr/bin/setsid /usr/bin/openerp-server \
-    -c /opt/bahmni-erp/openerp-server.conf \
+    -c /etc/openerp/openerp-server.conf \
     --update all \
     --database openerp \
     --without-demo all \

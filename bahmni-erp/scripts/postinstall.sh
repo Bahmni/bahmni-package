@@ -1,7 +1,6 @@
 #!/bin/bash
 
 cp -f /opt/bahmni-erp/etc/openerp /etc/init.d/openerp
-ln -s /opt/bahmni-erp /etc/openerp
 
 adduser openerp
 DIR="/var/run/openerp /var/log/openerp"
