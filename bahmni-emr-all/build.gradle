@@ -17,8 +17,8 @@ task dist(dependsOn: ['build'], type: Rpm) {
     user 'bahmni'
 
     requires('bahmni-emr', project.bahmniRelease,EQUAL)
-    requires('bahmni-web', project.bahmniRelease,EQUAL)
-    requires('bahmni-reports', project.bahmniRelease,EQUAL)
+    requires('bahmni-web', project.bahmniRelease, EQUAL)
+    requires('bahmni-reports', project.bahmniRelease, EQUAL)
     requires('mysql-community-server')
 
 }

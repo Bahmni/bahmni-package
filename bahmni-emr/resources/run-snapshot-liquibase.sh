@@ -36,7 +36,6 @@ function run-snapshot-migrations {
     run-liquibase-migration $SNAPSHOTS_DIR/$1 liquibase.xml
     run-liquibase-migration $SNAPSHOTS_DIR/$1/atomfeed sql/db_migrations.xml -DschemaName=openmrs
     run-liquibase-migration $SNAPSHOTS_DIR/$1/bahmni-core/openmrs-elis-atomfeed-client-omod liquibase.xml
-    run-liquibase-migration $SNAPSHOTS_DIR/$1/bahmni-core/openerp-atomfeed-client-omod liquibase.xml
 }
 
 for dir in  `ls $SNAPSHOTS_DIR | sort -t- -n`

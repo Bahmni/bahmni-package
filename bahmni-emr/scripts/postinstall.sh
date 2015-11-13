@@ -11,11 +11,6 @@ link_dirs(){
     chown -R bahmni:bahmni /opt/openmrs/modules
 }
 
-predeploy(){
-    echo "Running the openmrs-predeploy.sql script"
-    mkdir -p /bahmni_temp/logs
-    mysql -h${DB_SERVER} -uroot -p${DB_PASSWORD} < /opt/openmrs/etc/openmrs-predeploy.sql >> /bahmni_temp/logs/bahmni_deploy.log 2>> /bahmni_temp/logs/bahmni_deploy.log
-}
 
 run_snapshot_migration(){
     echo "Running the liquibase snapshot migrations"
@@ -48,7 +43,6 @@ create_configuration_dirs(){
 }
 
 link_dirs
-predeploy
 run_snapshot_migration
 run_migrations
 create_configuration_dirs
