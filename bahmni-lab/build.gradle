@@ -118,12 +118,6 @@ task dist(dependsOn: ['build', 'normalizeJarName', 'extractWar', 'extractMigrati
         into 'migrations/scripts/'
     }
 
-    from ("${projectDir}/resources/") {
-        fileMode = 0755
-        createDirectoryEntry = true
-        into "/opt/openmrs/modules"
-        include("openelis-atomfeed-client-*.omod")
-    }
 }
 
 dependencies {
