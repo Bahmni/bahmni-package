@@ -1,0 +1,56 @@
+plugins {
+    id "nebula.os-package" version "2.2.6"
+}
+
+repositories {
+    mavenCentral()
+    jcenter()
+    maven {
+        url 'http://mavenrepo.openmrs.org/nexus/content/repositories/public'
+    }
+    maven {
+        url 'https://oss.sonatype.org/content/repositories'
+    }
+    mavenLocal()
+}
+
+group 'org.bahmni.lab'
+version project.bahmniRelease
+
+apply plugin: 'java'
+apply plugin: 'rpm'
+
+task dist(dependsOn: ['build'], type: Rpm) {
+    packageName 'bahmni-lab-connect'
+    release System.getenv('GO_PIPELINE_COUNTER')?: "1"
+    arch NOARCH
+    os LINUX
+    user 'bahmni'
+
+    into '/opt/bahmni-lab-connect'
+
+    postInstall file("${projectDir}/scripts/postinstall.sh")
+
+    from ("${projectDir}/resources/") {
+        fileMode = 0755
+        createDirectoryEntry = true
+        into "modules"
+        include("openelis-atomfeed-client-*.omod")
+    }
+}
+
+dependencies {
+    compile project(":core")
+}
+
+jar {
+    manifest {
+        attributes 'Main-Class': "org.bahmni.deployment.launch.Main"
+    }
+    from {
+        configurations.compile.collect {
+            it.isDirectory() ? it : zipTree(it)
+        }
+    }
+}
+
