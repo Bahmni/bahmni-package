@@ -20,7 +20,7 @@ task extractBahmniConfig(type: Copy){
 
 task dist(dependsOn: ["extractBahmniApps", "extractBahmniConfig"], type: Rpm) {
     packageName 'bahmni-web'
-    release System.getenv('GO_PIPELINE_COUNTER')
+    release System.getenv('GO_PIPELINE_COUNTER') ?: project.buildNumber
     arch NOARCH
     os LINUX
     user 'root'

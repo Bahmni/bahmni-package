@@ -2,6 +2,7 @@
 set -e -x
 
 . /etc/openmrs/bahmni-emr.conf
+. /etc/bahmni-installer/bahmni.conf
 
 
 function run-atomfeed-client-liquibase-migration {
