@@ -7,7 +7,7 @@ set -e -x
 
 function run-atomfeed-client-liquibase-migration {
     echo "Running the atomfeed client liquibase migration"
-    java  $CHANGE_LOG_TABLE -jar $LIQUIBASE_JAR --driver=$DRIVER --classpath=/opt/openmrs/etc/atomfeed-client.jar:$COMMON_CLASSPATH --changeLogFile=sql/db_migrations.xml $CREDS update
+    java  $CHANGE_LOG_TABLE -jar $LIQUIBASE_JAR --driver=$DRIVER --classpath=/opt/openmrs/etc/atomfeed-client.jar:$COMMON_CLASSPATH --changeLogFile=sql/db_migrations.xml --url=jdbc:mysql://$OPENMRS_DB_SERVER:3306/openmrs --username=$OPENMRS_DB_USERNAME --password=$OPENMRS_DB_PASSWORD update
 }
 
 function run-liquibase-migration {
@@ -15,7 +15,7 @@ function run-liquibase-migration {
     CHANGE_LOG_FILE=$2
     if [ -a $CHANGE_LOG_DIR/$CHANGE_LOG_FILE ]; then
         cd $CHANGE_LOG_DIR
-        java  $CHANGE_LOG_TABLE -jar $LIQUIBASE_JAR --driver=$DRIVER --classpath=$COMMON_CLASSPATH --changeLogFile=$CHANGE_LOG_FILE $CREDS update $3
+        java  $CHANGE_LOG_TABLE -jar $LIQUIBASE_JAR --driver=$DRIVER --classpath=$COMMON_CLASSPATH --changeLogFile=$CHANGE_LOG_FILE --url=jdbc:mysql://$OPENMRS_DB_SERVER:3306/openmrs --username=$OPENMRS_DB_USERNAME --password=$OPENMRS_DB_PASSWORD update $3
     else
         echo "Could not find $1/$2 . Moving on"
     fi
