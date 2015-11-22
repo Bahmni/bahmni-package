@@ -15,7 +15,7 @@ repositories {
 }
 
 group 'org.bahmni.openmrs'
-version project.openmrsVersion
+version project.openmrsVersion.replaceAll('-','.')
 
 apply plugin: 'java'
 apply plugin: 'rpm'
