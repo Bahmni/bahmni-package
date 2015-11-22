@@ -94,7 +94,7 @@ case $1 in
 	  start
 	;;
     debug)
-	  start
+	  debug
 	;;
 	stop)
 	  stop
