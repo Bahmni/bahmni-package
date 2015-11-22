@@ -11,6 +11,6 @@ CHANGE_LOG_FILE="/opt/bahmni-web/etc/bahmni_config/openmrs/migrations/liquibase.
 
 . /etc/bahmni-installer/bahmni.conf
 
-java $CHANGE_LOG_TABLE  -jar $LIQUIBASE_JAR --driver=$DRIVER --classpath=$CLASSPATH --changeLogFile=$CHANGE_LOG_FILE --url=jdbc:mysql://$DB_SERVER:3306/openmrs --username=$OPENMRS_DB_USERNAME--password=$OPENMRS_DB_PASSWORD update
+java $CHANGE_LOG_TABLE  -jar $LIQUIBASE_JAR --driver=$DRIVER --classpath=$CLASSPATH --changeLogFile=$CHANGE_LOG_FILE --url=jdbc:mysql://$OPENMRS_DB_SERVER:3306/openmrs --username=$OPENMRS_DB_USERNAME --password=$OPENMRS_DB_PASSWORD update
 
 
