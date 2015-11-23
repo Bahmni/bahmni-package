@@ -1,5 +1,7 @@
 #!/bin/bash
 
+. /etc/bahmni-installer/bahmni.conf
+
 #create bahmni user and group if doesn't exist
 USERID=bahmni
 GROUPID=bahmni
@@ -35,9 +37,13 @@ setupClientSideLogging(){
     ln -s /opt/bahmni-web/etc/client_side_logging/ /var/www/client_side_logging
 }
 
-setupAppsAndConfig(){
+setupApps(){
     rm -rf /var/www/bahmniapps /var/www/bahmni_config
     ln -s /opt/bahmni-web/etc/bahmniapps/ /var/www/bahmniapps
+}
+
+setupConfigs(){
+    rm -rf /var/www/bahmni_config
     ln -s /opt/bahmni-web/etc/bahmni_config/ /var/www/bahmni_config
     #TODO: Refactor bahmni-core to link bahmni_config instead like applicationDataDirectory/<bahmni_config>/openmrs/obscalculator
     ln -s /opt/bahmni-web/etc/bahmni_config/openmrs/obscalculator /opt/openmrs/obscalculator
@@ -57,14 +63,23 @@ manage_permissions(){
     # permissions
     chown -R bahmni:bahmni /opt/bahmni-web
     chown -R bahmni:bahmni /var/www/bahmniapps
-    chown -R bahmni:bahmni /var/www/bahmni_config
     chown -R bahmni:bahmni /var/www/client_side_logging
     chown -R bahmni:bahmni /opt/openmrs
+}
+
+managePermissionsForConfigs(){
+    chown -R bahmni:bahmni /var/www/bahmni_config
 }
 
 setupConfFiles
 setupCacheDir
 setupClientSideLogging
-setupAppsAndConfig
-runConfigMigrations
+setupApps
 manage_permissions
+
+if [ -z "$IMPLEMENTATION_NAME"] || [ "$IMPLEMENTATION_NAME" = "default" ];
+then
+setupConfigs
+runConfigMigrations
+managePermissionsForConfigs
+fi
