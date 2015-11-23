@@ -14,8 +14,10 @@ repositories {
     mavenLocal()
 }
 
+def rpmOpenmrsVersion = project.openmrsVersion.replaceAll('-','.')
+
 group 'org.bahmni.openmrs'
-version project.openmrsVersion.replaceAll('-','.')
+version rpmOpenmrsVersion
 
 apply plugin: 'java'
 apply plugin: 'rpm'
@@ -28,8 +30,8 @@ task extractWar(dependsOn: 'downloadMRSWar', type: Copy) {
 task normalizeJarName(type: Copy) {
     from "${buildDir}" + "/libs/"
     into "${buildDir}" + "/libs/"
-    include(project.name + '-' + project.openmrsVersion + '.jar')
-    rename(project.name + '-' + project.openmrsVersion + '.jar', 'openmrs.jar')
+    include(project.name + '-' + rpmOpenmrsVersion + '.jar')
+    rename(project.name + '-' + rpmOpenmrsVersion + '.jar', 'openmrs.jar')
 }
 
 task dist(dependsOn: ['build', 'normalizeJarName', 'downloadMRSWar'], type: Rpm) {

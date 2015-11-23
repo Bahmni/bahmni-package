@@ -8,6 +8,8 @@ import de.undercouch.gradle.tasks.download.Download
 group 'org.bahmni.emr'
 version project.bahmniRelease
 
+def rpmOpenmrsVersion = project.openmrsVersion.replaceAll('-','.')
+
 apply plugin: 'rpm'
 
 task extractOmods(type: Copy) {
@@ -36,7 +38,7 @@ task dist(dependsOn: ['build', 'extractOmods','extractBahmniEnvironment','downlo
 
     into '/opt/openmrs'
 
-    requires('openmrs',project.openmrsVersion,EQUAL)
+    requires('openmrs',rpmOpenmrsVersion,EQUAL)
 
     postInstall file("${projectDir}/scripts/postinstall.sh")
     postUninstall file("${projectDir}/scripts/postuninstall.sh")
