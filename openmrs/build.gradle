@@ -14,7 +14,7 @@ repositories {
     mavenLocal()
 }
 
-def rpmOpenmrsVersion = project.openmrsVersion.replaceAll('-','.')
+def rpmOpenmrsVersion = project.openmrsVersion.replaceAll('-SNAPSHOT','')
 
 group 'org.bahmni.openmrs'
 version rpmOpenmrsVersion
