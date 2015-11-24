@@ -38,7 +38,6 @@ task dist(dependsOn: ['build', 'extractOmods','extractBahmniEnvironment','downlo
 
     into '/opt/openmrs'
 
-    requires('openmrs',rpmOpenmrsVersion,EQUAL)
 
     postInstall file("${projectDir}/scripts/postinstall.sh")
     postUninstall file("${projectDir}/scripts/postuninstall.sh")
