@@ -16,9 +16,9 @@ task dist(dependsOn: ['build'], type: Rpm) {
     os LINUX
     user 'bahmni'
 
-    requires('bahmni-emr', project.bahmniRelease,EQUAL)
+    requires('bahmni-emr', project.bahmniRelease, EQUAL)
     requires('bahmni-web', project.bahmniRelease, EQUAL)
     requires('bahmni-reports', project.bahmniRelease, EQUAL)
-    requires('mysql-community-server')
+    requires('mysql-community-server', "5.6", EQUAL)
 
 }
