@@ -5,6 +5,8 @@ export BAHMNI_ERP=/opt/bahmni-erp
 manage_permissions(){
     adduser openerp
     chown -R openerp:openerp $BAHMNI_ERP
+    mkdir -p /var/log/openerp
+    mkdir -p /var/run/openerp
     chown openerp:openerp /var/log/openerp
     chown openerp:openerp /var/run/openerp
 }
