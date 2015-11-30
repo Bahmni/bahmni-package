@@ -1,4 +1,14 @@
 #!/bin/bash
+#
+# bahmni-pacs start/stop/status script
+#
+# chkconfig: 2345 65 35
+# description: bahmni-pacs server
+#
+### BEGIN INIT INFO
+# Required-Start: mysqld
+# Description: bahmni-pacs init script
+### END INIT INFO
 
 export PACS_SERVER_USER=bahmni
 export PACS_SERVER_RUN=/opt/bahmni-pacs/bin/start.sh
