@@ -89,10 +89,4 @@ task dist(dependsOn: ['build', 'extractOmods','extractBahmniEnvironment','downlo
         include('bahmnicore.properties')
     }
 
-    from("${buildDir}/bahmni-environment/puppet/modules/bahmni_snapshot_migrations") {
-        fileMode = 0755
-        user 'bahmni'
-        createDirectoryEntry = true
-        into 'etc/migrations'
-    }
 }

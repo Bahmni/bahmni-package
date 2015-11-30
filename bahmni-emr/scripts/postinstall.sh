@@ -12,11 +12,6 @@ link_dirs(){
 }
 
 
-run_snapshot_migration(){
-    echo "Running the liquibase snapshot migrations"
-    /opt/openmrs/etc/run-snapshot-liquibase.sh >> /bahmni_temp/logs/bahmni_deploy.log 2>> /bahmni_temp/logs/bahmni_deploy.log
-}
-
 run_migrations(){
     echo "Running openmrs liquibase-core-data.xml and liquibase-update-to-latest.xml"
     /opt/openmrs/etc/run-liquibase.sh liquibase-core-data.xml
@@ -43,6 +38,5 @@ create_configuration_dirs(){
 }
 
 link_dirs
-run_snapshot_migration
 run_migrations
 create_configuration_dirs
