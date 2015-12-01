@@ -40,6 +40,7 @@ task dist(dependsOn: ['build', 'extractOmods','extractBahmniEnvironment','downlo
 
 
     postInstall file("${projectDir}/scripts/postinstall.sh")
+    preUninstall file("${projectDir}/scripts/preuninstall.sh")
     postUninstall file("${projectDir}/scripts/postuninstall.sh")
 
     from("${buildDir}/distro/distro-"+project.bahmniRelease+"-SNAPSHOT") {
