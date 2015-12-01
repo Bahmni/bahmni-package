@@ -78,7 +78,8 @@ task extractOviyam2(dependsOn: ["downloadOviyam2"], type: Copy) {
 
 task dist(dependsOn: ['build', 'normalizeJarName', 'extractWar'], type: Rpm) {
     packageName 'pacs-integration'
-    release System.getenv('GO_PIPELINE_COUNTER')
+    release System.getenv('GO_PIPELINE_COUNTER') ?: project.buildNumber
+
     arch NOARCH
     os LINUX
     user 'root'
@@ -125,7 +126,7 @@ task dist(dependsOn: ['build', 'normalizeJarName', 'extractWar'], type: Rpm) {
 
 task dist_dcm4chee(dependsOn: ['extractDCM4CHEE', 'extractJBoss', 'extractOviyam2'], type: Rpm) {
     packageName 'dcm4chee'
-    release System.getenv('GO_PIPELINE_COUNTER')
+    release System.getenv('GO_PIPELINE_COUNTER') ?: project.buildNumber
     arch NOARCH
     os LINUX
     user 'root'
