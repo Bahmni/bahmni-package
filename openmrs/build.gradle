@@ -44,7 +44,7 @@ task dist(dependsOn: ['build', 'normalizeJarName', 'downloadMRSWar'], type: Rpm)
     into '/opt/openmrs'
 
     requires('unzip')
-    requires('mysql-community-client', "5.6", EQUAL)
+    requires('mysql-community-client', "5.6", GREATER | EQUAL)
 
     postInstall file("${projectDir}/scripts/postinstall.sh")
     preUninstall file("${projectDir}/scripts/preuninstall.sh")

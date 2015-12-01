@@ -17,6 +17,7 @@ mkdir /var/log/bahmni-pacs
 ln -s /opt/bahmni-pacs/run /var/run/bahmni-pacs
 ln -s /opt/bahmni-pacs/pacs-integration /var/run/bahmni-pacs/pacs-integration
 ln -s /opt/bahmni-pacs/bin/bahmni-pacs /etc/init.d/bahmni-pacs
+ln -s /opt/bahmni-pacs/etc  /etc/bahmni-pacs
 cd /opt/bahmni-pacs/pacs-integration && datasetup/initDB.sh
 chkconfig --add bahmni-pacs
 
