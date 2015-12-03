@@ -33,7 +33,7 @@ create_configuration_dirs(){
 
     chown -R bahmni:bahmni /opt/openmrs
     chown -R bahmni:bahmni $UPLOADS_DIR
-    chmod -R 774 $UPLOADS_DIR;
+    chmod -R 755 $UPLOADS_DIR;
 
 }
 
