@@ -51,3 +51,4 @@ atlassian-ide-plugin.xml
 bahmni-web/resources/client_side_logging
 bahmni-web/resources/bahmniapps
 bahmni-web/resources/bahmni_config
+bahmni-installer/resources/bahmni-playbooks

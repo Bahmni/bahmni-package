@@ -1,0 +1,29 @@
+#!/bin/bash
+set -e -x
+
+install_ansible() {
+  sudo yum install -y ansible-1.9.4
+}
+
+install() {
+  install_ansible
+  (cd /opt/bahmni-installer/bahmni-playbooks && chmod -x local && ansible-playbook -i  local all.yml -vvvv)
+}
+
+update(){
+    if [ -z "$2" ]; then sudo yum install -y bahmni-installer-$2
+    else sudo yum update -y bahmni-installer
+    fi
+}
+
+case $1 in
+	install)
+	  install $3
+	;;
+    update)
+      update
+    ;;
+    *)
+	;;
+esac
+exit 0

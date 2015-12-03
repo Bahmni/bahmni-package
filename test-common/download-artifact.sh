@@ -10,13 +10,7 @@ if [ -z ${PIPELINE_PATH} ] || [ -z ${DEST_FOLDER} ] ; then
     exit 1
 fi
 
-ping -q -c1 ${GO_SERVER_IP}
-
-LOCAL_SERVER=$?
-if [ ${LOCAL_SERVER} -ne 0 ]
-	then
-	BASE_URL="https://ci-bahmni.thoughtworks.com"
-fi
+BASE_URL="https://ci-bahmni.thoughtworks.com"
 
 echo "-----------------------"
 echo "Downloading $1 to $2"

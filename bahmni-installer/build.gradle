@@ -1,0 +1,39 @@
+plugins {
+    id "nebula.os-package" version "2.2.6"
+}
+
+group 'org.bahmni.installer'
+version project.bahmniRelease
+
+apply plugin: 'rpm'
+
+task extractBahmniPlaybooks(type: Copy) {
+    from zipTree(file("${projectDir}/resources/bahmni-playbooks.zip"))
+    into file("${projectDir}/resources")
+}
+
+task dist(dependsOn: ['extractBahmniPlaybooks'], type: Rpm) {
+    packageName 'bahmni-installer'
+    release System.getenv('GO_PIPELINE_COUNTER')?: "1"
+    arch NOARCH
+    os LINUX
+    user 'bahmni'
+
+    into '/opt/bahmni-installer'
+
+    requires('epel-release')
+
+    postInstall file("${projectDir}/scripts/postinstall.sh")
+
+    from ("${projectDir}/resources/") {
+        fileMode = 0755
+        createDirectoryEntry = true
+        exclude("bahmni-playbooks.zip")
+    }
+
+    from("${projectDir}/scripts/rpm/") {
+        fileMode = 0755
+        createDirectoryEntry = true
+        into 'bin'
+    }
+}
