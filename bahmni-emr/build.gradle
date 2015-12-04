@@ -79,7 +79,6 @@ task dist(dependsOn: ['build', 'extractOmods','extractBahmniEnvironment','downlo
         into 'etc'
         include('bahmni-emr.conf')
         include('run-liquibase.sh')
-        include('run-snapshot-liquibase.sh')
         include('atomfeed-client-*.jar')
         rename('atomfeed-client-'+project.atomFeedClient+'.jar', 'atomfeed-client.jar')
     }
