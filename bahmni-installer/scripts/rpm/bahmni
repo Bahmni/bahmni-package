@@ -7,23 +7,23 @@ install_ansible() {
 
 install() {
   install_ansible
-  ansible_command = "cd /opt/bahmni-installer/bahmni-playbooks && chmod -x local && ansible-playbook -i local all.yml  -vvvv "
-  if [ -f /etc/bahmni-installer/setup.yml ];
+  ansible_command="cd /opt/bahmni-installer/bahmni-playbooks && chmod -x local && ansible-playbook -i local all.yml  -vvvv "
+  if [ -f "/etc/bahmni-installer/setup.yml" ];
   then
-    ansible_command = ansible_command + '--extra-vars "@/etc/bahmni-installer/setup.yml"'
+    ansible_command="$ansible_command  --extra-vars '@/etc/bahmni-installer/setup.yml'"
   fi
-  if [ -f /etc/bahmni-installer/rpm_versions.yml ];
+  if [ -f "/etc/bahmni-installer/rpm_versions.yml" ];
   then
-    ansible_command = ansible_command + '--extra-vars "@/etc/bahmni-installer/rpm_versions.yml"'
+    ansible_command="$ansible_command  --extra-vars '@/etc/bahmni-installer/rpm_versions.yml'"
   fi
   eval $ansible_command
 }
 
 case $1 in
-	install)
-	  install
-	;;
+        install)
+          install
+        ;;
     *)
-	;;
+        ;;
 esac
 exit 0
