@@ -25,7 +25,7 @@ run_migrations(){
 #}
 
 create_configuration_dirs(){
-    ln -s /opt/openmrs/etc/bahmnicore.properties /home/$OPENMRS_SERVER_USER/.OpenMRS/bahmnicore.properties
+    ln -s /opt/openmrs/bahmnicore.properties /home/$OPENMRS_SERVER_USER/.OpenMRS/bahmnicore.properties
     mkdir -p $PATIENT_IMAGES_DIR
     mkdir -p $DOCUMENT_IMAGES_DIR
     mkdir -p $UPLOADED_FILES_DIR
