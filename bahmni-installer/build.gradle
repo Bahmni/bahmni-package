@@ -28,7 +28,13 @@ task dist(dependsOn: ['extractBahmniPlaybooks'], type: Rpm) {
     from ("${projectDir}/resources/") {
         fileMode = 0755
         createDirectoryEntry = true
-        exclude("bahmni-playbooks.zip")
+        include('bahmni-playbooks/')
+    }
+
+    from ("${projectDir}/resources/rpm_versions.yml") {
+        fileMode = 0755
+        createDirectoryEntry = true
+        into 'etc'
     }
 
     from("${projectDir}/scripts/rpm/") {
