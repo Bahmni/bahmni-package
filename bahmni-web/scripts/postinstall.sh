@@ -77,7 +77,7 @@ setupClientSideLogging
 setupApps
 manage_permissions
 
-if [ -z "$IMPLEMENTATION_NAME"] || [ "$IMPLEMENTATION_NAME" = "default" ];
+if [[ "${IMPLEMENTATION_NAME:-default}" = "default" ]];
 then
 setupConfigs
 runConfigMigrations
