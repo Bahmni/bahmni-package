@@ -24,6 +24,7 @@ task dist(dependsOn: ['extractBahmniPlaybooks'], type: Rpm) {
     requires('epel-release')
 
     postInstall file("${projectDir}/scripts/postinstall.sh")
+    postUninstall file("${projectDir}/scripts/postuninstall.sh")
 
     from ("${projectDir}/resources/") {
         fileMode = 0755
