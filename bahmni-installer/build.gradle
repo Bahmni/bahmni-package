@@ -18,11 +18,13 @@ task dist(dependsOn: ['extractBahmniPlaybooks'], type: Rpm) {
     arch NOARCH
     os LINUX
     user 'bahmni'
+    permissionGroup 'bahmni'
 
     into '/opt/bahmni-installer'
 
     requires('epel-release')
 
+    preInstall file("${projectDir}/scripts/preinstall.sh")
     postInstall file("${projectDir}/scripts/postinstall.sh")
 
     from ("${projectDir}/resources/") {
