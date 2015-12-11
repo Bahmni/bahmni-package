@@ -1,7 +1,7 @@
 #!/bin/bash
 
 mkdir -p /etc/bahmni-installer
-mkdir -p /etc/bahmni-installer/deployment_artifacts
+mkdir -p /etc/bahmni-installer/deployment-artifacts
 rm -f /usr/bin/bahmni
 chown -R bahmni:bahmni /opt/bahmni-installer
 ln -s /opt/bahmni-installer/bin/bahmni /usr/bin/bahmni
