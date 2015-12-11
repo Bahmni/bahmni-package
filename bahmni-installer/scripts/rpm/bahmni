@@ -1,13 +1,26 @@
 #!/bin/bash
-set -e -x
+set -e
+set -e
+yellow='\e[33m'
+original='\e[0m'
+red='\e[91m'
+green='\e[92m'
 
-install_ansible() {
-  sudo yum install -y ansible-1.9.4
-}
+if [ -z $2 ]
+then
+    echo "Using the local inventory file.."
+    INVENTORY_FILE='local'
+else
+    INVENTORY_FILE=/etc/bahmni-installer/$2
+    if [ ! -f $INVENTORY_FILE ]
+    then
+        echo "No inventory file at $INVENTORY_FILE.."
+        exit 1
+    fi
+    echo "Using inventory file at $INVENTORY_FILE.."
+fi
 
-install() {
-  install_ansible
-  ansible_command="cd /opt/bahmni-installer/bahmni-playbooks && chmod -x local && ansible-playbook -i local all.yml  -vvvv "
+run_ansible() {
   if [ -f "/etc/bahmni-installer/setup.yml" ];
   then
     ansible_command="$ansible_command  --extra-vars '@/etc/bahmni-installer/setup.yml'"
@@ -19,11 +32,101 @@ install() {
   eval $ansible_command
 }
 
-case $1 in
-        install)
-          install
-        ;;
-    *)
-        ;;
+# stops all services
+stop() {
+  	echo -e "Stopping bahmni..."
+    ansible_command="cd /opt/bahmni-installer/bahmni-playbooks && chmod -x $INVENTORY_FILE && ansible-playbook -i $INVENTORY_FILE all.yml  -vvvv -t stop_bahmni"
+    run_ansible
+    
+}
+
+# starts all services
+start() {
+	echo -e "Starting bahmni..."
+    ansible_command="cd /opt/bahmni-installer/bahmni-playbooks && chmod -x $INVENTORY_FILE && ansible-playbook -i $INVENTORY_FILE all.yml  -vvvv -t start_bahmni"
+    run_ansible
+}
+
+# restarts all services
+restart() {
+	echo -e "Restarting bahmni..."
+	stop
+	sleep 3
+	start
+}
+
+function is_service_running() {
+    if (( $(ps -ef | grep -v grep | grep $1 | wc -l) > 0 ))
+    then
+        return 0
+    else
+        return 1
+    fi
+}
+
+status() {
+    up_count=0
+    down_count=0
+    for service in httpd mysql pgsql-9.2 openmrs bahmni-reports bahmni-lab openerp bahmni-erp-connect bahmni-pacs 
+    do
+        if(is_service_running $service) then
+            echo -e "$service...... $green[Running] $original"
+            let up_count=$up_count+1
+        else
+            echo -e "$service...... $yellow[Not Running]$original"
+            let down_count=$down_count+1
+        fi
+    done
+}
+
+install_ansible() {
+  sudo yum install -y ansible-1.9.4
+}
+
+install() {
+  install_ansible
+  ansible_command="cd /opt/bahmni-installer/bahmni-playbooks && chmod -x $INVENTORY_FILE && ansible-playbook -i $INVENTORY_FILE all.yml  -vvvv "
+  run_ansible
+}
+
+printUsage() {
+	echo -e "Usage:"
+	echo -e "\tbahmni [ help | install | start | stop | restart | status ] [ <inventory_file_name> ] "
+}
+
+case "$1" in
+	"help" )
+	    echo "Command line tool for managing bahmni"
+		printUsage
+		;;
+	"install" )
+        install
+		;;
+	"start" )
+		start
+		echo -e "Run [bahmni status] to check the status"
+		;;
+	"stop" )
+		stop
+		echo -e "Run [bahmni status] to check the status"
+		;;
+	"restart" )
+		restart
+		echo -e "Run [bahmni status] to check the status"
+		;;
+	"status" )
+		status
+		;;
+	* )
+		echo "bahmni: Bad usage." 
+		if [ ! -z $1 ]
+		then
+		   echo -e \n "Invalid option -- $1"
+		fi  
+		printUsage
+		;;
 esac
+
+tput sgr0
+
 exit 0
