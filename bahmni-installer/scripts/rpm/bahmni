@@ -79,6 +79,11 @@ status() {
     done
 }
 
+mysql_replication(){
+  ansible_command="cd /opt/bahmni-installer/bahmni-playbooks && chmod -x $INVENTORY_FILE && ansible-playbook -i $INVENTORY_FILE replication.yml  -vvvv "
+  run_ansible
+}
+
 install_ansible() {
   sudo yum install -y ansible-1.9.4
 }
@@ -91,7 +96,7 @@ install() {
 
 printUsage() {
 	echo -e "Usage:"
-	echo -e "\tbahmni [ help | install | start | stop | restart | status ] [ <inventory_file_name> ] "
+	echo -e "\tbahmni [ help | install | start | stop | restart | status | install-slave ] [ <inventory_file_name> ] "
 }
 
 case "$1" in
@@ -112,6 +117,10 @@ case "$1" in
 		;;
 	"restart" )
 		restart
+		echo -e "Run [bahmni status] to check the status"
+		;;
+	"install-slave" )
+		mysql_replication
 		echo -e "Run [bahmni status] to check the status"
 		;;
 	"status" )
