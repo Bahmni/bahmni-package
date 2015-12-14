@@ -1,6 +1,8 @@
 #!/bin/bash
 
+if [ -f /etc/bahmni-installer/bahmni.conf ]; then
 . /etc/bahmni-installer/bahmni.conf
+fi
 
 #create bahmni user and group if doesn't exist
 USERID=bahmni
