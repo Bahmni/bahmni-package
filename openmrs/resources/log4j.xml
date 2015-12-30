@@ -5,7 +5,7 @@
    
    <appender name="fileAppender" class="org.apache.log4j.RollingFileAppender">
         <param name="File" value="/var/log/openmrs/openmrs.log"/>
-       <param name="MaxFileSize" value="5000KB" />
+       <param name="MaxFileSize" value="10MB" />
        <param name="MaxBackupIndex" value="10" />
         <layout class="org.apache.log4j.PatternLayout">
             <param name="ConversionPattern" value="%d{dd-MM-yyyy HH:mm:ss} [%-5p] %c{1} - %m%n"/>
