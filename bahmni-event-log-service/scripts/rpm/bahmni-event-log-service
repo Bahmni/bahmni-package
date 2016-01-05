@@ -1,0 +1,116 @@
+#!/bin/bash
+#
+# bahmni-event-log-service      start/stop/status/debug/restart script
+#
+# chkconfig: - 64 36
+# processname: bahmni-event-log-service
+# config: /etc/default/bahmni-event-log-service
+# pidfile: /var/run/bahmni-event-log-service/bahmni-event-log-service.pid
+
+export BAHMNI_EVENT_LOG_SERVICE_USER=bahmni
+export BAHMNI_EVENT_LOG_SERVICE_RUN=/opt/bahmni-event-log-service/bin/start.sh
+export BAHMNI_EVENT_LOG_SERVICE_DEBUG=/opt/bahmni-event-log-service/bin/debug.sh
+export CUR_USER=`/usr/bin/whoami`
+
+. /etc/bahmni-event-log-service/bahmni-event-log-service.conf
+
+create_dirs() {
+    if [[ ! -e /var/run/bahmni-event-log-service ]]; then
+        ln -s /opt/bahmni-event-log-service/run /var/run/bahmni-event-log-service
+    fi
+
+    if [[ ! -e /var/run/bahmni-event-log-service/bahmni-event-log-service ]]; then
+        ln -s /opt/bahmni-event-log-service/bahmni-event-log-service /var/run/bahmni-event-log-service/bahmni-event-log-service
+    fi
+
+    if [[ ! -e /var/log/bahmni-event-log-service ]]; then
+        ln -s /opt/bahmni-event-log-service/log /var/log/bahmni-event-log-service
+    fi
+}
+
+bahmni-event-log-service_pid() {
+        echo `ps -fe | grep 'bahmni-event-log-service.jar' | grep -v grep | tr -s " "|cut -d" " -f2`
+}
+
+start(){
+    pid=$(bahmni-event-log-service_pid)
+    if [ -n "$pid" ]
+    then
+        echo -e "\e[00;31mService bahmni-event-log-service is already running (pid: $pid)\e[00m"
+    else
+        # Start bahmni-event-log-service
+        create_dirs
+        echo -e "\e[00;32mStarting bahmni-event-log-service\e[00m"
+        if [ `user_exists $BAHMNI_EVENT_LOG_SERVICE_USER` = "1" ]  && [ "$CUR_USER" != "$BAHMNI_EVENT_LOG_SERVICE_USER" ] ;
+        then
+                /bin/su $BAHMNI_EVENT_LOG_SERVICE_USER -c $BAHMNI_EVENT_LOG_SERVICE_RUN
+        else
+                sh $BAHMNI_EVENT_LOG_SERVICE_RUN
+        fi
+  fi
+  return 0
+}
+
+debug(){
+    pid=$(bahmni-event-log-service_pid)
+    if [ -n "$pid" ]
+    then
+        echo -e "\e[00;31mService bahmni-event-log-service is already running (pid: $pid)\e[00m"
+    else
+        # Start bahmni-event-log-service
+        create_dirs
+        echo -e "\e[00;32mStarting bahmni-event-log-service\e[00m"
+        if [ `user_exists $BAHMNI_EVENT_LOG_SERVICE_USER` = "1" ]  && [ "$CUR_USER" != "$BAHMNI_EVENT_LOG_SERVICE_USER" ] ;
+        then
+                /bin/su $BAHMNI_EVENT_LOG_SERVICE_USER -c $BAHMNI_EVENT_LOG_SERVICE_DEBUG
+        else
+                sh $BAHMNI_EVENT_LOG_SERVICE_DEBUG
+        fi
+  fi
+  return 0
+}
+
+status(){
+          pid=$(bahmni-event-log-service_pid)
+          if [ -n "$pid" ]; then echo -e "\e[00;32mService bahmni-event-log-service is running with pid: $pid\e[00m"
+          else echo -e "\e[00;31mService bahmni-event-log-service is not running\e[00m"
+          fi
+}
+
+stop() {
+	echo -e "\e[00;31mTerminating bahmni-event-log-service\e[00m"
+	kill -9 $(bahmni-event-log-service_pid)
+}
+user_exists(){
+        if id -u $1 >/dev/null 2>&1; then
+        echo "1"
+        else
+                echo "0"
+        fi
+}
+
+case $1 in
+	start)
+	  start
+	;;
+    debug)
+	  debug
+	;;
+	stop)
+	  stop
+	;;
+	restart)
+	  stop
+	  start
+	;;
+	status)
+		status
+	;;
+	kill)
+		stop
+	;;
+	*)
+
+	;;
+esac
+exit 0
