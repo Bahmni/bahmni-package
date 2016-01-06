@@ -134,7 +134,7 @@ case "$1" in
 		echo -e "Run [bahmni status] to check the status"
 		;;
 	"status" )
-		status_all
+		status
 		;;
 	* )
 		echo "bahmni: Bad usage." 
