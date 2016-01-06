@@ -84,6 +84,12 @@ mysql_replication(){
   run_ansible
 }
 
+update_config(){
+  echo -e "Deploying config from /etc/bahmni-installer/deployment-artifacts/<implementation_name>_config directory"
+  ansible_command="cd /opt/bahmni-installer/bahmni-playbooks && chmod -x $INVENTORY_FILE && ansible-playbook -i $INVENTORY_FILE all.yml -t config -vvvv "
+  run_ansible
+}
+
 install_ansible() {
   sudo yum install -y ansible-1.9.4
 }
@@ -96,7 +102,7 @@ install() {
 
 printUsage() {
 	echo -e "Usage:"
-	echo -e "\tbahmni [ help | install | start | stop | restart | status | install-slave ] [ <inventory_file_name> ] "
+	echo -e "\tbahmni [ help | install | start | stop | restart | status | install-slave | update-config] [ <inventory_file_name> ] "
 }
 
 case "$1" in
@@ -123,8 +129,12 @@ case "$1" in
 		mysql_replication
 		echo -e "Run [bahmni status] to check the status"
 		;;
+	"update-config" )
+		update_config
+		echo -e "Run [bahmni status] to check the status"
+		;;
 	"status" )
-		status
+		status_all
 		;;
 	* )
 		echo "bahmni: Bad usage." 
