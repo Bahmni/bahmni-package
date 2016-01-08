@@ -102,7 +102,7 @@ install() {
 
 printUsage() {
 	echo -e "Usage:"
-	echo -e "\tbahmni [ help | install | start | stop | restart | status | install-slave | update-config] [ <inventory_file_name> ] "
+	echo -e "\tbahmni [ help | install | start | stop | restart | status | setup-replication | update-config] [ <inventory_file_name> ] "
 }
 
 case "$1" in
@@ -125,7 +125,7 @@ case "$1" in
 		restart
 		echo -e "Run [bahmni status] to check the status"
 		;;
-	"install-slave" )
+	"setup-replication" )
 		mysql_replication
 		echo -e "Run [bahmni status] to check the status"
 		;;
