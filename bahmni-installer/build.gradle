@@ -39,6 +39,12 @@ task dist(dependsOn: ['extractBahmniPlaybooks'], type: Rpm) {
         into 'etc'
     }
 
+    from ("${projectDir}/resources/ansible.cfg") {
+        fileMode = 0755
+        createDirectoryEntry = true
+        into 'bahmni-playbooks'
+    }
+
     from("${projectDir}/scripts/rpm/") {
         fileMode = 0755
         createDirectoryEntry = true
