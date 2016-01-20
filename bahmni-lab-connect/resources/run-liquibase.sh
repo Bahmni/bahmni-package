@@ -22,8 +22,8 @@ function run_omod_liquibase() {
 }
 
 function run_atomfeed_client_liquibase() {
-	run_omod_liquibase
 	run_openmrs_dependent_liquibase $ATOMFEED_CLIENT_JAR sql/db_migrations.xml
+	run_omod_liquibase
 }
 
 run_atomfeed_client_liquibase

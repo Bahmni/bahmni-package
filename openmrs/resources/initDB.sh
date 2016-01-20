@@ -9,7 +9,7 @@ fi
 
 RESULT=`mysql -h $OPENMRS_DB_SERVER -u$MYSQL_ROOT_USER -p$MYSQL_ROOT_PASSWORD --skip-column-names -e "SHOW DATABASES LIKE 'openmrs'"`
 if [ "$RESULT" != "openmrs" ] && [ "${IMPLEMENTATION_NAME:-default}" = "default" ]; then
-    echo "openmrs database not found... Restoring a base dump"
+    echo "openmrs database not found... Restoring a base dump suitable to work with default config"
     mysql -h $OPENMRS_DB_SERVER -u$MYSQL_ROOT_USER -p$MYSQL_ROOT_PASSWORD  < scripts/mrs_base.sql
 fi
 
