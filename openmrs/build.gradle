@@ -109,6 +109,12 @@ task dist(dependsOn: ['build', 'normalizeJarName', 'downloadMRSWar'], type: Rpm)
         createDirectoryEntry = true
         into 'openmrs/scripts'
     }
+
+    from("${projectDir}/resources/openmrs_clean_dump.sql") {
+        fileMode = 0755
+        createDirectoryEntry = true
+        into 'openmrs/scripts'
+    }
 }
 
 task downloadMRSWar << {
