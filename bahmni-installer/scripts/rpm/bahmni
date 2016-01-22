@@ -8,26 +8,64 @@ green='\e[92m'
 
 if [ -z $2 ]
 then
-    echo "Using the local inventory file.."
     INVENTORY_FILE='local'
 else
-    INVENTORY_FILE=/etc/bahmni-installer/$2
-    if [ ! -f $INVENTORY_FILE ]
+    if [ $2 != '--implementation' ]
     then
-        echo "No inventory file at $INVENTORY_FILE.."
-        exit 1
+        INVENTORY_FILE=/etc/bahmni-installer/$2
+        if [ ! -f $INVENTORY_FILE ]
+        then
+            echo -e "$red ERROR: No inventory file at $INVENTORY_FILE.. $original"
+            exit 1
+        fi
+        echo -e "$green Using inventory file at $INVENTORY_FILE.. $original"
+
+        if [ ! -z $3 ] && [ $3 == '--implementation' ]
+        then
+            if [ -z $4 ]
+            then
+                echo -e "$red ERROR: No Implementation name given.. $original"
+                exit 1
+            else
+                IMPL_NAME=$4
+            fi
+        fi
+    else
+        if [ -z $3 ]
+        then
+            echo -e "$red ERROR: No Implementation name given.. $original"
+            exit 1
+        else
+            IMPL_NAME=$3
+        fi
+        INVENTORY_FILE='local'
+
     fi
-    echo "Using inventory file at $INVENTORY_FILE.."
 fi
+
 
 run_ansible() {
   if [ -f "/etc/bahmni-installer/setup.yml" ];
   then
     ansible_command="$ansible_command  --extra-vars '@/etc/bahmni-installer/setup.yml'"
   fi
+
   if [ -f "/etc/bahmni-installer/rpm_versions.yml" ];
   then
     ansible_command="$ansible_command  --extra-vars '@/etc/bahmni-installer/rpm_versions.yml'"
+  fi
+
+  if [ $INVENTORY_FILE == 'local' ]
+  then
+     echo -e "$green Using the local inventory file $original"
+  fi
+
+  if [ -z $IMPL_NAME ];
+  then
+     echo -e "$green Using default implementation config $original"
+  else
+    echo -e "$green Using $IMPL_NAME config present in /etc/bahmni-installer/${IMPL_NAME}_config $original"
+    ansible_command="$ansible_command  --extra-vars 'implementation_name=$IMPL_NAME'"
   fi
   eval $ansible_command
 }
@@ -101,8 +139,22 @@ install() {
 }
 
 printUsage() {
-	echo -e "Usage:"
-	echo -e "\tbahmni [ help | install | start | stop | restart | status | setup-replication | update-config] [ <inventory_file_name> ] "
+	echo -e "Usage:\n"
+	echo -e "\tbahmni <command> [ <inventory_file_name> ] [options]"
+	echo -e "\tList of Commands:"
+	echo -e "\t\thelp               shows the help for all commands"
+	echo -e "\t\tinstall            Installs bahmni components on respective hosts specified in inventory file"
+	echo -e "\t\tstart              starts all the services required for bahmni"
+	echo -e "\t\tstop               stops all the services required for bahmni"
+	echo -e "\t\trestart            restarts all the services required for bahmni"
+	echo -e "\t\tstatus             prints status of all the services required for bahmni"
+	echo -e "\t\tsetup-replication  sets up mysql db replication"
+	echo -e "\t\tupdate-config      updates the implementation config for bahmni from the location /etc/bahmni-installer/deployment-artifacts"
+
+    echo -e "\t<inventory_file_name> - Inventory file that needs to picked up from /etc/bahmni-installer"
+
+    echo -e "\n\n\tOptions:"
+    echo -e "\t\t--implementation   Option to specify the implementation config to be installed. Default value is 'default'. If this options is used, implementation config folder has to be placed in /etc/bahmni-installer/deployment-artifacts with name <impelementation>_config."
 }
 
 case "$1" in
