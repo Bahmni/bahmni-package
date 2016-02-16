@@ -89,12 +89,6 @@ task dist(dependsOn: ['build', 'normalizeJarName', 'downloadMRSWar'], type: Rpm)
     from("${projectDir}/resources/placeholder") {
         fileMode = 0755
         createDirectoryEntry = true
-        into 'modules'
-    }
-
-    from("${projectDir}/resources/placeholder") {
-        fileMode = 0755
-        createDirectoryEntry = true
         into 'openmrs'
     }
 

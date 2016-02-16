@@ -19,6 +19,7 @@ export OPENMRS_SERVER_USER=bahmni
 export OPENMRS_SERVER_RUN=/opt/openmrs/bin/start.sh
 export OPENMRS_SERVER_DEBUG=/opt/openmrs/bin/debug.sh
 export CUR_USER=`/usr/bin/whoami`
+export OPENMRS_LIB_CACHE=/tmp/*.openmrs-lib-cache
 
 . /etc/openmrs/openmrs.conf
 
@@ -100,6 +101,8 @@ status(){
 stop() {
 	echo -e "\e[00;31mTerminating openmrs\e[00m"
 	kill -9 $(openmrs_pid)
+	rm -rf $OPENMRS_LIB_CACHE
+	rm -rf $BASE_DIR/work/*
 }
 user_exists(){
         if id -u $1 >/dev/null 2>&1; then
