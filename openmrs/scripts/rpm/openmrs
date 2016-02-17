@@ -51,6 +51,11 @@ link_modules() {
     fi
 }
 
+cleanup_cache(){
+	rm -rf $OPENMRS_LIB_CACHE
+	rm -rf $BASE_DIR/work/*
+}
+
 start(){
     pid=$(openmrs_pid)
     if [ -n "$pid" ]
@@ -60,6 +65,7 @@ start(){
         # Start openmrs
         create_dirs
         link_modules
+        cleanup_cache
         echo -e "\e[00;32mStarting openmrs\e[00m"
         if [ `user_exists $OPENMRS_SERVER_USER` = "1" ]  && [ "$CUR_USER" != "$OPENMRS_SERVER_USER" ] ;
         then
@@ -80,6 +86,7 @@ debug(){
         # Start openmrs
         create_dirs
         link_modules
+        cleanup_cache
         echo -e "\e[00;32mStarting openmrs\e[00m"
         if [ `user_exists $OPENMRS_SERVER_USER` = "1" ]  && [ "$CUR_USER" != "$OPENMRS_SERVER_USER" ] ;
         then
@@ -101,8 +108,6 @@ status(){
 stop() {
 	echo -e "\e[00;31mTerminating openmrs\e[00m"
 	kill -9 $(openmrs_pid)
-	rm -rf $OPENMRS_LIB_CACHE
-	rm -rf $BASE_DIR/work/*
 }
 user_exists(){
         if id -u $1 >/dev/null 2>&1; then
