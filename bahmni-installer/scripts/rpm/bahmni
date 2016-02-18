@@ -128,6 +128,12 @@ update_config(){
   run_ansible
 }
 
+concat_configs(){
+  echo -e "Concatenating configs from /var/www/bahmni_config/openmrs directory"
+  ansible_command="cd /opt/bahmni-installer/bahmni-playbooks && chmod -x $INVENTORY_FILE && ansible-playbook -i $INVENTORY_FILE concat-config.yml -vvvv "
+  run_ansible
+}
+
 install_ansible() {
   sudo yum install -y ansible-1.9.4
 }
@@ -150,6 +156,7 @@ printUsage() {
 	echo -e "\t\tstatus             prints status of all the services required for bahmni"
 	echo -e "\t\tsetup-replication  sets up mysql db replication"
 	echo -e "\t\tupdate-config      updates the implementation config for bahmni from the location /etc/bahmni-installer/deployment-artifacts"
+	echo -e "\t\tconcat-configs     concatenates the implementation config for bahmni from the location /var/www/bahmni_config"
 
     echo -e "\t<inventory_file_name> - Inventory file that needs to picked up from /etc/bahmni-installer"
 
@@ -185,6 +192,10 @@ case "$1" in
 		update_config
 		echo -e "Run [bahmni status] to check the status"
 		;;
+	"concat-configs" )
+    	concat_configs
+    	echo -e "Run [bahmni status] to check the status"
+    	;;
 	"status" )
 		status
 		;;
