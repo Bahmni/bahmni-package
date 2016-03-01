@@ -8,7 +8,7 @@ version project.bahmniRelease
 apply plugin: 'rpm'
 
 task extractBahmniApps(type: Copy){
-    from zipTree(file("${projectDir}/resources/bahmniapps.zip"))
+        from zipTree(file("${projectDir}/resources/bahmniapps.zip"))
     into file("${projectDir}/resources/bahmniapps")
 }
 
@@ -27,6 +27,7 @@ task dist(dependsOn: ["extractBahmniApps", "extractBahmniConfig"], type: Rpm) {
 
     into '/opt/bahmni-web'
 
+    requires('bahmni-certs')
     requires('httpd')
     requires('mod_ssl')
     requires('mod_wsgi')

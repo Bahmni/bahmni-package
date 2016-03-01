@@ -1,0 +1,38 @@
+plugins {
+    id "nebula.os-package" version "2.2.6"
+}
+
+group 'org.bahmni.certs'
+version project.bahmniRelease
+
+apply plugin: 'rpm'
+
+//The bahmni-certs will be copied by the CI server after the artifacts are built.
+
+
+task dist(type: Rpm) {
+    packageName 'bahmni-certs'
+    release '789'
+    arch NOARCH
+    os LINUX
+    user 'root'
+
+    into '/opt/bahmni-certs'
+
+    from("${projectDir}/resources/chain.pem") {
+        fileMode = 0755
+        createDirectoryEntry = true
+        into 'certs'
+    }
+    from("${projectDir}/resources/privkey.pem") {
+        fileMode = 0755
+        createDirectoryEntry = true
+        into 'certs'
+    }
+    from("${projectDir}/resources/cert.pem") {
+        fileMode = 0755
+        createDirectoryEntry = true
+        into 'certs'
+    }
+
+}
