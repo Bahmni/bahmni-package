@@ -3,7 +3,7 @@ plugins {
 }
 
 group 'org.bahmni.certs'
-version project.bahmniRelease
+version project.bahmniCertsRelease
 
 apply plugin: 'rpm'
 
@@ -12,7 +12,7 @@ apply plugin: 'rpm'
 
 task dist(type: Rpm) {
     packageName 'bahmni-certs'
-    release '789'
+    release System.getenv('GO_PIPELINE_COUNTER') ?: project.buildNumber
     arch NOARCH
     os LINUX
     user 'root'

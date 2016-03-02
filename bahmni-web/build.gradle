@@ -27,7 +27,6 @@ task dist(dependsOn: ["extractBahmniApps", "extractBahmniConfig"], type: Rpm) {
 
     into '/opt/bahmni-web'
 
-    requires('bahmni-certs')
     requires('httpd')
     requires('mod_ssl')
     requires('mod_wsgi')
