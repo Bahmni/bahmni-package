@@ -69,7 +69,6 @@ task dist(dependsOn: ['downloadOpenERP', 'extractAddons'], type: Rpm) {
     requires('python-mock')
     requires('python-pip')
     requires('python-feedparser')
-    requires('bahmni-erp-connect',project.bahmniRelease, EQUAL)
 
     into '/opt/bahmni-erp'
 
