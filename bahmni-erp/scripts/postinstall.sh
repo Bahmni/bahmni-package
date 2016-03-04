@@ -1,6 +1,11 @@
 #!/bin/bash
 
 export BAHMNI_ERP=/opt/bahmni-erp
+OPENERP_DB_SERVER=localhost
+
+if [ -f /etc/bahmni-installer/bahmni.conf ]; then
+. /etc/bahmni-installer/bahmni.conf
+fi
 
 manage_permissions(){
     adduser openerp
@@ -23,6 +28,21 @@ install_openerp(){
     rm -rf $BAHMNI_ERP/openerp-7.0-20130301-002301.tar.gz
 }
 
+initDB(){
+    RESULT_USER=`psql -U postgres -h$OPENERP_DB_SERVER -tAc "SELECT count(*) FROM pg_roles WHERE rolname='openerp'"`
+    RESULT_DB=`psql -U postgres -h$OPENERP_DB_SERVER -tAc "SELECT count(*) from pg_catalog.pg_database where datname='openerp'"`
+    if [ "$RESULT_USER" == "0" ]; then
+        echo "creating postgres user - openerp with roles CREATEDB,NOCREATEROLE,SUPERUSER,REPLICATION"
+        createuser -Upostgres  -h$OPENERP_DB_SERVER -d -R -s --replication openerp;
+    fi
+
+    if [ "$RESULT_DB" == "0" ]; then
+        echo "Restoring base dump of openerp"
+        createdb -Uopenerp -h$OPENERP_DB_SERVER openerp;
+        psql -Uopenerp -h$OPENERP_DB_SERVER openerp < /opt/bahmni-erp/db-dump/openerp_base_dump.sql
+    fi
+}
+
 link_directories(){
     ln -s $BAHMNI_ERP/etc /etc/openerp
     chown -R openerp:openerp /etc/openerp
@@ -35,5 +55,7 @@ manage_config(){
 
 manage_permissions
 install_openerp
+initDB
 link_directories
 manage_config
+

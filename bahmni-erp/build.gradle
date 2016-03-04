@@ -18,7 +18,7 @@ task extractAddons(type: Copy) {
 
 task dist(dependsOn: ['downloadOpenERP', 'extractAddons'], type: Rpm) {
     packageName 'bahmni-erp'
-    release System.getenv('GO_PIPELINE_COUNTER')
+    release System.getenv('GO_PIPELINE_COUNTER') ?: "1"
     arch NOARCH
     os LINUX
     user 'root'
@@ -87,6 +87,13 @@ task dist(dependsOn: ['downloadOpenERP', 'extractAddons'], type: Rpm) {
         createDirectoryEntry = true
         into 'etc'
         include('openerp')
+    }
+
+    from("${projectDir}/resources/") {
+        fileMode = 0755
+        createDirectoryEntry = true
+        into 'db-dump'
+        include('openerp_base_dump.sql')
     }
 
     from("${buildDir}/openerp-7.0-20130301-002301.tar.gz") {
