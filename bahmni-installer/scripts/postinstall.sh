@@ -14,4 +14,5 @@ rm -f /etc/bahmni-installer/local
 ln -s /opt/bahmni-installer/bahmni-playbooks/local /etc/bahmni-installer/local
 chmod -x /etc/bahmni-installer/local
 
+echo "-------------Installing bahmni command line tool--------------"
 pip install /opt/bahmni-installer/bahmni-command-line-tool
