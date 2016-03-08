@@ -47,4 +47,9 @@ task dist(dependsOn: ['extractBahmniPlaybooks'], type: Rpm) {
         into 'bahmni-playbooks'
     }
 
+    from("${projectDir}/scripts/rpm/") {
+        fileMode = 0755
+        createDirectoryEntry = true
+        into 'bin'
+    }
 }
