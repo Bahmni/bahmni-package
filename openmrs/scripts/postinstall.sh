@@ -1,5 +1,9 @@
 #!/bin/bash
 
+if [ -f /etc/bahmni-installer/bahmni.conf ]; then
+. /etc/bahmni-installer/bahmni.conf
+fi
+
 #create bahmni user and group if doesn't exist
 USERID=bahmni
 GROUPID=bahmni
@@ -21,8 +25,10 @@ ln -s /opt/openmrs/log /var/log/openmrs
 
 (cd /opt/openmrs/openmrs && unzip ../openmrs.war)
 # restore mrs db dump if database doesn't exists
-(cd /opt/openmrs/openmrs && scripts/initDB.sh)
 
+if [ "${IS_PASSIVE:-0}" -ne "1" ]; then
+    (cd /opt/openmrs/openmrs && scripts/initDB.sh)
+fi
 chkconfig --add openmrs
 
 #copy configs

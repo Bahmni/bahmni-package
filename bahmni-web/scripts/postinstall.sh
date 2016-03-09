@@ -79,9 +79,10 @@ setupClientSideLogging
 setupApps
 manage_permissions
 
-if [[ "${IMPLEMENTATION_NAME:-default}" = "default" ]];
-then
+if [[ "${IMPLEMENTATION_NAME:-default}" = "default" ]]; then
 setupConfigs
-runConfigMigrations
+    if [ "${IS_PASSIVE:-0}" -ne "1" ]; then
+        runConfigMigrations
+    fi
 managePermissionsForConfigs
 fi

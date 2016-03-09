@@ -4,6 +4,9 @@
 
 . /etc/openmrs/bahmni-emr.conf
 
+if [ -f /etc/bahmni-installer/bahmni.conf ]; then
+. /etc/bahmni-installer/bahmni.conf
+fi
 
 link_dirs(){
     rm -rf /home/$OPENMRS_SERVER_USER/.OpenMRS/modules
@@ -38,5 +41,7 @@ create_configuration_dirs(){
 }
 
 link_dirs
-run_migrations
+if [ "${IS_PASSIVE:-0}" -ne "1" ]; then
+    run_migrations
+fi
 create_configuration_dirs

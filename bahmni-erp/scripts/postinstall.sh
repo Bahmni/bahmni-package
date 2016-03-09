@@ -55,7 +55,9 @@ manage_config(){
 
 manage_permissions
 install_openerp
-initDB
+if [ "${IS_PASSIVE:-0}" -ne "1" ]; then
+    initDB
+fi
 link_directories
 manage_config
 

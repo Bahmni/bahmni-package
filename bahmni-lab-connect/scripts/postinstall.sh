@@ -1,3 +1,8 @@
+#!/bin/bash
+
+if [ -f /etc/bahmni-installer/bahmni.conf ]; then
+. /etc/bahmni-installer/bahmni.conf
+fi
 
 link_dirs(){
     rm -f /opt/openmrs/modules/openelis-atomfeed-client*.omod
@@ -14,4 +19,6 @@ run_migrations(){
 }
 
 link_dirs
-run_migrations
+if [ "${IS_PASSIVE:-0}" -ne "1" ]; then
+    run_migrations
+fi
