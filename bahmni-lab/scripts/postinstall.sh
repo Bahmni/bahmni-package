@@ -23,8 +23,10 @@ ln -s /opt/bahmni-lab/log /var/log/bahmni-lab
 ln -s /opt/bahmni-lab/uploaded-files/elis /home/bahmni/uploaded-files/elis
 
 #create a database if it doesn't exist.
+if [ -z "$IS_PASSIVE" && $IS_PASSIVE -ne 1 ]; then
 (cd /opt/bahmni-lab/migrations && scripts/initDB.sh bahmni-base.dump)
 (cd /opt/bahmni-lab/migrations/liquibase/ && /opt/bahmni-lab/migrations/scripts/migrateDb.sh)
+fi
 
 cp -f /opt/bahmni-lab/etc/atomfeed.properties /opt/bahmni-lab/bahmni-lab/WEB-INF/classes/atomfeed.properties
 cp -f /opt/bahmni-lab/etc/hibernate.cfg.xml /opt/bahmni-lab/bahmni-lab/WEB-INF/classes/us/mn/state/health/lims/hibernate/hibernate.cfg.xml
