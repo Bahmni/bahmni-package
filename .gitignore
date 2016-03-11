@@ -52,3 +52,5 @@ bahmni-web/resources/client_side_logging
 bahmni-web/resources/bahmniapps
 bahmni-web/resources/bahmni_config
 bahmni-installer/resources/bahmni-playbooks
+bahmni-installer/resources/bahmni-command-line-tool/bahmni.egg-info/
+*.pyc

@@ -71,10 +71,17 @@ def update_config(ctx):
    click.echo(command)
    subprocess.call(command, shell=True)
 
-@cli.command(name="setup-replication", short_help="sets up mysql db replication")
+@cli.command(name="setup-mysql-replication", short_help="sets up mysql db replication")
 @click.pass_context
-def setup_replication(ctx):
-   command = ctx.obj['ANSIBLE_COMMAND'].format("replication.yml")
+def setup_mysql_replication(ctx):
+   command = ctx.obj['ANSIBLE_COMMAND'].format("mysql-replication.yml")
+   click.echo(command)
+   subprocess.call(command, shell=True)
+
+@cli.command(name="setup-postgres-replication", short_help="sets up postgres db replication")
+@click.pass_context
+def setup_postgres_replication(ctx):
+   command = ctx.obj['ANSIBLE_COMMAND'].format("postgres-replication.yml")
    click.echo(command)
    subprocess.call(command, shell=True)
 
