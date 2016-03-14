@@ -9,7 +9,6 @@ apply plugin: 'rpm'
 
 //The bahmni-certs will be copied by the CI server after the artifacts are built.
 
-
 task dist(type: Rpm) {
     packageName 'bahmni-certs'
     release System.getenv('GO_PIPELINE_COUNTER') ?: project.buildNumber
@@ -19,20 +18,10 @@ task dist(type: Rpm) {
 
     into '/opt/bahmni-certs'
 
-    from("${projectDir}/resources/chain.pem") {
-        fileMode = 0644
+    from("${projectDir}/resources/") {
+        fileMode = 0755
         createDirectoryEntry = true
         into 'certs'
+        exclude('placeholder')
     }
-    from("${projectDir}/resources/privkey.pem") {
-        fileMode = 0644
-        createDirectoryEntry = true
-        into 'certs'
-    }
-    from("${projectDir}/resources/cert.pem") {
-        fileMode = 0644
-        createDirectoryEntry = true
-        into 'certs'
-    }
-
 }
