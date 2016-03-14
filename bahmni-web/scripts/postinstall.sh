@@ -77,7 +77,6 @@ setupConfFiles
 setupCacheDir
 setupClientSideLogging
 setupApps
-manage_permissions
 
 if [[ "${IMPLEMENTATION_NAME:-default}" = "default" ]]; then
 setupConfigs
@@ -86,3 +85,4 @@ setupConfigs
     fi
 managePermissionsForConfigs
 fi
+manage_permissions
