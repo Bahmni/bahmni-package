@@ -37,7 +37,7 @@ task dist(dependsOn: ["extractBahmniApps", "extractBahmniConfig"], type: Rpm) {
 
 
     from("${projectDir}/resources/") {
-        fileMode = 0755
+        fileMode = 0644
         createDirectoryEntry = true
         into 'etc'
         exclude('bahmniapps.zip')

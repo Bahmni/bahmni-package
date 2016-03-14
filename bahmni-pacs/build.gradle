@@ -94,31 +94,31 @@ task dist(dependsOn: ['build', 'normalizeJarName', 'extractWar'], type: Rpm) {
     postUninstall file("${projectDir}/scripts/bahmni-pacs/postuninstall.sh")
 
     from("${projectDir}/scripts/rpm/") {
-        fileMode = 0755
+        fileMode = 0744
         createDirectoryEntry = true
         into 'bin'
     }
 
     from("${projectDir}/resources") {
-        fileMode = 0755
+        fileMode = 0644
         createDirectoryEntry = true
         into 'etc'
     }
 
     from("${projectDir}/resources/log4j.xml") {
-        fileMode = 0755
+        fileMode = 0644
         createDirectoryEntry = true
         into "${buildDir}/pacs-integration/WEB-INF/classes/log4j.xml"
     }
 
     from("${buildDir}/libs/pacs-integration.jar") {
-        fileMode = 0755
+        fileMode = 0644
         createDirectoryEntry = true
         into 'lib'
     }
 
     from("${buildDir}/pacs-integration") {
-        fileMode = 0755
+        fileMode = 0644
         createDirectoryEntry = true
         into 'pacs-integration'
     }
@@ -138,25 +138,19 @@ task dist_dcm4chee(dependsOn: ['extractDCM4CHEE', 'extractJBoss', 'extractOviyam
     postUninstall file("${projectDir}/scripts/dcm4chee/postuninstall.sh")
 
     from("${buildDir}/dcm4chee-2.18.1-psql") {
-        fileMode = 0755
+        fileMode = 0744
         createDirectoryEntry = true
         into '/var/lib/bahmni/dcm4chee-2.18.1-psql'
     }
 
     from("${buildDir}/dcm4che-2.0.28-bin") {
-        fileMode = 0755
+        fileMode = 0744
         createDirectoryEntry = true
         into '/var/lib/bahmni/dcm4che-2.0.28-bin'
     }
 
-    from("${buildDir}/dcm4chee-2.18.1-psql") {
-        fileMode = 0755
-        createDirectoryEntry = true
-        into '/var/lib/bahmni/dcm4chee-2.18.1-psql'
-    }
-
     from("${buildDir}/jboss-4.2.3.GA") {
-        fileMode = 0755
+        fileMode = 0744
         createDirectoryEntry = true
         into '/usr/share/jboss-4.2.3.GA'
     }

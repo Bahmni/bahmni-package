@@ -48,44 +48,44 @@ task dist(dependsOn: ['build','normalizeJarName', 'extractWar'], type: Rpm) {
     postUninstall file("${projectDir}/scripts/postuninstall.sh")
 
     from("${projectDir}/resources/log4j.properties") {
-        fileMode = 0755
+        fileMode = 0644
         createDirectoryEntry = true
         into 'bahmni-event-log-service/WEB-INF/classes'
     }
 
 
     from("${buildDir}/libs/bahmni-event-log-service.jar") {
-        fileMode = 0755
+        fileMode = 0644
         createDirectoryEntry = true
         into 'lib/'
     }
 
     from("${projectDir}/resources/") {
-        fileMode = 0755
+        fileMode = 0644
         createDirectoryEntry = true
         into 'etc'
     }
 
     from("${projectDir}/scripts/rpm/") {
-        fileMode = 0755
+        fileMode = 0744
         createDirectoryEntry = true
         into 'bin'
     }
     from("${projectDir}/resources/placeholder") {
-        fileMode = 0755
+        fileMode = 0644
         createDirectoryEntry = true
         into 'run'
     }
 
     from("${projectDir}/resources/placeholder") {
-        fileMode = 0755
+        fileMode = 0644
         createDirectoryEntry = true
         into 'log'
     }
 
 
     from("${buildDir}/bahmni-event-log-service/") {
-        fileMode = 0755
+        fileMode = 0644
         createDirectoryEntry = true
         into 'bahmni-event-log-service'
     }

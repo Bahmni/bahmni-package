@@ -29,26 +29,26 @@ task dist(dependsOn: ['extractBahmniPlaybooks'], type: Rpm) {
     postUninstall file("${projectDir}/scripts/postuninstall.sh")
 
     from ("${projectDir}/resources/") {
-        fileMode = 0755
+        fileMode = 0644
         createDirectoryEntry = true
         include('bahmni-playbooks/')
         include('bahmni-command-line-tool/')
     }
 
     from ("${projectDir}/resources/rpm_versions.yml") {
-        fileMode = 0755
+        fileMode = 0644
         createDirectoryEntry = true
         into 'etc'
     }
 
     from ("${projectDir}/resources/ansible.cfg") {
-        fileMode = 0755
+        fileMode = 0644
         createDirectoryEntry = true
         into 'bahmni-playbooks'
     }
 
     from("${projectDir}/scripts/rpm/") {
-        fileMode = 0755
+        fileMode = 0744
         createDirectoryEntry = true
         into 'bin'
     }

@@ -50,7 +50,7 @@ task dist(dependsOn: ['build','downloadAtomFeedClient','downloadLiquibaseJar'], 
     postUninstall file("${projectDir}/scripts/postuninstall.sh")
 
     from ("${projectDir}/resources/") {
-        fileMode = 0755
+        fileMode = 0644
         createDirectoryEntry = true
         into "modules"
         include("openelis-atomfeed-client-*.omod")
@@ -58,7 +58,7 @@ task dist(dependsOn: ['build','downloadAtomFeedClient','downloadLiquibaseJar'], 
 
     //to use it in classpath for migration - classpath does not allow wildcards
     from ("${projectDir}/resources/") {
-        fileMode = 0755
+        fileMode = 0644
         createDirectoryEntry = true
         into "openelis-atomfeed-client"
         include("openelis-atomfeed-client-*.omod")
@@ -66,13 +66,13 @@ task dist(dependsOn: ['build','downloadAtomFeedClient','downloadLiquibaseJar'], 
     }
 
     from ("${projectDir}/resources/") {
-        fileMode = 0755
+        fileMode = 0744
         createDirectoryEntry = true
         include("run-liquibase.sh")
     }
 
     from("${projectDir}/resources/") {
-        fileMode = 0755
+        fileMode = 0644
         user 'bahmni'
         createDirectoryEntry = true
         into 'lib'
