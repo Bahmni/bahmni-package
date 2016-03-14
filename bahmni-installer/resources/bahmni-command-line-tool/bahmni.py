@@ -17,7 +17,7 @@ def cli(ctx, implementation, inventory):
     addExtraVar(ctx,"implementation_name", implementation )
 
     ctx.obj['INVENTORY'] = '/etc/bahmni-installer/'+inventory
-    ctx.obj['ANSIBLE_COMMAND'] =  "ansible-playbook -i "+ ctx.obj['INVENTORY'] +" {0} -vvvv "+ ctx.obj['EXTRA_VARS']
+    ctx.obj['ANSIBLE_COMMAND'] =  "ansible-playbook -i "+ ctx.obj['INVENTORY'] +" {0} -vvvv {1}"
     
 def addExtraVarFile(ctx, file_path):
     if(os.path.isfile(file_path)):
@@ -30,7 +30,7 @@ def addExtraVar(ctx, var_name, var_value):
 @cli.command(short_help="Installs bahmni components on respective hosts specified in inventory file")
 @click.pass_context
 def install(ctx):
-   command = ctx.obj['ANSIBLE_COMMAND'].format("all.yml")
+   command = ctx.obj['ANSIBLE_COMMAND'].format("all.yml", ctx.obj['EXTRA_VARS'])
    click.echo(command)
    subprocess.call(command, shell=True)
 
@@ -38,14 +38,14 @@ def install(ctx):
 @cli.command(short_help="starts all the services required for bahmni")
 @click.pass_context
 def start(ctx):
-   command = ctx.obj['ANSIBLE_COMMAND'].format("all.yml") + " -t start_bahmni"
+   command = ctx.obj['ANSIBLE_COMMAND'].format("all.yml", ctx.obj['EXTRA_VARS']) + " -t start_bahmni"
    click.echo(command)
    subprocess.call(command, shell=True)
 
 @cli.command(short_help="stops all the services required for bahmni")
 @click.pass_context
 def stop(ctx):
-   command = ctx.obj['ANSIBLE_COMMAND'].format("all.yml") + " -t stop_bahmni"
+   command = ctx.obj['ANSIBLE_COMMAND'].format("all.yml", ctx.obj['EXTRA_VARS']) + " -t stop_bahmni"
    click.echo(command)
    subprocess.call(command, shell=True)
 
@@ -59,7 +59,7 @@ def restart(ctx):
  short_help="updates the implementation config from the location /etc/bahmni-installer/deployment-artifacts")
 @click.pass_context
 def update_config(ctx):
-   command = ctx.obj['ANSIBLE_COMMAND'].format("all.yml") + " -t config"
+   command = ctx.obj['ANSIBLE_COMMAND'].format("all.yml", ctx.obj['EXTRA_VARS']) + " -t config"
    click.echo(command)
    subprocess.call(command, shell=True)
 
@@ -67,21 +67,31 @@ def update_config(ctx):
  short_help="Concatenating configs from /var/www/bahmni_config/openmrs directory")
 @click.pass_context
 def update_config(ctx):
-   command = ctx.obj['ANSIBLE_COMMAND'].format("concat-config.yml")
+   command = ctx.obj['ANSIBLE_COMMAND'].format("concat-config.yml", ctx.obj['EXTRA_VARS'])
    click.echo(command)
    subprocess.call(command, shell=True)
 
 @cli.command(name="setup-mysql-replication", short_help="sets up mysql db replication")
 @click.pass_context
 def setup_mysql_replication(ctx):
-   command = ctx.obj['ANSIBLE_COMMAND'].format("mysql-replication.yml")
+   command = ctx.obj['ANSIBLE_COMMAND'].format("mysql-replication.yml", ctx.obj['EXTRA_VARS'])
    click.echo(command)
    subprocess.call(command, shell=True)
 
 @cli.command(name="setup-postgres-replication", short_help="sets up postgres db replication")
 @click.pass_context
 def setup_postgres_replication(ctx):
-   command = ctx.obj['ANSIBLE_COMMAND'].format("postgres-replication.yml")
+   command = ctx.obj['ANSIBLE_COMMAND'].format("postgres-replication.yml", ctx.obj['EXTRA_VARS'])
+   click.echo(command)
+   subprocess.call(command, shell=True)
+
+@cli.command(name="db-backup", short_help="Take db backup in DB machine at /db-backup directory. Optionally can be copied to the local machine as well")
+@click.pass_context
+def db_backup(ctx):
+   should_copy_to_local_machine =  click.prompt('Do you want to copy db backup to local machine in /db-backup directory? y/N', type=bool)
+   if should_copy_to_local_machine:
+      addExtraVar(ctx,"copy_to_local_machine", "yes" )
+   command = ctx.obj['ANSIBLE_COMMAND'].format("db-backup.yml", ctx.obj['EXTRA_VARS'])
    click.echo(command)
    subprocess.call(command, shell=True)
 
