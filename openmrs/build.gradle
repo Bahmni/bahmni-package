@@ -51,61 +51,61 @@ task dist(dependsOn: ['build', 'normalizeJarName', 'downloadMRSWar'], type: Rpm)
     postUninstall file("${projectDir}/scripts/postuninstall.sh")
 
     from("${buildDir}/libs/openmrs.jar") {
-        fileMode = 0755
+        fileMode = 0644
         createDirectoryEntry = true
         into 'lib/'
     }
 
     from("${projectDir}/resources/") {
-        fileMode = 0755
+        fileMode = 0644
         createDirectoryEntry = true
         into 'etc'
     }
 
     from("${projectDir}/scripts/rpm/") {
-        fileMode = 0755
+        fileMode = 0744
         createDirectoryEntry = true
         into 'bin'
     }
 
     from("${projectDir}/resources/placeholder") {
-        fileMode = 0755
+        fileMode = 0644
         createDirectoryEntry = true
         into 'run'
     }
 
     from("${projectDir}/resources/placeholder") {
-        fileMode = 0755
+        fileMode = 0644
         createDirectoryEntry = true
         into 'log'
     }
 
     from("${buildDir}/resources/main/openmrs.war") {
-        fileMode = 0755
+        fileMode = 0644
         createDirectoryEntry = true
         into '.'
     }
 
     from("${projectDir}/resources/placeholder") {
-        fileMode = 0755
+        fileMode = 0644
         createDirectoryEntry = true
         into 'openmrs'
     }
 
     from("${projectDir}/resources/initDB.sh") {
-        fileMode = 0755
+        fileMode = 0744
         createDirectoryEntry = true
         into 'openmrs/scripts'
     }
 
     from("${projectDir}/resources/openmrs_demo_dump.sql") {
-        fileMode = 0755
+        fileMode = 0644
         createDirectoryEntry = true
         into 'openmrs/scripts'
     }
 
     from("${projectDir}/resources/openmrs_clean_dump.sql") {
-        fileMode = 0755
+        fileMode = 0644
         createDirectoryEntry = true
         into 'openmrs/scripts'
     }

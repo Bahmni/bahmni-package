@@ -30,7 +30,7 @@ task dist(dependsOn: ['build', 'extractOmods'], type: Rpm) {
     postUninstall file("${projectDir}/scripts/postuninstall.sh")
 
     from("${buildDir}/distro/distro-"+project.bahmniRelease+"-SNAPSHOT") {
-        fileMode = 0755
+        fileMode = 0644
         user 'bahmni'
         createDirectoryEntry = true
         into 'modules'
@@ -59,16 +59,22 @@ task dist(dependsOn: ['build', 'extractOmods'], type: Rpm) {
     }
 
     from("${projectDir}/resources/") {
-        fileMode = 0755
+        fileMode = 0644
         user 'bahmni'
         createDirectoryEntry = true
         into 'etc'
         include('bahmni-emr.conf')
+    }
+
+    from("${projectDir}/resources/") {
+        fileMode = 0744
+        user 'bahmni'
+        into 'etc'
         include('run-liquibase.sh')
     }
 
     from("${projectDir}/resources/"){
-        fileMode = 0755
+        fileMode = 0644
         user 'bahmni'
         include('bahmnicore.properties')
     }
