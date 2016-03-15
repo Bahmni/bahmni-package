@@ -50,7 +50,7 @@ link_directories(){
 
 manage_config(){
     chkconfig openerp on
-    cp -f $BAHMNI_ERP/etc/openerp /etc/init.d/openerp
+    ln -s $BAHMNI_ERP/bin/openerp /etc/init.d/openerp
 }
 
 manage_permissions

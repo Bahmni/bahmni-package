@@ -82,11 +82,10 @@ task dist(dependsOn: ['downloadOpenERP', 'extractAddons'], type: Rpm) {
         into 'bahmni-addons'
     }
 
-    from("${projectDir}/resources/") {
-        fileMode = 0644
+    from("${projectDir}/scripts/rpm/") {
+        fileMode = 0744
         createDirectoryEntry = true
-        into 'etc'
-        include('openerp')
+        into 'bin'
     }
 
     from("${projectDir}/resources/") {
