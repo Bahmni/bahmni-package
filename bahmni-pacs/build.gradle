@@ -103,6 +103,13 @@ task dist(dependsOn: ['build', 'normalizeJarName', 'extractWar'], type: Rpm) {
         fileMode = 0644
         createDirectoryEntry = true
         into 'etc'
+        exclude('initDCM4CHEE-DB.sh')
+    }
+
+    from("${projectDir}/resources/initDCM4CHEE-DB.sh") {
+        fileMode = 0744
+        user 'bahmni'
+        into 'etc'
     }
 
     from("${projectDir}/resources/log4j.xml") {

@@ -69,6 +69,7 @@ task dist(dependsOn: ['build', 'normalizeJarName', 'extractWar', 'extractMigrati
         fileMode = 0644
         createDirectoryEntry = true
         into 'etc'
+        exclude('migrateDb.sh')
     }
 
     from("${projectDir}/scripts/rpm/") {

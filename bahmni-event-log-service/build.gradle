@@ -64,6 +64,13 @@ task dist(dependsOn: ['build','normalizeJarName', 'extractWar'], type: Rpm) {
         fileMode = 0644
         createDirectoryEntry = true
         into 'etc'
+        exclude('run-liquibase.sh')
+    }
+
+    from("${projectDir}/resources/run-liquibase.sh") {
+        fileMode = 0744
+        user 'bahmni'
+        into 'etc'
     }
 
     from("${projectDir}/scripts/rpm/") {

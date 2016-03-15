@@ -60,6 +60,7 @@ task dist(dependsOn: ['build', 'normalizeJarName', 'downloadMRSWar'], type: Rpm)
         fileMode = 0644
         createDirectoryEntry = true
         into 'etc'
+        exclude('initDB.sh')
     }
 
     from("${projectDir}/scripts/rpm/") {
