@@ -51,13 +51,14 @@ link_directories(){
 manage_config(){
     chkconfig openerp on
     ln -s $BAHMNI_ERP/bin/openerp /etc/init.d/openerp
+    chown openerp:openerp /etc/init.d/openerp
 }
 
-manage_permissions
 install_openerp
 if [ "${IS_PASSIVE:-0}" -ne "1" ]; then
     initDB
 fi
 link_directories
 manage_config
+manage_permissions
 

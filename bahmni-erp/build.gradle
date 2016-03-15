@@ -21,7 +21,7 @@ task dist(dependsOn: ['downloadOpenERP', 'extractAddons'], type: Rpm) {
     release System.getenv('GO_PIPELINE_COUNTER') ?: "1"
     arch NOARCH
     os LINUX
-    user 'root'
+    user 'openerp'
 
     requires('python-psycopg2')
     requires('python-lxml')
@@ -80,6 +80,13 @@ task dist(dependsOn: ['downloadOpenERP', 'extractAddons'], type: Rpm) {
         fileMode = 0644
         createDirectoryEntry = true
         into 'bahmni-addons'
+    }
+
+    from("${projectDir}/resources/") {
+        fileMode = 0644
+        createDirectoryEntry = true
+        into 'etc'
+        include('placeholder')
     }
 
     from("${projectDir}/scripts/rpm/") {
