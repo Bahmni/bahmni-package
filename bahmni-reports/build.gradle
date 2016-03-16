@@ -92,7 +92,7 @@ task dist(dependsOn: ['build','normalizeJarName', 'extractWar'], type: Rpm) {
 
 
     from("${buildDir}/bahmni-reports/") {
-        fileMode = 0644
+        fileMode = 0755
         createDirectoryEntry = true
         into 'bahmni-reports'
     }
