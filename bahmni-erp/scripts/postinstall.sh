@@ -8,7 +8,6 @@ if [ -f /etc/bahmni-installer/bahmni.conf ]; then
 fi
 
 manage_permissions(){
-    adduser openerp
     chown -R openerp:openerp $BAHMNI_ERP
     mkdir -p /var/log/openerp
     mkdir -p /var/run/openerp

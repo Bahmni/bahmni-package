@@ -73,6 +73,7 @@ task dist(dependsOn: ['downloadOpenERP', 'extractAddons'], type: Rpm) {
     into '/opt/bahmni-erp'
 
     postInstall file("${projectDir}/scripts/postinstall.sh")
+    preInstall file("${projectDir}/scripts/preinstall.sh")
     preUninstall file("${projectDir}/scripts/preuninstall.sh")
     postUninstall file("${projectDir}/scripts/postuninstall.sh")
 
