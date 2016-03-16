@@ -14,7 +14,7 @@ task dist(type: Rpm) {
     release System.getenv('GO_PIPELINE_COUNTER') ?: project.buildNumber
     arch NOARCH
     os LINUX
-    user 'root'
+    user 'bahmni'
 
     into '/opt/bahmni-certs'
 
