@@ -36,7 +36,7 @@ task normalizeJarName(type: Copy) {
 
 task dist(dependsOn: ['build','normalizeJarName', 'extractWar'], type: Rpm) {
     packageName 'bahmni-reports'
-    release System.getenv('GO_PIPELINE_COUNTER')
+    release System.getenv('GO_PIPELINE_COUNTER') ?: project.buildNumber
     arch NOARCH
     os LINUX
     user 'root'
