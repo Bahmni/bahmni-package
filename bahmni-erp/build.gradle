@@ -77,13 +77,12 @@ task dist(dependsOn: ['downloadOpenERP', 'extractAddons'], type: Rpm) {
     postUninstall file("${projectDir}/scripts/postuninstall.sh")
 
     from("${buildDir}/addons/openerp-modules/") {
-        fileMode = 0644
+        fileMode = 0755
         createDirectoryEntry = true
         into 'bahmni-addons'
     }
 
     from("${projectDir}/resources/") {
-        fileMode = 0644
         createDirectoryEntry = true
         into 'etc'
         include('placeholder')

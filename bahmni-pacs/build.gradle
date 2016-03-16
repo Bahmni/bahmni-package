@@ -125,7 +125,7 @@ task dist(dependsOn: ['build', 'normalizeJarName', 'extractWar'], type: Rpm) {
     }
 
     from("${buildDir}/pacs-integration") {
-        fileMode = 0644
+        fileMode = 0755
         createDirectoryEntry = true
         into 'pacs-integration'
     }
@@ -145,19 +145,19 @@ task dist_dcm4chee(dependsOn: ['extractDCM4CHEE', 'extractJBoss', 'extractOviyam
     postUninstall file("${projectDir}/scripts/dcm4chee/postuninstall.sh")
 
     from("${buildDir}/dcm4chee-2.18.1-psql") {
-        fileMode = 0744
+        fileMode = 0755
         createDirectoryEntry = true
         into '/var/lib/bahmni/dcm4chee-2.18.1-psql'
     }
 
     from("${buildDir}/dcm4che-2.0.28-bin") {
-        fileMode = 0744
+        fileMode = 0755
         createDirectoryEntry = true
         into '/var/lib/bahmni/dcm4che-2.0.28-bin'
     }
 
     from("${buildDir}/jboss-4.2.3.GA") {
-        fileMode = 0744
+        fileMode = 0755
         createDirectoryEntry = true
         into '/usr/share/jboss-4.2.3.GA'
     }

@@ -34,6 +34,10 @@ task normalizeJarName(type: Copy) {
     rename(project.name + '-' + rpmOpenmrsVersion + '.jar', 'openmrs.jar')
 }
 
+//644 for all files other than executables
+//744 for all files which are executables
+//755 for all folders
+
 task dist(dependsOn: ['build', 'normalizeJarName', 'downloadMRSWar'], type: Rpm) {
     packageName 'openmrs'
     release System.getenv('GO_PIPELINE_COUNTER') ?: "1"
@@ -70,13 +74,11 @@ task dist(dependsOn: ['build', 'normalizeJarName', 'downloadMRSWar'], type: Rpm)
     }
 
     from("${projectDir}/resources/placeholder") {
-        fileMode = 0644
         createDirectoryEntry = true
         into 'run'
     }
 
     from("${projectDir}/resources/placeholder") {
-        fileMode = 0644
         createDirectoryEntry = true
         into 'log'
     }
@@ -88,7 +90,6 @@ task dist(dependsOn: ['build', 'normalizeJarName', 'downloadMRSWar'], type: Rpm)
     }
 
     from("${projectDir}/resources/placeholder") {
-        fileMode = 0644
         createDirectoryEntry = true
         into 'openmrs'
     }

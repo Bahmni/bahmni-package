@@ -79,31 +79,28 @@ task dist(dependsOn: ['build', 'normalizeJarName', 'extractWar', 'extractMigrati
     }
 
     from("${projectDir}/resources/placeholder") {
-        fileMode = 0644
         createDirectoryEntry = true
         into 'run'
     }
 
     from("${projectDir}/resources/placeholder") {
-        fileMode = 0644
         createDirectoryEntry = true
         into 'log'
     }
 
     from("${buildDir}/bahmni-lab/") {
-        fileMode = 0644
+        fileMode = 0755
         createDirectoryEntry = true
         into 'bahmni-lab'
     }
 
     from("${projectDir}/resources/placeholder") {
-        fileMode = 0644
         createDirectoryEntry = true
         into 'bahmni-lab'
     }
 
     from("${buildDir}/migrations/OpenElis") {
-        fileMode = 0744
+        fileMode = 0755
         createDirectoryEntry = true
         into 'migrations'
         include('db_backup/*')
