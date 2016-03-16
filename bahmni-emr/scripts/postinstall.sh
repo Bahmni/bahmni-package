@@ -36,8 +36,11 @@ create_configuration_dirs(){
 
     chown -R bahmni:bahmni /opt/openmrs
     chown -R bahmni:bahmni $UPLOADS_DIR
-    chmod -R 755 $UPLOADS_DIR;
-
+    chmod 755 $UPLOADS_DIR;
+    chmod -R 755 $PATIENT_IMAGES_DIR
+    chmod -R 755 $DOCUMENT_IMAGES_DIR
+    chmod -R 755 $UPLOADED_FILES_DIR
+    chmod -R 755 $UPLOADED_RESULTS_DIR
 }
 
 link_dirs
