@@ -22,17 +22,15 @@ task dist(dependsOn: ['extractBahmniPlaybooks'], type: Rpm) {
 
     into '/opt/bahmni-installer'
 
-    requires('python-devel')
+    requires('epel-release')
 
     preInstall file("${projectDir}/scripts/preinstall.sh")
     postInstall file("${projectDir}/scripts/postinstall.sh")
-    postUninstall file("${projectDir}/scripts/postuninstall.sh")
 
     from ("${projectDir}/resources/") {
         fileMode = 0755
         createDirectoryEntry = true
         include('bahmni-playbooks/')
-        include('bahmni-command-line-tool/')
     }
 
     from ("${projectDir}/resources/rpm_versions.yml") {
