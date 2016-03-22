@@ -95,3 +95,10 @@ def db_backup(ctx):
    click.echo(command)
    subprocess.call(command, shell=True)
 
+@cli.command(name="db-restore", short_help="Restore the sql dump present in local /db-backup")
+@click.pass_context
+def db_backup(ctx):
+    command = ctx.obj['ANSIBLE_COMMAND'].format("db-restore.yml", ctx.obj['EXTRA_VARS'])
+    click.echo(command)
+    subprocess.call(command, shell=True)
+
