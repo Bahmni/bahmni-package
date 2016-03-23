@@ -5,8 +5,7 @@ setup(
     version='0.1',
     py_modules=['bahmni'],
     install_requires=[
-        'Click',
-        'ansible==2.0.0'
+        'Click'
     ],
     entry_points='''
         [console_scripts]

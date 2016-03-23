@@ -15,7 +15,9 @@ def cli(ctx, implementation, inventory):
     addExtraVarFile(ctx, "/etc/bahmni-installer/rpm_versions.yml")
     addExtraVarFile(ctx, "/etc/bahmni-installer/setup.yml")
     addExtraVar(ctx,"implementation_name", implementation )
-
+    ansible_version = os.popen("ansible --version").read()
+    if "ansible 2.0.1" not in ansible_version:
+        subprocess.call('sudo yum install -y ansible-lint --enablerepo=epel-testing', shell=True)
     ctx.obj['INVENTORY'] = '/etc/bahmni-installer/'+inventory
     ctx.obj['ANSIBLE_COMMAND'] =  "ansible-playbook -i "+ ctx.obj['INVENTORY'] +" {0} -vvvv {1}"
     
