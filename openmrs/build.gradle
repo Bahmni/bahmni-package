@@ -15,6 +15,7 @@ repositories {
 }
 
 def rpmOpenmrsVersion = project.openmrsVersion.replaceAll('-SNAPSHOT','')
+rpmOpenmrsVersion = rpmOpenmrsVersion.replaceAll('-beta','')
 
 group 'org.bahmni.openmrs'
 version rpmOpenmrsVersion
