@@ -5,8 +5,11 @@ import os
 @click.group()
 @click.option("--implementation", "-I", help='Option to specify the implementation config to be installed. Default value is default. If this options is used, implementation config folder has to be placed in /etc/bahmni-installer/deployment-artifacts with name <impelementation>_config')
 @click.option("--inventory", "-i", default='local', help='Inventory file that needs to picked up from /etc/bahmni-installer')
+@click.option("--sql_path", "-path", help='Option to accept the exact file path from which the db will be restored ')
+@click.option("--database", "-db", help='Option to accept the specific database name')
+
 @click.pass_context
-def cli(ctx, implementation, inventory):
+def cli(ctx, implementation, inventory, sql_path, database):
     ctx.obj={}
     """Command line utility for Bahmni"""
     os.chdir('/opt/bahmni-installer/bahmni-playbooks')
@@ -20,7 +23,9 @@ def cli(ctx, implementation, inventory):
         subprocess.call('sudo yum install -y ansible-lint --enablerepo=epel-testing', shell=True)
     ctx.obj['INVENTORY'] = '/etc/bahmni-installer/'+inventory
     ctx.obj['ANSIBLE_COMMAND'] =  "ansible-playbook -i "+ ctx.obj['INVENTORY'] +" {0} -vvvv {1}"
-    
+    ctx.obj['SQL_PATH'] = sql_path
+    ctx.obj['DATABASE'] = database
+
 def addExtraVarFile(ctx, file_path):
     if(os.path.isfile(file_path)):
       ctx.obj['EXTRA_VARS']  = ctx.obj['EXTRA_VARS'] + " --extra-vars '@"+file_path+"'"
@@ -97,9 +102,17 @@ def db_backup(ctx):
    click.echo(command)
    subprocess.call(command, shell=True)
 
-@cli.command(name="db-restore", short_help="Restore the sql dump present in local /db-backup")
+@cli.command(name="db-restore", short_help="Restore the sql dump present in the path provided. Also pass the exact file path and the database name")
 @click.pass_context
-def db_backup(ctx):
+def db_restore(ctx):
+    if not ctx.obj['SQL_PATH']:
+        click.echo("Please provide the exact file path for the restored db")
+        return
+    if not ctx.obj['DATABASE']:
+        click.echo("Please provide the database name")
+        return
+    addExtraVar(ctx,"file_path", ctx.obj['SQL_PATH'] )
+    addExtraVar(ctx,"db_name", ctx.obj['DATABASE'] )
     command = ctx.obj['ANSIBLE_COMMAND'].format("db-restore.yml", ctx.obj['EXTRA_VARS'])
     click.echo(command)
     subprocess.call(command, shell=True)
