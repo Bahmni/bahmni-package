@@ -23,7 +23,7 @@ repositories {
 }
 
 task extractWar(type: Copy) {
-    from zipTree(file("${projectDir}/resources/pacs-integration.war"))
+    from zipTree(file("${projectDir}/resources/pacs-integration/pacs-integration.war"))
     into file("${buildDir}/pacs-integration")
 }
 
@@ -73,7 +73,7 @@ downloadOviyam2.onlyIf {
 
 task extractOviyam2(dependsOn: ["downloadOviyam2"], type: Copy) {
     from zipTree("${buildDir}/oviyam2.war")
-    into file("${projectDir}/resources/oviyam2.war")
+    into file("${projectDir}/resources/dcm4chee/oviyam2.war")
 }
 
 task dist(dependsOn: ['build', 'normalizeJarName', 'extractWar'], type: Rpm) {
@@ -171,7 +171,7 @@ task dist_dcm4chee(dependsOn: ['extractDCM4CHEE', 'extractJBoss', 'extractOviyam
         exclude('initDCM4CHEE-DB.sh')
     }
 
-    from("${projectDir}/resources/initDCM4CHEE-DB.sh") {
+    from("${projectDir}/resources/dcm4chee/initDCM4CHEE-DB.sh") {
         fileMode = 0744
         user 'bahmni'
         into 'etc'
