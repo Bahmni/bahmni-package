@@ -97,22 +97,16 @@ task dist(dependsOn: ['build', 'normalizeJarName', 'extractWar'], type: Rpm) {
         fileMode = 0744
         createDirectoryEntry = true
         into 'bin'
+        exclude('dcm4chee')
     }
 
-    from("${projectDir}/resources") {
+    from("${projectDir}/resources/pacs-integration/bahmni-pacs.conf") {
         fileMode = 0644
         createDirectoryEntry = true
         into 'etc'
-        exclude('initDCM4CHEE-DB.sh')
     }
 
-    from("${projectDir}/resources/initDCM4CHEE-DB.sh") {
-        fileMode = 0744
-        user 'bahmni'
-        into 'etc'
-    }
-
-    from("${projectDir}/resources/log4j.xml") {
+    from("${projectDir}/resources/pacs-integration/log4j.xml") {
         fileMode = 0644
         createDirectoryEntry = true
         into "${buildDir}/pacs-integration/WEB-INF/classes/log4j.xml"
@@ -138,11 +132,19 @@ task dist_dcm4chee(dependsOn: ['extractDCM4CHEE', 'extractJBoss', 'extractOviyam
     os LINUX
     user 'root'
 
+    into '/opt/dcm4chee'
+
     requires('postgresql92')
 
     postInstall file("${projectDir}/scripts/dcm4chee/postinstall.sh")
     preUninstall file("${projectDir}/scripts/dcm4chee/preuninstall.sh")
     postUninstall file("${projectDir}/scripts/dcm4chee/postuninstall.sh")
+
+    from("${projectDir}/scripts/rpm/") {
+        fileMode = 0744
+        createDirectoryEntry = true
+        into 'bin'
+    }
 
     from("${buildDir}/dcm4chee-2.18.1-psql") {
         fileMode = 0755
@@ -161,6 +163,20 @@ task dist_dcm4chee(dependsOn: ['extractDCM4CHEE', 'extractJBoss', 'extractOviyam
         createDirectoryEntry = true
         into '/usr/share/jboss-4.2.3.GA'
     }
+
+    from("${projectDir}/resources/dcm4chee") {
+        fileMode = 0644
+        createDirectoryEntry = true
+        into 'etc'
+        exclude('initDCM4CHEE-DB.sh')
+    }
+
+    from("${projectDir}/resources/initDCM4CHEE-DB.sh") {
+        fileMode = 0744
+        user 'bahmni'
+        into 'etc'
+    }
+
 }
 
 dependencies {

@@ -2,6 +2,10 @@
 
 . /etc/bahmni-pacs/bahmni-pacs.conf
 
+if [ -f /etc/bahmni-installer/bahmni.conf ]; then
+. /etc/bahmni-installer/bahmni.conf
+fi
+
 if [ "$(psql -U$POSTGRES_USER -lqt | cut -d \| -f 1 | grep -w $PACS_DB | wc -l)" -eq 0 ]
 then
     export PGUSER=$POSTGRES_USER
