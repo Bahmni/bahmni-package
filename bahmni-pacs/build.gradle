@@ -84,14 +84,14 @@ task dist(dependsOn: ['build', 'normalizeJarName', 'extractWar'], type: Rpm) {
     os LINUX
     user 'root'
 
-    into '/opt/bahmni-pacs'
+    into '/opt/pacs-integration'
 
     requires('postgresql92')
 
-    preInstall file("${projectDir}/scripts/bahmni-pacs/preinstall.sh")
-    postInstall file("${projectDir}/scripts/bahmni-pacs/postinstall.sh")
-    preUninstall file("${projectDir}/scripts/bahmni-pacs/preuninstall.sh")
-    postUninstall file("${projectDir}/scripts/bahmni-pacs/postuninstall.sh")
+    preInstall file("${projectDir}/scripts/pacs-integration/preinstall.sh")
+    postInstall file("${projectDir}/scripts/pacs-integration/postinstall.sh")
+    preUninstall file("${projectDir}/scripts/pacs-integration/preuninstall.sh")
+    postUninstall file("${projectDir}/scripts/pacs-integration/postuninstall.sh")
 
     from("${projectDir}/scripts/rpm/") {
         fileMode = 0744
@@ -100,7 +100,7 @@ task dist(dependsOn: ['build', 'normalizeJarName', 'extractWar'], type: Rpm) {
         exclude('dcm4chee')
     }
 
-    from("${projectDir}/resources/pacs-integration/bahmni-pacs.conf") {
+    from("${projectDir}/resources/pacs-integration/pacs-integration.conf") {
         fileMode = 0644
         createDirectoryEntry = true
         into 'etc'

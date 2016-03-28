@@ -1,25 +1,25 @@
 #!/bin/bash
 #
-# bahmni-pacs start/stop/status script
+# pacs-integration start/stop/status script
 #
 # chkconfig: 2345 65 35
-# description: bahmni-pacs server
+# description: pacs-integration server
 #
 ### BEGIN INIT INFO
 # Required-Start: mysqld
-# Description: bahmni-pacs init script
+# Description: pacs-integration init script
 ### END INIT INFO
 
 export PACS_SERVER_USER=bahmni
-export PACS_SERVER_RUN=/opt/bahmni-pacs/bin/start.sh
-export PACS_SERVER_DEBUG=/opt/bahmni-pacs/bin/debug.sh
+export PACS_SERVER_RUN=/opt/pacs-integration/bin/start.sh
+export PACS_SERVER_DEBUG=/opt/pacs-integration/bin/debug.sh
 export CUR_USER=`/usr/bin/whoami`
 
-. /opt/bahmni-pacs/etc/bahmni-pacs.conf
+. /opt/pacs-integration/etc/pacs-integration.conf
 
 create_dirs() {
-    if [[ ! -e /var/run/bahmni-pacs ]]; then
-        ln -s /opt/bahmni-pacs/run /var/run/bahmni-pacs
+    if [[ ! -e /var/run/pacs-integration ]]; then
+        ln -s /opt/pacs-integration/run /var/run/pacs-integration
     fi
 }
 
@@ -31,10 +31,10 @@ start() {
     pid=$(pacs-integration_pid)
     if [ -n "$pid" ]
     then
-        echo -e "\e[00;31mService bahmni-pacs is already running (pid: $pid)\e[00m"
+        echo -e "\e[00;31mService pacs-integration is already running (pid: $pid)\e[00m"
     else
         create_dirs
-        echo -e "\e[00;32mStarting bahmni-pacs \e[00m"
+        echo -e "\e[00;32mStarting pacs-integration \e[00m"
         if [ `user_exists $PACS_SERVER_USER` = "1" ]  && [ "$CUR_USER" != "$PACS_SERVER_USER" ] ;
         then
             /bin/su $PACS_SERVER_USER -c $PACS_SERVER_RUN
@@ -49,10 +49,10 @@ debug() {
     pid=$(pacs-integration_pid)
     if [ -n "$pid" ]
     then
-        echo -e "\e[00;31mService bahmni-pacs is already running (pid: $pid)\e[00m"
+        echo -e "\e[00;31mService pacs-integration is already running (pid: $pid)\e[00m"
     else
         create_dirs
-        echo -e "\e[00;32mStarting bahmni-pacs\e[00m"
+        echo -e "\e[00;32mStarting pacs-integration\e[00m"
         if [ `user_exists $PACS_SERVER_USER` = "1" ]  && [ "$CUR_USER" != "$PACS_SERVER_USER" ] ;
         then
             /bin/su $PACS_SERVER_USER -c $PACS_SERVER_DEBUG
@@ -67,14 +67,14 @@ status() {
     pid=$(pacs-integration_pid)
     if [ -n "$pid" ];
     then
-        echo -e "\e[00;32mService bahmni-pacs is running with pid: $pid\e[00m"
+        echo -e "\e[00;32mService pacs-integration is running with pid: $pid\e[00m"
     else
-        echo -e "\e[00;31mService bahmni-pacs is not running\e[00m"
+        echo -e "\e[00;31mService pacs-integration is not running\e[00m"
     fi
 }
 
 stop() {
-	echo -e "\e[00;31mTerminating bahmni-pacs\e[00m"
+	echo -e "\e[00;31mTerminating pacs-integration\e[00m"
 	kill -9 $(pacs-integration_pid)
 }
 user_exists(){

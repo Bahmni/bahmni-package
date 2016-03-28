@@ -1,6 +1,6 @@
 #!/bin/bash
 
-. /etc/bahmni-pacs/bahmni-pacs.conf
+. /etc/bahmni-pacs/pacs-integration.conf
 
 if [ -f /etc/bahmni-installer/bahmni.conf ]; then
 . /etc/bahmni-installer/bahmni.conf

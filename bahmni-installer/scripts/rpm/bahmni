@@ -105,7 +105,7 @@ function is_service_running() {
 status() {
     up_count=0
     down_count=0
-    for service in httpd mysql pgsql-9.2 openmrs bahmni-reports bahmni-lab openerp bahmni-erp-connect bahmni-pacs 
+    for service in httpd mysql pgsql-9.2 openmrs bahmni-reports bahmni-lab openerp bahmni-erp-connect pacs-integration
     do
         if(is_service_running $service) then
             echo -e "$service...... $green[Running] $original"
