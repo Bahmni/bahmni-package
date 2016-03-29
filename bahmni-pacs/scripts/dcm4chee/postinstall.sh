@@ -1,9 +1,15 @@
 #!/bin/bash
 
+if [ -f /etc/bahmni-installer/bahmni.conf ]; then
+. /etc/bahmni-installer/bahmni.conf
+fi
+
 dcm4chee_path=/var/lib/bahmni/dcm4chee-2.18.1-psql
 ln -s /opt/dcm4chee/etc  /etc/dcm4chee
 
-sudo /opt/dcm4chee/etc/initDCM4CHEE-DB.sh
+if [ "${IS_PASSIVE:-0}" -ne "1" ]; then
+    sudo /opt/dcm4chee/etc/initDCM4CHEE-DB.sh
+fi
 sudo $dcm4chee_path/bin/install_jboss.sh /usr/share/jboss-4.2.3.GA
 
 cp -f /opt/dcm4chee/etc/server.xml $dcm4chee_path/server/default/deploy/jboss-web.deployer/
