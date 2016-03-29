@@ -1,7 +1,6 @@
 #!/bin/bash
 
 dcm4chee_path=/var/lib/bahmni/dcm4chee-2.18.1-psql
-chown -R bahmni:bahmni /var/lib/bahmni/dcm4chee-2.18.1-psql
 ln -s /opt/dcm4chee/etc  /etc/dcm4chee
 
 sudo /opt/dcm4chee/etc/initDCM4CHEE-DB.sh
@@ -14,15 +13,16 @@ cp -f /opt/dcm4chee/etc/jboss-service.xml $dcm4chee_path/server/default/conf/
 cp -R /opt/dcm4chee/etc/oviyam2.war $dcm4chee_path/server/default/deploy/
 cp -f /opt/dcm4chee/etc/oviyam2-web.xml $dcm4chee_path/server/default/deploy/oviyam2.war/WEB-INF/web.xml
 
-if test -d /var/lib/bahmni/archive
+if [ -d /var/lib/bahmni/archive ]
 then
     sudo mv /var/lib/bahmni/archive $dcm4chee_path/server/default/
 fi
 
-if test -d $dcm4chee_path/server/default/work/jboss.web/localhost
-then
-    cp -f /opt/dcm4chee/etc/oviyam2-1-config.xml $dcm4chee_path/server/default/work/jboss.web/localhost/
-fi
+mkdir -p $dcm4chee_path/server/default/work/jboss.web/localhost
+
+cp -f /opt/dcm4chee/etc/oviyam2-1-config.xml $dcm4chee_path/server/default/work/jboss.web/localhost/
+chmod 644 $dcm4chee_path/server/default/work/jboss.web/localhost/oviyam2-1-config.xml
 
 ln -s /opt/dcm4chee/bin/dcm4chee /etc/init.d/dcm4chee
 chown -R bahmni:bahmni /etc/init.d/dcm4chee
+chown -R bahmni:bahmni /var/lib/bahmni/dcm4chee-2.18.1-psql

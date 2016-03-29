@@ -73,7 +73,7 @@ downloadOviyam2.onlyIf {
 
 task extractOviyam2(dependsOn: ["downloadOviyam2"], type: Copy) {
     from zipTree("${buildDir}/oviyam2.war")
-    into file("${projectDir}/resources/dcm4chee/oviyam2.war")
+    into file("${projectDir}/resources/dcm4chee/oviyam2.war/")
 }
 
 task dist(dependsOn: ['build', 'normalizeJarName', 'extractWar'], type: Rpm) {
@@ -88,7 +88,6 @@ task dist(dependsOn: ['build', 'normalizeJarName', 'extractWar'], type: Rpm) {
 
     requires('postgresql92')
 
-    preInstall file("${projectDir}/scripts/pacs-integration/preinstall.sh")
     postInstall file("${projectDir}/scripts/pacs-integration/postinstall.sh")
     preUninstall file("${projectDir}/scripts/pacs-integration/preuninstall.sh")
     postUninstall file("${projectDir}/scripts/pacs-integration/postuninstall.sh")
@@ -136,6 +135,7 @@ task dist_dcm4chee(dependsOn: ['extractDCM4CHEE', 'extractJBoss', 'extractOviyam
 
     requires('postgresql92')
 
+    preInstall file("${projectDir}/scripts/dcm4chee/preinstall.sh")
     postInstall file("${projectDir}/scripts/dcm4chee/postinstall.sh")
     preUninstall file("${projectDir}/scripts/dcm4chee/preuninstall.sh")
     postUninstall file("${projectDir}/scripts/dcm4chee/postuninstall.sh")
@@ -144,6 +144,7 @@ task dist_dcm4chee(dependsOn: ['extractDCM4CHEE', 'extractJBoss', 'extractOviyam
         fileMode = 0744
         createDirectoryEntry = true
         into 'bin'
+        include('dcm4chee')
     }
 
     from("${buildDir}/dcm4chee-2.18.1-psql") {
@@ -169,6 +170,14 @@ task dist_dcm4chee(dependsOn: ['extractDCM4CHEE', 'extractJBoss', 'extractOviyam
         createDirectoryEntry = true
         into 'etc'
         exclude('initDCM4CHEE-DB.sh')
+        exclude('oviyam2.war')
+    }
+
+    from("${projectDir}/resources/dcm4chee") {
+        fileMode = 0755
+        createDirectoryEntry = true
+        into 'etc'
+        include("oviyam2.war/")
     }
 
     from("${projectDir}/resources/dcm4chee/initDCM4CHEE-DB.sh") {

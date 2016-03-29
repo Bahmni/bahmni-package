@@ -1,6 +1,6 @@
 #!/bin/bash
 
-. /etc/bahmni-pacs/pacs-integration.conf
+. /etc/dcm4chee/dcm4chee.conf
 
 if [ -f /etc/bahmni-installer/bahmni.conf ]; then
 . /etc/bahmni-installer/bahmni.conf

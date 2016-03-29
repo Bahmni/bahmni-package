@@ -19,7 +19,7 @@ source /etc/environment
 source /etc/init.d/functions
 
 #DCM4CHEE_HOME is the location of the bin files of DCM4CHEE
-DCM4CHEE_HOME=/var/lib/bahmni/dcm4chee-2.18.1-psql/
+DCM4CHEE_HOME=/var/lib/bahmni/dcm4chee-2.18.1-psql
 
 #DCM4CHEE_USER is the default user of DCM4CHEE
 DCM4CHEE_USER=bahmni

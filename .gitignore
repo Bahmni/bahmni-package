@@ -53,4 +53,5 @@ bahmni-web/resources/bahmniapps
 bahmni-web/resources/bahmni_config
 bahmni-installer/resources/bahmni-playbooks
 bahmni-installer/resources/bahmni-command-line-tool/bahmni.egg-info/
+bahmni-pacs/resources/dcm4chee/oviyam2.war
 *.pyc
