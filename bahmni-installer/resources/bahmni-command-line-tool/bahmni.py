@@ -39,7 +39,7 @@ def addExtraVar(ctx, var_name, var_value):
 def install(ctx):
    command = ctx.obj['ANSIBLE_COMMAND'].format("all.yml", ctx.obj['EXTRA_VARS'])
    click.echo(command)
-   return subprocess.call(command, shell=True)
+   return subprocess.check_call(command, shell=True)
 
 
 @cli.command(short_help="starts all the services required for bahmni")
