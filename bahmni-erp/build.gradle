@@ -1,6 +1,6 @@
 plugins {
-    id "nebula.os-package" version "2.2.6"
-    id "de.undercouch.download" version "2.0.0"
+    id "nebula.ospackage" version "3.4.0"
+    id "de.undercouch.download" version "2.1.0"
 }
 
 import de.undercouch.gradle.tasks.download.Download
@@ -8,20 +8,55 @@ import de.undercouch.gradle.tasks.download.Download
 group 'org.bahmni.erp'
 version project.bahmniRelease
 
-apply plugin: 'rpm'
-
 //The openerp-modules.zip file will be copied by the CI server after the artifacts are built.
 task extractAddons(type: Copy) {
     from zipTree(file("${projectDir}/resources/openerp-modules.zip"))
     into file("${buildDir}/addons")
 }
 
-task dist(dependsOn: ['downloadOpenERP', 'extractAddons'], type: Rpm) {
-    packageName 'bahmni-erp'
-    release System.getenv('GO_PIPELINE_COUNTER') ?: "1"
-    arch NOARCH
-    os LINUX
-    user 'openerp'
+ospackage {
+    packageName = 'bahmni-erp'
+    release = System.getenv('GO_PIPELINE_COUNTER') ?: "1"
+    arch = NOARCH
+    os = LINUX
+    user = 'openerp'
+
+    into '/opt/bahmni-erp'
+
+    from("${buildDir}/addons/openerp-modules/") {
+        fileMode = 0755
+        createDirectoryEntry = true
+        into 'bahmni-addons'
+    }
+
+    from("${projectDir}/resources/") {
+        createDirectoryEntry = true
+        into 'etc'
+        include('placeholder')
+    }
+
+    from("${projectDir}/scripts/rpm/") {
+        fileMode = 0744
+        createDirectoryEntry = true
+        into 'bin'
+    }
+
+    from("${projectDir}/resources/") {
+        fileMode = 0644
+        createDirectoryEntry = true
+        into 'db-dump'
+        include('openerp_base_dump.sql')
+    }
+
+    from("${buildDir}/openerp-7.0-20130301-002301.tar.gz") {
+        fileMode = 0644
+        createDirectoryEntry = true
+        into "."
+    }
+}
+
+buildRpm {
+    dependsOn 'downloadOpenERP', 'extractAddons'
 
     requires('python-psycopg2')
     requires('python-lxml')
@@ -70,48 +105,15 @@ task dist(dependsOn: ['downloadOpenERP', 'extractAddons'], type: Rpm) {
     requires('python-pip')
     requires('python-feedparser')
 
-    into '/opt/bahmni-erp'
-
     postInstall file("${projectDir}/scripts/postinstall.sh")
     preInstall file("${projectDir}/scripts/preinstall.sh")
     preUninstall file("${projectDir}/scripts/preuninstall.sh")
     postUninstall file("${projectDir}/scripts/postuninstall.sh")
-
-    from("${buildDir}/addons/openerp-modules/") {
-        fileMode = 0755
-        createDirectoryEntry = true
-        into 'bahmni-addons'
-    }
-
-    from("${projectDir}/resources/") {
-        createDirectoryEntry = true
-        into 'etc'
-        include('placeholder')
-    }
-
-    from("${projectDir}/scripts/rpm/") {
-        fileMode = 0744
-        createDirectoryEntry = true
-        into 'bin'
-    }
-
-    from("${projectDir}/resources/") {
-        fileMode = 0644
-        createDirectoryEntry = true
-        into 'db-dump'
-        include('openerp_base_dump.sql')
-    }
-
-    from("${buildDir}/openerp-7.0-20130301-002301.tar.gz") {
-        fileMode = 0644
-        createDirectoryEntry = true
-        into "."
-    }
 }
 
 task downloadOpenERP(type: Download) {
+    onlyIf { !(new File("${buildDir}/openerp-7.0-20130301-002301.tar.gz").exists()) }
+
     src 'http://172.18.2.14/packages/servers/openerp-7.0-20130301-002301.tar.gz'
     dest buildDir
 }
-
-downloadOpenERP.onlyIf { !(new File("${buildDir}/openerp-7.0-20130301-002301.tar.gz").exists()) }

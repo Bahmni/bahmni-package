@@ -1,33 +1,24 @@
 plugins {
-    id "nebula.os-package" version "2.2.6"
+    id "nebula.ospackage" version "3.4.0"
 }
 
 group 'org.bahmni.installer'
 version project.bahmniRelease
-
-apply plugin: 'rpm'
 
 task extractBahmniPlaybooks(type: Copy) {
     from zipTree(file("${projectDir}/resources/bahmni-playbooks.zip"))
     into file("${projectDir}/resources")
 }
 
-task dist(dependsOn: ['extractBahmniPlaybooks'], type: Rpm) {
-    packageName 'bahmni-installer'
-    release System.getenv('GO_PIPELINE_COUNTER')?: "1"
-    arch NOARCH
-    os LINUX
-    user 'bahmni'
-    permissionGroup 'bahmni'
+ospackage {
+    packageName = 'bahmni-installer'
+    release = System.getenv('GO_PIPELINE_COUNTER')?: "1"
+    arch = NOARCH
+    os = LINUX
+    user = 'bahmni'
+    permissionGroup = 'bahmni'
 
     into '/opt/bahmni-installer'
-
-    requires('python-devel')
-    requires('epel-release')
-
-    preInstall file("${projectDir}/scripts/preinstall.sh")
-    postInstall file("${projectDir}/scripts/postinstall.sh")
-    postUninstall file("${projectDir}/scripts/postuninstall.sh")
 
     from ("${projectDir}/resources/") {
         fileMode = 0755
@@ -53,4 +44,15 @@ task dist(dependsOn: ['extractBahmniPlaybooks'], type: Rpm) {
         createDirectoryEntry = true
         into 'bin'
     }
+}
+
+buildRpm {
+    dependsOn 'extractBahmniPlaybooks'
+
+    requires('python-devel')
+    requires('epel-release')
+
+    preInstall file("${projectDir}/scripts/preinstall.sh")
+    postInstall file("${projectDir}/scripts/postinstall.sh")
+    postUninstall file("${projectDir}/scripts/postuninstall.sh")
 }

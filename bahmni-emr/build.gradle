@@ -1,6 +1,5 @@
 plugins {
-    id "nebula.os-package" version "2.2.6"
-    id "de.undercouch.download" version "2.0.0"
+    id "nebula.ospackage" version "3.4.0"
 }
 
 group 'org.bahmni.emr'
@@ -8,26 +7,20 @@ version project.bahmniRelease
 
 def rpmOpenmrsVersion = project.openmrsVersion.replaceAll('-','.')
 
-apply plugin: 'rpm'
 
 task extractOmods(type: Copy) {
     from zipTree(file("${projectDir}/resources/distro-"+project.bahmniRelease+"-SNAPSHOT-distro.zip"))
     into file("${buildDir}/distro/")
 }
 
-task dist(dependsOn: ['build', 'extractOmods'], type: Rpm) {
-    packageName 'bahmni-emr'
-    release System.getenv('GO_PIPELINE_COUNTER') ?: "1"
-    arch NOARCH
-    os LINUX
-    user 'bahmni'
+ospackage {
+    packageName = 'bahmni-emr'
+    release = System.getenv('GO_PIPELINE_COUNTER') ?: "1"
+    arch = NOARCH
+    os = LINUX
+    user = 'bahmni'
 
     into '/opt/openmrs'
-
-
-    postInstall file("${projectDir}/scripts/postinstall.sh")
-    preUninstall file("${projectDir}/scripts/preuninstall.sh")
-    postUninstall file("${projectDir}/scripts/postuninstall.sh")
 
     from("${buildDir}/distro/distro-"+project.bahmniRelease+"-SNAPSHOT") {
         fileMode = 0644
@@ -74,5 +67,12 @@ task dist(dependsOn: ['build', 'extractOmods'], type: Rpm) {
         fileMode = 0644
         include('bahmnicore.properties')
     }
+}
 
+buildRpm {
+    dependsOn 'build', 'extractOmods'
+
+    postInstall file("${projectDir}/scripts/postinstall.sh")
+    preUninstall file("${projectDir}/scripts/preuninstall.sh")
+    postUninstall file("${projectDir}/scripts/postuninstall.sh")
 }

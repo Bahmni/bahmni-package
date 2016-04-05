@@ -1,6 +1,6 @@
 plugins {
-    id "nebula.os-package" version "2.2.6"
-    id "de.undercouch.download" version "2.0.0"
+    id "nebula.ospackage" version "3.4.0"
+    id "de.undercouch.download" version "2.1.0"
 }
 
 import de.undercouch.gradle.tasks.download.Download
@@ -21,7 +21,6 @@ group 'org.bahmni.lab'
 version project.bahmniRelease
 
 apply plugin: 'java'
-apply plugin: 'rpm'
 
 task downloadAtomFeedClient(type: Download) {
     src 'https://oss.sonatype.org/content/repositories/releases/org/ict4h/atomfeed-client/'+project.atomFeedClient+'/atomfeed-client-'+project.atomFeedClient+'.jar'
@@ -37,17 +36,14 @@ task downloadLiquibaseJar(type: Download) {
 
 downloadLiquibaseJar.onlyIf { !(new File("${projectDir}/resources/liquibase-core-"+project.liquibase+".jar").exists()) }
 
-task dist(dependsOn: ['build','downloadAtomFeedClient','downloadLiquibaseJar'], type: Rpm) {
-    packageName 'bahmni-lab-connect'
-    release System.getenv('GO_PIPELINE_COUNTER')?: "1"
-    arch NOARCH
-    os LINUX
-    user 'bahmni'
+ospackage {
+    packageName = 'bahmni-lab-connect'
+    release = System.getenv('GO_PIPELINE_COUNTER')?: "1"
+    arch = NOARCH
+    os = LINUX
+    user = 'bahmni'
 
     into '/opt/bahmni-lab-connect'
-
-    postInstall file("${projectDir}/scripts/postinstall.sh")
-    postUninstall file("${projectDir}/scripts/postuninstall.sh")
 
     from ("${projectDir}/resources/") {
         fileMode = 0644
@@ -80,7 +76,13 @@ task dist(dependsOn: ['build','downloadAtomFeedClient','downloadLiquibaseJar'], 
         include('liquibase-core-*.jar')
         rename('atomfeed-client-'+project.atomFeedClient+'.jar', 'atomfeed-client.jar')
     }
+}
 
+buildRpm {
+    dependsOn 'build','downloadAtomFeedClient','downloadLiquibaseJar'
+
+    postInstall file("${projectDir}/scripts/postinstall.sh")
+    postUninstall file("${projectDir}/scripts/postuninstall.sh")
 }
 
 dependencies {

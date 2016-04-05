@@ -1,20 +1,18 @@
 plugins {
-    id "nebula.os-package" version "2.2.6"
+    id "nebula.ospackage" version "3.4.0"
 }
 
 group 'org.bahmni.certs'
 version project.bahmniCertsRelease
 
-apply plugin: 'rpm'
-
 //The bahmni-certs will be copied by the CI server after the artifacts are built.
 
-task dist(type: Rpm) {
-    packageName 'bahmni-certs'
-    release System.getenv('GO_PIPELINE_COUNTER') ?: project.buildNumber
-    arch NOARCH
-    os LINUX
-    user 'bahmni'
+ospackage {
+    packageName = 'bahmni-certs'
+    release = System.getenv('GO_PIPELINE_COUNTER') ?: project.buildNumber
+    arch = NOARCH
+    os = LINUX
+    user = 'bahmni'
 
     into '/opt/bahmni-certs'
 

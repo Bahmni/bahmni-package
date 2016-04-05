@@ -1,11 +1,9 @@
 plugins {
-    id "nebula.os-package" version "2.2.6"
+    id "nebula.ospackage" version "3.4.0"
 }
 
 group 'org.bahmni.web'
 version project.bahmniRelease
-
-apply plugin: 'rpm'
 
 task extractBahmniApps(type: Copy){
     from zipTree(file("${projectDir}/resources/bahmniapps.zip"))
@@ -17,24 +15,14 @@ task extractBahmniConfig(type: Copy){
     into file("${projectDir}/resources/bahmni_config")
 }
 
-
-task dist(dependsOn: ["extractBahmniApps", "extractBahmniConfig"], type: Rpm) {
-    packageName 'bahmni-web'
-    release System.getenv('GO_PIPELINE_COUNTER') ?: project.buildNumber
-    arch NOARCH
-    os LINUX
-    user 'root'
+ospackage {
+    packageName = 'bahmni-web'
+    release = System.getenv('GO_PIPELINE_COUNTER') ?: project.buildNumber
+    arch = NOARCH
+    os = LINUX
+    user = 'root'
 
     into '/opt/bahmni-web'
-
-    requires('httpd')
-    requires('mod_ssl')
-    requires('mod_wsgi')
-    requires('python-flask') //This is required for client_side_logging
-
-    postInstall file("${projectDir}/scripts/postinstall.sh")
-    postUninstall file("${projectDir}/scripts/postuninstall.sh")
-
 
     from("${projectDir}/resources/") {
         fileMode = 0755
@@ -43,5 +31,16 @@ task dist(dependsOn: ["extractBahmniApps", "extractBahmniConfig"], type: Rpm) {
         exclude('bahmniapps.zip')
         exclude('default_config.zip')
     }
+}
 
+buildRpm {
+    dependsOn "extractBahmniApps", "extractBahmniConfig"
+
+    requires('httpd')
+    requires('mod_ssl')
+    requires('mod_wsgi')
+    requires('python-flask') //This is required for client_side_logging
+
+    postInstall file("${projectDir}/scripts/postinstall.sh")
+    postUninstall file("${projectDir}/scripts/postuninstall.sh")
 }

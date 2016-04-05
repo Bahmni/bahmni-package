@@ -1,5 +1,6 @@
 plugins {
-    id "nebula.os-package" version "2.2.6"
+    id 'nebula.ospackage' version '3.4.0'
+    id "java"
 }
 
 repositories {
@@ -11,17 +12,13 @@ repositories {
     maven {
         url 'https://oss.sonatype.org/content/repositories'
     }
-    mavenLocal()
 }
 
-def rpmOpenmrsVersion = project.openmrsVersion.replaceAll('-SNAPSHOT','')
-rpmOpenmrsVersion = rpmOpenmrsVersion.replaceAll('-beta','')
+def rpmOpenmrsVersion = project.openmrsVersion.replaceAll('-SNAPSHOT', '')
+rpmOpenmrsVersion = rpmOpenmrsVersion.replaceAll('-beta', '')
 
 group 'org.bahmni.openmrs'
 version rpmOpenmrsVersion
-
-apply plugin: 'java'
-apply plugin: 'rpm'
 
 task extractWar(dependsOn: 'downloadMRSWar', type: Copy) {
     from zipTree(file("${buildDir}/resources/main/openmrs.war"))
@@ -39,17 +36,14 @@ task normalizeJarName(type: Copy) {
 //744 for all files which are executables
 //755 for all folders
 
-task dist(dependsOn: ['build', 'normalizeJarName', 'downloadMRSWar'], type: Rpm) {
-    packageName 'openmrs'
-    release System.getenv('GO_PIPELINE_COUNTER') ?: "1"
-    arch NOARCH
-    os LINUX
-    user 'root'
+ospackage {
+    packageName = 'openmrs'
+    release = System.getenv('GO_PIPELINE_COUNTER') ?: "1"
+    arch = NOARCH
+    os = LINUX
+    user = 'root'
 
     into '/opt/openmrs'
-
-    requires('unzip')
-    requires('mysql-community-client', "5.6", GREATER | EQUAL)
 
     postInstall file("${projectDir}/scripts/postinstall.sh")
     preUninstall file("${projectDir}/scripts/preuninstall.sh")
@@ -114,11 +108,21 @@ task dist(dependsOn: ['build', 'normalizeJarName', 'downloadMRSWar'], type: Rpm)
     }
 }
 
-task downloadMRSWar << {
-    new File("${buildDir}/resources/main").mkdirs();
-    configurations.mrsWar.resolve().each { file ->
-        if (file.getName().contains("openmrs")) {
-            file.renameTo(new File("${buildDir}/resources/main/openmrs.war"))
+buildRpm {
+    dependsOn 'build', 'normalizeJarName', 'downloadMRSWar'
+    requires('unzip')
+    requires('mysql-community-client', "5.6", GREATER | EQUAL)
+}
+
+task downloadMRSWar {
+    onlyIf { !(new File("${buildDir}/resources/main/openmrs.war").exists()) }
+
+    doLast {
+        new File("${buildDir}/resources/main").mkdirs();
+        configurations.mrsWar.resolve().each { file ->
+            if (file.getName().contains("openmrs")) {
+                file.renameTo(new File("${buildDir}/resources/main/openmrs.war"))
+            }
         }
     }
 }
@@ -127,7 +131,6 @@ configurations {
     mrsWar
 }
 
-downloadMRSWar.onlyIf { !(new File("${buildDir}/resources/main/openmrs.war").exists()) }
 
 dependencies {
     compile project(":core")

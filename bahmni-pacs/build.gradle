@@ -1,6 +1,6 @@
 plugins {
-    id "nebula.os-package" version "2.2.6"
-    id "de.undercouch.download" version "2.0.0"
+    id "nebula.ospackage" version "3.4.0"
+    id "de.undercouch.download" version "2.1.0"
 }
 
 import de.undercouch.gradle.tasks.download.Download
@@ -8,7 +8,6 @@ import de.undercouch.gradle.tasks.download.Download
 version project.bahmniRelease
 
 apply plugin: 'java'
-apply plugin: 'rpm'
 
 repositories {
     mavenCentral()
@@ -76,13 +75,15 @@ task extractOviyam2(dependsOn: ["downloadOviyam2"], type: Copy) {
     into file("${projectDir}/resources/dcm4chee/oviyam2.war/")
 }
 
-task dist(dependsOn: ['build', 'normalizeJarName', 'extractWar'], type: Rpm) {
-    packageName 'pacs-integration'
-    release System.getenv('GO_PIPELINE_COUNTER') ?: project.buildNumber
+task dist(type: Rpm) {
+    dependsOn 'build', 'normalizeJarName', 'extractWar'
 
-    arch NOARCH
-    os LINUX
-    user 'root'
+    packageName = 'pacs-integration'
+    release = System.getenv('GO_PIPELINE_COUNTER') ?: project.buildNumber
+
+    arch = NOARCH
+    os  = LINUX
+    user = 'root'
 
     into '/opt/pacs-integration'
 
@@ -124,12 +125,14 @@ task dist(dependsOn: ['build', 'normalizeJarName', 'extractWar'], type: Rpm) {
     }
 }
 
-task dist_dcm4chee(dependsOn: ['extractDCM4CHEE', 'extractJBoss', 'extractOviyam2'], type: Rpm) {
-    packageName 'dcm4chee'
-    release System.getenv('GO_PIPELINE_COUNTER') ?: project.buildNumber
-    arch NOARCH
-    os LINUX
-    user 'root'
+task dist_dcm4chee(type: Rpm) {
+    dependsOn 'extractDCM4CHEE', 'extractJBoss', 'extractOviyam2'
+
+    packageName = 'dcm4chee'
+    release = System.getenv('GO_PIPELINE_COUNTER') ?: project.buildNumber
+    arch = NOARCH
+    os = LINUX
+    user = 'root'
 
     into '/opt/dcm4chee'
 
@@ -185,7 +188,6 @@ task dist_dcm4chee(dependsOn: ['extractDCM4CHEE', 'extractJBoss', 'extractOviyam
         user 'bahmni'
         into 'etc'
     }
-
 }
 
 dependencies {

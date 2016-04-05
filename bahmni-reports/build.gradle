@@ -1,5 +1,5 @@
 plugins {
-    id "nebula.os-package" version "2.2.6"
+    id "nebula.ospackage" version "3.4.0"
 }
 
 repositories {
@@ -18,7 +18,6 @@ group 'org.bahmni.reports'
 version project.bahmniRelease
 
 apply plugin: 'java'
-apply plugin: 'rpm'
 
 //The bahmni-reports.war will be copied by the CI server after the artifacts are built.
 task extractWar(type: Copy) {
@@ -34,25 +33,20 @@ task normalizeJarName(type: Copy) {
 }
 
 
-task dist(dependsOn: ['build','normalizeJarName', 'extractWar'], type: Rpm) {
-    packageName 'bahmni-reports'
-    release System.getenv('GO_PIPELINE_COUNTER') ?: project.buildNumber
-    arch NOARCH
-    os LINUX
-    user 'root'
+ospackage {
+    packageName = 'bahmni-reports'
+    release = System.getenv('GO_PIPELINE_COUNTER') ?: project.buildNumber
+    arch = NOARCH
+    os = LINUX
+    user = 'root'
 
     into '/opt/bahmni-reports'
-
-    postInstall file("${projectDir}/scripts/postinstall.sh")
-    preUninstall file("${projectDir}/scripts/preuninstall.sh")
-    postUninstall file("${projectDir}/scripts/postuninstall.sh")
 
     from("${projectDir}/resources/log4j.properties") {
         fileMode = 0644
         createDirectoryEntry = true
         into 'bahmni-reports/WEB-INF/classes'
     }
-
 
     from("${buildDir}/libs/bahmni-reports.jar") {
         fileMode = 0644
@@ -96,6 +90,14 @@ task dist(dependsOn: ['build','normalizeJarName', 'extractWar'], type: Rpm) {
         createDirectoryEntry = true
         into 'bahmni-reports'
     }
+}
+
+buildRpm {
+    dependsOn 'build','normalizeJarName', 'extractWar'
+
+    postInstall file("${projectDir}/scripts/postinstall.sh")
+    preUninstall file("${projectDir}/scripts/preuninstall.sh")
+    postUninstall file("${projectDir}/scripts/postuninstall.sh")
 }
 
 dependencies {

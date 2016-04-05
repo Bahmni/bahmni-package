@@ -1,5 +1,5 @@
 plugins {
-    id "nebula.os-package" version "2.2.6"
+    id "nebula.ospackage" version "3.4.0"
 }
 
 repositories {
@@ -18,7 +18,6 @@ group 'org.bahmni.erp'
 version project.bahmniRelease
 
 apply plugin: 'java'
-apply plugin: 'rpm'
 
 //The openerp-atomfeed-service.war will be copied by the CI server after the artifacts are built.
 task extractWar(type: Copy) {
@@ -33,18 +32,14 @@ task normalizeJarName(type: Copy) {
     rename(project.name + '-' + project.bahmniRelease + '.jar', project.name + '.jar')
 }
 
-task dist(dependsOn: ['build', 'normalizeJarName', 'extractWar'], type: Rpm) {
-    packageName 'bahmni-erp-connect'
-    release System.getenv('GO_PIPELINE_COUNTER')?: "1"
-    arch NOARCH
-    os LINUX
-    user 'root'
+ospackage {
+    packageName = 'bahmni-erp-connect'
+    release = System.getenv('GO_PIPELINE_COUNTER')?: "1"
+    arch = NOARCH
+    os = LINUX
+    user = 'root'
 
     into '/opt/bahmni-erp-connect'
-
-    postInstall file("${projectDir}/scripts/postinstall.sh")
-    preUninstall file("${projectDir}/scripts/preuninstall.sh")
-    postUninstall file("${projectDir}/scripts/postuninstall.sh")
 
     from("${projectDir}/resources/log4j.xml") {
         fileMode = 0644
@@ -92,6 +87,14 @@ task dist(dependsOn: ['build', 'normalizeJarName', 'extractWar'], type: Rpm) {
         createDirectoryEntry = true
         into 'bahmni-erp-connect'
     }
+}
+
+buildRpm {
+    dependsOn 'build', 'normalizeJarName', 'extractWar'
+
+    postInstall file("${projectDir}/scripts/postinstall.sh")
+    preUninstall file("${projectDir}/scripts/preuninstall.sh")
+    postUninstall file("${projectDir}/scripts/postuninstall.sh")
 }
 
 dependencies {
