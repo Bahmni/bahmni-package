@@ -41,6 +41,6 @@ buildRpm {
     requires('mod_wsgi')
     requires('python-flask') //This is required for client_side_logging
 
+    preInstall file("${projectDir}/scripts/preinstall.sh")
     postInstall file("${projectDir}/scripts/postinstall.sh")
-    postUninstall file("${projectDir}/scripts/postuninstall.sh")
 }

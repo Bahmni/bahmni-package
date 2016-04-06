@@ -89,9 +89,9 @@ task dist(type: Rpm) {
 
     requires('postgresql92')
 
+    preInstall file("${projectDir}/scripts/pacs-integration/preinstall.sh")
     postInstall file("${projectDir}/scripts/pacs-integration/postinstall.sh")
     preUninstall file("${projectDir}/scripts/pacs-integration/preuninstall.sh")
-    postUninstall file("${projectDir}/scripts/pacs-integration/postuninstall.sh")
 
     from("${projectDir}/scripts/rpm/") {
         fileMode = 0744
@@ -141,7 +141,6 @@ task dist_dcm4chee(type: Rpm) {
     preInstall file("${projectDir}/scripts/dcm4chee/preinstall.sh")
     postInstall file("${projectDir}/scripts/dcm4chee/postinstall.sh")
     preUninstall file("${projectDir}/scripts/dcm4chee/preuninstall.sh")
-    postUninstall file("${projectDir}/scripts/dcm4chee/postuninstall.sh")
 
     from("${projectDir}/scripts/rpm/") {
         fileMode = 0744

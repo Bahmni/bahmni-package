@@ -95,9 +95,9 @@ ospackage {
 buildRpm {
     dependsOn 'build','normalizeJarName', 'extractWar'
 
+    preInstall file("${projectDir}/scripts/preinstall.sh")
     postInstall file("${projectDir}/scripts/postinstall.sh")
     preUninstall file("${projectDir}/scripts/preuninstall.sh")
-    postUninstall file("${projectDir}/scripts/postuninstall.sh")
 }
 
 dependencies {
