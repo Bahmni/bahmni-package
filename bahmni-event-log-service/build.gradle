@@ -61,7 +61,7 @@ ospackage {
     }
 
     from("${projectDir}/resources/run-liquibase.sh") {
-        fileMode = 0744
+        fileMode = 0644
         user 'bahmni'
         into 'etc'
     }
@@ -72,7 +72,7 @@ ospackage {
         into 'bin'
     }
     from("${projectDir}/resources/placeholder") {
-        fileMode = 0644
+        fileMode = 0744
         createDirectoryEntry = true
         into 'run'
     }
@@ -85,7 +85,7 @@ ospackage {
 
 
     from("${buildDir}/bahmni-event-log-service/") {
-        fileMode = 0644
+        fileMode = 0755
         createDirectoryEntry = true
         into 'bahmni-event-log-service'
     }
