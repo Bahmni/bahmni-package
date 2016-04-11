@@ -61,7 +61,7 @@ ospackage {
     }
 
     from("${projectDir}/resources/run-liquibase.sh") {
-        fileMode = 0644
+        fileMode = 0744
         user 'bahmni'
         into 'etc'
     }
