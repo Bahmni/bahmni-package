@@ -44,6 +44,7 @@ openmrs_pid() {
 link_modules() {
     if [[ ! -e /home/$OPENMRS_SERVER_USER/.OpenMRS ]]; then
         mkdir /home/$OPENMRS_SERVER_USER/.OpenMRS
+        chown bahmni:bahmni /home/$OPENMRS_SERVER_USER/.OpenMRS
         ln -s /opt/openmrs/etc/openmrs-runtime.properties /home/$OPENMRS_SERVER_USER/.OpenMRS/openmrs-runtime.properties
     fi
     if [[ ! -e/home/$OPENMRS_SERVER_USER/.OpenMRS/modules ]]; then
