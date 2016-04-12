@@ -15,7 +15,8 @@ task extractOmods(type: Copy) {
     into file("${buildDir}/distro/")
 }
 
-task dist(dependsOn: ['build', 'extractOmods'], type: Rpm) {
+buildRpm {
+    dependsOn 'build', 'extractOmods'
     packageName 'bahmni-emr'
     release System.getenv('GO_PIPELINE_COUNTER') ?: "1"
     arch NOARCH

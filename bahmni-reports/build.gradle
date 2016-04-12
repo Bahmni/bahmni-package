@@ -34,7 +34,8 @@ task normalizeJarName(type: Copy) {
 }
 
 
-task dist(dependsOn: ['build','normalizeJarName', 'extractWar'], type: Rpm) {
+buildRpm {
+    dependsOn 'build','normalizeJarName', 'extractWar'
     packageName 'bahmni-reports'
     release System.getenv('GO_PIPELINE_COUNTER') ?: project.buildNumber
     arch NOARCH

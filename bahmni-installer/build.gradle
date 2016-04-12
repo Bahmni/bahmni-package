@@ -12,7 +12,8 @@ task extractBahmniPlaybooks(type: Copy) {
     into file("${projectDir}/resources")
 }
 
-task dist(dependsOn: ['extractBahmniPlaybooks'], type: Rpm) {
+buildRpm {
+    dependsOn 'extractBahmniPlaybooks'
     packageName 'bahmni-installer'
     release System.getenv('GO_PIPELINE_COUNTER')?: "1"
     arch NOARCH

@@ -38,7 +38,8 @@ task normalizeJarName(type: Copy) {
 //744 for all files which are executables
 //755 for all folders
 
-task dist(dependsOn: ['build', 'normalizeJarName', 'downloadMRSWar'], type: Rpm) {
+buildRpm {
+    dependsOn 'build', 'normalizeJarName', 'downloadMRSWar'
     packageName 'openmrs'
     release System.getenv('GO_PIPELINE_COUNTER') ?: "1"
     arch NOARCH

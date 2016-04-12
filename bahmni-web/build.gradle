@@ -18,7 +18,8 @@ task extractBahmniConfig(type: Copy){
 }
 
 
-task dist(dependsOn: ["extractBahmniApps", "extractBahmniConfig"], type: Rpm) {
+buildRpm {
+    dependsOn "extractBahmniApps", "extractBahmniConfig"
     packageName 'bahmni-web'
     release System.getenv('GO_PIPELINE_COUNTER') ?: project.buildNumber
     arch NOARCH
