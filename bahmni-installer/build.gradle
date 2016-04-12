@@ -50,6 +50,7 @@ buildRpm {
     dependsOn 'extractBahmniPlaybooks'
 
     requires('python-devel')
+    requires('python-setuptools')
     requires('epel-release')
 
     preInstall file("${projectDir}/scripts/preinstall.sh")
