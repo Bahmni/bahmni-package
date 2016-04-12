@@ -206,7 +206,7 @@
            name="jboss:service=WebService">
         <!-- The Bind address and Port -->
         <attribute name="BindAddress">${jboss.bind.address}</attribute>
-        <attribute name="Port">8087</attribute>
+        <attribute name="Port">8083</attribute>
         <!--  The address to use for the host portion of the RMI codebase URL -->
         <attribute name="Host">${java.rmi.server.hostname}</attribute>
         <!-- Should non-EJB .class files be downloadable -->

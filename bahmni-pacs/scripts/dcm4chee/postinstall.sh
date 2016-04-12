@@ -12,8 +12,10 @@ if [ "${IS_PASSIVE:-0}" -ne "1" ]; then
 fi
 sudo $dcm4chee_path/bin/install_jboss.sh /usr/share/jboss-4.2.3.GA
 
-cp -f /opt/dcm4chee/etc/server.xml $dcm4chee_path/server/default/deploy/jboss-web.deployer/
-cp -f /opt/dcm4chee/etc/jboss-service.xml $dcm4chee_path/server/default/conf/
+rm -rf $dcm4chee_path/server/default/deploy/jboss-web.deployer/server.xml
+rm -rf $dcm4chee_path/server/default/conf/jboss-service.xml
+ln -s /opt/dcm4chee/etc/server.xml $dcm4chee_path/server/default/deploy/jboss-web.deployer/
+ln -s /opt/dcm4chee/etc/jboss-service.xml $dcm4chee_path/server/default/conf/
 
 #Oviyam2 steps
 cp -R /opt/dcm4chee/etc/oviyam2.war $dcm4chee_path/server/default/deploy/
