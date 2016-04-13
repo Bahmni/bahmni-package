@@ -48,6 +48,7 @@ ospackage {
         include('uilibrary-*.omod')
         include('webservices.rest-*.omod')
         include('bacteriology-*.omod')
+        include('rulesengine-*.omod')
     }
 
     from("${projectDir}/resources/") {
