@@ -9,6 +9,7 @@ ln -s /opt/bahmni-installer/etc/rpm_versions.yml /etc/bahmni-installer/rpm_versi
 
 mkdir -p /var/log/bahmni-installer
 chown -R bahmni:bahmni /var/log/bahmni-installer
+chmod 777 /var/log/bahmni-installer
 
 rm -f /etc/bahmni-installer/local
 ln -s /opt/bahmni-installer/bahmni-playbooks/local /etc/bahmni-installer/local

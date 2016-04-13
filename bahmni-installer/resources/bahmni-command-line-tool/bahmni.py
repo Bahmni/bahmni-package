@@ -20,7 +20,7 @@ def cli(ctx, implementation, inventory, sql_path, database):
     addExtraVar(ctx,"implementation_name", implementation )
     ansible_version = os.popen("ansible --version").read()
     if "ansible 2.0.1" not in ansible_version:
-        subprocess.call('sudo yum install -y ansible-lint --enablerepo=epel-testing', shell=True)
+        subprocess.call('sudo yum install -y ansible --enablerepo=epel-testing', shell=True)
     ctx.obj['INVENTORY'] = '/etc/bahmni-installer/'+inventory
     ctx.obj['ANSIBLE_COMMAND'] =  "ansible-playbook -i "+ ctx.obj['INVENTORY'] +" {0} -vvvv {1}"
     ctx.obj['SQL_PATH'] = sql_path
