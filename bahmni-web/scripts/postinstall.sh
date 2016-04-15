@@ -52,6 +52,7 @@ setupConfigs(){
     ln -s /opt/bahmni-web/etc/bahmni_config/openmrs/ordertemplates /opt/openmrs/ordertemplates
     ln -s /opt/bahmni-web/etc/bahmni_config/openmrs/encounterModifier /opt/openmrs/encounterModifier
     ln -s /opt/bahmni-web/etc/bahmni_config/openmrs/patientMatchingAlgorithm /opt/openmrs/patientMatchingAlgorithm
+    ln -s /opt/bahmni-web/etc/bahmni_config/openmrs/elisFeedInterceptor /opt/openmrs/elisFeedInterceptor
     ln -s /opt/bahmni-web/etc/bahmni_config /opt/openmrs/bahmni_config #TODO: Why is this required?
 }
 
