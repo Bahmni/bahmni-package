@@ -93,6 +93,7 @@ ensure_stopped() {
 
     if [ $count -gt $kwait ]; then
       echo -n -e "\n\e[00;31mkilling processes which didn't stop after $SHUTDOWN_WAIT seconds\e[00m"
+      rm -rf $PIDFILE
       kill -9 $pid
     fi
 }
