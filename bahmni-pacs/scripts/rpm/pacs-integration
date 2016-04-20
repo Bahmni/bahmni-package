@@ -21,6 +21,10 @@ create_dirs() {
     if [[ ! -e /var/run/pacs-integration ]]; then
         ln -s /opt/pacs-integration/run /var/run/pacs-integration
     fi
+
+    if [[ ! -e /var/run/pacs-integration/pacs-integration ]]; then
+        ln -s /opt/pacs-integration/pacs-integration /var/run/pacs-integration/pacs-integration
+    fi
 }
 
 pacs-integration_pid() {
