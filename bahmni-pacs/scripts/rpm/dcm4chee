@@ -62,7 +62,7 @@ stop() {
   pid=$(dcm4chee_pid)
   if [ -n "$pid" ]
   then
-    echo -e "\e[00;31mStoping DCM4CHEE\e[00m"
+    echo -e "\e[00;31mStopping DCM4CHEE\e[00m"
     sh $DCM4CHEE_HOME/bin/shutdown.sh
 
     let kwait=$SHUTDOWN_WAIT

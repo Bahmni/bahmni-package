@@ -16,6 +16,7 @@ rm -rf $dcm4chee_path/server/default/deploy/jboss-web.deployer/server.xml
 rm -rf $dcm4chee_path/server/default/conf/jboss-service.xml
 ln -s /opt/dcm4chee/etc/server.xml $dcm4chee_path/server/default/deploy/jboss-web.deployer/
 ln -s /opt/dcm4chee/etc/jboss-service.xml $dcm4chee_path/server/default/conf/
+ln -s /opt/dcm4chee/etc/orm2dcm_bahmni.xsl $dcm4chee_path/server/default/conf/dcm4chee-hl7/
 
 #Oviyam2 steps
 cp -R /opt/dcm4chee/etc/oviyam2.war $dcm4chee_path/server/default/deploy/
