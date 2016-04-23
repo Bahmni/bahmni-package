@@ -120,7 +120,7 @@ def db_restore(ctx):
 @cli.command(name="install-nagios", short_help="Installs nagios server and nagios agents.")
 @click.pass_context
 def install_nagios(ctx):
-    command = ctx.obj['ANSIBLE_COMMAND'].format("nagios.yml", ctx.obj['EXTRA_VARS'])
+    command = ctx.obj['ANSIBLE_COMMAND'].format("all.yml", ctx.obj['EXTRA_VARS'])+ " -t nagios"
     click.echo(command)
     return subprocess.check_call(command, shell=True)
 
