@@ -7,9 +7,10 @@ import os
 @click.option("--inventory", "-i", default='local', help='Inventory file that needs to picked up from /etc/bahmni-installer')
 @click.option("--sql_path", "-path", help='Option to accept the exact file path from which the db will be restored ')
 @click.option("--database", "-db", help='Option to accept the specific database name')
+@click.option("--verbose", "-v", is_flag=True, help='verbose operation')
 
 @click.pass_context
-def cli(ctx, implementation, inventory, sql_path, database):
+def cli(ctx, implementation, inventory, sql_path, database, verbose):
     ctx.obj={}
     """Command line utility for Bahmni"""
     os.chdir('/opt/bahmni-installer/bahmni-playbooks')
@@ -18,11 +19,14 @@ def cli(ctx, implementation, inventory, sql_path, database):
     addExtraVarFile(ctx, "/etc/bahmni-installer/rpm_versions.yml")
     addExtraVarFile(ctx, "/etc/bahmni-installer/setup.yml")
     addExtraVar(ctx,"implementation_name", implementation )
+
     ansible_version = os.popen("ansible --version").read()
     if "ansible 2.0.1" not in ansible_version:
         subprocess.call('sudo yum install -y ansible --enablerepo=epel-testing', shell=True)
+
+    verbosity="-vvvv" if verbose else "-vv"
     ctx.obj['INVENTORY'] = '/etc/bahmni-installer/'+inventory
-    ctx.obj['ANSIBLE_COMMAND'] =  "ansible-playbook -i "+ ctx.obj['INVENTORY'] +" {0} -vvvv {1}"
+    ctx.obj['ANSIBLE_COMMAND'] =  "ansible-playbook -i "+ ctx.obj['INVENTORY'] +" {0} " +verbosity+ " {1}"
     ctx.obj['SQL_PATH'] = sql_path
     ctx.obj['DATABASE'] = database
 
