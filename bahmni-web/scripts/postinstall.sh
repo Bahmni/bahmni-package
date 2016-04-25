@@ -35,8 +35,11 @@ setupCacheDir(){
 setupClientSideLogging(){
     mkdir -p /var/log/client-side-logs/
     touch /var/log/client-side-logs/client-side.log
+    chown -R apache:apache /var/log/client-side-logs/
     rm -rf /var/www/client_side_logging
     ln -s /opt/bahmni-web/etc/client_side_logging/ /var/www/client_side_logging
+    rm -rf /usr/lib/python2.6/site-packages/client_side_logging
+    ln -s /opt/bahmni-web/etc/client_side_logging/ /usr/lib/python2.6/site-packages/
 }
 
 setupApps(){
