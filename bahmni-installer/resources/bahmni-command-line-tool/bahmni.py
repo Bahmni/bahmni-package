@@ -22,7 +22,7 @@ def cli(ctx, implementation, inventory, sql_path, database, verbose):
 
     ansible_version = os.popen("ansible --version").read()
     if "ansible 2.0.1" not in ansible_version:
-        subprocess.call('sudo yum install -y ansible --enablerepo=epel-testing', shell=True)
+        subprocess.call('sudo yum install -y ansible', shell=True)
 
     verbosity="-vvvv" if verbose else "-vv"
     ctx.obj['INVENTORY'] = '/etc/bahmni-installer/'+inventory
