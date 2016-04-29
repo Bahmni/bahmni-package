@@ -135,7 +135,7 @@ concat_configs(){
 }
 
 install_ansible() {
-  sudo yum install -y ansible-1.9.4
+  sudo yum install -y ansible1.9
 }
 
 install() {
