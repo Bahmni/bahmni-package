@@ -49,6 +49,7 @@ ospackage {
         include('webservices.rest-*.omod')
         include('bacteriology-*.omod')
         include('rulesengine-*.omod')
+        include('episodes-*.omod')
     }
 
     from("${projectDir}/resources/") {
