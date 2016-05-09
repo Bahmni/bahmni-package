@@ -38,7 +38,12 @@ initDB(){
     if [ "$RESULT_DB" == "0" ]; then
         echo "Restoring base dump of openerp"
         createdb -Uopenerp -h$OPENERP_DB_SERVER openerp;
-        psql -Uopenerp -h$OPENERP_DB_SERVER openerp < /opt/bahmni-erp/db-dump/openerp_base_dump.sql
+
+        if [ "${IMPLEMENTATION_NAME:-default}" = "default" ]; then
+            psql -Uopenerp -h$OPENERP_DB_SERVER openerp < /opt/bahmni-erp/db-dump/openerp_demo_dump.sql
+        else
+            psql -Uopenerp -h$OPENERP_DB_SERVER openerp < /opt/bahmni-erp/db-dump/openerp_clean_dump.sql
+        fi
     fi
 }
 
