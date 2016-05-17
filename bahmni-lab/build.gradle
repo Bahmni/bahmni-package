@@ -63,6 +63,8 @@ ospackage {
         createDirectoryEntry = true
         into 'etc'
         exclude('migrateDb.sh')
+        exclude('openelis.war')
+        exclude('OpenElis.zip')
     }
 
     from("${projectDir}/scripts/rpm/") {
@@ -83,11 +85,6 @@ ospackage {
 
     from("${buildDir}/bahmni-lab/") {
         fileMode = 0755
-        createDirectoryEntry = true
-        into 'bahmni-lab'
-    }
-
-    from("${projectDir}/resources/placeholder") {
         createDirectoryEntry = true
         into 'bahmni-lab'
     }

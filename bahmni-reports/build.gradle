@@ -32,7 +32,6 @@ task normalizeJarName(type: Copy) {
     rename(project.name + '-' + project.bahmniRelease + '.jar', project.name + '.jar')
 }
 
-
 ospackage {
     packageName = 'bahmni-reports'
     release = System.getenv('GO_PIPELINE_COUNTER') ?: project.buildNumber
@@ -59,6 +58,8 @@ ospackage {
         createDirectoryEntry = true
         into 'etc'
         exclude('run-liquibase.sh')
+        exclude('bahmnireports.war')
+        exclude('*.checksum')
     }
 
     from("${projectDir}/resources/run-liquibase.sh") {
@@ -72,6 +73,7 @@ ospackage {
         createDirectoryEntry = true
         into 'bin'
     }
+
     from("${projectDir}/resources/placeholder") {
         fileMode = 0644
         createDirectoryEntry = true
@@ -83,7 +85,6 @@ ospackage {
         createDirectoryEntry = true
         into 'log'
     }
-
 
     from("${buildDir}/bahmni-reports/") {
         fileMode = 0755
