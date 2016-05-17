@@ -45,6 +45,7 @@ setupClientSideLogging(){
 setupApps(){
     rm -rf /var/www/bahmniapps /var/www/bahmni_config
     ln -s /opt/bahmni-web/etc/bahmniapps/ /var/www/bahmniapps
+    ln -s /opt/bahmni-web/etc/bahmni_openmrs_revision.json /var/www/bahmni_revisions/bahmni_openmrs_revision.json
 }
 
 setupConfigs(){

@@ -20,11 +20,13 @@ mkdir -p /home/bahmni/uploaded-files/elis
 
 #create links
 ln -s /opt/bahmni-lab/etc /etc/bahmni-lab
+ln -s /opt/bahmni-lab/etc/bahmni_openelis_revision.json /var/www/bahmni_revisions/bahmni_openelis_revision.json
 ln -s /opt/bahmni-lab/bin/bahmni-lab /etc/init.d/bahmni-lab
 ln -s /opt/bahmni-lab/run /var/run/bahmni-lab
 ln -s /opt/bahmni-lab/bahmni-lab /var/run/bahmni-lab/bahmni-lab
 ln -s /opt/bahmni-lab/log /var/log/bahmni-lab
 ln -s /opt/bahmni-lab/uploaded-files/elis /home/bahmni/uploaded-files/elis
+
 
 #create a database if it doesn't exist and if it is not passive machine.
 if [ "${IS_PASSIVE:-0}" -ne "1" ]; then
