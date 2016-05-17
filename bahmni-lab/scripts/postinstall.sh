@@ -17,6 +17,7 @@ useradd -g bahmni bahmni
 
 mkdir -p /opt/bahmni-lab/uploaded-files
 mkdir -p /home/bahmni/uploaded-files/elis
+mkdir -p /var/www/bahmni_revisions/
 
 #create links
 ln -s /opt/bahmni-lab/etc /etc/bahmni-lab
