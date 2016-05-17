@@ -51,7 +51,8 @@ link_directories(){
     ln -s $BAHMNI_ERP/etc /etc/openerp
     chown -R openerp:openerp /etc/openerp
     mkdir -p /var/www/bahmni_revisions/
-    ln -s /opt/bahmni-erp/etc/bahmni_openerp_revision.json /var/www/bahmni_revisions/bahmni_openerp_revision.json
+    mv /opt/bahmni-erp/etc/bahmni_openerp_revision.json /var/www/bahmni_revisions/bahmni_openerp_revision.json
+    chown bahmni:bahmni /var/www/bahmni_revisions/bahmni_openerp_revision.json
 }
 
 manage_config(){
