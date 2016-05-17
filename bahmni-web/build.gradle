@@ -30,7 +30,6 @@ ospackage {
         into 'etc'
         exclude('bahmniapps.zip')
         exclude('default_config.zip')
-        exclude('*.checksum')
     }
 }
 

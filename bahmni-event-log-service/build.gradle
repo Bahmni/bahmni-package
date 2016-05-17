@@ -58,8 +58,6 @@ ospackage {
         createDirectoryEntry = true
         into 'etc'
         exclude('run-liquibase.sh')
-        exclude('event-log-service-webapp.war')
-        exclude('*.checksum')
     }
 
     from("${projectDir}/resources/run-liquibase.sh") {
