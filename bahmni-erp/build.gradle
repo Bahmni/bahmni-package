@@ -33,6 +33,7 @@ ospackage {
         createDirectoryEntry = true
         into 'etc'
         include('placeholder')
+        include('bahmni_openerp_revision.json')
     }
 
     from("${projectDir}/scripts/rpm/") {
