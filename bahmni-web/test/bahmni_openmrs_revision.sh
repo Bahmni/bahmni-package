@@ -4,8 +4,8 @@ revision='{
     "go" : "https://ci-bahmni.thoughtworks.com/go/pipelines/value_stream_map/_jobname_/_pipelineCount_",
     "github": {
         "bahmni_core" : "https://github.com/Bahmni/bahmni-core/commit/_bahmniCoreSha_",
-        "openmrs" : "https://github.com/Bahmni/openmrs-distro-bahmni/commit/_openmrsSha_",
-        "openmrs_modules" : "https://github.com/Bahmni/openmrs-module-bahmniapps/commit/_openmrsModulesSha_",
+        "openmrs_distro_bahmni" : "https://github.com/Bahmni/openmrs-distro-bahmni/commit/_openmrsSha_",
+        "bahmni_app" : "https://github.com/Bahmni/openmrs-module-bahmniapps/commit/_openmrsModulesSha_",
         "functional_tests" : "https://github.com/Bahmni/emr-functional-tests/commit/_functionalTestsSha_",
         "config" : "https://github.com/Bahmni/default-config/commit/_defaultConfigSha_"
     }

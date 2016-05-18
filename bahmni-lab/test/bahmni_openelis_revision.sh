@@ -3,7 +3,7 @@
 revision='{
     "go" : "https://ci-bahmni.thoughtworks.com/go/pipelines/value_stream_map/_jobname_/_pipelineCount_",
     "github": {
-        "elis" : "https://github.com/Bahmni/OpenElis/commit/_sha_"
+        "openelis" : "https://github.com/Bahmni/OpenElis/commit/_sha_"
     }
 }'
 
