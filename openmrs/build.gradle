@@ -18,7 +18,8 @@ def rpmOpenmrsVersion = project.openmrsVersion.replaceAll('-SNAPSHOT', '')
 rpmOpenmrsVersion = rpmOpenmrsVersion.replaceAll('-beta', '')
 
 group 'org.bahmni.openmrs'
-version rpmOpenmrsVersion
+version project.bahmniRelease
+
 
 task extractWar(dependsOn: 'downloadMRSWar', type: Copy) {
     from zipTree(file("${buildDir}/resources/main/openmrs.war"))
@@ -37,7 +38,7 @@ task normalizeJarName(type: Copy) {
 //755 for all folders
 
 ospackage {
-    packageName = 'openmrs'
+    packageName = 'bahmni-openmrs'
     release = System.getenv('GO_PIPELINE_COUNTER') ?: "1"
     arch = NOARCH
     os = LINUX
