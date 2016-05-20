@@ -5,9 +5,6 @@ plugins {
 group 'org.bahmni.emr'
 version project.bahmniRelease
 
-def rpmOpenmrsVersion = project.openmrsVersion.replaceAll('-','.')
-
-
 task extractOmods(type: Copy) {
     from zipTree(file("${projectDir}/resources/distro-"+project.bahmniRelease+"-SNAPSHOT-distro.zip"))
     into file("${buildDir}/distro/")

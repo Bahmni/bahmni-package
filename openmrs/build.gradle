@@ -14,9 +14,6 @@ repositories {
     }
 }
 
-def rpmOpenmrsVersion = project.openmrsVersion.replaceAll('-SNAPSHOT', '')
-rpmOpenmrsVersion = rpmOpenmrsVersion.replaceAll('-beta', '')
-
 group 'org.bahmni.openmrs'
 version project.bahmniRelease
 
@@ -29,8 +26,8 @@ task extractWar(dependsOn: 'downloadMRSWar', type: Copy) {
 task normalizeJarName(type: Copy) {
     from "${buildDir}" + "/libs/"
     into "${buildDir}" + "/libs/"
-    include(project.name + '-' + rpmOpenmrsVersion + '.jar')
-    rename(project.name + '-' + rpmOpenmrsVersion + '.jar', 'openmrs.jar')
+    include(project.name + '-' + project.bahmniRelease + '.jar')
+    rename(project.name + '-' + project.bahmniRelease + '.jar', 'openmrs.jar')
 }
 
 //644 for all files other than executables
