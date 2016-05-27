@@ -21,7 +21,7 @@ def cli(ctx, implementation, inventory, sql_path, database, verbose):
     addExtraVar(ctx,"implementation_name", implementation )
 
     ansible_version = os.popen("ansible --version").read()
-    if "ansible 2.0.1" not in ansible_version:
+    if "ansible 2.0" not in ansible_version:
         subprocess.call('sudo yum install -y ansible', shell=True)
 
     verbosity="-vvvv" if verbose else "-vv"
