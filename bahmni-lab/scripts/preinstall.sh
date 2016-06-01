@@ -7,4 +7,3 @@ rm -rf /etc/init.d/bahmni-lab
 rm -rf /var/run/bahmni-lab
 rm -rf /var/log/bahmni-lab
 rm -rf /home/bahmni/uploaded-files/elis
-rm -rf /var/www/bahmni_revisions/bahmni_openelis_revision.json

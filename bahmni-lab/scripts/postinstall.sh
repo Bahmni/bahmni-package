@@ -17,7 +17,6 @@ useradd -g bahmni bahmni
 
 mkdir -p /opt/bahmni-lab/uploaded-files
 mkdir -p /home/bahmni/uploaded-files/elis
-mkdir -p /var/www/bahmni_revisions/
 
 #create links
 ln -s /opt/bahmni-lab/etc /etc/bahmni-lab
@@ -26,7 +25,6 @@ ln -s /opt/bahmni-lab/run /var/run/bahmni-lab
 ln -s /opt/bahmni-lab/bahmni-lab /var/run/bahmni-lab/bahmni-lab
 ln -s /opt/bahmni-lab/log /var/log/bahmni-lab
 ln -s /opt/bahmni-lab/uploaded-files/elis /home/bahmni/uploaded-files/elis
-mv /opt/bahmni-lab/etc/bahmni_openelis_revision.json /var/www/bahmni_revisions/bahmni_openelis_revision.json
 
 
 #create a database if it doesn't exist and if it is not passive machine.
@@ -46,5 +44,4 @@ chown -R bahmni:bahmni /var/log/bahmni-lab
 chown -R bahmni:bahmni /var/run/bahmni-lab
 chown -R bahmni:bahmni /etc/init.d/bahmni-lab
 chown -R bahmni:bahmni /etc/bahmni-lab
-chown -R bahmni:bahmni /var/www/bahmni_revisions/bahmni_openelis_revision.json
 
