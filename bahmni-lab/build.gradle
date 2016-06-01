@@ -65,6 +65,7 @@ ospackage {
         exclude('migrateDb.sh')
         exclude('openelis.war')
         exclude('OpenElis.zip')
+        exclude('*.checksum')
     }
 
     from("${projectDir}/scripts/rpm/") {
