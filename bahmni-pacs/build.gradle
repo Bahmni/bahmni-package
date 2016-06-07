@@ -62,16 +62,21 @@ task extractJBoss(dependsOn: ["downloadJBoss"], type: Copy) {
 }
 
 task downloadOviyam2(type: Download) {
-    src 'http://172.18.2.14/packages/build/oviyam2.war'
+    src 'http://172.18.2.14/packages/build/Oviyam-2.1-bin.zip'
     dest buildDir
 }
 
 downloadOviyam2.onlyIf {
-    !(new File("${buildDir}/oviyam2.war").exists())
+    !(new File("${buildDir}/Oviyam-2.1-bin.zip").exists())
 }
 
-task extractOviyam2(dependsOn: ["downloadOviyam2"], type: Copy) {
-    from zipTree("${buildDir}/oviyam2.war")
+task extractOviyam2Zip(dependsOn: ["downloadOviyam2"], type: Copy) {
+    from zipTree("${buildDir}/Oviyam-2.1-bin.zip")
+    into file("${buildDir}")
+}
+
+task extractOviyam2War(dependsOn: ["extractOviyam2Zip"], type: Copy) {
+    from zipTree("${buildDir}/Oviyam-2.1-bin/Oviyam-2.1-bin/oviyam2.war")
     into file("${projectDir}/resources/dcm4chee/oviyam2.war/")
 }
 
@@ -126,7 +131,7 @@ task dist(type: Rpm) {
 }
 
 task dist_dcm4chee(type: Rpm) {
-    dependsOn 'extractDCM4CHEE', 'extractJBoss', 'extractOviyam2'
+    dependsOn 'extractDCM4CHEE', 'extractJBoss', 'extractOviyam2Zip', 'extractOviyam2War'
 
     packageName = 'dcm4chee'
     release = System.getenv('GO_PIPELINE_COUNTER') ?: project.buildNumber
