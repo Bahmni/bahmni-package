@@ -4,7 +4,7 @@ import os
 
 @click.group()
 @click.option("--implementation", "-I", help='Option to specify the implementation config to be installed. Default value is default. If this options is used, implementation config folder has to be placed in /etc/bahmni-installer/deployment-artifacts with name <impelementation>_config')
-@click.option("--inventory", "-i", default='local', help='Inventory file that needs to picked up from /etc/bahmni-installer')
+@click.option("--inventory", "-i", required=True, help='Inventory file that needs to picked up from /etc/bahmni-installer')
 @click.option("--sql_path", "-path", help='Option to accept the exact file path from which the db will be restored ')
 @click.option("--database", "-db", help='Option to accept the specific database name')
 @click.option("--verbose", "-v", is_flag=True, help='verbose operation')
