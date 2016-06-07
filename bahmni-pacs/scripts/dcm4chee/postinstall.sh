@@ -24,11 +24,6 @@ ln -s /opt/dcm4chee/etc/pacs-postgres-ds.xml $dcm4chee_path/server/default/deplo
 cp -R /opt/dcm4chee/etc/oviyam2.war $dcm4chee_path/server/default/deploy/
 cp -f /opt/dcm4chee/etc/oviyam2-web.xml $dcm4chee_path/server/default/deploy/oviyam2.war/WEB-INF/web.xml
 
-if [ -d /var/lib/bahmni/archive ]
-then
-    sudo mv /var/lib/bahmni/archive $dcm4chee_path/server/default/
-fi
-
 mkdir -p $dcm4chee_path/server/default/work/jboss.web/localhost
 
 ln -s /opt/dcm4chee/etc/oviyam2-1-config.xml $dcm4chee_path/server/default/work/jboss.web/localhost/
@@ -37,3 +32,5 @@ chmod 644 $dcm4chee_path/server/default/work/jboss.web/localhost/oviyam2-1-confi
 ln -s /opt/dcm4chee/bin/dcm4chee /etc/init.d/dcm4chee
 chown -R bahmni:bahmni /etc/init.d/dcm4chee
 chown -R bahmni:bahmni /var/lib/bahmni/dcm4chee-2.18.1-psql
+
+ln -s /home/bahmni/pacs_images/archive /var/lib/bahmni/dcm4chee-2.18.1-psql/server/default/
