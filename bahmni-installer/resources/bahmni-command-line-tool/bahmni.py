@@ -45,6 +45,12 @@ def install(ctx):
    click.echo(command)
    return subprocess.check_call(command, shell=True)
 
+@cli.command(name="install-impl",short_help="Installs bahmni implementation specific customizations on respective hosts specified in inventory file")
+@click.pass_context
+def install_implementation(ctx):
+   command = ctx.obj['ANSIBLE_COMMAND'].format("/var/www/bahmni_config/playbooks/all.yml", ctx.obj['EXTRA_VARS'])
+   click.echo(command)
+   return subprocess.check_call(command, shell=True)
 
 @cli.command(short_help="starts all the services required for bahmni")
 @click.pass_context
