@@ -1,7 +1,6 @@
-#!/bin/bash
-
 mkdir -p /etc/bahmni-installer
-mkdir -p /etc/bahmni-installer/deployment-artifacts
+mkdir -p /etc/bahmni-installer/deployment-artifacts/modules
+
 rm -f /usr/bin/bahmni
 chown -R bahmni:bahmni /opt/bahmni-installer
 rm -f /etc/bahmni-installer/rpm_versions.yml
