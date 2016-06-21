@@ -43,7 +43,7 @@ start(){
         echo -e "\e[00;32mStarting bahmni-lab\e[00m"
         if [ `user_exists $BAHMNI_LAB_SERVER_USER` = "1" ]  && [ "$CUR_USER" != "$BAHMNI_LAB_SERVER_USER" ] ;
         then
-                /bin/su $BAHMNI_LAB_SERVER_USER -c $BAHMNI_LAB_SERVER_RUN
+                su -s /bin/bash $BAHMNI_LAB_SERVER_USER $BAHMNI_LAB_SERVER_RUN
         else
                 sh $BAHMNI_LAB_SERVER_RUN
         fi
@@ -62,7 +62,7 @@ debug(){
         echo -e "\e[00;32mStarting bahmni-lab\e[00m"
         if [ `user_exists $BAHMNI_LAB_SERVER_USER` = "1" ]  && [ "$CUR_USER" != "$BAHMNI_LAB_SERVER_USER" ] ;
         then
-                /bin/su $BAHMNI_LAB_SERVER_USER -c $BAHMNI_LAB_SERVER_DEBUG
+                su -s /bin/bash $BAHMNI_LAB_SERVER_USER $BAHMNI_LAB_SERVER_DEBUG
         else
                 sh $BAHMNI_LAB_SERVER_DEBUG
         fi

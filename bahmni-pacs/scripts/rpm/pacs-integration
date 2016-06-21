@@ -41,7 +41,7 @@ start() {
         echo -e "\e[00;32mStarting pacs-integration \e[00m"
         if [ `user_exists $PACS_SERVER_USER` = "1" ]  && [ "$CUR_USER" != "$PACS_SERVER_USER" ] ;
         then
-            /bin/su $PACS_SERVER_USER -c $PACS_SERVER_RUN
+            su -s /bin/bash $PACS_SERVER_USER $PACS_SERVER_RUN
         else
             sh $PACS_SERVER_RUN
         fi
@@ -59,7 +59,7 @@ debug() {
         echo -e "\e[00;32mStarting pacs-integration\e[00m"
         if [ `user_exists $PACS_SERVER_USER` = "1" ]  && [ "$CUR_USER" != "$PACS_SERVER_USER" ] ;
         then
-            /bin/su $PACS_SERVER_USER -c $PACS_SERVER_DEBUG
+            su -s /bin/bash $PACS_SERVER_USER $PACS_SERVER_DEBUG
         else
             sh $PACS_SERVER_DEBUG
         fi

@@ -43,7 +43,7 @@ start(){
         echo -e "\e[00;32mStarting bahmni-erp-connect\e[00m"
         if [ `user_exists $BAHMNI_ERP_CONNECT_USER` = "1" ]  && [ "$CUR_USER" != "$BAHMNI_ERP_CONNECT_USER" ] ;
         then
-                /bin/su $BAHMNI_ERP_CONNECT_USER -c $BAHMNI_ERP_CONNECT_RUN
+                su -s /bin/bash $BAHMNI_ERP_CONNECT_USER $BAHMNI_ERP_CONNECT_RUN
         else
                 sh $BAHMNI_ERP_CONNECT_RUN
         fi
@@ -62,7 +62,7 @@ debug(){
         echo -e "\e[00;32mStarting bahmni-erp-connect\e[00m"
         if [ `user_exists $BAHMNI_ERP_CONNECT_USER` = "1" ]  && [ "$CUR_USER" != "$BAHMNI_ERP_CONNECT_USER" ] ;
         then
-                /bin/su $BAHMNI_ERP_CONNECT_USER -c $BAHMNI_ERP_CONNECT_DEBUG
+                su -s /bin/bash $BAHMNI_ERP_CONNECT_USER $BAHMNI_ERP_CONNECT_DEBUG
         else
                 sh $BAHMNI_ERP_CONNECT_DEBUG
         fi

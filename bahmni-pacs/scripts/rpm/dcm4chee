@@ -42,7 +42,7 @@ start() {
     exit 0
   else
     echo -e "\e[00;32mStarting DCM4CHEE\e[00m"
-    su -c "/bin/bash $DCM4CHEE_HOME/bin/run.sh" $DCM4CHEE_USER > /dev/null &
+    su -s /bin/bash $DCM4CHEE_USER  "$DCM4CHEE_HOME/bin/run.sh"  > /dev/null &
   fi
   return 0
 }
