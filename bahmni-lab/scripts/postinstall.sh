@@ -29,10 +29,20 @@ ln -s /opt/bahmni-lab/uploaded-files/elis /home/bahmni/uploaded-files/elis
 
 #create a database if it doesn't exist and if it is not passive machine.
 if [ "${IS_PASSIVE:-0}" -ne "1" ]; then
-    if [ "${IMPLEMENTATION_NAME:-default}" = "default" ]; then
-        psql -Uclinlims -h$OPENELIS_DB_SERVER clinlims < /opt/bahmni-lab/db-dump/openelis_demo_dump.sql
-    else
-        (cd /opt/bahmni-lab/migrations && scripts/initDB.sh bahmni-base.dump)
+    RESULT_USER=`psql -U postgres -h$OPENELIS_DB_SERVER -tAc "SELECT count(*) FROM pg_roles WHERE rolname='clinlims'"`
+    RESULT_DB=`psql -U postgres -h$OPENELIS_DB_SERVER -tAc "SELECT count(*) from pg_catalog.pg_database where datname='clinlims'"`
+    if [ "$RESULT_USER" == "0" ]; then
+        echo "creating postgres user - clinlims with roles CREATEDB,NOCREATEROLE,SUPERUSER,REPLICATION"
+        createuser -Upostgres  -h$OPENELIS_DB_SERVER -d -R -s --replication clinlims;
+    fi
+
+    if [ "$RESULT_DB" == "0" ]; then
+        if [ "${IMPLEMENTATION_NAME:-default}" = "default" ]; then
+            createdb -Uclinlims -h$OPENELIS_DB_SERVER clinlims;
+            psql -Uclinlims -h$OPENELIS_DB_SERVER clinlims < /opt/bahmni-lab/db-dump/openelis_demo_dump.sql
+        else
+            (cd /opt/bahmni-lab/migrations && scripts/initDB.sh bahmni-base.dump)
+        fi
     fi
 
     (cd /opt/bahmni-lab/migrations/liquibase/ && /opt/bahmni-lab/migrations/scripts/migrateDb.sh)
