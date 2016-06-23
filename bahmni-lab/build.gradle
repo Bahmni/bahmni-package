@@ -107,6 +107,13 @@ ospackage {
         into 'migrations/scripts/'
     }
 
+    from("${projectDir}/resources/") {
+        fileMode = 0644
+        createDirectoryEntry = true
+        into 'db-dump'
+        include('openelis_demo_dump.sql')
+    }
+
 }
 
 buildRpm {
