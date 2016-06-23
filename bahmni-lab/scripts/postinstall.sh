@@ -21,7 +21,7 @@ mkdir -p /home/bahmni/uploaded-files/elis
 #create links
 ln -s /opt/bahmni-lab/etc /etc/bahmni-lab
 ln -s /opt/bahmni-lab/bin/bahmni-lab /etc/init.d/bahmni-lab
-ln -s /opt/bahmni-lab/run /var/run/bahmni-lab
+ln -s /opt/bahmni-lab/run /var/run/bahmni-lab√
 ln -s /opt/bahmni-lab/bahmni-lab /var/run/bahmni-lab/bahmni-lab
 ln -s /opt/bahmni-lab/log /var/log/bahmni-lab
 ln -s /opt/bahmni-lab/uploaded-files/elis /home/bahmni/uploaded-files/elis
@@ -29,7 +29,12 @@ ln -s /opt/bahmni-lab/uploaded-files/elis /home/bahmni/uploaded-files/elis
 
 #create a database if it doesn't exist and if it is not passive machine.
 if [ "${IS_PASSIVE:-0}" -ne "1" ]; then
-    (cd /opt/bahmni-lab/migrations && scripts/initDB.sh bahmni-base.dump)
+    if [ "${IMPLEMENTATION_NAME:-default}" = "default" ]; then
+        psql -Uclinlims -h$OPENELIS_DB_SERVER clinlims < /opt/bahmni-lab/db-dump/openelis_demo_dump.sql
+    else
+        (cd /opt/bahmni-lab/migrations && scripts/initDB.sh bahmni-base.dump)
+    fi
+
     (cd /opt/bahmni-lab/migrations/liquibase/ && /opt/bahmni-lab/migrations/scripts/migrateDb.sh)
 fi
 
