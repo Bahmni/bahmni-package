@@ -12,7 +12,7 @@ if [ "$RESULT" != "openmrs" ] ; then
   mysql -h $OPENMRS_DB_SERVER -u$MYSQL_ROOT_USER -p$MYSQL_ROOT_PASSWORD -e "CREATE DATABASE openmrs;"
   if [ "${IMPLEMENTATION_NAME:-default}" = "default" ]; then
     echo "openmrs database not found... Restoring a base dump suitable to work with default config"
-    mysql -h $OPENMRS_DB_SERVER -u$MYSQL_ROOT_USER -p$MYSQL_ROOT_PASSWORD  < scripts/openmrs_demo_dump.sql
+    mysql -h $OPENMRS_DB_SERVER -u$MYSQL_ROOT_USER -p$MYSQL_ROOT_PASSWORD openmrs < scripts/openmrs_demo_dump.sql
   else
     echo "clean openmrs database will be created with no demo data"
     mysql -h $OPENMRS_DB_SERVER -u$MYSQL_ROOT_USER -p$MYSQL_ROOT_PASSWORD  < scripts/openmrs_clean_dump.sql
