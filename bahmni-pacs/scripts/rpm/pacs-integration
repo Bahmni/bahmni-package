@@ -46,7 +46,7 @@ start() {
             sh $PACS_SERVER_RUN
         fi
   fi
-  return 0
+  exit 0
 }
 
 debug() {
@@ -64,7 +64,7 @@ debug() {
             sh $PACS_SERVER_DEBUG
         fi
     fi
-  return 0
+  exit 0
 }
 
 status() {
@@ -72,14 +72,18 @@ status() {
     if [ -n "$pid" ];
     then
         echo -e "\e[00;32mService pacs-integration is running with pid: $pid\e[00m"
+    exit 0
     else
         echo -e "\e[00;31mService pacs-integration is not running\e[00m"
+    exit 3
     fi
 }
 
 stop() {
 	echo -e "\e[00;31mTerminating pacs-integration\e[00m"
 	kill -9 $(pacs-integration_pid)
+	rm -f /var/run/pacs-integration/pacs-integration.pid
+    exit 0
 }
 user_exists(){
     if id -u $1 >/dev/null 2>&1; then

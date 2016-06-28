@@ -75,7 +75,7 @@ start(){
                 sh $OPENMRS_SERVER_RUN
         fi
   fi
-  return 0
+  exit 0
 }
 
 debug(){
@@ -96,19 +96,22 @@ debug(){
                 sh $OPENMRS_SERVER_DEBUG
         fi
   fi
-  return 0
+  exit 0
 }
 
 status(){
           pid=$(openmrs_pid)
           if [ -n "$pid" ]; then echo -e "\e[00;32mService openmrs is running with pid: $pid\e[00m"
           else echo -e "\e[00;31mService openmrs is not running\e[00m"
+          exit 3
           fi
 }
 
 stop() {
 	echo -e "\e[00;31mTerminating openmrs\e[00m"
 	kill -9 $(openmrs_pid)
+	rm -rf /var/run/openmrs/openmrs.pid
+	exit 0
 }
 user_exists(){
         if id -u $1 >/dev/null 2>&1; then
