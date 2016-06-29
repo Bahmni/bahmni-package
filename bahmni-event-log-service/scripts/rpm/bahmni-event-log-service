@@ -43,7 +43,7 @@ start(){
         echo -e "\e[00;32mStarting bahmni-event-log-service\e[00m"
         if [ `user_exists $BAHMNI_EVENT_LOG_SERVICE_USER` = "1" ]  && [ "$CUR_USER" != "$BAHMNI_EVENT_LOG_SERVICE_USER" ] ;
         then
-                /bin/su $BAHMNI_EVENT_LOG_SERVICE_USER -c $BAHMNI_EVENT_LOG_SERVICE_RUN
+                su -s /bin/bash $BAHMNI_EVENT_LOG_SERVICE_USER $BAHMNI_EVENT_LOG_SERVICE_RUN
         else
                 sh $BAHMNI_EVENT_LOG_SERVICE_RUN
         fi
@@ -62,7 +62,7 @@ debug(){
         echo -e "\e[00;32mStarting bahmni-event-log-service\e[00m"
         if [ `user_exists $BAHMNI_EVENT_LOG_SERVICE_USER` = "1" ]  && [ "$CUR_USER" != "$BAHMNI_EVENT_LOG_SERVICE_USER" ] ;
         then
-                /bin/su $BAHMNI_EVENT_LOG_SERVICE_USER -c $BAHMNI_EVENT_LOG_SERVICE_DEBUG
+                su -s /bin/bash $BAHMNI_EVENT_LOG_SERVICE_USER $BAHMNI_EVENT_LOG_SERVICE_DEBUG
         else
                 sh $BAHMNI_EVENT_LOG_SERVICE_DEBUG
         fi
