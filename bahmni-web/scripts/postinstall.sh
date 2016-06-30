@@ -77,10 +77,15 @@ managePermissionsForConfigs(){
     chown -R bahmni:bahmni /var/www/bahmni_config
 }
 
+setupOfflineMetadata(){
+     ln -s /opt/bahmni-web/etc/offlineMetadata.json /var/www/html/offlineMetadata.json
+}
+
 setupConfFiles
 setupCacheDir
 setupClientSideLogging
 setupApps
+setupOfflineMetadata
 
 if [[ "${IMPLEMENTATION_NAME:-default}" = "default" ]]; then
 setupConfigs
