@@ -134,5 +134,9 @@ def install_nagios(ctx):
     click.echo(command)
     return subprocess.check_call(command, shell=True)
 
-
+@cli.command(name="version", short_help="Print the Bahmni installer version")
+@click.pass_context
+def installer_version(ctx):
+    command = "yum list installed dcm4chee bahmni-* | awk '{print $1,$2}'"
+    return subprocess.check_call(command, shell=True)
 
