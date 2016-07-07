@@ -111,7 +111,7 @@ stop() {
 	echo -e "\e[00;31mTerminating openmrs\e[00m"
 	kill -9 $(openmrs_pid)
 	rm -rf /var/run/openmrs/openmrs.pid
-	exit 0
+	return
 }
 user_exists(){
         if id -u $1 >/dev/null 2>&1; then
