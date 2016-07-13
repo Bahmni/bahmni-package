@@ -8,7 +8,7 @@ revision='{
         "bahmni_app" : "https://github.com/Bahmni/openmrs-module-bahmniapps/commit/_openmrsModulesSha_",
         "functional_tests" : "https://github.com/Bahmni/emr-functional-tests/commit/_functionalTestsSha_",
         "config" : "https://github.com/Bahmni/default-config/commit/_defaultConfigSha_",
-        "Versions" : "/versions"
+        "Versions" : "/cgi-bin/getversion.py"
     }
 }'
 
