@@ -1,6 +1,6 @@
 {
-    "latestAndroidAppUrl": "",
-    "latestChromeAppUrl": "",
+    "latestAndroidAppUrl": "https://bahmni-repo.twhosted.com/offline_artifacts/Bahmni-0.83.apk",
+    "latestChromeAppUrl": "https://bahmni-repo.twhosted.com/offline_artifacts/Bahmni-0.83.tar.gz",
     "compatibleVersions": [
         0.83
     ]
