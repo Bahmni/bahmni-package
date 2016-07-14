@@ -21,7 +21,7 @@ mkdir -p /home/bahmni/uploaded-files/elis
 #create links
 ln -s /opt/bahmni-lab/etc /etc/bahmni-lab
 ln -s /opt/bahmni-lab/bin/bahmni-lab /etc/init.d/bahmni-lab
-ln -s /opt/bahmni-lab/run /var/run/bahmni-lab√
+ln -s /opt/bahmni-lab/run /var/run/bahmni-lab
 ln -s /opt/bahmni-lab/bahmni-lab /var/run/bahmni-lab/bahmni-lab
 ln -s /opt/bahmni-lab/log /var/log/bahmni-lab
 ln -s /opt/bahmni-lab/uploaded-files/elis /home/bahmni/uploaded-files/elis
