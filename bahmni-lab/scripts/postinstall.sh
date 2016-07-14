@@ -1,5 +1,7 @@
 #!/bin/bash
 
+OPENELIS_DB_SERVER=localhost #default for manual/non ansible RPM installs
+
 if [ -f /etc/bahmni-installer/bahmni.conf ]; then
 . /etc/bahmni-installer/bahmni.conf
 fi
