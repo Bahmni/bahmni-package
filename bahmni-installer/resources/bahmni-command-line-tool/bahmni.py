@@ -8,9 +8,10 @@ import os
 @click.option("--sql_path", "-path", help='Option to accept the exact file path from which the db will be restored ')
 @click.option("--database", "-db", help='Option to accept the specific database name')
 @click.option("--verbose", "-v", is_flag=True, help='verbose operation')
+@click.option("--implementation_play","-impl-play",help='Path of implementation specific ansible play')
 
 @click.pass_context
-def cli(ctx, implementation, inventory, sql_path, database, verbose):
+def cli(ctx, implementation, inventory, sql_path, database, verbose,implementation_play):
     ctx.obj={}
     """Command line utility for Bahmni"""
     os.chdir('/opt/bahmni-installer/bahmni-playbooks')
@@ -26,6 +27,7 @@ def cli(ctx, implementation, inventory, sql_path, database, verbose):
 
     verbosity="-vvvv" if verbose else "-vv"
     ctx.obj['INVENTORY'] = '/etc/bahmni-installer/'+inventory
+    ctx.obj['IMPLEMENTATION_PLAY'] = implementation_play
     ctx.obj['ANSIBLE_COMMAND'] =  "ansible-playbook -i "+ ctx.obj['INVENTORY'] +" {0} " +verbosity+ " {1}"
     ctx.obj['SQL_PATH'] = sql_path
     ctx.obj['DATABASE'] = database
@@ -48,7 +50,7 @@ def install(ctx):
 @cli.command(name="install-impl",short_help="Installs bahmni implementation specific customizations on respective hosts specified in inventory file")
 @click.pass_context
 def install_implementation(ctx):
-   command = ctx.obj['ANSIBLE_COMMAND'].format("/var/www/bahmni_config/playbooks/all.yml", ctx.obj['EXTRA_VARS'])
+   command = ctx.obj['ANSIBLE_COMMAND'].format(ctx.obj['IMPLEMENTATION_PLAY'], ctx.obj['EXTRA_VARS'])
    click.echo(command)
    return subprocess.check_call(command, shell=True)
 
