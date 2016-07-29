@@ -32,6 +32,13 @@ ospackage {
         exclude('default_config.zip')
         exclude('*.checksum')
     }
+
+    from("${projectDir}/resources/") {
+        fileMode = 0755
+        createDirectoryEntry = true
+        into '/home/bahmni/patient_images'
+        include('blank-user.png')
+    }
 }
 
 buildRpm {
