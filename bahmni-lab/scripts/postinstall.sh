@@ -40,7 +40,7 @@ if [ "${IS_PASSIVE:-0}" -ne "1" ]; then
 
     if [ "$RESULT_DB" == "0" ]; then
         if [ "${IMPLEMENTATION_NAME:-default}" = "default" ]; then
-            createdb -Uclinlims -h$OPENELIS_DB_SERVER clinlims;
+            createdb -Upostgres -h$OPENELIS_DB_SERVER clinlims;
             psql -Uclinlims -h$OPENELIS_DB_SERVER clinlims < /opt/bahmni-lab/db-dump/openelis_demo_dump.sql
         else
             (cd /opt/bahmni-lab/migrations && scripts/initDB.sh bahmni-base.dump)
