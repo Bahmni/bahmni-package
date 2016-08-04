@@ -34,6 +34,8 @@ create_configuration_dirs(){
     mkdir -p $UPLOADED_FILES_DIR
     mkdir -p $UPLOADED_RESULTS_DIR
 
+    cp -f /opt/openmrs/etc/blank-user.png $PATIENT_IMAGES_DIR/blank-user.png
+
     chown -R bahmni:bahmni /opt/openmrs
     chown -R bahmni:bahmni $UPLOADS_DIR
     chmod 755 $UPLOADS_DIR;

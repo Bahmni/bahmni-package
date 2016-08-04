@@ -66,6 +66,12 @@ ospackage {
         fileMode = 0644
         include('bahmnicore.properties')
     }
+
+    from("${projectDir}/resources/") {
+        fileMode = 0755
+        into 'etc'
+        include('blank-user.png')
+    }
 }
 
 buildRpm {
