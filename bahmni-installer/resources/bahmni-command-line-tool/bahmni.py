@@ -9,9 +9,10 @@ import os
 @click.option("--database", "-db", help='Option to accept the specific database name')
 @click.option("--verbose", "-v", is_flag=True, help='verbose operation')
 @click.option("--implementation_play","-impl-play",help='Path of implementation specific ansible play')
+@click.option("--migrate", "-m", help='Give a comma seperated list of modules to run migrations for. It has to be used with run_migrations command.Ex: bahmni --migrate erp,elis,mrs run_migrations')
 
 @click.pass_context
-def cli(ctx, implementation, inventory, sql_path, database, verbose,implementation_play):
+def cli(ctx, implementation, inventory, sql_path, database, verbose, implementation_play, migrate):
     ctx.obj={}
     """Command line utility for Bahmni"""
     os.chdir('/opt/bahmni-installer/bahmni-playbooks')
@@ -31,6 +32,7 @@ def cli(ctx, implementation, inventory, sql_path, database, verbose,implementati
     ctx.obj['ANSIBLE_COMMAND'] =  "ansible-playbook -i "+ ctx.obj['INVENTORY'] +" {0} " +verbosity+ " {1}"
     ctx.obj['SQL_PATH'] = sql_path
     ctx.obj['DATABASE'] = database
+    ctx.obj['MIGRATE'] = migrate
 
 def addExtraVarFile(ctx, file_path):
     if(os.path.isfile(file_path)):
@@ -142,3 +144,13 @@ def installer_version(ctx):
     command = "yum list installed dcm4chee bahmni-* pacs-* | awk '{print $1,$2}' | sed 1,2d"
     return subprocess.check_call(command, shell=True)
 
+@cli.command(short_help="Execute all/selected migrations")
+@click.pass_context
+def run_migrations(ctx):
+    ctx.obj['MIGRATE'] = ctx.obj['MIGRATE'] or "mrs,erp,elis"
+    modules = ctx.obj['MIGRATE'].split(',')
+    getTag = lambda moduleName: "run-migration-open"+moduleName
+    allTags = ",".join(map(getTag, modules))
+    command = ctx.obj['ANSIBLE_COMMAND'].format("db-migrations.yml", ctx.obj['EXTRA_VARS']) + "  -t " + allTags
+    click.echo(command)
+    subprocess.check_call(command, shell=True)
