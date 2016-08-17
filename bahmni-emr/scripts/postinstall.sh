@@ -50,3 +50,8 @@ if [ "${IS_PASSIVE:-0}" -ne "1" ]; then
     run_migrations
 fi
 create_configuration_dirs
+
+setupConfFiles() {
+    	rm -f /etc/httpd/conf.d/emr_ssl.conf
+    	ln -s /opt/bahmni-web/etc/emr_ssl.conf /etc/httpd/conf.d/emr_ssl.conf
+}

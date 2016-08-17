@@ -53,3 +53,11 @@ if [ "${IS_PASSIVE:-0}" -ne "1" ]; then
     run_migrations
 fi
 link_properties_file
+
+
+setupConfFiles() {
+    rm -f /etc/httpd/conf.d/bahmni_reports_ssl.conf
+    ln -s /opt/bahmni-web/etc/bahmni_reports_ssl.conf /etc/httpd/conf.d/bahmni_reports_ssl.conf
+}
+
+

@@ -34,3 +34,8 @@ chown -R bahmni:bahmni /etc/init.d/dcm4chee
 chown -R bahmni:bahmni /var/lib/bahmni/dcm4chee-2.18.1-psql
 
 ln -s /home/bahmni/pacs_images/archive /var/lib/bahmni/dcm4chee-2.18.1-psql/server/default/
+
+setupConfFiles() {
+    rm -f /etc/httpd/conf.d/dcm4chee_ssl.conf
+    ln -s /opt/bahmni-web/etc/dcm4chee_ssl.conf /etc/httpd/conf.d/dcm4chee_ssl.conf
+}

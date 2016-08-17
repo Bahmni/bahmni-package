@@ -66,3 +66,7 @@ link_directories
 manage_config
 manage_permissions
 
+setupConfFiles() {
+    rm -f /etc/httpd/conf.d/erp_ssl.conf
+    ln -s /opt/bahmni-web/etc/erp_ssl.conf /etc/httpd/conf.d/erp_ssl.conf
+}

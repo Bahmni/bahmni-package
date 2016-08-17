@@ -45,3 +45,9 @@ manage_permissions
 if [ "${IS_PASSIVE:-0}" -ne "1" ]; then
 run_migrations
 fi
+
+setupConfFiles() {
+    	rm -f /etc/httpd/conf.d/bahmni_eventlog_ssl.conf
+    	ln -s /opt/bahmni-web/etc/bahmni_eventlog_ssl.conf /etc/httpd/conf.d/bahmni_eventlog_ssl.conf
+}
+

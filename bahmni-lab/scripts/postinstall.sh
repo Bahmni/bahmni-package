@@ -28,6 +28,10 @@ ln -s /opt/bahmni-lab/bahmni-lab /var/run/bahmni-lab/bahmni-lab
 ln -s /opt/bahmni-lab/log /var/log/bahmni-lab
 ln -s /opt/bahmni-lab/uploaded-files/elis /home/bahmni/uploaded-files/elis
 
+setupConfFiles() {
+    	rm -f /etc/httpd/conf.d/bahmnilab_ssl.conf
+    	ln -s /opt/bahmni-web/etc/bahmnilab_ssl.conf /etc/httpd/conf.d/bahmnilab_ssl.conf
+}
 
 #create a database if it doesn't exist and if it is not passive machine.
 if [ "${IS_PASSIVE:-0}" -ne "1" ]; then
