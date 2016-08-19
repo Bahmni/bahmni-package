@@ -47,6 +47,12 @@ link_properties_file(){
     ln -s /opt/bahmni-reports/etc/bahmni-reports.properties /home/$USERID/.bahmni-reports/bahmni-reports.properties
 }
 
+setupConfFiles() {
+    rm -f /etc/httpd/conf.d/bahmni_reports_ssl.conf
+    ln -s /opt/bahmni-web/etc/bahmni_reports_ssl.conf /etc/httpd/conf.d/bahmni_reports_ssl.conf
+}
+
+setupConfFiles
 link_directories
 manage_permissions
 if [ "${IS_PASSIVE:-0}" -ne "1" ]; then
@@ -55,9 +61,6 @@ fi
 link_properties_file
 
 
-setupConfFiles() {
-    rm -f /etc/httpd/conf.d/bahmni_reports_ssl.conf
-    ln -s /opt/bahmni-web/etc/bahmni_reports_ssl.conf /etc/httpd/conf.d/bahmni_reports_ssl.conf
-}
+
 
 

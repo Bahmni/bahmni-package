@@ -40,14 +40,17 @@ run_migrations(){
     /opt/bahmni-event-log-service/etc/run-liquibase.sh >> /bahmni_temp/logs/bahmni_deploy.log 2>> /bahmni_temp/logs/bahmni_deploy.log
 }
 
-link_directories
-manage_permissions
-if [ "${IS_PASSIVE:-0}" -ne "1" ]; then
-run_migrations
-fi
 
 setupConfFiles() {
     	rm -f /etc/httpd/conf.d/bahmni_eventlog_ssl.conf
     	ln -s /opt/bahmni-web/etc/bahmni_eventlog_ssl.conf /etc/httpd/conf.d/bahmni_eventlog_ssl.conf
 }
+
+
+link_directories
+manage_permissions
+setupConfFiles
+if [ "${IS_PASSIVE:-0}" -ne "1" ]; then
+run_migrations
+fi
 

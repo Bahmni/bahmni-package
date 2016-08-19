@@ -32,6 +32,7 @@ setupConfFiles() {
     	rm -f /etc/httpd/conf.d/bahmnilab_ssl.conf
     	ln -s /opt/bahmni-web/etc/bahmnilab_ssl.conf /etc/httpd/conf.d/bahmnilab_ssl.conf
 }
+setupConfFiles
 
 #create a database if it doesn't exist and if it is not passive machine.
 if [ "${IS_PASSIVE:-0}" -ne "1" ]; then

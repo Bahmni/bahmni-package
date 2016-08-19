@@ -58,6 +58,11 @@ manage_config(){
     chown openerp:openerp /etc/init.d/openerp
 }
 
+setupConfFiles(){
+    rm -f /etc/httpd/conf.d/erp_ssl.conf
+    ln -s /opt/bahmni-web/etc/erp_ssl.conf /etc/httpd/conf.d/erp_ssl.conf
+}
+
 install_openerp
 if [ "${IS_PASSIVE:-0}" -ne "1" ]; then
     initDB
@@ -65,8 +70,7 @@ fi
 link_directories
 manage_config
 manage_permissions
+setupConfFiles
 
-setupConfFiles() {
-    rm -f /etc/httpd/conf.d/erp_ssl.conf
-    ln -s /opt/bahmni-web/etc/erp_ssl.conf /etc/httpd/conf.d/erp_ssl.conf
-}
+
+

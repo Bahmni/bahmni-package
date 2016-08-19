@@ -39,3 +39,5 @@ setupConfFiles() {
     rm -f /etc/httpd/conf.d/dcm4chee_ssl.conf
     ln -s /opt/bahmni-web/etc/dcm4chee_ssl.conf /etc/httpd/conf.d/dcm4chee_ssl.conf
 }
+
+setupConfFiles

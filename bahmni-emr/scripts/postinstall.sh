@@ -45,13 +45,17 @@ create_configuration_dirs(){
     chmod -R 755 $UPLOADED_RESULTS_DIR
 }
 
+setupConfFiles() {
+    	rm -f /etc/httpd/conf.d/emr_ssl.conf
+    	ln -s /opt/bahmni-web/etc/emr_ssl.conf /etc/httpd/conf.d/emr_ssl.conf
+}
+
 link_dirs
 if [ "${IS_PASSIVE:-0}" -ne "1" ]; then
     run_migrations
 fi
 create_configuration_dirs
+setupConfFiles
 
-setupConfFiles() {
-    	rm -f /etc/httpd/conf.d/emr_ssl.conf
-    	ln -s /opt/bahmni-web/etc/emr_ssl.conf /etc/httpd/conf.d/emr_ssl.conf
-}
+
+
