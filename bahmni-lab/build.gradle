@@ -114,6 +114,13 @@ ospackage {
         include('openelis_demo_dump.sql')
     }
 
+    into '/opt/bahmni-web'
+
+    from("${projectDir}/resources/") {
+        fileMode = 0644
+        into 'etc'
+        include('bahmnilab_ssl.conf')
+    }
 }
 
 buildRpm {

@@ -91,6 +91,14 @@ ospackage {
         createDirectoryEntry = true
         into 'bahmni-event-log-service'
     }
+
+    into '/opt/bahmni-web'
+
+    from("${projectDir}/resources/") {
+        fileMode = 0644
+        into 'etc'
+        include('bahmni_eventlog_ssl.conf')
+    }
 }
 
 buildRpm {
