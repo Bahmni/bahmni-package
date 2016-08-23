@@ -30,7 +30,7 @@ ln -s /opt/bahmni-lab/uploaded-files/elis /home/bahmni/uploaded-files/elis
 
 setupConfFiles() {
     	rm -f /etc/httpd/conf.d/bahmnilab_ssl.conf
-    	ln -s /opt/bahmni-web/etc/bahmnilab_ssl.conf /etc/httpd/conf.d/bahmnilab_ssl.conf
+    	cp -f /opt/bahmni-lab/etc/bahmnilab_ssl.conf /etc/httpd/conf.d/bahmnilab_ssl.conf
 }
 setupConfFiles
 

@@ -92,10 +92,8 @@ ospackage {
         into 'bahmni-reports'
     }
 
-    into '/opt/bahmni-web'
-
     from("${projectDir}/resources/") {
-        fileMode = 0644
+        fileMode = 0755
         into 'etc'
         include('bahmni_reports_ssl.conf')
     }

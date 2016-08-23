@@ -43,7 +43,7 @@ run_migrations(){
 
 setupConfFiles() {
     	rm -f /etc/httpd/conf.d/bahmni_eventlog_ssl.conf
-    	ln -s /opt/bahmni-web/etc/bahmni_eventlog_ssl.conf /etc/httpd/conf.d/bahmni_eventlog_ssl.conf
+    	cp -f /opt/bahmni-event-log-service/etc/bahmni_eventlog_ssl.conf /etc/httpd/conf.d/bahmni_eventlog_ssl.conf
 }
 
 

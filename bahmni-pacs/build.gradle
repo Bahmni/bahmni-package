@@ -193,10 +193,8 @@ task dist_dcm4chee(type: Rpm) {
         into 'etc'
     }
 
-    into '/opt/bahmni-web'
-
     from("${projectDir}/resources/") {
-        fileMode = 0644
+        fileMode = 0755
         into 'etc'
         include('dcm4chee_ssl.conf')
     }

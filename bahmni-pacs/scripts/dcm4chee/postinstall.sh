@@ -37,7 +37,7 @@ ln -s /home/bahmni/pacs_images/archive /var/lib/bahmni/dcm4chee-2.18.1-psql/serv
 
 setupConfFiles() {
     rm -f /etc/httpd/conf.d/dcm4chee_ssl.conf
-    ln -s /opt/bahmni-web/etc/dcm4chee_ssl.conf /etc/httpd/conf.d/dcm4chee_ssl.conf
+    cp -f /opt/dcm4chee/etc/dcm4chee_ssl.conf /etc/httpd/conf.d/dcm4chee_ssl.conf
 }
 
 setupConfFiles

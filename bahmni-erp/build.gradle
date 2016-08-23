@@ -55,10 +55,8 @@ ospackage {
         into "."
     }
 
-    into '/opt/bahmni-web'
-
     from("${projectDir}/resources/") {
-        fileMode = 0644
+        fileMode = 0755
         into 'etc'
         include('erp_ssl.conf')
     }

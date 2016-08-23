@@ -49,7 +49,7 @@ link_properties_file(){
 
 setupConfFiles() {
     rm -f /etc/httpd/conf.d/bahmni_reports_ssl.conf
-    ln -s /opt/bahmni-web/etc/bahmni_reports_ssl.conf /etc/httpd/conf.d/bahmni_reports_ssl.conf
+    cp -f /opt/bahmni-reports/etc/bahmni_reports_ssl.conf /etc/httpd/conf.d/bahmni_reports_ssl.conf
 }
 
 setupConfFiles

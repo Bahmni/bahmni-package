@@ -47,7 +47,7 @@ create_configuration_dirs(){
 
 setupConfFiles() {
     	rm -f /etc/httpd/conf.d/emr_ssl.conf
-    	ln -s /opt/bahmni-web/etc/emr_ssl.conf /etc/httpd/conf.d/emr_ssl.conf
+    	cp -f /opt/openmrs/etc/emr_ssl.conf /etc/httpd/conf.d/emr_ssl.conf
 }
 
 link_dirs
