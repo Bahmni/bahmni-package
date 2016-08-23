@@ -72,6 +72,14 @@ ospackage {
         into 'etc'
         include('blank-user.png')
     }
+
+    into '/opt/bahmni-web'
+
+    from("${projectDir}/resources/") {
+        fileMode = 0644
+        into 'etc'
+        include('emr_ssl.conf')
+    }
 }
 
 buildRpm {
