@@ -18,6 +18,7 @@ rm -rf /opt/dcm4chee
 rm -rf /etc/dcm4chee
 rm -rf /var/lib/bahmni/dcm4chee-2.18.1-psql
 rm -rf /usr/share/jboss-4.2.3.GA
+rm -f /etc/httpd/conf.d/dcm4chee_ssl.conf
 
 if [ ! -d /var/lib/bahmni ]
 then
