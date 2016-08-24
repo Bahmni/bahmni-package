@@ -1,45 +1,47 @@
 [main]
 host = https://www.transifex.com
+minimum_perc = 75
+
 
 [bahmni.admin-app]
-file_filter = resources/locale_<lang>.json
-source_file = resources/locale_en.json
+file_filter = resources/admin/locale_<lang>.json
+source_file = resources/admin/locale_en.json
 source_lang = en
 type = KEYVALUEJSON
 
 [bahmni.adt-app]
-file_filter = resources/locale_<lang>.json
-source_file = resources/locale_en.json
+file_filter = resources/adt/locale_<lang>.json
+source_file = resources/adt/locale_en.json
 source_lang = en
 type = KEYVALUEJSON
 
 [bahmni.clinical-app]
-file_filter = resources/locale_<lang>.json
-source_file = resources/locale_en.json
+file_filter = resources/clinical/locale_<lang>.json
+source_file = resources/clinical/locale_en.json
 source_lang = en
 type = KEYVALUEJSON
 
 [bahmni.home-app]
-file_filter = resources/locale_<lang>.json
-source_file = resources/locale_en.json
+file_filter = resources/home/locale_<lang>.json
+source_file = resources/home/locale_en.json
 source_lang = en
 type = KEYVALUEJSON
 
 [bahmni.orders-app]
-file_filter = resources/locale_<lang>.json
-source_file = resources/locale_en.json
+file_filter = resources/orders/locale_<lang>.json
+source_file = resources/orders/locale_en.json
 source_lang = en
 type = KEYVALUEJSON
 
 [bahmni.registration-app]
-file_filter = resources/locale_<lang>.json
-source_file = resources/locale_en.json
+file_filter = resources/registration/locale_<lang>.json
+source_file = resources/registration/locale_en.json
 source_lang = en
 type = KEYVALUEJSON
 
 [bahmni.reports-app]
-file_filter = resources/locale_<lang>.json
-source_file = resources/locale_en.json
+file_filter = resources/reports/locale_<lang>.json
+source_file = resources/reports/locale_en.json
 source_lang = en
 type = KEYVALUEJSON
 
