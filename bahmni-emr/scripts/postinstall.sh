@@ -4,8 +4,8 @@
 
 . /etc/openmrs/bahmni-emr.conf
 
-if [ -f /etc/bahmni-installer/bahmni.conf ]; then
-. /etc/bahmni-installer/bahmni.conf
+if [ -f /etc/bahmni-installer/bahmni-emr-installer.conf ]; then
+. /etc/bahmni-installer/bahmni-emr-installer.conf
 fi
 
 link_dirs(){

@@ -1,9 +1,9 @@
 #!/bin/sh
 set -e -x
 
-. /etc/bahmni-reports/bahmni-reports.conf
-if [ -f /etc/bahmni-installer/bahmni.conf ]; then
-. /etc/bahmni-installer/bahmni.conf
+. /etc/bahmni-reports/bahmni-event-log-service.conf
+if [ -f /etc/bahmni-installer/bahmni-event-log-installer.conf ]; then
+. /etc/bahmni-installer/bahmni-event-log-installer.conf
 fi
 
 CHANGE_LOG_TABLE="-Dliquibase.databaseChangeLogTableName=liquibasechangelog -Dliquibase.databaseChangeLogLockTableName=liquibasechangeloglock -DschemaName=openmrs"

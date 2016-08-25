@@ -9,8 +9,8 @@ DRIVER="com.mysql.jdbc.Driver"
 CLASSPATH="/opt/openmrs/openmrs/WEB-INF/lib/mysql-connector-java-5.1.28.jar"
 CHANGE_LOG_FILE="/opt/bahmni-web/etc/bahmni_config/openmrs/migrations/liquibase.xml"
 
-if [ -f /etc/bahmni-installer/bahmni.conf ]; then
-. /etc/bahmni-installer/bahmni.conf
+if [ -f /etc/bahmni-installer/bahmni-emr-installer.conf ]; then
+. /etc/bahmni-installer/bahmni-emr-installer.conf
 fi
 
 java $CHANGE_LOG_TABLE  -jar $LIQUIBASE_JAR --driver=$DRIVER --classpath=$CLASSPATH --changeLogFile=$CHANGE_LOG_FILE --url=jdbc:mysql://$OPENMRS_DB_SERVER:3306/openmrs --username=$OPENMRS_DB_USERNAME --password=$OPENMRS_DB_PASSWORD update
