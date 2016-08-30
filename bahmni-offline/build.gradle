@@ -3,7 +3,7 @@ plugins {
 }
 
 group 'org.bahmni.offline'
-version project.bahmniRelease
+version 1.0
 
 ospackage {
     packageName = 'bahmni-offline'
