@@ -43,12 +43,10 @@ setupClientSideLogging(){
 }
 
 setupApps(){
-    rm -rf /var/www/bahmniapps /var/www/bahmni_config
     ln -s /opt/bahmni-web/etc/bahmniapps/ /var/www/bahmniapps
 }
 
 setupConfigs(){
-    rm -rf /var/www/bahmni_config
     ln -s /opt/bahmni-web/etc/bahmni_config/ /var/www/bahmni_config
     #TODO: Refactor bahmni-core to link bahmni_config instead like applicationDataDirectory/<bahmni_config>/openmrs/obscalculator
     ln -s /opt/bahmni-web/etc/bahmni_config/openmrs/obscalculator /opt/openmrs/obscalculator
