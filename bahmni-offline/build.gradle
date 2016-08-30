@@ -1,0 +1,29 @@
+plugins {
+    id "nebula.ospackage" version "3.4.0"
+}
+
+group 'org.bahmni.offline'
+version project.bahmniRelease
+
+ospackage {
+    packageName = 'bahmni-offline'
+    release = System.getenv('GO_PIPELINE_COUNTER') ?: "1"
+    arch = NOARCH
+    os = LINUX
+    user = 'bahmni'
+
+    into '/opt/openmrs'
+
+    from("${projectDir}/resources/") {
+        fileMode = 0644
+        createDirectoryEntry = true
+        into 'modules'
+        include('bahmniOfflineSync-*.omod')
+    }
+}
+
+buildRpm {
+    dependsOn 'build'
+
+    preInstall file("${projectDir}/scripts/preinstall.sh")
+}
