@@ -53,7 +53,6 @@ link_directories(){
 }
 
 manage_config(){
-    chkconfig openerp on
     ln -s $BAHMNI_ERP/bin/openerp /etc/init.d/openerp
     chown openerp:openerp /etc/init.d/openerp
 }
@@ -71,6 +70,4 @@ link_directories
 manage_config
 manage_permissions
 setupConfFiles
-
-
-
+chkconfig openerp on
