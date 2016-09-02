@@ -15,8 +15,6 @@ groupadd bahmni
 [ $? -eq 1 ]
 useradd -g bahmni bahmni
 
-chkconfig --add bahmni-erp-connect
-
 link_directories(){
     #create links
     ln -s /opt/bahmni-erp-connect/etc /etc/bahmni-erp-connect
@@ -45,3 +43,5 @@ manage_permissions
 if [ "${IS_PASSIVE:-0}" -ne "1" ]; then
     run_migrations
 fi
+
+chkconfig --add bahmni-erp-connect

@@ -15,8 +15,6 @@ groupadd bahmni
 [ $? -eq 1 ]
 useradd -g bahmni bahmni
 
-chkconfig --add bahmni-reports
-
 link_directories(){
     #create links
     ln -s /opt/bahmni-reports/etc /etc/bahmni-reports
@@ -60,7 +58,4 @@ if [ "${IS_PASSIVE:-0}" -ne "1" ]; then
 fi
 link_properties_file
 
-
-
-
-
+chkconfig --add bahmni-reports
