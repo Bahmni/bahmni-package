@@ -35,7 +35,7 @@ task normalizeJarName(type: Copy) {
 //755 for all folders
 
 ospackage {
-    packageName = 'bahmni-openmrs'
+    packageName = 'bahmni-openmrs2'
     release = System.getenv('GO_PIPELINE_COUNTER') ?: "1"
     arch = NOARCH
     os = LINUX
