@@ -1,7 +1,7 @@
 #!/bin/bash
 
-if [ -f /etc/bahmni-installer/dcm4chee-installer.conf ]; then
-. /etc/bahmni-installer/dcm4chee-installer.conf
+if [ -f /etc/bahmni-installer/bahmni.conf ]; then
+. /etc/bahmni-installer/bahmni.conf
 fi
 
 dcm4chee_path=/var/lib/bahmni/dcm4chee-2.18.1-psql

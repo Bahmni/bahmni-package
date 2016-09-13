@@ -3,8 +3,8 @@ set -e -x
 
 . /etc/bahmni-erp-connect/bahmni-erp-connect.conf
 
-if [ -f /etc/bahmni-installer/bahmni-erp-installer.conf ]; then
-. /etc/bahmni-installer/bahmni-erp-installer.conf
+if [ -f /etc/bahmni-installer/bahmni.conf ]; then
+. /etc/bahmni-installer/bahmni.conf
 fi
 
 CHANGE_LOG_TABLE="-Dliquibase.databaseChangeLogTableName=liquibasechangelog -Dliquibase.databaseChangeLogLockTableName=liquibasechangeloglock"

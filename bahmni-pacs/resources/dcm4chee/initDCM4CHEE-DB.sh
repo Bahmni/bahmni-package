@@ -2,8 +2,8 @@
 
 . /etc/dcm4chee/dcm4chee.conf
 
-if [ -f /etc/bahmni-installer/dcm4chee-installer.conf ]; then
-. /etc/bahmni-installer/dcm4chee-installer.conf
+if [ -f /etc/bahmni-installer/bahmni.conf ]; then
+. /etc/bahmni-installer/bahmni.conf
 fi
 
 if [ "$(psql -h$DCM4CHEE_DB_SERVER -U$POSTGRES_USER -lqt | cut -d \| -f 1 | grep -w $PACS_DB | wc -l)" -eq 0 ]

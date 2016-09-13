@@ -3,8 +3,8 @@
 export BAHMNI_ERP=/opt/bahmni-erp
 OPENERP_DB_SERVER=localhost
 
-if [ -f /etc/bahmni-installer/bahmni-erp-installer.conf ]; then
-. /etc/bahmni-installer/bahmni-erp-installer.conf
+if [ -f /etc/bahmni-installer/bahmni.conf ]; then
+. /etc/bahmni-installer/bahmni.conf
 fi
 
 manage_permissions(){

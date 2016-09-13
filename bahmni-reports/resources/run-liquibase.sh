@@ -2,8 +2,8 @@
 set -e -x
 
 . /etc/bahmni-reports/bahmni-reports.conf
-if [ -f /etc/bahmni-installer/bahmni-emr-installer.conf ]; then
-. /etc/bahmni-installer/bahmni-emr-installer.conf
+if [ -f /etc/bahmni-installer/bahmni.conf ]; then
+. /etc/bahmni-installer/bahmni.conf
 fi
 
 CHANGE_LOG_TABLE="-Dliquibase.databaseChangeLogTableName=liquibasechangelog -Dliquibase.databaseChangeLogLockTableName=liquibasechangeloglock -DschemaName=openmrs"
