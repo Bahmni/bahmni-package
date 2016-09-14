@@ -60,6 +60,13 @@ ospackage {
         exclude('run-liquibase.sh')
         exclude('bahmnireports.war')
         exclude('*.checksum')
+        exclude('initDB.sh')
+    }
+
+    from("${projectDir}/resources/initDB.sh") {
+        fileMode = 0744
+        user 'bahmni'
+        into 'etc'
     }
 
     from("${projectDir}/resources/run-liquibase.sh") {

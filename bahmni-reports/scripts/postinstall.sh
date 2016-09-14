@@ -35,7 +35,7 @@ manage_permissions(){
 
 run_migrations(){
     echo "Running liquibase migrations"
-    /opt/bahmni-reports/etc/run-liquibase.sh >> /bahmni_temp/logs/bahmni_deploy.log 2>> /bahmni_temp/logs/bahmni_deploy.log
+    /opt/bahmni-reports/etc/run-liquibase.sh $1 $2 >> /bahmni_temp/logs/bahmni_deploy.log 2>> /bahmni_temp/logs/bahmni_deploy.log
 }
 
 link_properties_file(){
@@ -50,11 +50,25 @@ setupConfFiles() {
     cp -f /opt/bahmni-reports/etc/bahmni_reports_ssl.conf /etc/httpd/conf.d/bahmni_reports_ssl.conf
 }
 
+create_db() {
+    /opt/bahmni-reports/etc/initDB.sh 2>> /bahmni_temp/logs/bahmni_deploy.log
+}
+
+create_directories() {
+    OPENMRS_SERVER_USER=bahmni
+    REPORTS_SAVE_DIR=/home/$OPENMRS_SERVER_USER/reports
+    mkdir $REPORTS_SAVE_DIR
+    chown bahmni:bahmni $REPORTS_SAVE_DIR
+}
+
 setupConfFiles
 link_directories
+create_directories
 manage_permissions
 if [ "${IS_PASSIVE:-0}" -ne "1" ]; then
-    run_migrations
+    create_db
+    run_migrations liquibase.xml openmrs
+    run_migrations liquibase_bahmni_reports.xml bahmni_reports
 fi
 link_properties_file
 
