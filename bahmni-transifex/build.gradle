@@ -1,0 +1,30 @@
+plugins {
+    id "nebula.ospackage" version "3.4.0"
+}
+
+group 'org.bahmni.transifex'
+version project.bahmniTransifexRelease
+
+ospackage {
+    packageName = 'bahmni-transifex'
+    release = System.getenv('GO_PIPELINE_COUNTER') ?: project.buildNumber
+    arch = NOARCH
+    os = LINUX
+    user = 'bahmni'
+
+    into '/opt/bahmni-transifex'
+
+    from("${projectDir}/resources/") {
+        fileMode = 0755
+        createDirectoryEntry = true
+        into 'transifex'
+        exclude('placeholder')
+    }
+}
+
+buildRpm {
+          dependsOn 'build'
+ 
+          postInstall file("${projectDir}/scripts/postinstall.sh")
+
+}
