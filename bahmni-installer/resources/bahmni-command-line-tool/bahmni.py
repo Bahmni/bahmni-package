@@ -12,7 +12,7 @@ import sys
 @click.option("--implementation_play","-impl-play",help='Path of implementation specific ansible play')
 @click.option("--migrate", "-m", help='Give a comma seperated list of modules to run migrations for. It has to be used with run_migrations command.Ex: bahmni --migrate erp,elis,mrs run_migrations')
 @click.option("--only", "-o", help='Install only specified components. Possible values can be bahmni-emr, bahmni-reports, bahmni-lab, bahmni-erp, dcm4chee, pacs-integration, bahmni-event-log-service')
-@click.option("--skip", "-s", help='Skip installation of specified components. Possible values can be bahmni-emr, bahmni-reports, bahmni-lab, bahmni-erp, dcm4chee, pacs-integration, bahmni-event-log-service'')
+@click.option("--skip", "-s", help='Skip installation of specified components. Possible values can be bahmni-emr, bahmni-reports, bahmni-lab, bahmni-erp, dcm4chee, pacs-integration, bahmni-event-log-service')
 
 @click.pass_context
 def cli(ctx, implementation, inventory, sql_path, database, verbose, implementation_play, migrate, only, skip):
