@@ -1,6 +1,7 @@
 import click
 import subprocess
 import os
+import sys
 
 @click.group()
 @click.option("--implementation", "-I", help='Option to specify the implementation config to be installed. Default value is default. If this options is used, implementation config folder has to be placed in /etc/bahmni-installer/deployment-artifacts with name <impelementation>_config')
@@ -10,9 +11,11 @@ import os
 @click.option("--verbose", "-v", is_flag=True, help='verbose operation')
 @click.option("--implementation_play","-impl-play",help='Path of implementation specific ansible play')
 @click.option("--migrate", "-m", help='Give a comma seperated list of modules to run migrations for. It has to be used with run_migrations command.Ex: bahmni --migrate erp,elis,mrs run_migrations')
+@click.option("--only", "-o", help='Install only specified components. Possible values can be bahmni-emr, bahmni-reports, bahmni-lab, bahmni-erp, dcm4chee, pacs-integration, bahmni-event-log-service')
+@click.option("--skip", "-s", help='Skip installation of specified components. Possible values can be bahmni-emr, bahmni-reports, bahmni-lab, bahmni-erp, dcm4chee, pacs-integration, bahmni-event-log-service'')
 
 @click.pass_context
-def cli(ctx, implementation, inventory, sql_path, database, verbose, implementation_play, migrate):
+def cli(ctx, implementation, inventory, sql_path, database, verbose, implementation_play, migrate, only, skip):
     ctx.obj={}
     """Command line utility for Bahmni"""
     os.chdir('/opt/bahmni-installer/bahmni-playbooks')
@@ -33,6 +36,11 @@ def cli(ctx, implementation, inventory, sql_path, database, verbose, implementat
     ctx.obj['SQL_PATH'] = sql_path
     ctx.obj['DATABASE'] = database
     ctx.obj['MIGRATE'] = migrate
+    ctx.obj['ONLY'] = only
+    ctx.obj['SKIP'] = skip
+    if  only!=None and skip!=None :
+        print ("Both only and Skip can not be used on same time")
+        sys.exit()
 
 def addExtraVarFile(ctx, file_path):
     if(os.path.isfile(file_path)):
@@ -42,12 +50,17 @@ def addExtraVar(ctx, var_name, var_value):
     if var_value:     
       ctx.obj['EXTRA_VARS']  = ctx.obj['EXTRA_VARS'] + " --extra-vars '{0}={1}'".format(var_name, var_value)
 
+
 @cli.command(short_help="Installs bahmni components on respective hosts specified in inventory file")
 @click.pass_context
 def install(ctx):
-   command = ctx.obj['ANSIBLE_COMMAND'].format("all.yml", ctx.obj['EXTRA_VARS'])
-   click.echo(command)
-   return subprocess.check_call(command, shell=True)
+    command = ctx.obj['ANSIBLE_COMMAND'].format("all.yml", ctx.obj['EXTRA_VARS'])
+    if ctx.obj['ONLY'] is not None:
+        command = command + " -t  " + ctx.obj['ONLY']
+    elif ctx.obj['SKIP'] is not None:
+        command = command + " --skip-tags " + ctx.obj['SKIP']
+    click.echo(command)
+    return subprocess.check_call(command, shell=True)
 
 @cli.command(name="install-impl",short_help="Installs bahmni implementation specific customizations on respective hosts specified in inventory file")
 @click.pass_context
