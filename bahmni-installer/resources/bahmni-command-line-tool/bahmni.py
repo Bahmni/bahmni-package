@@ -39,7 +39,7 @@ def cli(ctx, implementation, inventory, sql_path, database, verbose, implementat
     ctx.obj['ONLY'] = only
     ctx.obj['SKIP'] = skip
     if  only!=None and skip!=None :
-        print ("Both only and Skip can not be used on same time")
+        print ("Both \"Only and Skip\" can not be used on same time")
         sys.exit()
 
 def addExtraVarFile(ctx, file_path):
