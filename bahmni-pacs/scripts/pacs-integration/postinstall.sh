@@ -28,9 +28,6 @@ if [ "${IS_PASSIVE:-0}" -ne "1" ]; then
 fi
 chkconfig --add pacs-integration
 
-#copy configs
-mkdir -p /opt/pacs-integration/pacs-integration/WEB-INF/classes/ && cp /opt/pacs-integration/etc/log4j.xml /opt/pacs-integration/pacs-integration/WEB-INF/classes/
-
 # permissions
 chown -R bahmni:bahmni /opt/pacs-integration
 chown -R bahmni:bahmni /var/log/pacs-integration
