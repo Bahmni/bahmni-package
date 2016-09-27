@@ -54,16 +54,8 @@ create_db() {
     /opt/bahmni-reports/etc/initDB.sh 2>> /bahmni_temp/logs/bahmni_deploy.log
 }
 
-create_directories() {
-    OPENMRS_SERVER_USER=bahmni
-    REPORTS_SAVE_DIR=/home/$OPENMRS_SERVER_USER/reports
-    mkdir $REPORTS_SAVE_DIR
-    chown bahmni:bahmni $REPORTS_SAVE_DIR
-}
-
 setupConfFiles
 link_directories
-create_directories
 manage_permissions
 if [ "${IS_PASSIVE:-0}" -ne "1" ]; then
     create_db
