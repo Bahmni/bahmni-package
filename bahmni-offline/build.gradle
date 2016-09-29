@@ -5,9 +5,12 @@ plugins {
 group 'org.bahmni.offline'
 version 1.0
 
+def build_number = System.getenv('GO_PIPELINE_COUNTER') ?: "1"
+def tag = System.getenv('BUILD_TAG') ?: ""
+
 ospackage {
     packageName = 'bahmni-offline'
-    release = System.getenv('GO_PIPELINE_COUNTER') ?: "1"
+    release = tag == "" ? build_number : "${build_number}_${tag}"
     arch = NOARCH
     os = LINUX
     user = 'bahmni'
