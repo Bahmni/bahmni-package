@@ -3,7 +3,7 @@ plugins {
 }
 
 group 'org.bahmni.offline'
-version 1.0
+version project.bahmniRelease
 
 def build_number = System.getenv('GO_PIPELINE_COUNTER') ?: "1"
 def tag = System.getenv('BUILD_TAG') ?: ""
