@@ -67,8 +67,8 @@ create_directories
 manage_permissions
 if [ "${IS_PASSIVE:-0}" -ne "1" ]; then
     create_db
-    run_migrations liquibase.xml OPENMRS_DB_SERVER openmrs OPENMRS_DB_USERNAME OPENMRS_DB_PASSWORD
-    run_migrations liquibase_bahmni_reports.xml REPORTS_DB_SERVER bahmni_reports REPORTS_DB_USERNAME REPORTS_DB_PASSWORD
+    run_migrations liquibase.xml $OPENMRS_DB_SERVER openmrs $OPENMRS_DB_USERNAME $OPENMRS_DB_PASSWORD
+    run_migrations liquibase_bahmni_reports.xml $REPORTS_DB_SERVER bahmni_reports $REPORTS_DB_USERNAME $REPORTS_DB_PASSWORD
 fi
 link_properties_file
 
