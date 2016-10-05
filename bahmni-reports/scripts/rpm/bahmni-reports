@@ -14,6 +14,10 @@ export CUR_USER=`/usr/bin/whoami`
 
 . /etc/bahmni-reports/bahmni-reports.conf
 
+if [ -f /etc/bahmni-installer/bahmni.conf ]; then
+. /etc/bahmni-installer/bahmni.conf
+fi
+
 create_dirs() {
     if [[ ! -e /var/run/bahmni-reports ]]; then
         ln -s /opt/bahmni-reports/run /var/run/bahmni-reports
