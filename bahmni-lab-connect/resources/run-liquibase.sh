@@ -9,8 +9,8 @@ LIQUIBASE_JAR="/opt/bahmni-lab-connect/lib/liquibase-core-2.0.5.jar"
 OPENMRS_WAR_PATH="/opt/openmrs/openmrs.war"
 ATOMFEED_CLIENT_JAR="/opt/bahmni-lab-connect/lib/atomfeed-client.jar"
 
-if [ -f /etc/bahmni-installer/bahmni-emr-installer.conf ]; then
-. /etc/bahmni-installer/bahmni-emr-installer.conf
+if [ -f /etc/bahmni-installer/bahmni.conf ]; then
+. /etc/bahmni-installer/bahmni.conf
 fi
 
 function run_openmrs_dependent_liquibase() {

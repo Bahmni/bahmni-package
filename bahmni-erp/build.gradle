@@ -54,12 +54,6 @@ ospackage {
         createDirectoryEntry = true
         into "."
     }
-
-    from("${projectDir}/resources/") {
-        fileMode = 0755
-        into 'etc'
-        include('erp_ssl.conf')
-    }
 }
 
 buildRpm {

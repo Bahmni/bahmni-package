@@ -1,7 +1,7 @@
 #!/bin/bash
 
-if [ -f /etc/bahmni-installer/bahmni-emr-installer.conf ]; then
-. /etc/bahmni-installer/bahmni-emr-installer.conf
+if [ -f /etc/bahmni-installer/bahmni.conf ]; then
+. /etc/bahmni-installer/bahmni.conf
 fi
 
 #create bahmni user and group if doesn't exist
@@ -35,7 +35,7 @@ manage_permissions(){
 
 run_migrations(){
     echo "Running liquibase migrations"
-    /opt/bahmni-reports/etc/run-liquibase.sh >> /bahmni_temp/logs/bahmni_deploy.log 2>> /bahmni_temp/logs/bahmni_deploy.log
+    /opt/bahmni-reports/etc/run-liquibase.sh $1 $2 $3 $4 $5 >> /bahmni_temp/logs/bahmni_deploy.log 2>> /bahmni_temp/logs/bahmni_deploy.log
 }
 
 link_properties_file(){
@@ -50,11 +50,25 @@ setupConfFiles() {
     cp -f /opt/bahmni-reports/etc/bahmni_reports_ssl.conf /etc/httpd/conf.d/bahmni_reports_ssl.conf
 }
 
+create_db() {
+    /opt/bahmni-reports/etc/initDB.sh 2>> /bahmni_temp/logs/bahmni_deploy.log
+}
+
+create_directories() {
+    OPENMRS_SERVER_USER=bahmni
+    REPORTS_SAVE_DIR=/home/$OPENMRS_SERVER_USER/reports
+    mkdir $REPORTS_SAVE_DIR
+    chown bahmni:bahmni $REPORTS_SAVE_DIR
+}
+
 setupConfFiles
 link_directories
+create_directories
 manage_permissions
 if [ "${IS_PASSIVE:-0}" -ne "1" ]; then
-    run_migrations
+    create_db
+    run_migrations liquibase.xml $OPENMRS_DB_SERVER openmrs $OPENMRS_DB_USERNAME $OPENMRS_DB_PASSWORD
+    run_migrations liquibase_bahmni_reports.xml $REPORTS_DB_SERVER bahmni_reports $REPORTS_DB_USERNAME $REPORTS_DB_PASSWORD
 fi
 link_properties_file
 

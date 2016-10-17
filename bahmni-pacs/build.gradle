@@ -111,12 +111,6 @@ task dist(type: Rpm) {
         into 'etc'
     }
 
-    from("${projectDir}/resources/pacs-integration/log4j.xml") {
-        fileMode = 0644
-        createDirectoryEntry = true
-        into "${buildDir}/pacs-integration/WEB-INF/classes/log4j.xml"
-    }
-
     from("${buildDir}/libs/pacs-integration.jar") {
         fileMode = 0644
         createDirectoryEntry = true

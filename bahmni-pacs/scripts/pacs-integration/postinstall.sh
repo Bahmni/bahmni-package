@@ -1,7 +1,7 @@
 #!/bin/bash
 
-if [ -f /etc/bahmni-installer/pacs-integration-installer.conf ]; then
-. /etc/bahmni-installer/pacs-integration-installer.conf
+if [ -f /etc/bahmni-installer/bahmni.conf ]; then
+. /etc/bahmni-installer/bahmni.conf
 fi
 
 #create bahmni user and group if doesn't exist
@@ -27,9 +27,6 @@ if [ "${IS_PASSIVE:-0}" -ne "1" ]; then
     cd /opt/pacs-integration/pacs-integration && datasetup/initDB.sh
 fi
 chkconfig --add pacs-integration
-
-#copy configs
-mkdir -p /opt/pacs-integration/pacs-integration/WEB-INF/classes/ && cp /opt/pacs-integration/etc/log4j.xml /opt/pacs-integration/pacs-integration/WEB-INF/classes/
 
 # permissions
 chown -R bahmni:bahmni /opt/pacs-integration

@@ -1,7 +1,7 @@
 #!/bin/bash
 
-if [ -f /etc/bahmni-installer/bahmni-emr-installer.conf ]; then
-. /etc/bahmni-installer/bahmni-emr-installer.conf
+if [ -f /etc/bahmni-installer/bahmni.conf ]; then
+. /etc/bahmni-installer/bahmni.conf
 fi
 
 #create bahmni user and group if doesn't exist
