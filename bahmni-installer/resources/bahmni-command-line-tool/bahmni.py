@@ -1,7 +1,8 @@
 import click
-import subprocess
 import os
+import subprocess
 import sys
+
 
 @click.group()
 @click.option("--implementation", "-I", help='Option to specify the implementation config to be installed. Default value is default. If this options is used, implementation config folder has to be placed in /etc/bahmni-installer/deployment-artifacts with name <impelementation>_config')
@@ -165,5 +166,15 @@ def run_migrations(ctx):
     getTag = lambda moduleName: "run-migration-open"+moduleName
     allTags = ",".join(map(getTag, modules))
     command = ctx.obj['ANSIBLE_COMMAND'].format("db-migrations.yml", ctx.obj['EXTRA_VARS']) + "  -t " + allTags
+    click.echo(command)
+    subprocess.check_call(command, shell=True)
+
+@cli.command(name="install-certs", short_help="Install SSL certificates using LetsEncrypt")
+@click.option("--email", "-e", required=True, help='Email to register a LetsEncrypt account.')
+@click.option("--domain", "-d", required=True, help='Domain name to register the certificate to.')
+@click.pass_context
+def install_certs(ctx, email, domain):
+    extra_vars = '--extra-vars "email={0} commonName={1}"'.format(email, domain)
+    command = ctx.obj['ANSIBLE_COMMAND'].format("letsencrypt.yml", extra_vars)
     click.echo(command)
     subprocess.check_call(command, shell=True)
