@@ -4,8 +4,6 @@
 
 . /etc/openmrs/bahmni-emr.conf
 
-. /etc/bahmni-reports/bahmni-reports.conf
-
 if [ -f /etc/bahmni-installer/bahmni.conf ]; then
 . /etc/bahmni-installer/bahmni.conf
 fi
