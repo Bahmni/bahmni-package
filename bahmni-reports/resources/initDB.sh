@@ -2,8 +2,8 @@
 set -e -x
 
 . /etc/bahmni-reports/bahmni-reports.conf
-if [ -f /etc/bahmni-installer/bahmni-emr-installer.conf ]; then
-. /etc/bahmni-installer/bahmni-emr-installer.conf
+if [ -f /etc/bahmni-installer/bahmni.conf ]; then
+. /etc/bahmni-installer/bahmni.conf
 fi
 
 RESULT=`mysql -h $REPORTS_DB_SERVER -u$MYSQL_ROOT_USER -p$MYSQL_ROOT_PASSWORD --skip-column-names -e "SHOW DATABASES LIKE 'bahmni_reports'"`
