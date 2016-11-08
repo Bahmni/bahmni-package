@@ -47,6 +47,8 @@ ospackage {
         include('bacteriology-*.omod')
         include('rulesengine-*.omod')
         include('episodes-*.omod')
+        include('legacyui-*.omod')
+        include('reportingcompatibility-*.omod')
     }
 
     from("${projectDir}/resources/") {
