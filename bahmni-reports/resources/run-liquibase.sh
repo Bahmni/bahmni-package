@@ -7,7 +7,7 @@ if [ -f /etc/bahmni-installer/bahmni.conf ]; then
 fi
 
 CHANGE_LOG_TABLE="-Dliquibase.databaseChangeLogTableName=liquibasechangelog -Dliquibase.databaseChangeLogLockTableName=liquibasechangeloglock -DschemaName=$3"
-LIQUIBASE_JAR="/opt/openmrs/openmrs/WEB-INF/lib/liquibase-core-2.0.5.jar"
+LIQUIBASE_JAR="/opt/bahmni-reports/bahmni-reports/WEB-INF/lib/liquibase-core-2.0.5.jar"
 DRIVER="com.mysql.jdbc.Driver"
 CLASSPATH="/opt/bahmni-reports/bahmni-reports/WEB-INF/lib/mysql-connector-java-5.1.26.jar"
 CHANGE_LOG_FILE="$1"
