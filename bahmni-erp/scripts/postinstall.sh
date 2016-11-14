@@ -23,6 +23,7 @@ install_openerp(){
     cp openerp-server $BAHMNI_ERP
     cp install/openerp-server.conf $BAHMNI_ERP/etc
     cp -r $BAHMNI_ERP/bahmni-addons/* /usr/lib/python2.6/site-packages/openerp-7.0_20130301_002301-py2.6.egg/openerp/addons
+    cd $BAHMNI_ERP
     rm -rf $BAHMNI_ERP/openerp-7.0-20130301-002301
     rm -rf $BAHMNI_ERP/openerp-7.0-20130301-002301.tar.gz
 }
@@ -37,7 +38,7 @@ initDB(){
 
     if [ "$RESULT_DB" == "0" ]; then
         echo "Restoring base dump of openerp"
-        createdb -Uopenerp -h$OPENERP_DB_SERVER openerp;
+        createdb -Upostgres -h$OPENERP_DB_SERVER openerp;
 
         if [ "${IMPLEMENTATION_NAME:-default}" = "default" ]; then
             psql -Uopenerp -h$OPENERP_DB_SERVER openerp < /opt/bahmni-erp/db-dump/openerp_demo_dump.sql
