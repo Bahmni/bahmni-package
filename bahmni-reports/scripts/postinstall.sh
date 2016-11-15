@@ -1,6 +1,6 @@
 #!/bin/bash
 
-. /etc/bahmni-reports/bahmni-reports.conf
+. /opt/bahmni-reports/etc/bahmni-reports.conf
 
 if [ -f /etc/bahmni-installer/bahmni.conf ]; then
 . /etc/bahmni-installer/bahmni.conf
@@ -16,6 +16,8 @@ groupadd bahmni
 /bin/id $USERID 2>/dev/null
 [ $? -eq 1 ]
 useradd -g bahmni bahmni
+
+mkdir -p /bahmni_temp/logs
 
 link_directories(){
     #create links

@@ -15,6 +15,8 @@ groupadd bahmni
 [ $? -eq 1 ]
 useradd -g bahmni bahmni
 
+mkdir -p /bahmni_temp/logs
+
 link_directories(){
     #create links
     ln -s /opt/bahmni-erp-connect/etc /etc/bahmni-erp-connect
