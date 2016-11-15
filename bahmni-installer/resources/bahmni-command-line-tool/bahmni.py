@@ -14,9 +14,10 @@ import sys
 @click.option("--migrate", "-m", help='Give a comma seperated list of modules to run migrations for. It has to be used with run_migrations command.Ex: bahmni --migrate erp,elis,mrs run_migrations')
 @click.option("--only", "-o", help='Install only specified components. Possible values can be bahmni-emr, bahmni-reports, bahmni-lab, bahmni-erp, dcm4chee, pacs-integration, bahmni-event-log-service')
 @click.option("--skip", "-s", help='Skip installation of specified components. Possible values can be bahmni-emr, bahmni-reports, bahmni-lab, bahmni-erp, dcm4chee, pacs-integration, bahmni-event-log-service')
+@click.option("--ansible_version", "-av", default='ansible 2', help='Option to specify ansible version to be used for running installer playbooks')
 
 @click.pass_context
-def cli(ctx, implementation, inventory, sql_path, database, verbose, implementation_play, migrate, only, skip):
+def cli(ctx, implementation, inventory, sql_path, database, verbose, implementation_play, migrate, only, skip, ansible_version):
     ctx.obj={}
     """Command line utility for Bahmni"""
     os.chdir('/opt/bahmni-installer/bahmni-playbooks')
@@ -26,9 +27,9 @@ def cli(ctx, implementation, inventory, sql_path, database, verbose, implementat
     addExtraVarFile(ctx, "/etc/bahmni-installer/setup.yml")
     addExtraVar(ctx,"implementation_name", implementation )
 
-    ansible_version = os.popen("ansible --version").read()
-    if "ansible 2" not in ansible_version:
-        subprocess.call('sudo yum install -y ansible', shell=True)
+    exisiting_ansible_version = os.popen("ansible --version").read()
+    if  ansible_version not in exisiting_ansible_version:
+        subprocess.call('sudo yum install -y '+ansible_version, shell=True)
 
     verbosity="-vvvv" if verbose else "-vv"
     ctx.obj['INVENTORY'] = '/etc/bahmni-installer/'+inventory
