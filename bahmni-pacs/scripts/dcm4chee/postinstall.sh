@@ -33,7 +33,10 @@ ln -s /opt/dcm4chee/bin/dcm4chee /etc/init.d/dcm4chee
 chown -R bahmni:bahmni /etc/init.d/dcm4chee
 chown -R bahmni:bahmni /var/lib/bahmni/dcm4chee-2.18.1-psql
 
-ln -s /home/bahmni/pacs_images/archive /var/lib/bahmni/dcm4chee-2.18.1-psql/server/default/
+pacs_images_dir=/home/bahmni/pacs_images
+mkdir -p ${pacs_images_dir}/archive
+chown -R bahmni:bahmni ${pacs_images_dir}
+ln -s ${pacs_images_dir}/archive ${dcm4chee_path}/server/default/archive
 
 setupConfFiles() {
     rm -f /etc/httpd/conf.d/dcm4chee_ssl.conf

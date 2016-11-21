@@ -7,8 +7,7 @@ then
     then
         if [ ! -L /var/lib/bahmni/dcm4chee-2.18.1-psql/server/default/archive ];
         then
-            sudo mv /var/lib/bahmni/dcm4chee-2.18.1-psql/server/default/archive /home/bahmni/pacs_images/
-            ln -s /home/bahmni/pacs_images/ /var/lib/bahmni/dcm4chee-2.18.1-psql/server/default/
+            mv /var/lib/bahmni/dcm4chee-2.18.1-psql/server/default/archive /home/bahmni/pacs_images/
         fi
     fi
 fi
