@@ -38,7 +38,15 @@ downloadLiquibaseJar.onlyIf { !(new File("${projectDir}/resources/liquibase-core
 
 ospackage {
     packageName = 'bahmni-lab-connect'
-    release = System.getenv('GO_PIPELINE_COUNTER')?: "1"
+    String initialCounter = System.getenv('INITIAL_PIPELINE_COUNTER') ?: "0"
+    String currentCounter=System.getenv('GO_PIPELINE_COUNTER') ?: "1"
+    int currentBuildNumber = currentCounter as Integer
+    int initialBuildNumber=0;
+    if (initialCounter.isInteger()) {
+        initialBuildNumber = initialCounter as Integer
+    }
+    int newBuildNumber = initialBuildNumber + currentBuildNumber
+    release = newBuildNumber as String
     arch = NOARCH
     os = LINUX
     user = 'bahmni'

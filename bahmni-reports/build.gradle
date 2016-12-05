@@ -34,7 +34,15 @@ task normalizeJarName(type: Copy) {
 
 ospackage {
     packageName = 'bahmni-reports'
-    release = System.getenv('GO_PIPELINE_COUNTER') ?: project.buildNumber
+    String initialCounter = System.getenv('INITIAL_PIPELINE_COUNTER') ?: "0"
+    String currentCounter=System.getenv('GO_PIPELINE_COUNTER') ?: project.buildNumber
+    int currentBuildNumber = currentCounter as Integer
+    int initialBuildNumber=0;
+    if (initialCounter.isInteger()) {
+        initialBuildNumber = initialCounter as Integer
+    }
+    int newBuildNumber = initialBuildNumber + currentBuildNumber
+    release = newBuildNumber as String
     arch = NOARCH
     os = LINUX
     user = 'root'

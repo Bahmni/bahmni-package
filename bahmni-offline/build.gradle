@@ -10,7 +10,14 @@ def tag = System.getenv('BUILD_TAG') ?: ""
 
 ospackage {
     packageName = 'bahmni-offline'
-    release = tag == "" ? build_number : "${build_number}_${tag}"
+    String initialCounter = System.getenv('INITIAL_PIPELINE_COUNTER') ?: "0"
+    int currentBuildNumber = build_number as Integer
+    int initialBuildNumber=0;
+    if (initialCounter.isInteger()) {
+        initialBuildNumber = initialCounter as Integer
+    }
+    int newBuildNumber = initialBuildNumber + currentBuildNumber
+    release = tag == "" ? newBuildNumber : "${build_number}_${tag}"
     arch = NOARCH
     os = LINUX
     user = 'bahmni'
