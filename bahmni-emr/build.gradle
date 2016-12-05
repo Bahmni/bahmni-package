@@ -18,10 +18,6 @@ ospackage {
     int initialBuildNumber=0;
     if (initialCounter.isInteger()) {
         initialBuildNumber = initialCounter as Integer
-        if (initialBuildNumber<=currentBuildNumber)
-           {
-             initialBuildNumber=0
-           }
     }
     int newBuildNumber = initialBuildNumber + currentBuildNumber
     release = newBuildNumber as String 
