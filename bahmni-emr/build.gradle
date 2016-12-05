@@ -12,7 +12,15 @@ task extractOmods(type: Copy) {
 
 ospackage {
     packageName = 'bahmni-emr'
-    release = System.getenv('GO_PIPELINE_COUNTER') ?: "1"
+    String intialCounter = System.getenv('INITIAL_PIPELINE_COUNTER') ?: "0"
+    int initialBuildNumber=0;
+    if (initialCounter.isInteger()) {
+        initialBuildNumber = initialCounter as Integer
+    }
+    String currentCounter=System.getenv('GO_PIPELINE_COUNTER') ?: "1"
+    int currentBuildNumber = currentCounter as Integer
+    int newBuildNumber = initialBuildNumber + currentBuildNumber
+    release = newBuildNumber as String 
     arch = NOARCH
     os = LINUX
     user = 'bahmni'
