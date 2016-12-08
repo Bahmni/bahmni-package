@@ -162,9 +162,9 @@
         <xsl:if test="normalize-space($priority)">
             <attr tag="00401003" vr="CS">
                 <xsl:choose>
-                    <xsl:when test="$priority = 'S'">STAT</xsl:when>
+                    <xsl:when test="$priority = 'STAT'">STAT</xsl:when>
                     <xsl:when test="$priority = 'A' or $priority = 'P' or $priority = 'C' ">HIGH</xsl:when>
-                    <xsl:when test="$priority = 'R'">ROUTINE</xsl:when>
+                    <xsl:when test="$priority = 'ROUTINE'">ROUTINE</xsl:when>
                  <xsl:when test="$priority = 'T'">MEDIUM</xsl:when>
                 </xsl:choose>
             </attr>
