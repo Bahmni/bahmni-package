@@ -46,8 +46,8 @@ def cli(ctx, implementation, inventory, sql_path, database, verbose, implementat
 
 def installAnsible(ansible_rpm_url):
     print "Installing Ansible..."
-    ansible_installation_process = subprocess.Popen(['yum install -y ' + ansible_rpm_url], stdout=subprocess.PIPE,
-                                                    stderr=subprocess.PIPE, shell=True)
+    ansible_installation_process = subprocess.Popen(['sudo yum install -y ' + ansible_rpm_url], stdout=subprocess.PIPE,
+                                                    stderrg=subprocess.PIPE, shell=True)
     output, err = ansible_installation_process.communicate()
     print output, err
     if ansible_installation_process.returncode != 0:
