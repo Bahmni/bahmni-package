@@ -45,15 +45,19 @@ def cli(ctx, implementation, inventory, sql_path, database, verbose, implementat
         sys.exit()
 
 def installAnsible(ansible_rpm_url):
-    print "Installing Ansible..."
-    ansible_installation_process = subprocess.Popen(['sudo yum install -y ' + ansible_rpm_url], stdout=subprocess.PIPE,
-                                                    stderr=subprocess.PIPE, shell=True)
-    output, err = ansible_installation_process.communicate()
-    print output, err
-    if ansible_installation_process.returncode != 0:
-        if "does not update installed package" not in output:
-            sys.exit()
-
+    ansible_rpm_package = ansible_rpm_url.split('/')[-1].replace('.rpm', '')
+    installed_ansible_package = subprocess.Popen('rpm -q ' + ansible_rpm_package,
+                                             stdout=subprocess.PIPE, shell=True).communicate()[0].strip()
+    if installed_ansible_package != ansible_rpm_package:
+        print "Installing Ansible from " + ansible_rpm_url + "..."
+        ansible_installation_process = subprocess.Popen(['sudo yum install -y ' + ansible_rpm_url],
+                                                        stdout=subprocess.PIPE,
+                                                        stderr=subprocess.PIPE, shell=True)
+        output, err = ansible_installation_process.communicate()
+        print output, err
+        if ansible_installation_process.returncode != 0:
+            if "does not update installed package" not in output:
+                sys.exit()
 
 def addExtraVarFile(ctx, file_path):
     if(os.path.isfile(file_path)):
