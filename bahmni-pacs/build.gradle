@@ -34,7 +34,7 @@ task normalizeJarName(type: Copy) {
 }
 
 task downloadDCM4CHEE(type: Download) {
-    src 'http://172.18.2.14/packages/build/dcm4chee-2.18.1-psql.zip'
+    src 'http://repo.mybahmni.org.s3.amazonaws.com/packages/build/dcm4chee-2.18.1-psql.zip'
     dest buildDir
 }
 
@@ -48,7 +48,7 @@ task extractDCM4CHEE(dependsOn: ["downloadDCM4CHEE"], type: Copy) {
 }
 
 task downloadJBoss(type: Download) {
-    src 'http://172.18.2.14/packages/servers/jboss-4.2.3.GA-jdk6.zip'
+    src 'http://repo.mybahmni.org.s3.amazonaws.com/packages/servers/jboss-4.2.3.GA-jdk6.zip'
     dest buildDir
 }
 
@@ -62,7 +62,7 @@ task extractJBoss(dependsOn: ["downloadJBoss"], type: Copy) {
 }
 
 task downloadOviyam2(type: Download) {
-    src 'http://172.18.2.14/packages/build/Oviyam-2.1-bin.zip'
+    src 'http://repo.mybahmni.org.s3.amazonaws.com/packages/build/Oviyam-2.1-bin.zip'
     dest buildDir
 }
 
