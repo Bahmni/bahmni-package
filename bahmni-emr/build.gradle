@@ -49,6 +49,7 @@ ospackage {
         include('episodes-*.omod')
         include('legacyui-*.omod')
         include('reportingcompatibility-*.omod')
+        include('bahmniIEApps-*.omod')
     }
 
     from("${projectDir}/resources/") {
