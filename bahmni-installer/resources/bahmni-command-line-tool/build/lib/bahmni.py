@@ -214,5 +214,3 @@ def pgbackrest_restore(ctx,type_of_restore):
    command = ctx.obj['ANSIBLE_COMMAND'].format("pgbackrest-restore.yml", ctx.obj['EXTRA_VARS'])
    click.echo(command)
    subprocess.check_call(command, shell=True)
-
-
