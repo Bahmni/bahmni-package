@@ -198,7 +198,7 @@ def install_certs(ctx, email, domain):
     subprocess.check_call(command, shell=True)
 
 @cli.command(name="pgbackrest-backup", short_help="Backs up postgres db via pgbackrest,Enter --help for help")
-@click.option("--type_of_backup", "-b",required=True,type=click.Choice(['full', 'incr','cronincr','cronfull']))
+@click.option("--type_of_backup", "-b",required=True, help='Enter type of backup where: \nincr:creates incremental backup \nfull:creates fullbackup \ncronincr:creates periodic-incremental \ncronfull:creates periodic-full')
 @click.pass_context
 def pgbackrest_backup(ctx,type_of_backup):
    addExtraVar(ctx,"type_of_backup", type_of_backup )
@@ -207,19 +207,12 @@ def pgbackrest_backup(ctx,type_of_backup):
    subprocess.check_call(command, shell=True)
 
 @cli.command(name="pgbackrest-restore", short_help="Restores postgres db via pgbackrest")
-@click.option("--type_of_restore", "-r",required=False,type=click.Choice(['delta', 'full','pitr']),help='Enter targettime and backupid for pitr')
-@click.argument('targettime',required=False)
-@click.argument('backupid',required=False)
+@click.option("--type_of_restore", "-r",required=True, help='Enter type of restore where: \ndelta:performs delta restore \nfull:performs full restore')
 @click.pass_context
-def pgbackrest_restore(ctx,type_of_restore,targettime,backupid):
+def pgbackrest_restore(ctx,type_of_restore):
    addExtraVar(ctx,"type_of_restore", type_of_restore )
-   if type_of_restore == 'pitr':
-     addExtraVar(ctx,"backup_id_time",targettime)
-     addExtraVar(ctx,"backup_id", backupid)
-     command = ctx.obj['ANSIBLE_COMMAND'].format("pgbackrest-restore.yml", ctx.obj['EXTRA_VARS'])
-     click.echo(command)
-     subprocess.check_call(command, shell=True)
-   else:
-     command = ctx.obj['ANSIBLE_COMMAND'].format("pgbackrest-restore.yml", ctx.obj['EXTRA_VARS'])
-     click.echo(command)
-     subprocess.check_call(command, shell=True)
+   command = ctx.obj['ANSIBLE_COMMAND'].format("pgbackrest-restore.yml", ctx.obj['EXTRA_VARS'])
+   click.echo(command)
+   subprocess.check_call(command, shell=True)
+
+
