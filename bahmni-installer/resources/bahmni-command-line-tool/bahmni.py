@@ -223,3 +223,29 @@ def pgbackrest_restore(ctx,type_of_restore,targettime,backupid):
      command = ctx.obj['ANSIBLE_COMMAND'].format("pgbackrest-restore.yml", ctx.obj['EXTRA_VARS'])
      click.echo(command)
      subprocess.check_call(command, shell=True)
+
+@cli.command(name="backup", short_help="Used for taking backup of application artifact files and databases")
+@click.option("--backup_type", "-bt", required=False,default='all', help='Backup type can be file,db,all ')
+@click.option("--options", "-op", required=False, default='all', help='Use this to specify options for backup type. allowed values: openmrs,patient_files i.e: openmrs in case of backup_type is db ;')
+@click.option("--strategy", "-st", required=False, help="Strategy for db backups, 'full' for full backup  or 'incr' for incremental backup.")
+@click.option("--schedule", "-sh", required=False, help="Schedule a command")
+@click.pass_context
+def main_backup(ctx,backup_type,options,strategy,schedule):
+   addExtraVar(ctx,"backup_type", backup_type )
+   addExtraVar(ctx,"options", options )
+   addExtraVar(ctx,"strategy", strategy )
+   command = ''
+   if schedule is not None:
+      cron_command = schedule+' bahmni -i'+ctx.obj['INVENTORY_NAME']+' backup -bt '+backup_type+' -op'+options
+      if strategy is not None:
+          cron_command = cron_command +' -st '+strategy
+      click.echo(cron_command)
+      subprocess.call('(crontab -l  2>/dev/null ; echo \''+cron_command+'\')| crontab - ', shell=True)
+      return
+
+   if backup_type == 'db' or backup_type == 'all' :
+      if options == 'openmrs' or options == 'all':
+          command = ctx.obj['ANSIBLE_COMMAND'].format("incremental-db-backup.yml", ctx.obj['EXTRA_VARS'])
+
+   click.echo(cron_command)
+   subprocess.check_call(command, shell=True)
