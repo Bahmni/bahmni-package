@@ -27,6 +27,7 @@ def cli(ctx, implementation, inventory, sql_path, database, verbose, implementat
     ctx.obj['EXTRA_VARS'] =""
 
     addExtraVarFile(ctx, "/etc/bahmni-installer/rpm_versions.yml")
+    addExtraVarFile(ctx, "/etc/bahmni-backrest.yml")
     addExtraVarFile(ctx, "/etc/bahmni-installer/setup.yml")
     addExtraVar(ctx,"implementation_name", implementation )
 
@@ -34,6 +35,7 @@ def cli(ctx, implementation, inventory, sql_path, database, verbose, implementat
 
     verbosity="-vvvv" if verbose else "-vv"
     ctx.obj['INVENTORY'] = '/etc/bahmni-installer/'+inventory
+    ctx.obj['INVENTORY_NAME'] = inventory
     ctx.obj['IMPLEMENTATION_PLAY'] = implementation_play
     ctx.obj['ANSIBLE_COMMAND'] =  "ansible-playbook -i "+ ctx.obj['INVENTORY'] +" {0} " +verbosity+ " {1}"
     ctx.obj['SQL_PATH'] = sql_path
@@ -197,33 +199,6 @@ def install_certs(ctx, email, domain):
     click.echo(command)
     subprocess.check_call(command, shell=True)
 
-@cli.command(name="pgbackrest-backup", short_help="Backs up postgres db via pgbackrest,Enter --help for help")
-@click.option("--type_of_backup", "-b",required=True,type=click.Choice(['full', 'incr','cronincr','cronfull']))
-@click.pass_context
-def pgbackrest_backup(ctx,type_of_backup):
-   addExtraVar(ctx,"type_of_backup", type_of_backup )
-   command = ctx.obj['ANSIBLE_COMMAND'].format("pgbackrest-backup.yml", ctx.obj['EXTRA_VARS'])
-   click.echo(command)
-   subprocess.check_call(command, shell=True)
-
-@cli.command(name="pgbackrest-restore", short_help="Restores postgres db via pgbackrest")
-@click.option("--type_of_restore", "-r",required=False,type=click.Choice(['delta', 'full','pitr']),help='Enter targettime and backupid for pitr')
-@click.argument('targettime',required=False)
-@click.argument('backupid',required=False)
-@click.pass_context
-def pgbackrest_restore(ctx,type_of_restore,targettime,backupid):
-   addExtraVar(ctx,"type_of_restore", type_of_restore )
-   if type_of_restore == 'pitr':
-     addExtraVar(ctx,"backup_id_time",targettime)
-     addExtraVar(ctx,"backup_id", backupid)
-     command = ctx.obj['ANSIBLE_COMMAND'].format("pgbackrest-restore.yml", ctx.obj['EXTRA_VARS'])
-     click.echo(command)
-     subprocess.check_call(command, shell=True)
-   else:
-     command = ctx.obj['ANSIBLE_COMMAND'].format("pgbackrest-restore.yml", ctx.obj['EXTRA_VARS'])
-     click.echo(command)
-     subprocess.check_call(command, shell=True)
-
 @cli.command(name="backup", short_help="Used for taking backup of application artifact files and databases")
 @click.option("--backup_type", "-bt", required=False,default='all', help='Backup type can be file,db,all ')
 @click.option("--options", "-op", required=False, default='all', help='Use this to specify options for backup type. allowed values: openmrs,patient_files i.e: openmrs in case of backup_type is db ;')
@@ -247,5 +222,37 @@ def main_backup(ctx,backup_type,options,strategy,schedule):
       if options == 'openmrs' or options == 'all':
           command = ctx.obj['ANSIBLE_COMMAND'].format("incremental-db-backup.yml", ctx.obj['EXTRA_VARS'])
 
-   click.echo(cron_command)
+   if backup_type == 'file' or backup_type == 'all' :
+          command = ctx.obj['ANSIBLE_COMMAND'].format("backup-artifacts.yml", ctx.obj['EXTRA_VARS'])
+
+   click.echo(command)
    subprocess.check_call(command, shell=True)
+
+@cli.command(name="restore", short_help="Used for taking backup of application artifact files and databases")
+@click.option("--backup_type", "-bt", required=False,default='all', help='Backup type can be file,db,all ')
+@click.option("--options", "-op", required=False, default='all', help='Use this to specify options for backup type. allowed values: openmrs,patient_files i.e: openmrs in case of backup_type is db ;')
+@click.option("--strategy", "-st", required=False, help="Strategy for db backups, 'full' for full backup  or 'incr' for incremental backup.")
+@click.option("--schedule", "-sh", required=False, help="Schedule a command")
+@click.pass_context
+def main_backup(ctx,backup_type,options,strategy,schedule):
+    addExtraVar(ctx,"backup_type", backup_type )
+    addExtraVar(ctx,"options", options )
+    addExtraVar(ctx,"strategy", strategy )
+    command = ''
+    if schedule is not None:
+        cron_command = schedule+' bahmni -i'+ctx.obj['INVENTORY_NAME']+' backup -bt '+backup_type+' -op'+options
+        if strategy is not None:
+            cron_command = cron_command +' -st '+strategy
+        click.echo(cron_command)
+        subprocess.call('(crontab -l  2>/dev/null ; echo \''+cron_command+'\')| crontab - ', shell=True)
+        return
+
+    if backup_type == 'db' or backup_type == 'all' :
+        if options == 'openmrs' or options == 'all':
+            command = ctx.obj['ANSIBLE_COMMAND'].format("incremental-db-backup.yml", ctx.obj['EXTRA_VARS'])
+
+    if backup_type == 'file' or backup_type == 'all' :
+        command = ctx.obj['ANSIBLE_COMMAND'].format("backup-artifacts.yml", ctx.obj['EXTRA_VARS'])
+
+    click.echo(command)
+    subprocess.check_call(command, shell=True)
