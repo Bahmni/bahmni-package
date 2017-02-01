@@ -246,6 +246,9 @@ def main_backup(ctx,backup_type,options,strategy,schedule):
    if backup_type == 'db' or backup_type == 'all' :
       if options == 'openmrs' or options == 'all':
           command = ctx.obj['ANSIBLE_COMMAND'].format("incremental-db-backup.yml", ctx.obj['EXTRA_VARS'])
+      if options == 'postgres' or options == 'all'
+          command = ctx.obj['ANSIBLE_COMMAND'].format("incremental-db-backup.yml", ctx.obj['EXTRA_VARS'])
+
 
    click.echo(cron_command)
    subprocess.check_call(command, shell=True)
