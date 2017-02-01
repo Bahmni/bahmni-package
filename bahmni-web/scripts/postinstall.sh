@@ -18,8 +18,18 @@ useradd -g bahmni bahmni
 export MOD_PROXY=/var/cache/mod_proxy
 
 setupConfFiles() {
-    rm -f /etc/httpd/conf/httpd.conf
-    rm -f /etc/httpd/conf.d/ssl.conf
+    if [ ! -L /etc/httpd/conf/httpd.conf ]; then
+        mv /etc/httpd/conf/httpd.conf /etc/httpd/conf/default_httpd.conf.bak
+    else
+        rm -rf /etc/httpd/conf/httpd.conf
+    fi
+
+    if [ ! -L /etc/httpd/conf.d/ssl.conf ]
+    then
+        mv /etc/httpd/conf.d/ssl.conf /etc/httpd/conf.d/default_ssl.conf.bak
+    else
+        rm -rf /etc/httpd/conf.d/ssl.conf
+    fi
 
     ln -s /opt/bahmni-web/etc/httpd.conf /etc/httpd/conf/httpd.conf
     ln -s /opt/bahmni-web/etc/ssl.conf /etc/httpd/conf.d/ssl.conf

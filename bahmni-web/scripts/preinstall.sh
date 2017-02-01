@@ -1,8 +1,6 @@
 #!/bin/bash
 
 rm -rf /opt/bahmni-web/
-rm -f /etc/httpd/conf/httpd.conf
-rm -f /etc/httpd/conf.d/ssl.conf
 rm -f /var/www/client_side_logging
 rm -f /var/www/bahmniapps
 rm -f /var/www/bahmni_config
