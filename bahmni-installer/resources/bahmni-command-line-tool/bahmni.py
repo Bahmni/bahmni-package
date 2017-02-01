@@ -228,31 +228,20 @@ def main_backup(ctx,backup_type,options,strategy,schedule):
    click.echo(command)
    subprocess.check_call(command, shell=True)
 
-@cli.command(name="restore", short_help="Used for taking backup of application artifact files and databases")
+@cli.command(name="restore", short_help="Used for restoring of application files and databases")
 @click.option("--backup_type", "-bt", required=False,default='all', help='Backup type can be file,db,all ')
 @click.option("--options", "-op", required=False, default='all', help='Use this to specify options for backup type. allowed values: openmrs,patient_files i.e: openmrs in case of backup_type is db ;')
-@click.option("--strategy", "-st", required=False, help="Strategy for db backups, 'full' for full backup  or 'incr' for incremental backup.")
-@click.option("--schedule", "-sh", required=False, help="Schedule a command")
+@click.option("--strategy", "-st", required=False,default='full', help="Strategy for db backups, 'full' for full backup  or 'incr' for incremental backup.")
+@click.option("--restore_point", "-rp", required=False, default='', help="Restoration point where we need to do restore")
 @click.pass_context
-def main_backup(ctx,backup_type,options,strategy,schedule):
+def restore(ctx,backup_type,options,strategy,restore_point):
     addExtraVar(ctx,"backup_type", backup_type )
     addExtraVar(ctx,"options", options )
-    addExtraVar(ctx,"strategy", strategy )
+    addExtraVar(ctx,"restore_point", restore_point )
     command = ''
-    if schedule is not None:
-        cron_command = schedule+' bahmni -i'+ctx.obj['INVENTORY_NAME']+' backup -bt '+backup_type+' -op'+options
-        if strategy is not None:
-            cron_command = cron_command +' -st '+strategy
-        click.echo(cron_command)
-        subprocess.call('(crontab -l  2>/dev/null ; echo \''+cron_command+'\')| crontab - ', shell=True)
-        return
-
+    addExtraVar(ctx,"strategy", strategy )
     if backup_type == 'db' or backup_type == 'all' :
-        if options == 'openmrs' or options == 'all':
-            command = ctx.obj['ANSIBLE_COMMAND'].format("incremental-db-backup.yml", ctx.obj['EXTRA_VARS'])
-
-    if backup_type == 'file' or backup_type == 'all' :
-        command = ctx.obj['ANSIBLE_COMMAND'].format("backup-artifacts.yml", ctx.obj['EXTRA_VARS'])
-
+      if options == 'openmrs' or options == 'all':
+         command = ctx.obj['ANSIBLE_COMMAND'].format("mysql-db-restore.yml", ctx.obj['EXTRA_VARS'])
     click.echo(command)
     subprocess.check_call(command, shell=True)
