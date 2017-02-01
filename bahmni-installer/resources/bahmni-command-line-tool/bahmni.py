@@ -220,7 +220,7 @@ def main_backup(ctx,backup_type,options,strategy,schedule):
    if backup_type == 'db' or backup_type == 'all' :
       if options == 'openmrs' or options == 'all':
           command = ctx.obj['ANSIBLE_COMMAND'].format("incremental-db-backup.yml", ctx.obj['EXTRA_VARS'])
-      if options == 'postgres' or options == 'all'
+      if options == 'postgres' or options == 'all':
           command = ctx.obj['ANSIBLE_COMMAND'].format("incremental-db-backup.yml", ctx.obj['EXTRA_VARS'])
 
 
@@ -243,9 +243,11 @@ def restore(ctx,restore_type,options,strategy,restore_point):
     command = ''
     addExtraVar(ctx,"strategy", strategy )
     if restore_type == 'db' or restore_type == 'all' :
-      if options == 'openmrs' or options == 'all':
+      if options == 'openmrs' or options == 'all' :
          command = ctx.obj['ANSIBLE_COMMAND'].format("incremental-db-restore.yml", ctx.obj['EXTRA_VARS'])
-      if options == 'postgres' or options == 'all':
+      if options == 'postgres' or options == 'all' :
          command = ctx.obj['ANSIBLE_COMMAND'].format("incremental-db-restore.yml", ctx.obj['EXTRA_VARS'])
+    if restore_type == 'file' or restore_type == 'all' :
+      command = ctx.obj['ANSIBLE_COMMAND'].format("restore-artifacts.yml", ctx.obj['EXTRA_VARS'])
     click.echo(command)
     subprocess.check_call(command, shell=True)
