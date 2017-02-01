@@ -218,17 +218,21 @@ def main_backup(ctx,backup_type,options,strategy,schedule):
       return
 
    if backup_type == 'db' or backup_type == 'all' :
-      if options == 'openmrs' or options == 'all':
+      if 'openmrs' in options or options == 'all':
+          addExtraVar(ctx,"db","openmrs" )
           command = ctx.obj['ANSIBLE_COMMAND'].format("incremental-db-backup.yml", ctx.obj['EXTRA_VARS'])
-      if options == 'postgres' or options == 'all':
+          subprocess.check_call(command, shell=True)
+      if 'bahmni_reports' in options or options == 'all':
+          addExtraVar(ctx,"db","bahmni_reports" )
           command = ctx.obj['ANSIBLE_COMMAND'].format("incremental-db-backup.yml", ctx.obj['EXTRA_VARS'])
-
+          subprocess.check_call(command, shell=True)
+      if 'postgres' in options or options == 'all':
+          command = ctx.obj['ANSIBLE_COMMAND'].format("incremental-db-backup.yml", ctx.obj['EXTRA_VARS'])
+          subprocess.check_call(command, shell=True)          
 
    if backup_type == 'file' or backup_type == 'all' :
           command = ctx.obj['ANSIBLE_COMMAND'].format("backup-artifacts.yml", ctx.obj['EXTRA_VARS'])
-
-   click.echo(command)
-   subprocess.check_call(command, shell=True)
+          subprocess.check_call(command, shell=True)
 
 @cli.command(name="restore", short_help="Used for restoring of application files and databases")
 @click.option("--restore_type", "-rt", required=False,default='all', help='Restore type can be file,db,all ')
@@ -243,11 +247,18 @@ def restore(ctx,restore_type,options,strategy,restore_point):
     command = ''
     addExtraVar(ctx,"strategy", strategy )
     if restore_type == 'db' or restore_type == 'all' :
-      if options == 'openmrs' or options == 'all' :
-         command = ctx.obj['ANSIBLE_COMMAND'].format("incremental-db-restore.yml", ctx.obj['EXTRA_VARS'])
+      if 'openmrs' in options or options == 'all' :
+         addExtraVar(ctx,"db", "openmrs" )
+         command = ctx.obj['ANSIBLE_COMMAND'].format("mysql-db-restore.yml", ctx.obj['EXTRA_VARS'])
+         subprocess.check_call(command, shell=True)
+      if 'bahmni_reports' in options or options == 'all' :
+         addExtraVar(ctx,"db", "bahmni_reports" )         
+         command = ctx.obj['ANSIBLE_COMMAND'].format("mysql-db-restore.yml", ctx.obj['EXTRA_VARS'])
+         subprocess.check_call(command, shell=True)
       if options == 'postgres' or options == 'all' :
          command = ctx.obj['ANSIBLE_COMMAND'].format("incremental-db-restore.yml", ctx.obj['EXTRA_VARS'])
+         subprocess.check_call(command, shell=True)
     if restore_type == 'file' or restore_type == 'all' :
       command = ctx.obj['ANSIBLE_COMMAND'].format("restore-artifacts.yml", ctx.obj['EXTRA_VARS'])
-    click.echo(command)
-    subprocess.check_call(command, shell=True)
+      click.echo(command)
+      subprocess.check_call(command, shell=True)
