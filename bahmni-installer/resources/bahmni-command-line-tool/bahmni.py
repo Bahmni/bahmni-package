@@ -16,11 +16,11 @@ import sys
 @click.option("--skip", "-s", help='Skip installation of specified components. Possible values can be bahmni-emr, bahmni-reports, bahmni-lab, bahmni-erp, dcm4chee, pacs-integration, bahmni-event-log-service')
 @click.option("--ansible_rpm_url", "-aru", default='https://dl.bintray.com/bahmni/rpm/ansible-2.2.0.0-3.el6.noarch.rpm',
               help='Specify URL of the Ansible rpm')
-@click.option("--pgbackrest","-pgb",help='Backup and restore via pgbackrest')
+
 
 @click.pass_context
 def cli(ctx, implementation, inventory, sql_path, database, verbose, implementation_play, migrate, only, skip,
-        ansible_rpm_url,pgbackrest):
+        ansible_rpm_url):
     ctx.obj={}
     """Command line utility for Bahmni"""
     os.chdir('/opt/bahmni-installer/bahmni-playbooks')
@@ -41,7 +41,6 @@ def cli(ctx, implementation, inventory, sql_path, database, verbose, implementat
     ctx.obj['SQL_PATH'] = sql_path
     ctx.obj['DATABASE'] = database
     ctx.obj['MIGRATE'] = migrate
-    ctx.obj['PGBACKREST']="pgbackrest"+"{0}"+"{1}"
     ctx.obj['ONLY'] = only
     ctx.obj['SKIP'] = skip
     if  only!=None and skip!=None :
@@ -232,19 +231,21 @@ def main_backup(ctx,backup_type,options,strategy,schedule):
    subprocess.check_call(command, shell=True)
 
 @cli.command(name="restore", short_help="Used for restoring of application files and databases")
-@click.option("--backup_type", "-bt", required=False,default='all', help='Backup type can be file,db,all ')
+@click.option("--restore_type", "-bt", required=False,default='all', help='Restore type can be file,db,all ')
 @click.option("--options", "-op", required=False, default='all', help='Use this to specify options for backup type. allowed values: openmrs,patient_files i.e: openmrs in case of backup_type is db ;')
 @click.option("--strategy", "-st", required=False,default='full', help="Strategy for db backups, 'full' for full backup  or 'incr' for incremental backup.")
 @click.option("--restore_point", "-rp", required=False, default='', help="Restoration point where we need to do restore")
 @click.pass_context
-def restore(ctx,backup_type,options,strategy,restore_point):
-    addExtraVar(ctx,"backup_type", backup_type )
+def restore(ctx,restore_type,options,strategy,restore_point):
+    addExtraVar(ctx,"restore_type", restore_type )
     addExtraVar(ctx,"options", options )
     addExtraVar(ctx,"restore_point", restore_point )
     command = ''
     addExtraVar(ctx,"strategy", strategy )
-    if backup_type == 'db' or backup_type == 'all' :
+    if restore_type == 'db' or restore_type == 'all' :
       if options == 'openmrs' or options == 'all':
-         command = ctx.obj['ANSIBLE_COMMAND'].format("mysql-db-restore.yml", ctx.obj['EXTRA_VARS'])
+         command = ctx.obj['ANSIBLE_COMMAND'].format("incremental-db-restore.yml", ctx.obj['EXTRA_VARS'])
+      if options == 'postgres' or options == 'all':
+         command = ctx.obj['ANSIBLE_COMMAND'].format("incremental-db-restore.yml", ctx.obj['EXTRA_VARS'])
     click.echo(command)
     subprocess.check_call(command, shell=True)
