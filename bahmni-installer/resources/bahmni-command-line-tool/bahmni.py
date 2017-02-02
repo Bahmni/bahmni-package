@@ -220,7 +220,7 @@ def main_backup(ctx,backup_type,options,strategy,schedule):
    if backup_type == 'db' or backup_type == 'all' :
       if 'openmrs' in options or options == 'all':
           addExtraVar(ctx,"db","openmrs" )
-          command = ctx.obj['ANSIBLE_COMMAND'].format("incremental-db-backup.yml", ctx.obj['EXTRA_VARS'])
+          command = ctx.obj['ANSIBLE_COMMAND'].format("mysql-db-restore.yml", ctx.obj['EXTRA_VARS'])
           subprocess.check_call(command, shell=True)
       if 'bahmni_reports' in options or options == 'all':
           addExtraVar(ctx,"db","bahmni_reports" )
