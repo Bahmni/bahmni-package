@@ -27,7 +27,7 @@ def cli(ctx, implementation, inventory, sql_path, database, verbose, implementat
     ctx.obj['EXTRA_VARS'] =""
 
     addExtraVarFile(ctx, "/etc/bahmni-installer/rpm_versions.yml")
-    addExtraVarFile(ctx, "/etc/bahmni-backrest.yml")
+    addExtraVarFile(ctx, "/etc/bahmni-backrest.conf")
     addExtraVarFile(ctx, "/etc/bahmni-installer/setup.yml")
     addExtraVar(ctx,"implementation_name", implementation )
 
