@@ -200,7 +200,7 @@ def install_certs(ctx, email, domain):
 
 @cli.command(name="backup", short_help="Used for taking backup of application artifact files and databases")
 @click.option("--backup_type", "-bt", required=False,default='all',type=click.Choice(['file', 'db','all']), help='Backup type can be file,db,all ')
-@click.option("--options", "-op", required=False, default='all',type=click.Choice(['openmrs', 'postgres','patient_files']), help='Use this to specify options for backup type. allowed values: openmrs,patient_files i.e: openmrs in case of backup_type is db ;')
+@click.option("--options", "-op", required=False, default='all',type=click.Choice(['all','openmrs', 'postgres','patient_files']), help='Use this to specify options for backup type. allowed values: openmrs,patient_files i.e: openmrs in case of backup_type is db ;')
 @click.option("--strategy", "-st", required=False,type=click.Choice(['incr', 'full']), help="Strategy for db backups,full for full backup  or incr for incremental backup.")
 @click.option("--schedule", "-sh", required=False, help="Schedule a command")
 @click.pass_context
