@@ -200,12 +200,12 @@ def install_certs(ctx, email, domain):
 
 @cli.command(name="backup", short_help="Used for taking backup of application artifact files and databases")
 @click.option("--backup_type", "-bt", required=False,default='all',type=click.Choice(['file', 'db','all']), help='Backup type can be file,db,all ')
-@click.option("--options", "-op", required=False, default='all',type=click.Choice(['all','openmrs', 'postgres','bahmni_reports','patient_images','document_images','uploaded_files','uploaded_results','pacs_images','reports']), help='Use this to specify options for backup type. allowed values: openmrs,patient_files i.e: openmrs in case of backup_type is db ;')
+@click.option("--options", "-op", required=False, default='all',type=click.Choice(['all','openmrs', 'postgres','bahmni_reports','patient_images','document_images','uploaded-files','uploaded_results','pacs_images','reports']), help='Use this to specify options for backup type. allowed values: openmrs,patient_files i.e: openmrs in case of backup_type is db ;')
 @click.option("--strategy", "-st", required=False,type=click.Choice(['incr', 'full']), help="Strategy for db backups,full for full backup  or incr for incremental backup.")
 @click.option("--schedule", "-sh", required=False, help="Schedule a command")
 @click.pass_context
 def main_backup(ctx,backup_type,options,strategy,schedule):
-   artifacts = ["patient_images", "document_images", "pacs_images", "uploaded_files", "uploaded_results", "reports"]
+   artifacts = ["patient_images", "document_images", "pacs_images", "uploaded-files", "uploaded_results", "reports"]
    addExtraVar(ctx,"backup_type", backup_type )
    addExtraVar(ctx,"options", options )
    addExtraVar(ctx,"strategy", strategy )
@@ -238,12 +238,12 @@ def main_backup(ctx,backup_type,options,strategy,schedule):
 
 @cli.command(name="restore", short_help="Used for restoring of application files and databases")
 @click.option("--restore_type", "-rt", required=False,default='all',type=click.Choice(['file', 'db','all']), help='Restore type can be file,db,all ')
-@click.option("--options", "-op", required=False, default='all',type=click.Choice(['all','openmrs', 'postgres','bahmni_reports','patient_images','document_images','uploaded_files','uploaded_results','pacs_images','reports']), help='Use this to specify options for backup type. allowed values: openmrs,patient_files i.e: openmrs in case of backup_type is db ;')
+@click.option("--options", "-op", required=False, default='all',type=click.Choice(['all','openmrs', 'postgres','bahmni_reports','patient_images','document_images','uploaded-files','uploaded_results','pacs_images','reports']), help='Use this to specify options for backup type. allowed values: openmrs,patient_files i.e: openmrs in case of backup_type is db ;')
 @click.option("--strategy", "-st", required=False,default='full', help="Strategy for db backups, 'full' for full backup  or 'incr' for incremental backup.")
 @click.option("--restore_point", "-rp", required=False, default='', help="Restoration point where we need to do restore")
 @click.pass_context
 def restore(ctx,restore_type,options,strategy,restore_point):
-    artifacts = ["patient_images", "document_images", "pacs_images", "uploaded_files", "uploaded_results", "reports"]
+    artifacts = ["patient_images", "document_images", "pacs_images", "uploaded-files", "uploaded_results", "reports"]
     addExtraVar(ctx,"restore_type", restore_type )
     addExtraVar(ctx,"options", options )
     addExtraVar(ctx,"restore_point", restore_point )
