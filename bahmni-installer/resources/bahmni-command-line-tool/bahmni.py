@@ -211,7 +211,7 @@ def main_backup(ctx,backup_type,options,strategy,schedule):
    addExtraVar(ctx,"strategy", strategy )
    command = ''
    if schedule is not None:
-      cron_command = schedule+' bahmni -i'+ctx.obj['INVENTORY_NAME']+' backup -bt '+backup_type+' -op'+options
+      cron_command = schedule+' bahmni -i'+ctx.obj['INVENTORY_NAME']+' backup -bt '+backup_type+' -op '+options
       if strategy is not None:
           cron_command = cron_command +' -st '+strategy
       click.echo(cron_command)
