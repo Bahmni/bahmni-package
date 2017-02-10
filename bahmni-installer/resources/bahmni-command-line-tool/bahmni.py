@@ -230,11 +230,15 @@ def main_backup(ctx,backup_type,options,strategy,schedule):
       if 'postgres' in options or options == 'all':
           command = ctx.obj['ANSIBLE_COMMAND'].format("incr-postgresdbbackup.yml", ctx.obj['EXTRA_VARS'])
           subprocess.call(command, shell=True)
+      else:
+          click.echo("Invalid options!!..Choose from valid options available")
 
    if backup_type == 'file' or backup_type == 'all' :
       if options in artifacts or options == 'all':
           command = ctx.obj['ANSIBLE_COMMAND'].format("backup-artifacts.yml", ctx.obj['EXTRA_VARS'])
           subprocess.check_call(command, shell=True)
+      else:
+          click.echo("Invalid options!!..Choose from valid options available")
 
 @cli.command(name="restore", short_help="Used for restoring of application files and databases")
 @click.option("--restore_type", "-rt", required=False,default='all',type=click.Choice(['file', 'db','all']), help='Restore type can be file,db,all ')
@@ -261,8 +265,13 @@ def restore(ctx,restore_type,options,strategy,restore_point):
       if options == 'postgres' or options == 'all' :
          command = ctx.obj['ANSIBLE_COMMAND'].format("incr-postgresdbrestore.yml", ctx.obj['EXTRA_VARS'])
          subprocess.call(command, shell=True)
+      else:
+          click.echo("Invalid options!!..Choose from valid options available")
     if restore_type == 'file' or restore_type == 'all' :
       if options in artifacts or options == 'all' :
           command = ctx.obj['ANSIBLE_COMMAND'].format("restore-artifacts.yml", ctx.obj['EXTRA_VARS'])
           click.echo(command)
           subprocess.call(command, shell=True)
+      else:
+          click.echo("Invalid options!!..Choose from valid options available")
+
