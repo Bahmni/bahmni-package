@@ -223,11 +223,11 @@ def main_backup(ctx,backup_type,options,strategy,schedule):
           addExtraVar(ctx,"db","openmrs" )
           command = ctx.obj['ANSIBLE_COMMAND'].format("incr-mysqldbbackup.yml", ctx.obj['EXTRA_VARS'])
           subprocess.call(command, shell=True)
-      if 'bahmni_reports' in options or options == 'all':
+      elif 'bahmni_reports' in options or options == 'all':
           addExtraVar(ctx,"db","bahmni_reports" )
           command = ctx.obj['ANSIBLE_COMMAND'].format("incr-mysqldbbackup.yml", ctx.obj['EXTRA_VARS'])
           subprocess.call(command, shell=True)
-      if 'postgres' in options or options == 'all':
+      elif 'postgres' in options or options == 'all':
           command = ctx.obj['ANSIBLE_COMMAND'].format("incr-postgresdbbackup.yml", ctx.obj['EXTRA_VARS'])
           subprocess.call(command, shell=True)
       else:
@@ -258,11 +258,11 @@ def restore(ctx,restore_type,options,strategy,restore_point):
          addExtraVar(ctx,"db", "openmrs" )
          command = ctx.obj['ANSIBLE_COMMAND'].format("incr-mysqldbrestore.yml", ctx.obj['EXTRA_VARS'])
          subprocess.call(command, shell=True)
-      if 'bahmni_reports' in options or options == 'all' :
+      elif 'bahmni_reports' in options or options == 'all' :
          addExtraVar(ctx,"db", "bahmni_reports" )         
          command = ctx.obj['ANSIBLE_COMMAND'].format("incr-mysqldbrestore.yml", ctx.obj['EXTRA_VARS'])
          subprocess.call(command, shell=True)
-      if options == 'postgres' or options == 'all' :
+      elif options == 'postgres' or options == 'all' :
          command = ctx.obj['ANSIBLE_COMMAND'].format("incr-postgresdbrestore.yml", ctx.obj['EXTRA_VARS'])
          subprocess.call(command, shell=True)
       else:
