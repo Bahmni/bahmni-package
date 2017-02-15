@@ -242,9 +242,9 @@ def main_backup(ctx,backup_type,options,strategy,schedule):
 
 @cli.command(name="restore", short_help="Used for restoring of application files and databases")
 @click.option("--restore_type", "-rt", required=True,type=click.Choice(['file', 'db']), help='Restore type can be file,db')
-@click.option("--options", "-op", required=True, default='all',type=click.Choice(['openmrs', 'postgres','clinlims','openerp','pacs-integration-db','dcm4chee-db','bahmni_reports','patient_images','document_images','uploaded-files','uploaded_results','pacs_images','reports']), help='Use this to specify options for backup type. allowed values: openmrs,patient_files i.e: openmrs in case of backup_type is db ;')
+@click.option("--options", "-op", required=True, default='all',type=click.Choice(['all', 'openmrs', 'postgres','clinlims','openerp','pacs-integration-db','dcm4chee-db','bahmni_reports','patient_images','document_images','uploaded-files','uploaded_results','pacs_images','reports']), help='Use this to specify options for backup type. allowed values: openmrs,patient_files i.e: openmrs in case of backup_type is db ;')
 @click.option("--strategy", "-st", required=False,type=click.Choice(['pitr', 'dump']), help="Strategy for db backups,pitr for point in time recovery,dump to apply dbdump")
-@click.option("--restore_point", "-rp", required=True, default='', help="Restoration point where we need to do restore")
+@click.option("--restore_point", "-rp", required=False, default='', help="Restoration point where we need to do restore")
 @click.pass_context
 def restore(ctx,restore_type,options,strategy,restore_point):
     artifacts = ["patient_images", "document_images", "pacs_images", "uploaded-files", "uploaded_results", "reports"]
@@ -278,7 +278,7 @@ def restore(ctx,restore_type,options,strategy,restore_point):
            click.echo("Invalid options!!..Choose from valid options available")
 
     if restore_type == 'file'  :
-      if options in artifacts :
+      if options in artifacts or options == 'all' :
           command = ctx.obj['ANSIBLE_COMMAND'].format("restore-artifacts.yml", ctx.obj['EXTRA_VARS'])
           click.echo(command)
           subprocess.call(command, shell=True)
