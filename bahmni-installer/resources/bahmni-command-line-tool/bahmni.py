@@ -200,7 +200,7 @@ def install_certs(ctx, email, domain):
 
 @cli.command(name="backup", short_help="Used for taking backup of application artifact files and databases")
 @click.option("--backup_type", "-bt", required=False,default='all',type=click.Choice(['file', 'db','all']), help='Backup type can be file,db,all ')
-@click.option("--options", "-op", required=False, default='all',type=click.Choice(['all','openmrs', 'postgres','openelis','openerp','bahmni_reports','patient_images','document_images','uploaded-files','uploaded_results','pacs_images','reports']), help='Use this to specify options for backup type. allowed values: openmrs,patient_files i.e: openmrs in case of backup_type is db ;')
+@click.option("--options", "-op", required=False, default='all',type=click.Choice(['all','openmrs', 'postgres','clinlims','openerp','pacs-integration-db','dcm4chee-db','bahmni_reports','patient_images','document_images','uploaded-files','uploaded_results','pacs_images','reports']), help='Use this to specify options for backup type. allowed values: openmrs,patient_files i.e: openmrs in case of backup_type is db ;')
 @click.option("--strategy", "-st", required=False,type=click.Choice(['incr', 'full']), help="Strategy for db backups,full for full backup  or incr for incremental backup.")
 @click.option("--schedule", "-sh", required=False, help="Schedule a command")
 @click.pass_context
@@ -227,15 +227,9 @@ def main_backup(ctx,backup_type,options,strategy,schedule):
           addExtraVar(ctx,"db","bahmni_reports" )
           command = ctx.obj['ANSIBLE_COMMAND'].format("incr-mysqldbbackup.yml", ctx.obj['EXTRA_VARS'])
           subprocess.call(command, shell=True)
-      elif 'postgres' in options or options == 'all':
+      elif 'postgres' in options or 'openerp' in options or 'clinlims' in options or options == 'dcm4chee-db' or options == 'pacs-integration-db' or options == 'all':
           command = ctx.obj['ANSIBLE_COMMAND'].format("incr-postgresdbbackup.yml", ctx.obj['EXTRA_VARS'])
           subprocess.call(command, shell=True)
-      elif 'openerp' in options:
-                command = ctx.obj['ANSIBLE_COMMAND'].format("incr-postgresdbbackup.yml", ctx.obj['EXTRA_VARS'])
-                subprocess.call(command, shell=True)
-      elif 'openelis' in options:
-                command = ctx.obj['ANSIBLE_COMMAND'].format("incr-postgresdbbackup.yml", ctx.obj['EXTRA_VARS'])
-                subprocess.call(command, shell=True)
       else:
           click.echo("Invalid options!!..Choose from valid options available")
 
@@ -247,40 +241,44 @@ def main_backup(ctx,backup_type,options,strategy,schedule):
           click.echo("Invalid options!!..Choose from valid options available")
 
 @cli.command(name="restore", short_help="Used for restoring of application files and databases")
-@click.option("--restore_type", "-rt", required=False,default='all',type=click.Choice(['file', 'db','all']), help='Restore type can be file,db,all ')
-@click.option("--options", "-op", required=False, default='all',type=click.Choice(['all','openmrs', 'postgres','bahmni_reports','patient_images','document_images','uploaded-files','uploaded_results','pacs_images','reports']), help='Use this to specify options for backup type. allowed values: openmrs,patient_files i.e: openmrs in case of backup_type is db ;')
-@click.option("--strategy", "-st", required=False,default='delta',type=click.Choice(['incr','pitr', 'dump']), help="Strategy for db backups,incr for delta restore in postgresdb,pitr for point in time recovery,dump to apply dbdump")
+@click.option("--restore_type", "-rt", required=True,type=click.Choice(['file', 'db']), help='Restore type can be file,db')
+@click.option("--options", "-op", required=True, default='all',type=click.Choice(['openmrs', 'postgres','clinlims','openerp','pacs-integration-db','dcm4chee-db','bahmni_reports','patient_images','document_images','uploaded-files','uploaded_results','pacs_images','reports']), help='Use this to specify options for backup type. allowed values: openmrs,patient_files i.e: openmrs in case of backup_type is db ;')
+@click.option("--strategy", "-st", required=False,type=click.Choice(['pitr', 'dump']), help="Strategy for db backups,pitr for point in time recovery,dump to apply dbdump")
 @click.option("--restore_point", "-rp", required=True, default='', help="Restoration point where we need to do restore")
-@click.argument("db_name",required=False)
 @click.pass_context
-def restore(ctx,restore_type,options,strategy,restore_point,db_name):
+def restore(ctx,restore_type,options,strategy,restore_point):
     artifacts = ["patient_images", "document_images", "pacs_images", "uploaded-files", "uploaded_results", "reports"]
     addExtraVar(ctx,"restore_type", restore_type )
     addExtraVar(ctx,"options", options )
     addExtraVar(ctx,"restore_point", restore_point )
     command = ''
     addExtraVar(ctx,"strategy", strategy )
-    if restore_type == 'db' or restore_type == 'all' :
-      if 'openmrs' in options or options == 'all' :
+    if restore_type == 'db'  :
+      if 'openmrs' in options :
          addExtraVar(ctx,"db", "openmrs" )
          command = ctx.obj['ANSIBLE_COMMAND'].format("incr-mysqldbrestore.yml", ctx.obj['EXTRA_VARS'])
          subprocess.call(command, shell=True)
-      elif 'bahmni_reports' in options or options == 'all' :
+      elif 'bahmni_reports' in options :
          addExtraVar(ctx,"db", "bahmni_reports" )         
          command = ctx.obj['ANSIBLE_COMMAND'].format("incr-mysqldbrestore.yml", ctx.obj['EXTRA_VARS'])
          subprocess.call(command, shell=True)
-      elif options == 'postgres' or options == 'all' :
-         if strategy == 'dump':
-               addExtraVar(ctx,"db_name",db_name)
-               command = ctx.obj['ANSIBLE_COMMAND'].format("incr-postgresdbrestore.yml", ctx.obj['EXTRA_VARS'])
-               subprocess.call(command, shell=True)
-         else:
-           command = ctx.obj['ANSIBLE_COMMAND'].format("incr-postgresdbrestore.yml", ctx.obj['EXTRA_VARS'])
-           subprocess.call(command, shell=True)
+      elif options == 'postgres' :
+           if strategy == 'pitr' :
+              command = ctx.obj['ANSIBLE_COMMAND'].format("incr-postgresdbrestore.yml", ctx.obj['EXTRA_VARS'])
+              subprocess.call(command, shell=True)
+           else:
+               click.echo("Invalid strategy!!..Choose from valid strategy available")
+      elif options == 'clinlims' or options == 'openerp' or options == 'dcm4chee-db' or options == 'pacs-integration-db':
+            if strategy == 'dump':
+                 command = ctx.obj['ANSIBLE_COMMAND'].format("incr-postgresdbrestore.yml", ctx.obj['EXTRA_VARS'])
+                 subprocess.call(command, shell=True)
+            else:
+                 click.echo("Invalid strategy!!..Choose from valid strategy available")
       else:
-          click.echo("Invalid options!!..Choose from valid options available")
-    if restore_type == 'file' or restore_type == 'all' :
-      if options in artifacts or options == 'all' :
+           click.echo("Invalid options!!..Choose from valid options available")
+
+    if restore_type == 'file'  :
+      if options in artifacts :
           command = ctx.obj['ANSIBLE_COMMAND'].format("restore-artifacts.yml", ctx.obj['EXTRA_VARS'])
           click.echo(command)
           subprocess.call(command, shell=True)
