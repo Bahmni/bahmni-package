@@ -7,8 +7,6 @@ import sys
 @click.group()
 @click.option("--implementation", "-I", help='Option to specify the implementation config to be installed. Default value is default. If this options is used, implementation config folder has to be placed in /etc/bahmni-installer/deployment-artifacts with name <impelementation>_config')
 @click.option("--inventory", "-i", required=True, help='Inventory file that needs to picked up from /etc/bahmni-installer')
-@click.option("--sql_path", "-path", help='Option to accept the exact file path from which the db will be restored ')
-@click.option("--database", "-db", help='Option to accept the specific database name')
 @click.option("--verbose", "-v", is_flag=True, help='verbose operation')
 @click.option("--implementation_play","-impl-play",help='Path of implementation specific ansible play')
 @click.option("--migrate", "-m", help='Give a comma seperated list of modules to run migrations for. It has to be used with run_migrations command.Ex: bahmni --migrate erp,elis,mrs run_migrations')
@@ -19,7 +17,7 @@ import sys
 
 
 @click.pass_context
-def cli(ctx, implementation, inventory, sql_path, database, verbose, implementation_play, migrate, only, skip,
+def cli(ctx, implementation, inventory, verbose, implementation_play, migrate, only, skip,
         ansible_rpm_url):
     ctx.obj={}
     """Command line utility for Bahmni"""
@@ -38,8 +36,6 @@ def cli(ctx, implementation, inventory, sql_path, database, verbose, implementat
     ctx.obj['INVENTORY_NAME'] = inventory
     ctx.obj['IMPLEMENTATION_PLAY'] = implementation_play
     ctx.obj['ANSIBLE_COMMAND'] =  "ansible-playbook -i "+ ctx.obj['INVENTORY'] +" {0} " +verbosity+ " {1}"
-    ctx.obj['SQL_PATH'] = sql_path
-    ctx.obj['DATABASE'] = database
     ctx.obj['MIGRATE'] = migrate
     ctx.obj['ONLY'] = only
     ctx.obj['SKIP'] = skip
@@ -138,31 +134,6 @@ def setup_postgres_replication(ctx):
    command = ctx.obj['ANSIBLE_COMMAND'].format("postgres-replication.yml", ctx.obj['EXTRA_VARS'])
    click.echo(command)
    subprocess.check_call(command, shell=True)
-
-@cli.command(name="db-backup", short_help="Take db backup in DB machine at /db-backup directory. Optionally can be copied to the local machine as well")
-@click.pass_context
-def db_backup(ctx):
-   should_copy_to_local_machine =  click.prompt('Do you want to copy db backup to local machine in /db-backup directory? y/N', type=bool)
-   if should_copy_to_local_machine:
-      addExtraVar(ctx,"copy_to_local_machine", "yes" )
-   command = ctx.obj['ANSIBLE_COMMAND'].format("db-backup.yml", ctx.obj['EXTRA_VARS'])
-   click.echo(command)
-   subprocess.check_call(command, shell=True)
-
-@cli.command(name="db-restore", short_help="Restore the sql dump present in the path provided. Also pass the exact file path and the database name")
-@click.pass_context
-def db_restore(ctx):
-    if not ctx.obj['SQL_PATH']:
-        click.echo("Please provide the exact file path for the restored db")
-        return
-    if not ctx.obj['DATABASE']:
-        click.echo("Please provide the database name")
-        return
-    addExtraVar(ctx,"file_path", ctx.obj['SQL_PATH'] )
-    addExtraVar(ctx,"db_name", ctx.obj['DATABASE'] )
-    command = ctx.obj['ANSIBLE_COMMAND'].format("db-restore.yml", ctx.obj['EXTRA_VARS'])
-    click.echo(command)
-    subprocess.check_call(command, shell=True)
 
 @cli.command(name="install-nagios", short_help="Installs nagios server and nagios agents.")
 @click.pass_context
