@@ -194,11 +194,11 @@ def main_backup(ctx,backup_type,options,strategy,schedule):
           addExtraVar(ctx,"db","openmrs" )
           command = ctx.obj['ANSIBLE_COMMAND'].format("incr-mysqldbbackup.yml", ctx.obj['EXTRA_VARS'])
           subprocess.call(command, shell=True)
-      if 'bahmni_reports' in options or options == 'all':
+      elif 'bahmni_reports' in options or options == 'all':
           addExtraVar(ctx,"db","bahmni_reports" )
           command = ctx.obj['ANSIBLE_COMMAND'].format("incr-mysqldbbackup.yml", ctx.obj['EXTRA_VARS'])
           subprocess.call(command, shell=True)
-      if 'postgres' in options or 'openerp' in options or 'clinlims' in options or options == 'dcm4chee-db' or options == 'pacs-integration-db' or options == 'all':
+      elif 'postgres' in options or 'openerp' in options or 'clinlims' in options or options == 'dcm4chee-db' or options == 'pacs-integration-db' or options == 'all':
           command = ctx.obj['ANSIBLE_COMMAND'].format("incr-postgresdbbackup.yml", ctx.obj['EXTRA_VARS'])
           subprocess.call(command, shell=True)
       else:
