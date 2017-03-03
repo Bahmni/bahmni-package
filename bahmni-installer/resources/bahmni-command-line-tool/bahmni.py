@@ -6,7 +6,7 @@ import sys
 
 @click.group()
 @click.option("--implementation", "-I", help='Option to specify the implementation config to be installed. Default value is default. If this options is used, implementation config folder has to be placed in /etc/bahmni-installer/deployment-artifacts with name <impelementation>_config')
-@click.option("--inventory", "-i", required=True, help='Inventory file that needs to picked up from /etc/bahmni-installer')
+@click.option("--inventory", "-i", help='Inventory file that needs to picked up from /etc/bahmni-installer')
 @click.option("--verbose", "-v", is_flag=True, help='verbose operation')
 @click.option("--implementation_play","-impl-play",help='Path of implementation specific ansible play')
 @click.option("--migrate", "-m", help='Give a comma seperated list of modules to run migrations for. It has to be used with run_migrations command.Ex: bahmni --migrate erp,elis,mrs run_migrations')
@@ -32,6 +32,10 @@ def cli(ctx, implementation, inventory, verbose, implementation_play, migrate, o
     installAnsible(ansible_rpm_url)
 
     verbosity="-vvvv" if verbose else "-vv"
+
+    if inventory is None:
+        inventory = getInventoryFileName()
+
     ctx.obj['INVENTORY'] = '/etc/bahmni-installer/'+inventory
     ctx.obj['INVENTORY_NAME'] = inventory
     ctx.obj['IMPLEMENTATION_PLAY'] = implementation_play
@@ -66,6 +70,14 @@ def addExtraVar(ctx, var_name, var_value):
     if var_value:     
       ctx.obj['EXTRA_VARS']  = ctx.obj['EXTRA_VARS'] + " --extra-vars '{0}={1}'".format(var_name, var_value)
 
+def getInventoryFileName():
+    environment = os.environ
+    default_inventory = environment.get('BAHMNI_INVENTORY','')
+    if  default_inventory is not None :
+        return default_inventory
+    else:
+        print ("BAHMNI_INVENTORY is not set.\nAlternately, use bahmni -i <inventory_file_name> install")
+        sys.exit()
 
 @cli.command(short_help="Installs bahmni components on respective hosts specified in inventory file")
 @click.pass_context
