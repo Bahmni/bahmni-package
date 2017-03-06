@@ -133,6 +133,13 @@ def update_config(ctx):
    click.echo(command)
    subprocess.check_call(command, shell=True)
 
+@cli.command(name="create-connect-artifacts", short_help="Creates artifacts for bahmni connect Initial Sync configs")
+@click.pass_context
+def update_config(ctx):
+    command = ctx.obj['ANSIBLE_COMMAND'].format("create-connect-artifacts.yml", ctx.obj['EXTRA_VARS'])
+    click.echo(command)
+    subprocess.check_call(command, shell=True)
+
 @cli.command(name="setup-mysql-replication", short_help="sets up mysql db replication")
 @click.pass_context
 def setup_mysql_replication(ctx):
