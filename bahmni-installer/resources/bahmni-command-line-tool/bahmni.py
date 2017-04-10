@@ -72,8 +72,8 @@ def addExtraVar(ctx, var_name, var_value):
 
 def getInventoryFileName():
     environment = os.environ
-    default_inventory = environment.get('BAHMNI_INVENTORY','')
-    if  default_inventory is not None :
+    default_inventory = environment.get('BAHMNI_INVENTORY')
+    if  default_inventory:
         return default_inventory
     else:
         print ("BAHMNI_INVENTORY is not set.\nAlternately, use bahmni -i <inventory_file_name> install")
