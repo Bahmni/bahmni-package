@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 revision='{
-    "go" : "https://ci-bahmni.thoughtworks.com/go/pipelines/value_stream_map/_jobname_/_pipelineCount_",
+    "go" : "https://ci.mybahmni.org/go/pipelines/value_stream_map/_jobname_/_pipelineCount_",
     "github": {
         "openerp_modules" : "https://github.com/Bahmni/openerp-modules/commit/_modulesSha_",
         "functional_tests" : "https://github.com/Bahmni/openerp-functional-tests/commit/_functionalTestsSha_",
