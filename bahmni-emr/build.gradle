@@ -50,6 +50,7 @@ ospackage {
         include('legacyui-*.omod')
         include('reportingcompatibility-*.omod')
         include('bahmni.ie.apps-*.omod')
+        include('auditlog-*.omod')
     }
 
     from("${projectDir}/resources/") {
