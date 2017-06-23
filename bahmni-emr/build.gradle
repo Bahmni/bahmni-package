@@ -51,6 +51,7 @@ ospackage {
         include('reportingcompatibility-*.omod')
         include('bahmni.ie.apps-*.omod')
         include('auditlog-*.omod')
+        include('appointments-*.omod')
     }
 
     from("${projectDir}/resources/") {
