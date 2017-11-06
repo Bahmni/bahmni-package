@@ -20,6 +20,7 @@ ospackage {
 
     into '/opt/bahmni-installer'
 
+    requires('epel-release')
     from ("${projectDir}/resources/") {
         fileMode = 0755
         createDirectoryEntry = true
@@ -50,8 +51,8 @@ buildRpm {
     dependsOn 'extractBahmniPlaybooks'
 
     requires('python-devel')
-    requires('python-pip')
     requires('epel-release')
+    requires('python-pip')
 
     preInstall file("${projectDir}/scripts/preinstall.sh")
     postInstall file("${projectDir}/scripts/postinstall.sh")
