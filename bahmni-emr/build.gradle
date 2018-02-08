@@ -26,7 +26,7 @@ ospackage {
         include('addresshierarchy-*.omod')
         include('appframework-*.omod')
         include('bahmnicore-*.omod')
-        include('bedmanagement-*.omod')
+        include('bedmanagement-5.7.0-SNAPSHOT.omod')
         include('calculation-*.omod')
         include('emrapi-*.omod')
         include('event-*.omod')
@@ -52,6 +52,7 @@ ospackage {
         include('bahmni.ie.apps-*.omod')
         include('auditlog-*.omod')
         include('appointments-*.omod')
+        include('owa-*.omod')
     }
 
     from("${projectDir}/resources/") {
