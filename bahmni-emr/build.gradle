@@ -30,6 +30,7 @@ ospackage {
         include('calculation-*.omod')
         include('emrapi-*.omod')
         include('event-*.omod')
+        include('owa-*.omod')
         include('htmlwidgets-*.omod')
         include('idgen-*.omod')
         include('idgen-webservices-*.omod')
