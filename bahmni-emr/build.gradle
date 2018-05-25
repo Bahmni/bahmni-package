@@ -53,6 +53,8 @@ ospackage {
         include('bahmni.ie.apps-*.omod')
         include('auditlog-*.omod')
         include('appointments-*.omod')
+        include('reportingrest*.omod')
+        include('operationtheater*.omod')
     }
 
     from("${projectDir}/resources/") {
