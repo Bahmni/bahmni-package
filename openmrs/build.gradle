@@ -109,7 +109,7 @@ ospackage {
 buildRpm {
     dependsOn 'build', 'normalizeJarName', 'downloadMRSWar'
     requires('unzip')
-    requires('mysql-community-client', "5.6", GREATER | EQUAL)
+    requires('mysql-community-client', "5.7", GREATER | EQUAL)
 }
 
 task downloadMRSWar {
