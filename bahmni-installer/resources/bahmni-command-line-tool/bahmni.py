@@ -12,13 +12,11 @@ import sys
 @click.option("--migrate", "-m", help='Give a comma seperated list of modules to run migrations for. It has to be used with run_migrations command.Ex: bahmni --migrate erp,elis,mrs run_migrations')
 @click.option("--only", "-o", help='Install only specified components. Possible values can be bahmni-emr, bahmni-reports, bahmni-lab, bahmni-erp, dcm4chee, pacs-integration, bahmni-event-log-service')
 @click.option("--skip", "-s", help='Skip installation of specified components. Possible values can be bahmni-emr, bahmni-reports, bahmni-lab, bahmni-erp, dcm4chee, pacs-integration, bahmni-event-log-service')
-@click.option("--ansible_rpm_url", "-aru", default='https://dl.bintray.com/bahmni/rpm/ansible-2.2.0.0-3.el6.noarch.rpm',
-              help='Specify URL of the Ansible rpm')
+@click.option("--ansible_version", "-av", default='2.4.2.0', help='Option to specify ansible version to be used for running installer playbooks')
 
 
 @click.pass_context
-def cli(ctx, implementation, inventory, verbose, implementation_play, migrate, only, skip,
-        ansible_rpm_url):
+def cli(ctx, implementation, inventory, verbose, implementation_play, migrate, only, skip, ansible_version):
     ctx.obj={}
     """Command line utility for Bahmni"""
     os.chdir('/opt/bahmni-installer/bahmni-playbooks')
@@ -29,7 +27,10 @@ def cli(ctx, implementation, inventory, verbose, implementation_play, migrate, o
     addExtraVarFile(ctx, "/etc/bahmni-installer/setup.yml")
     addExtraVar(ctx,"implementation_name", implementation )
 
-    installAnsible(ansible_rpm_url)
+    exisiting_ansible_version = os.popen("ansible --version").read()
+    if ansible_version not in exisiting_ansible_version:
+       subprocess.call('sudo yum install -y ansible-'+ansible_version, shell=True)
+
 
     verbosity="-vvvv" if verbose else "-vv"
 
@@ -47,20 +48,7 @@ def cli(ctx, implementation, inventory, verbose, implementation_play, migrate, o
         print ("Both \"Only and Skip\" can not be used on same time")
         sys.exit()
 
-def installAnsible(ansible_rpm_url):
-    ansible_rpm_package = ansible_rpm_url.split('/')[-1].replace('.rpm', '')
-    installed_ansible_package = subprocess.Popen('rpm -q ' + ansible_rpm_package,
-                                             stdout=subprocess.PIPE, shell=True).communicate()[0].strip()
-    if installed_ansible_package != ansible_rpm_package:
-        print "Installing Ansible from " + ansible_rpm_url + "..."
-        ansible_installation_process = subprocess.Popen(['sudo yum install -y ' + ansible_rpm_url],
-                                                        stdout=subprocess.PIPE,
-                                                        stderr=subprocess.PIPE, shell=True)
-        output, err = ansible_installation_process.communicate()
-        print output, err
-        if ansible_installation_process.returncode != 0:
-            if "does not update installed package" not in output:
-                sys.exit()
+
 
 def addExtraVarFile(ctx, file_path):
     if(os.path.isfile(file_path)):
@@ -272,4 +260,3 @@ def restore(ctx,restore_type,options,strategy,restore_point):
           subprocess.call(command, shell=True)
       else:
           click.echo("Invalid options!!..Choose from valid options available")
-
