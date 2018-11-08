@@ -6,7 +6,7 @@ group 'org.bahmni.emr'
 version project.bahmniRelease
 
 task extractOmods(type: Copy) {
-    from zipTree(file("${projectDir}/resources/distro-"+project.bahmniRelease+"-SNAPSHOT-distro.zip"))
+    from zipTree(file("${projectDir}/resources/distro-0.91-SNAPSHOT-distro.zip"))
     into file("${buildDir}/distro/")
 }
 
@@ -19,7 +19,7 @@ ospackage {
 
     into '/opt/openmrs'
 
-    from("${buildDir}/distro/distro-"+project.bahmniRelease+"-SNAPSHOT") {
+    from("${buildDir}/distro/distro-0.91-SNAPSHOT") {
         fileMode = 0644
         createDirectoryEntry = true
         into 'modules'
