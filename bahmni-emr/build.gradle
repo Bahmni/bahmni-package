@@ -18,7 +18,7 @@ group 'org.bahmni.emr'
 version project.bahmniRelease
 
 task extractOmods(type: Copy) {
-    from zipTree(file("${projectDir}/resources/distro-0.91-SNAPSHOT-distro.zip"))
+    from zipTree(file("${projectDir}/resources/distro-"+project.bahmniRelease+"-SNAPSHOT-distro.zip"))
     into file("${buildDir}/distro/")
 }
 
@@ -43,41 +43,42 @@ ospackage {
 
     into '/opt/openmrs'
 
-    preInstall file("${projectDir}/scripts/preinstall.sh")
-    postInstall file("${projectDir}/scripts/postinstall.sh")
     preUninstall file("${projectDir}/scripts/preuninstall.sh")
+    preInstall file("${projectDir}/scripts/preinstall.sh")
 
     from("${buildDir}/libs/openmrs.jar") {
-        fileMode = 0644
+        fileMode = 0755
         createDirectoryEntry = true
         into 'lib/'
     }
 
     from("${projectDir}/resources/") {
-        fileMode = 0644
+        fileMode = 0755
         createDirectoryEntry = true
         into 'etc'
         exclude('initDB.sh')
     }
 
     from("${projectDir}/scripts/rpm/") {
-        fileMode = 0744
+        fileMode = 0755
         createDirectoryEntry = true
         into 'bin'
     }
 
     from("${projectDir}/resources/placeholder") {
+        fileMode = 0755
         createDirectoryEntry = true
         into 'run'
     }
 
     from("${projectDir}/resources/placeholder") {
+        fileMode = 0755
         createDirectoryEntry = true
         into 'log'
     }
 
     from("${buildDir}/resources/main/openmrs.war") {
-        fileMode = 0644
+        fileMode = 0755
         createDirectoryEntry = true
         into '.'
     }
@@ -88,25 +89,25 @@ ospackage {
     }
 
     from("${projectDir}/resources/initDB.sh") {
-        fileMode = 0744
+        fileMode = 0755
         createDirectoryEntry = true
         into 'openmrs/scripts'
     }
 
     from("${projectDir}/resources/openmrs_demo_dump.sql") {
-        fileMode = 0644
+        fileMode = 0755
         createDirectoryEntry = true
         into 'openmrs/scripts'
     }
 
     from("${projectDir}/resources/openmrs_clean_dump.sql") {
-        fileMode = 0644
+        fileMode = 0755
         createDirectoryEntry = true
         into 'openmrs/scripts'
     }
 
-    from("${buildDir}/distro/distro-0.91-SNAPSHOT") {
-        fileMode = 0644
+    from("${buildDir}/distro/distro-"+project.bahmniRelease+"-SNAPSHOT") {
+        fileMode = 0755
         createDirectoryEntry = true
         into 'modules'
         include('addresshierarchy-*.omod')
@@ -144,20 +145,21 @@ ospackage {
     }
 
     from("${projectDir}/resources/") {
-        fileMode = 0644
+        fileMode = 0755
         createDirectoryEntry = true
         into 'etc'
         include('bahmni-emr.conf')
     }
 
     from("${projectDir}/resources/") {
-        fileMode = 0744
+        fileMode = 0755
         into 'etc'
         include('run-liquibase.sh')
     }
 
     from("${projectDir}/resources/"){
-        fileMode = 0644
+        fileMode = 0755
+        into '.'
         include('bahmnicore.properties')
     }
 
@@ -178,6 +180,8 @@ buildRpm {
     dependsOn 'build', 'normalizeJarName', 'downloadMRSWar', 'extractOmods'
     requires('unzip')
     requires('mysql-community-client', "5.7", GREATER | EQUAL)
+    
+    postInstall file("${projectDir}/scripts/postinstall.sh")
 }
 
 task downloadMRSWar {
