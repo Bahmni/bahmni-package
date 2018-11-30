@@ -39,7 +39,7 @@ ospackage {
     release = System.getenv('GO_PIPELINE_COUNTER') ?: "1"
     arch = NOARCH
     os = LINUX
-    user = 'root'
+    user = 'bahmni'
 
     into '/opt/openmrs'
 
@@ -47,38 +47,36 @@ ospackage {
     preInstall file("${projectDir}/scripts/preinstall.sh")
 
     from("${buildDir}/libs/openmrs.jar") {
-        fileMode = 0755
+        fileMode = 0644
         createDirectoryEntry = true
         into 'lib/'
     }
 
     from("${projectDir}/resources/") {
-        fileMode = 0755
+        fileMode = 0644
         createDirectoryEntry = true
         into 'etc'
         exclude('initDB.sh')
     }
 
     from("${projectDir}/scripts/rpm/") {
-        fileMode = 0755
+        fileMode = 0744
         createDirectoryEntry = true
         into 'bin'
     }
 
     from("${projectDir}/resources/placeholder") {
-        fileMode = 0755
         createDirectoryEntry = true
         into 'run'
     }
 
     from("${projectDir}/resources/placeholder") {
-        fileMode = 0755
         createDirectoryEntry = true
         into 'log'
     }
 
     from("${buildDir}/resources/main/openmrs.war") {
-        fileMode = 0755
+        fileMode = 0644
         createDirectoryEntry = true
         into '.'
     }
@@ -89,25 +87,25 @@ ospackage {
     }
 
     from("${projectDir}/resources/initDB.sh") {
-        fileMode = 0755
+        fileMode = 0744
         createDirectoryEntry = true
         into 'openmrs/scripts'
     }
 
     from("${projectDir}/resources/openmrs_demo_dump.sql") {
-        fileMode = 0755
+        fileMode = 0644
         createDirectoryEntry = true
         into 'openmrs/scripts'
     }
 
     from("${projectDir}/resources/openmrs_clean_dump.sql") {
-        fileMode = 0755
+        fileMode = 0644
         createDirectoryEntry = true
         into 'openmrs/scripts'
     }
 
     from("${buildDir}/distro/distro-"+project.bahmniRelease+"-SNAPSHOT") {
-        fileMode = 0755
+        fileMode = 0644
         createDirectoryEntry = true
         into 'modules'
         include('addresshierarchy-*.omod')
@@ -145,20 +143,20 @@ ospackage {
     }
 
     from("${projectDir}/resources/") {
-        fileMode = 0755
+        fileMode = 0644
         createDirectoryEntry = true
         into 'etc'
         include('bahmni-emr.conf')
     }
 
     from("${projectDir}/resources/") {
-        fileMode = 0755
+        fileMode = 0744
         into 'etc'
         include('run-liquibase.sh')
     }
 
     from("${projectDir}/resources/"){
-        fileMode = 0755
+        fileMode = 0644
         into '.'
         include('bahmnicore.properties')
     }
