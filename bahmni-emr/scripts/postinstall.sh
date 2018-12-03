@@ -1,12 +1,38 @@
 #!/bin/bash
 
+if [ -f /etc/bahmni-installer/bahmni.conf ]; then
+. /etc/bahmni-installer/bahmni.conf
+fi
+
+#create links
+sudo ln -s /opt/openmrs/etc /etc/openmrs
+sudo ln -s /opt/openmrs/bin/openmrs /etc/init.d/openmrs
+sudo ln -s /opt/openmrs/run /var/run/openmrs
+sudo ln -s /opt/openmrs/openmrs /var/run/openmrs/openmrs
+sudo ln -s /opt/openmrs/log /var/log/openmrs
+
 . /etc/openmrs/openmrs.conf
 
 . /etc/openmrs/bahmni-emr.conf
 
-if [ -f /etc/bahmni-installer/bahmni.conf ]; then
-. /etc/bahmni-installer/bahmni.conf
+(cd /opt/openmrs/openmrs && unzip ../openmrs.war)
+# restore mrs db dump if database doesn't exists
+
+if [ "${IS_PASSIVE:-0}" -ne "1" ]; then
+    (cd /opt/openmrs/openmrs && scripts/initDB.sh)
 fi
+chkconfig --add openmrs
+
+#copy configs
+sudo mkdir -p /opt/openmrs/openmrs/WEB-INF/classes/ && cp /opt/openmrs/etc/log4j.xml /opt/openmrs/openmrs/WEB-INF/classes/
+sudo cp -f /opt/openmrs/etc/web.xml /opt/openmrs/openmrs/WEB-INF/
+
+# permissions
+sudo chown -R bahmni:bahmni /opt/openmrs
+sudo chown -R bahmni:bahmni /var/log/openmrs
+sudo chown -R bahmni:bahmni /var/run/openmrs
+sudo chown -R bahmni:bahmni /etc/init.d/openmrs
+sudo chown -R bahmni:bahmni /etc/openmrs
 
 link_dirs(){
     rm -rf /home/$OPENMRS_SERVER_USER/.OpenMRS/modules
@@ -37,6 +63,7 @@ create_configuration_dirs(){
     cp -f /opt/openmrs/etc/blank-user.png $PATIENT_IMAGES_DIR/blank-user.png
 
     chown -R bahmni:bahmni /opt/openmrs
+    chmod -R 755 /opt/openmrs
     chown -R bahmni:bahmni $UPLOADS_DIR
     chmod 755 $UPLOADS_DIR;
     chmod -R 755 $PATIENT_IMAGES_DIR
@@ -50,12 +77,10 @@ setupConfFiles() {
     	cp -f /opt/openmrs/etc/emr_ssl.conf /etc/httpd/conf.d/emr_ssl.conf
 }
 
+create_configuration_dirs
+
 link_dirs
 if [ "${IS_PASSIVE:-0}" -ne "1" ]; then
     run_migrations
 fi
-create_configuration_dirs
 setupConfFiles
-
-
-
