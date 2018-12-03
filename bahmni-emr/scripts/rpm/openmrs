@@ -1,0 +1,148 @@
+#!/bin/bash
+#
+# openmrs        start/stop/status script
+#
+# chkconfig: - 64 36
+# description: openmrs - Open Medical Record System
+# processname: openmrs
+# config: /etc/default/openmrs
+# pidfile: /var/run/openmrs/openmrs.pid
+### BEGIN INIT INFO
+# Provides: openmrs
+# Required-Start: $local_fs $remote_fs $network $named $syslog $time
+# Required-Stop: $local_fs $remote_fs $network $named $syslog $time
+# Short-Description: start and stop openmrs system,
+# Description: openmrs system
+### END INIT INFO
+
+export OPENMRS_SERVER_USER=bahmni
+export OPENMRS_SERVER_RUN=/opt/openmrs/bin/start.sh
+export OPENMRS_SERVER_DEBUG=/opt/openmrs/bin/debug.sh
+export CUR_USER=`/usr/bin/whoami`
+export OPENMRS_LIB_CACHE=/tmp/*.openmrs-lib-cache
+
+. /etc/openmrs/openmrs.conf
+
+create_dirs() {
+    if [[ ! -e /var/run/openmrs ]]; then
+        ln -s /opt/openmrs/run /var/run/openmrs
+    fi
+
+    if [[ ! -e /var/run/openmrs/openmrs ]]; then
+        ln -s /opt/openmrs/openmrs /var/run/openmrs/openmrs
+    fi
+
+    if [[ ! -e /var/log/openmrs ]]; then
+        ln -s /opt/openmrs/log /var/log/openmrs
+    fi
+}
+
+openmrs_pid() {
+        echo `ps -fe | grep 'openmrs.jar' | grep -v grep | tr -s " "|cut -d" " -f2`
+}
+
+link_modules() {
+    if [[ ! -e /home/$OPENMRS_SERVER_USER/.OpenMRS ]]; then
+        mkdir /home/$OPENMRS_SERVER_USER/.OpenMRS
+        chown bahmni:bahmni /home/$OPENMRS_SERVER_USER/.OpenMRS
+        ln -s /opt/openmrs/etc/openmrs-runtime.properties /home/$OPENMRS_SERVER_USER/.OpenMRS/openmrs-runtime.properties
+    fi
+    if [[ ! -e/home/$OPENMRS_SERVER_USER/.OpenMRS/modules ]]; then
+        ln -s $MODULE_REPO /home/$OPENMRS_SERVER_USER/.OpenMRS/modules
+    fi
+}
+
+cleanup_cache(){
+	rm -rf $OPENMRS_LIB_CACHE
+	rm -rf $BASE_DIR/work/*
+}
+
+start(){
+    pid=$(openmrs_pid)
+    if [ -n "$pid" ]
+    then
+        echo -e "\e[00;31mService openmrs is already running (pid: $pid)\e[00m"
+    else
+        # Start openmrs
+        create_dirs
+        link_modules
+        cleanup_cache
+        echo -e "\e[00;32mStarting openmrs\e[00m"
+        if [ `user_exists $OPENMRS_SERVER_USER` = "1" ]  && [ "$CUR_USER" != "$OPENMRS_SERVER_USER" ] ;
+        then
+                su -s /bin/bash $OPENMRS_SERVER_USER $OPENMRS_SERVER_RUN
+        else
+                sh $OPENMRS_SERVER_RUN
+        fi
+  fi
+  exit 0
+}
+
+debug(){
+    pid=$(openmrs_pid)
+    if [ -n "$pid" ]
+    then
+        echo -e "\e[00;31mService openmrs is already running (pid: $pid)\e[00m"
+    else
+        # Start openmrs
+        create_dirs
+        link_modules
+        cleanup_cache
+        echo -e "\e[00;32mStarting openmrs\e[00m"
+        if [ `user_exists $OPENMRS_SERVER_USER` = "1" ]  && [ "$CUR_USER" != "$OPENMRS_SERVER_USER" ] ;
+        then
+                su -s /bin/bash $OPENMRS_SERVER_USER $OPENMRS_SERVER_DEBUG
+        else
+                sh $OPENMRS_SERVER_DEBUG
+        fi
+  fi
+  exit 0
+}
+
+status(){
+          pid=$(openmrs_pid)
+          if [ -n "$pid" ]; then echo -e "\e[00;32mService openmrs is running with pid: $pid\e[00m"
+          else echo -e "\e[00;31mService openmrs is not running\e[00m"
+          exit 3
+          fi
+}
+
+stop() {
+	echo -e "\e[00;31mTerminating openmrs\e[00m"
+	kill -9 $(openmrs_pid)
+	rm -rf /var/run/openmrs/openmrs.pid
+	return
+}
+user_exists(){
+        if id -u $1 >/dev/null 2>&1; then
+        echo "1"
+        else
+                echo "0"
+        fi
+}
+
+case $1 in
+	start)
+	  start
+	;;
+    debug)
+	  debug
+	;;
+	stop)
+	  stop
+	;;
+	restart)
+	  stop
+	  start
+	;;
+	status)
+		status
+	;;
+	kill)
+		stop
+	;;
+	*)
+
+	;;
+esac
+exit 0
