@@ -92,7 +92,7 @@ task dist(type: Rpm) {
 
     into '/opt/pacs-integration'
 
-    requires('postgresql92')
+    requires('postgresql95.x86_64')
 
     preInstall file("${projectDir}/scripts/pacs-integration/preinstall.sh")
     postInstall file("${projectDir}/scripts/pacs-integration/postinstall.sh")
@@ -135,7 +135,7 @@ task dist_dcm4chee(type: Rpm) {
 
     into '/opt/dcm4chee'
 
-    requires('postgresql92')
+    requires('postgresql95.x86_64')
 
     preInstall file("${projectDir}/scripts/dcm4chee/preinstall.sh")
     postInstall file("${projectDir}/scripts/dcm4chee/postinstall.sh")
