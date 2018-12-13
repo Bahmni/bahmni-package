@@ -51,6 +51,7 @@ buildRpm {
 
     requires('python-devel')
     requires('epel-release')
+    requires('python-setuptools')
 
     preInstall file("${projectDir}/scripts/preinstall.sh")
     postInstall file("${projectDir}/scripts/postinstall.sh")
