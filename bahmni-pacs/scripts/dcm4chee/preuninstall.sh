@@ -1,3 +1,3 @@
 #!/bin/bash
 
-service dcm4chee stop
+systemctl stop dcm4chee
