@@ -1,4 +1,4 @@
 #!/bin/bash
 
 #stop the server
-service openerp stop || true
+systemctl stop openerp || true

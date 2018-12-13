@@ -1,3 +1,3 @@
 #!/bin/bash
 
-service pacs-integration stop
+systemctl stop pacs-integration
