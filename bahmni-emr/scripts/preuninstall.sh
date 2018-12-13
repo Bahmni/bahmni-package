@@ -1,4 +1,4 @@
 #!/bin/bash
 
 #stop the server
-service openmrs stop || true
+systemctl stop openmrs || true

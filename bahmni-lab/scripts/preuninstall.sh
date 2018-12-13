@@ -1,6 +1,6 @@
 #!/bin/bash
 
 #stop the server
-service bahmni-lab stop || true
+systemctl stop bahmni-lab || true
 
 
