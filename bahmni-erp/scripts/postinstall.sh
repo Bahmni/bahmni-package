@@ -1,61 +1,59 @@
 #!/bin/bash
 
 export BAHMNI_ERP=/opt/bahmni-erp
-OPENERP_DB_SERVER=localhost
+ODOO_DB_SERVER=localhost
 
 if [ -f /etc/bahmni-installer/bahmni.conf ]; then
 . /etc/bahmni-installer/bahmni.conf
 fi
 
 manage_permissions(){
-    chown -R openerp:openerp $BAHMNI_ERP
-    mkdir -p /var/log/openerp
-    mkdir -p /var/run/openerp
-    chown openerp:openerp /var/log/openerp
-    chown openerp:openerp /var/run/openerp
+    chown -R odoo:odoo $BAHMNI_ERP
+    mkdir -p /var/log/odoo
+    mkdir -p /var/run/odoo
+    chown odoo:odoo /var/log/odoo
+    chown odoo:odoo /var/run/odoo
 }
 
 install_openerp(){
     cd $BAHMNI_ERP
-    tar -xvzf openerp-7.0-20130301-002301.tar.gz
-    cd openerp-7.0-20130301-002301
+    unzip 10.0.zip
+    cd odoo-10.0
     sudo python setup.py -q install
-    cp openerp-server $BAHMNI_ERP
-    cp install/openerp-server.conf $BAHMNI_ERP/etc
-    cp -r $BAHMNI_ERP/bahmni-addons/* /usr/lib/python2.6/site-packages/openerp-7.0_20130301_002301-py2.6.egg/openerp/addons
+    cp -r addons/* $BAHMNI_ERP/bahmni-addons
+    cp odoo-bin $BAHMNI_ERP
+    cp debian/odoo.conf $BAHMNI_ERP/etc
+    sed -i 's+addons_path = /usr/lib/python2.7/dist-packages/odoo/addons+addons_path = /usr/lib/python2.7/site-packages/odoo-10.0-py2.7.egg/odoo/addons+g' $BAHMNI_ERP/etc/odoo.conf
+    cp -r $BAHMNI_ERP/bahmni-addons/* /usr/lib/python2.7/site-packages/odoo-10.0-py2.7.egg/odoo/addons
     cd $BAHMNI_ERP
-    rm -rf $BAHMNI_ERP/openerp-7.0-20130301-002301
-    rm -rf $BAHMNI_ERP/openerp-7.0-20130301-002301.tar.gz
+    rm -rf $BAHMNI_ERP/odoo-10.0
+    rm -rf $BAHMNI_ERP/10.0.zip
 }
 
 initDB(){
-    RESULT_USER=`psql -U postgres -h$OPENERP_DB_SERVER -tAc "SELECT count(*) FROM pg_roles WHERE rolname='openerp'"`
-    RESULT_DB=`psql -U postgres -h$OPENERP_DB_SERVER -tAc "SELECT count(*) from pg_catalog.pg_database where datname='openerp'"`
+    RESULT_USER=`psql -U postgres -h$ODOO_DB_SERVER -tAc "SELECT count(*) FROM pg_roles WHERE rolname='odoo'"`
+    RESULT_DB=`psql -U postgres -h$ODOO_DB_SERVER -tAc "SELECT count(*) from pg_catalog.pg_database where datname='odoo'"`
     if [ "$RESULT_USER" == "0" ]; then
-        echo "creating postgres user - openerp with roles CREATEDB,NOCREATEROLE,SUPERUSER,REPLICATION"
-        createuser -Upostgres  -h$OPENERP_DB_SERVER -d -R -s --replication openerp;
+        echo "creating postgres user - odoo with roles CREATEDB,NOCREATEROLE,SUPERUSER,REPLICATION"
+        createuser -Upostgres  -h$ODOO_DB_SERVER -d -R -s --replication odoo;
     fi
 
     if [ "$RESULT_DB" == "0" ]; then
-        echo "Restoring base dump of openerp"
-        createdb -Uopenerp -h$OPENERP_DB_SERVER openerp;
+        echo "Restoring base dump of odoo"
+        createdb -Uodoo -h$ODOO_DB_SERVER odoo;
 
-        if [ "${IMPLEMENTATION_NAME:-default}" = "default" ]; then
-            psql -Uopenerp -h$OPENERP_DB_SERVER openerp < /opt/bahmni-erp/db-dump/openerp_demo_dump.sql
-        else
-            psql -Uopenerp -h$OPENERP_DB_SERVER openerp < /opt/bahmni-erp/db-dump/openerp_clean_dump.sql
-        fi
     fi
+    sudo -u odoo ./odoo-bin -d odoo
 }
 
 link_directories(){
-    ln -s $BAHMNI_ERP/etc /etc/openerp
-    chown -R openerp:openerp /etc/openerp
+    ln -s $BAHMNI_ERP/etc /etc/odoo
+    chown -R odoo:odoo /etc/odoo
 }
 
 manage_config(){
-    ln -s $BAHMNI_ERP/bin/openerp /etc/init.d/openerp
-    chown openerp:openerp /etc/init.d/openerp
+    ln -s $BAHMNI_ERP/bin/odoo /etc/rc.d/init.d/odoo
+    chown odoo:odoo /etc/rc.d/init.d/odoo
 }
 
 install_openerp
@@ -65,4 +63,4 @@ fi
 link_directories
 manage_config
 manage_permissions
-chkconfig openerp on
+chkconfig odoo on

@@ -3,10 +3,10 @@
 #                       OpenERP server
 #
 # chkconfig: 345 95 05
-# description: OpenERP server
+# description: Odoo server
 #
-# pidfile: /var/run/openerp-server.pid
-# config: /etc/openerp-server.conf
+# pidfile: /var/run/odoo/odoo-server.pid
+# config: /etc/odoo.conf
 
 ### BEGIN INIT INFO
 # Provides: openerp-server
@@ -14,22 +14,25 @@
 # Required-Stop: <%= @postgresServiceName %>
 # Should-Start: $network harddrake
 # Default-Start: 345
-# Short-Description: Launches the OpenERP server.
-# Description: This startup script launches the OpenERP server.
+# Short-Description: Launches the Odoo server.
+# Description: This startup script launches the Odoo server.
 ### END INIT INFO
 
 # Source function library.
 . /etc/rc.d/init.d/functions
 
-PIDFILE=/var/run/openerp/openerp-server.pid
-LOCKFILE=/var/lock/subsys/openerp-server
-LOGFILE=/var/log/openerp/openerp-server.log
+PIDFILE=/var/run/odoo/odoo-server.pid
+LOCKFILE=/var/lock/subsys/odoo-server
+LOGFILE=/var/log/odoo/odoo-server.log
 
-prog="openerp-server"
-desc="OpenERP Server Daemon"
+prog="odoo-server"
+desc="Odoo Server Daemon"
 
 SHUTDOWN_WAIT=20
 
+cd /var/run
+mkdir odoo
+chown odoo:odoo odoo
 
 # Source function library
 if [ -f /etc/init.d/functions ] ; then
@@ -41,7 +44,7 @@ else
 fi
 
 # check the existence of the openerp-server script
-[ -z "/usr/bin/openerp-server" ] && exit 0
+[ -z "/usr/bin/odoo" ] && exit 0
 
 RETVAL=0
 
@@ -51,20 +54,20 @@ start() {
         return 0
     fi
 
-    if [ -d /etc/openerp/start.d ] ; then
+    if [ -d /etc/odoo/start.d ] ; then
         echo -n $"Preparing $desc: "
-        run-parts --exit-on-error /etc/openerp/start.d
+        run-parts --exit-on-error /etc/odoo/start.d
         RETVAL=$?
         echo
         [ $RETVAL -ne 0 ] && return $RETVAL
     fi
 
     echo -n $"Starting $desc ($prog): "
-    daemon --user openerp --check openerp-server \
-    "/usr/bin/setsid /usr/bin/openerp-server \
-    -c /etc/openerp/openerp-server.conf \
+    daemon --user odoo --check odoo-server \
+    "/usr/bin/setsid /usr/bin/odoo \
+    -c /etc/odoo/odoo.conf \
     --update all \
-    --database openerp \
+    --database odoo \
     --without-demo all \
     --pidfile=$PIDFILE \
     --logfile=$LOGFILE &"
@@ -76,7 +79,7 @@ start() {
 }
 
 openerp_pid() {
-    echo `pgrep -f /usr/bin/openerp-server`
+    echo `pgrep -f /usr/bin/odoo`
 }
 
 ensure_stopped() {
@@ -115,9 +118,9 @@ stop() {
         echo_failure
         echo
     fi
-    if [ -d /etc/openerp/stop.d ] ; then
+    if [ -d /etc/odoo/stop.d ] ; then
         echo -n $"Clearing $desc: "
-        run-parts /etc/openerp/stop.d
+        run-parts /etc/odoo/stop.d
         echo
     fi
     return $RETVAL

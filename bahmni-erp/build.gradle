@@ -9,9 +9,9 @@ group 'org.bahmni.erp'
 version project.bahmniRelease
 
 //The openerp-modules.zip file will be copied by the CI server after the artifacts are built.
-task extractAddons(type: Copy) {
-    from zipTree(file("${projectDir}/resources/openerp-modules.zip"))
-    into file("${buildDir}/addons/openerp-modules/")
+ task extractAddons(type: Copy) {
+    from zipTree(file("${projectDir}/resources/odoo-modules.zip"))
+    into file("${buildDir}/addons/")
 }
 
 ospackage {
@@ -19,15 +19,15 @@ ospackage {
     release = System.getenv('GO_PIPELINE_COUNTER') ?: "1"
     arch = NOARCH
     os = LINUX
-    user = 'openerp'
+    user = 'odoo'
 
     into '/opt/bahmni-erp'
 
-    from("${buildDir}/addons/openerp-modules/") {
-        fileMode = 0755
-        createDirectoryEntry = true
-        into 'bahmni-addons'
-    }
+      from("${buildDir}/addons/odoo-modules/") {
+      fileMode = 0755
+      createDirectoryEntry = true
+      into 'bahmni-addons'
+  }
 
     from("${projectDir}/resources/") {
         createDirectoryEntry = true
@@ -49,7 +49,7 @@ ospackage {
         include('openerp_demo_dump.sql')
     }
 
-    from("${buildDir}/openerp-7.0-20130301-002301.tar.gz") {
+    from("${buildDir}/10.0.zip") {
         fileMode = 0644
         createDirectoryEntry = true
         into "."
@@ -57,11 +57,11 @@ ospackage {
 }
 
 buildRpm {
-    dependsOn 'downloadOpenERP', 'extractAddons'
+    dependsOn 'downloadOpenERP',extractAddons
 
     requires('python-psycopg2')
     requires('python-lxml')
-    requires('PyXML')
+    requires('python-xmltramp')
     requires('python-setuptools')
     requires('libxslt-python')
     requires('python-matplotlib')
@@ -70,12 +70,11 @@ buildRpm {
     requires('python-dateutil')
     requires('python-psycopg2')
     requires('pychart')
-    requires('pydot')
+    requires('python2-pydot')
     requires('python-reportlab')
     requires('python-devel')
     requires('python-imaging')
     requires('python-vobject')
-    requires('mx')
     requires('python-ldap')
     requires('python-openid')
     requires('python-werkzeug')
@@ -83,11 +82,10 @@ buildRpm {
     requires('python-dateutil')
     requires('pygtk2')
     requires('glade3')
-    requires('pydot')
+    requires('python2-pydot')
     requires('python-matplotlib')
     requires('python')
     requires('python-psutil')
-    requires('python-gdata')
     requires('python-docutils')
     requires('make')
     requires('automake')
@@ -96,7 +94,6 @@ buildRpm {
     requires('kernel-devel')
     requires('byacc')
     requires('poppler-utils')
-    requires('pywebdav')
     requires('postgresql96-libs')
     requires('postgresql96')
     requires('python-unittest2')
@@ -112,8 +109,8 @@ buildRpm {
 }
 
 task downloadOpenERP(type: Download) {
-    onlyIf { !(new File("${buildDir}/openerp-7.0-20130301-002301.tar.gz").exists()) }
+    onlyIf { !(new File("${buildDir}/10.0.zip").exists()) }
 
-    src 'http://repo.mybahmni.org.s3.amazonaws.com/packages/servers/openerp-7.0-20130301-002301.tar.gz'
+    src 'https://github.com/odoo/odoo/archive/10.0.zip'
     dest buildDir
 }
