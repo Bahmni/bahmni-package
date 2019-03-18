@@ -11,7 +11,7 @@ version project.bahmniRelease
 //The openerp-modules.zip file will be copied by the CI server after the artifacts are built.
  task extractAddons(type: Copy) {
     from zipTree(file("${projectDir}/resources/odoo-modules.zip"))
-    into file("${buildDir}/addons/")
+    into file("${buildDir}/bahmni-addons/")
 }
 
 ospackage {
@@ -23,17 +23,17 @@ ospackage {
 
     into '/opt/bahmni-erp'
 
-      from("${buildDir}/addons/odoo-modules/") {
+      from("${buildDir}/bahmni-addons/odoo-modules-master") {
       fileMode = 0755
       createDirectoryEntry = true
       into 'bahmni-addons'
   }
 
-    from("${projectDir}/resources/") {
-        createDirectoryEntry = true
-        into 'etc'
-        include('placeholder')
-    }
+    // from("${projectDir}/resources/") {
+    //     createDirectoryEntry = true
+    //     into 'etc'
+    //     include('placeholder')
+    // }
 
     from("${projectDir}/scripts/rpm/") {
         fileMode = 0744
@@ -41,13 +41,13 @@ ospackage {
         into 'bin'
     }
 
-    from("${projectDir}/resources/") {
-        fileMode = 0644
-        createDirectoryEntry = true
-        into 'db-dump'
-        include('openerp_clean_dump.sql')
-        include('openerp_demo_dump.sql')
-    }
+    // from("${projectDir}/resources/") {
+    //     fileMode = 0644
+    //     createDirectoryEntry = true
+    //     into 'db-dump'
+    //     include('openerp_clean_dump.sql')
+    //     include('openerp_demo_dump.sql')
+    // }
 
     from("${buildDir}/10.0.zip") {
         fileMode = 0644
