@@ -17,13 +17,15 @@
 # Short-Description: Launches the Odoo server.
 # Description: This startup script launches the Odoo server.
 ### END INIT INFO
+PATH=/bin:/sbin:/usr/bin
+DAEMON=/opt/bahmni-erp/odoo-bin
 
 # Source function library.
 . /etc/rc.d/init.d/functions
 
 PIDFILE=/var/run/odoo/odoo-server.pid
 LOCKFILE=/var/lock/subsys/odoo-server
-LOGFILE=/var/log/odoo/odoo-server.log
+LOGFILE=/var/log/odoo/odoo.log
 
 prog="odoo-server"
 desc="Odoo Server Daemon"
@@ -65,7 +67,7 @@ start() {
     echo -n $"Starting $desc ($prog): "
     daemon --user odoo --check odoo-server \
     "/usr/bin/setsid /usr/bin/odoo \
-    -c /etc/odoo/odoo.conf \
+    -c /etc/odoo.conf \
     --update all \
     --database odoo \
     --without-demo all \

@@ -7,6 +7,26 @@ if [ -f /etc/bahmni-installer/bahmni.conf ]; then
 . /etc/bahmni-installer/bahmni.conf
 fi
 
+install_wkhtml(){
+    # sudo yum install -y xorg-x11-fonts-75dpi
+    # sudo yum install -y xorg-x11-fonts-Type1
+    # sudo yum install xz
+    wget https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.4/wkhtmltox-0.12.4_linux-generic-amd64.tar.xz
+    unxz wkhtmltox-0.12.4_linux-generic-amd64.tar.xz
+    tar -xvf wkhtmltox-0.12.4_linux-generic-amd64.tar
+    cp wkhtmltox/bin/wkhtmltopdf /usr/bin/wkhtmltopdf
+    rm wkhtmltox-0.12.4_linux-generic-amd64.tar
+}
+
+install_piplibraries(){
+    echo -e "\n---- Install python libraries ----"
+    sudo pip install gdata psycogreen ofxparse XlsxWriter xlrd 
+    echo -e "\n--- Install other required packages"
+    sudo apt-get install node-clean-css -y
+    sudo apt-get install node-less -y
+    sudo apt-get install python-gevent -y
+}
+
 manage_permissions(){
     chown -R odoo:odoo $BAHMNI_ERP
     mkdir -p /var/log/odoo
@@ -18,13 +38,13 @@ manage_permissions(){
 install_openerp(){
     cd $BAHMNI_ERP
     unzip 10.0.zip
-    cd odoo-10.0
+    mv odoo-10.0/* .
     sudo python setup.py -q install
-    cp -r addons/* $BAHMNI_ERP/bahmni-addons
-    cp odoo-bin $BAHMNI_ERP
-    cp debian/odoo.conf $BAHMNI_ERP/etc
-    sed -i 's+addons_path = /usr/lib/python2.7/dist-packages/odoo/addons+addons_path = /usr/lib/python2.7/site-packages/odoo-10.0-py2.7.egg/odoo/addons+g' $BAHMNI_ERP/etc/odoo.conf
-    cp -r $BAHMNI_ERP/bahmni-addons/* /usr/lib/python2.7/site-packages/odoo-10.0-py2.7.egg/odoo/addons
+    # cp debian/odoo.conf $BAHMNI_ERP/etc
+    mkdir bahmni-addons
+    sudo sed -i 's+addons_path = /usr/lib/python2.7/dist-packages/odoo/addons+addons_path = /opt/bahmni-erp/bahmni-addons,/usr/lib/python2.7/site-packages+' $BAHMNI_ERP/debian/odoo.conf
+    sudo echo 'logfile = /var/log/odoo/odoo.log' >> /opt/bahmni-erp/debian/odoo.conf
+    sudo echo 'log_level = error' >> /opt/bahmni-erp/debian/odoo.conf
     cd $BAHMNI_ERP
     rm -rf $BAHMNI_ERP/odoo-10.0
     rm -rf $BAHMNI_ERP/10.0.zip
@@ -43,19 +63,20 @@ initDB(){
         createdb -Uodoo -h$ODOO_DB_SERVER odoo;
 
     fi
-    sudo -u odoo ./odoo-bin -d odoo
+    # sudo -u odoo ./odoo-bin -d odoo
 }
 
 link_directories(){
-    ln -s $BAHMNI_ERP/etc /etc/odoo
-    chown -R odoo:odoo /etc/odoo
+    sudo cp $BAHMNI_ERP/debian/odoo.conf /etc/odoo.conf
+    sudo chown -R odoo:odoo /etc/odoo.conf
 }
 
 manage_config(){
-    ln -s $BAHMNI_ERP/bin/odoo /etc/rc.d/init.d/odoo
-    chown odoo:odoo /etc/rc.d/init.d/odoo
+    sudo ln -s $BAHMNI_ERP/bin/odoo /etc/rc.d/init.d/odoo
+    sudo chown odoo:odoo /etc/rc.d/init.d/odoo
 }
 
+install_wkhtml
 install_openerp
 if [ "${IS_PASSIVE:-0}" -ne "1" ]; then
     initDB
