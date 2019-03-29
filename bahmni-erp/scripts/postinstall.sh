@@ -15,14 +15,6 @@ install_wkhtml(){
     rm wkhtmltox-0.12.4_linux-generic-amd64.tar
 }
 
-install_piplibraries(){
-    echo -e "\n---- Install python libraries ----"
-    sudo pip install gdata psycogreen ofxparse XlsxWriter xlrd 
-    echo -e "\n--- Install other required packages"
-    sudo apt-get install node-clean-css -y
-    sudo apt-get install node-less -y
-    sudo apt-get install python-gevent -y
-}
 
 manage_permissions(){
     chown -R odoo:odoo $BAHMNI_ERP
@@ -59,8 +51,13 @@ initDB(){
         echo "Restoring base dump of odoo"
         createdb -Uodoo -h$ODOO_DB_SERVER odoo;
 
+         if [ "${IMPLEMENTATION_NAME:-default}" = "default" ]; then
+            psql -Uodoo -h$ODOO_DB_SERVER odoo < /opt/bahmni-erp/db-dump/odoo_demo_dump.sql
+        else
+            psql -Uodoo -h$ODOO_DB_SERVER odoo < /opt/bahmni-erp/db-dump/odoo_clean_dump.sql
+        fi
+
     fi
-    # sudo -u odoo ./odoo-bin -d odoo
 }
 
 link_directories(){
