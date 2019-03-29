@@ -1,4 +1,4 @@
 #!/bin/bash
 
 #stop the server
-systemctl stop openerp || true
+service odoo stop || true
