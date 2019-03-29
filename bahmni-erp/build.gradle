@@ -9,7 +9,7 @@ group 'org.bahmni.erp'
 version project.bahmniRelease
 
 //The openerp-modules.zip file will be copied by the CI server after the artifacts are built.
- task extractAddons(type: Copy) {
+task extractAddons(type: Copy) {
     from zipTree(file("${projectDir}/resources/odoo-modules.zip"))
     into file("${buildDir}/bahmni-addons/")
 }
@@ -23,16 +23,24 @@ ospackage {
 
     into '/opt/bahmni-erp'
 
-      from("${buildDir}/bahmni-addons/odoo-modules-master") {
-      fileMode = 0755
-      createDirectoryEntry = true
-      into 'bahmni-addons'
-  }
+    from("${buildDir}/bahmni-addons/odoo-modules-master") {
+        fileMode = 0755
+        createDirectoryEntry = true
+        into 'bahmni-addons'
+    }
 
     from("${projectDir}/scripts/rpm/") {
         fileMode = 0744
         createDirectoryEntry = true
         into 'bin'
+    }
+
+    from("${projectDir}/resources/") {
+        fileMode = 0644
+        createDirectoryEntry = true
+        into 'db-dump'
+        include('odoo_clean_dump.sql')
+        include('odoo_demo_dump.sql')
     }
 
     from("${buildDir}/10.0.zip") {
@@ -43,7 +51,7 @@ ospackage {
 }
 
 buildRpm {
-    dependsOn 'downloadOpenERP',extractAddons
+    dependsOn 'downloadOpenERP', extractAddons
 
     requires('python-psycopg2')
     requires('python-lxml')
@@ -88,6 +96,7 @@ buildRpm {
     requires('python-mock')
     requires('python-pip')
     requires('python-feedparser')
+    requires('python-gevent')
 
     postInstall file("${projectDir}/scripts/postinstall.sh")
     preInstall file("${projectDir}/scripts/preinstall.sh")
