@@ -8,9 +8,6 @@ if [ -f /etc/bahmni-installer/bahmni.conf ]; then
 fi
 
 install_wkhtml(){
-    # sudo yum install -y xorg-x11-fonts-75dpi
-    # sudo yum install -y xorg-x11-fonts-Type1
-    # sudo yum install xz
     wget https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.4/wkhtmltox-0.12.4_linux-generic-amd64.tar.xz
     unxz wkhtmltox-0.12.4_linux-generic-amd64.tar.xz
     tar -xvf wkhtmltox-0.12.4_linux-generic-amd64.tar
@@ -42,7 +39,7 @@ install_openerp(){
     sudo python setup.py -q install
     # cp debian/odoo.conf $BAHMNI_ERP/etc
     mkdir bahmni-addons
-    sudo sed -i 's+addons_path = /usr/lib/python2.7/dist-packages/odoo/addons+addons_path = /opt/bahmni-erp/bahmni-addons,/usr/lib/python2.7/site-packages+' $BAHMNI_ERP/debian/odoo.conf
+    sudo sed -i 's+addons_path = /usr/lib/python2.7/dist-packages/odoo/addons+addons_path = /opt/bahmni-erp/bahmni-addons,/opt/bahmni-erp/addons,/usr/lib/python2.7/site-packages+' $BAHMNI_ERP/debian/odoo.conf
     sudo echo 'logfile = /var/log/odoo/odoo.log' >> /opt/bahmni-erp/debian/odoo.conf
     sudo echo 'log_level = error' >> /opt/bahmni-erp/debian/odoo.conf
     cd $BAHMNI_ERP

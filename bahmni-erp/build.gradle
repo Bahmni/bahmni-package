@@ -29,25 +29,11 @@ ospackage {
       into 'bahmni-addons'
   }
 
-    // from("${projectDir}/resources/") {
-    //     createDirectoryEntry = true
-    //     into 'etc'
-    //     include('placeholder')
-    // }
-
     from("${projectDir}/scripts/rpm/") {
         fileMode = 0744
         createDirectoryEntry = true
         into 'bin'
     }
-
-    // from("${projectDir}/resources/") {
-    //     fileMode = 0644
-    //     createDirectoryEntry = true
-    //     into 'db-dump'
-    //     include('openerp_clean_dump.sql')
-    //     include('openerp_demo_dump.sql')
-    // }
 
     from("${buildDir}/10.0.zip") {
         fileMode = 0644
