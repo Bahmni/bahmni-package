@@ -23,7 +23,7 @@ ospackage {
 
     into '/opt/bahmni-erp'
 
-    from("${buildDir}/bahmni-addons/odoo-modules-master") {
+    from("${buildDir}/bahmni-addons/odoo-modules") {
         fileMode = 0755
         createDirectoryEntry = true
         into 'bahmni-addons'
