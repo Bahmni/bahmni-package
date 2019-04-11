@@ -9,7 +9,3 @@ rm -rf /usr/bin/bahmni
 rm -rf /etc/bahmni-installer/deployment-artifacts/rpm_versions.yml
 rm -rf /etc/bahmni-installer/deployment-artifacts/local
 rm -rf /var/log/bahmni-installer
-
-#Moved from bahmni-emr pre-install
-rm -rf /opt/openmrs
-rm -rf /etc/openmrs 
