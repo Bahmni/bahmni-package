@@ -11,7 +11,7 @@
     </appender>
 
     <logger name="org.springframework">
-        <level value="warn"/>
+        <level value="WARN"/>
     </logger>
 
     <root>
