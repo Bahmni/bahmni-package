@@ -43,7 +43,7 @@ ospackage {
         include('odoo_demo_dump.sql')
     }
 
-    from("${buildDir}/odoo_10.0.20190520.zip") {
+    from("${buildDir}/10.0.zip") {
         fileMode = 0644
         createDirectoryEntry = true
         into "."
@@ -104,7 +104,7 @@ buildRpm {
 }
 
 task downloadOpenERP(type: Download) {
-    onlyIf { !(new File("${buildDir}/odoo_10.0.20190520.zip").exists()) }
+    onlyIf { !(new File("${buildDir}/10.0.zip").exists()) }
 
     src 'https://github.com/odoo/odoo/archive/10.0.zip'
     dest buildDir
