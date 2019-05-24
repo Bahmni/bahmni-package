@@ -26,17 +26,17 @@ manage_permissions(){
 
 install_openerp(){
     cd $BAHMNI_ERP
-    unzip 10.0.zip
-    mv odoo-10.0/* .
+    unzip odoo_10.0.20190520.zip
+    mv odoo-10.0.post20190520/* .
     sudo python setup.py -q install
     # cp debian/odoo.conf $BAHMNI_ERP/etc
     mkdir bahmni-addons
-    sudo sed -i 's+addons_path = /usr/lib/python2.7/dist-packages/odoo/addons+addons_path = /opt/bahmni-erp/bahmni-addons,/opt/bahmni-erp/addons,/usr/lib/python2.7/site-packages+' $BAHMNI_ERP/debian/odoo.conf
-    sudo echo 'logfile = /var/log/odoo/odoo.log' >> /opt/bahmni-erp/debian/odoo.conf
-    sudo echo 'log_level = error' >> /opt/bahmni-erp/debian/odoo.conf
+    sudo sed -i 's+addons_path = /usr/lib/python2.7/dist-packages/odoo/addons+addons_path = /opt/bahmni-erp/bahmni-addons,/opt/bahmni-erp/addons,/usr/lib/python2.7/site-packages+' $BAHMNI_ERP/odoo.conf
+    sudo echo 'logfile = /var/log/odoo/odoo.log' >> /opt/bahmni-erp/odoo.conf
+    sudo echo 'log_level = error' >> /opt/bahmni-erp/odoo.conf
     cd $BAHMNI_ERP
-    rm -rf $BAHMNI_ERP/odoo-10.0
-    rm -rf $BAHMNI_ERP/10.0.zip
+    rm -rf $BAHMNI_ERP/odoo-10.0.post20190520
+    rm -rf $BAHMNI_ERP/odoo_10.0.20190520.zip
 }
 
 initDB(){
@@ -61,7 +61,7 @@ initDB(){
 }
 
 link_directories(){
-    sudo cp $BAHMNI_ERP/debian/odoo.conf /etc/odoo.conf
+    sudo cp $BAHMNI_ERP/odoo.conf /etc/odoo.conf
     sudo chown -R odoo:odoo /etc/odoo.conf
 }
 
