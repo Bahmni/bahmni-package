@@ -26,7 +26,7 @@ manage_permissions(){
 
 install_openerp(){
     cd $BAHMNI_ERP
-    unzip 10.0.zip
+    unzip odoo-10.0.20190527.zip
     mv odoo-10.0/* .
     sudo python setup.py -q install
     # cp debian/odoo.conf $BAHMNI_ERP/etc
