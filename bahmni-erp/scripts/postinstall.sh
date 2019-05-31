@@ -52,9 +52,7 @@ initDB(){
         createdb -Uodoo -h$ODOO_DB_SERVER odoo;
 
          if [ "${IMPLEMENTATION_NAME:-default}" = "default" ]; then
-#           psql -Uodoo -h$ODOO_DB_SERVER odoo < /opt/bahmni-erp/db-dump/odoo_demo_dump.sql
-            psql -Uodoo -h$ODOO_DB_SERVER odoo < /opt/bahmni-erp/db-dump/odoo_clean_dump.sql
-
+            psql -Uodoo -h$ODOO_DB_SERVER odoo < /opt/bahmni-erp/db-dump/odoo_demo_dump.sql
         else
             psql -Uodoo -h$ODOO_DB_SERVER odoo < /opt/bahmni-erp/db-dump/odoo_clean_dump.sql
         fi
