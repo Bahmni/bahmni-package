@@ -43,7 +43,7 @@ ospackage {
         include('odoo_demo_dump.sql')
     }
 
-    from("${buildDir}/odoo-10.0.20190527.zip") {
+    from("${buildDir}/odoo_10.0.20190619.zip") {
         fileMode = 0644
         createDirectoryEntry = true
         into "."
@@ -103,9 +103,10 @@ buildRpm {
     preUninstall file("${projectDir}/scripts/preuninstall.sh")
 }
 
-task downloadOpenERP(type: Download) {
-    onlyIf { !(new File("${buildDir}/odoo-10.0.20190527.zip").exists()) }
 
-    src 'http://repo.mybahmni.org.s3.amazonaws.com/packages/servers/odoo-10.0.20190527.zip'
+task downloadOpenERP(type: Download) {
+    onlyIf { !(new File("${buildDir}/odoo_10.0.20190619.zip").exists()) }
+
+    src 'http://repo.mybahmni.org.s3.amazonaws.com/packages/servers/odoo_10.0.20190619.zip'
     dest buildDir
 }
