@@ -104,7 +104,7 @@ ospackage {
         into 'openmrs/scripts'
     }
 
-    from("${buildDir}/distro/distro-0.91-SNAPSHOT") {
+    from("${buildDir}/distro/distro-0.92-SNAPSHOT") {
         fileMode = 0644
         createDirectoryEntry = true
         into 'modules'
