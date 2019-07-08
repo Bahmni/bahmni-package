@@ -47,8 +47,11 @@ link_modules() {
         chown bahmni:bahmni /home/$OPENMRS_SERVER_USER/.OpenMRS
     fi
 
-    ln -s /opt/openmrs/etc/openmrs-runtime.properties /home/$OPENMRS_SERVER_USER/.OpenMRS/openmrs-runtime.properties
+    if [ ! -f /home/$OPENMRS_SERVER_USER/.OpenMRS/openmrs-runtime.properties ]; then
+        ln -s /opt/openmrs/etc/openmrs-runtime.properties /home/$OPENMRS_SERVER_USER/.OpenMRS/openmrs-runtime.properties    
+    fi
     
+
     if [[ ! -e /home/$OPENMRS_SERVER_USER/.OpenMRS/modules ]]; then
         ln -s $MODULE_REPO /home/$OPENMRS_SERVER_USER/.OpenMRS/modules
     fi
