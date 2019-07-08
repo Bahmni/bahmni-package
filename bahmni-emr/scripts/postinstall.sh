@@ -37,7 +37,8 @@ sudo chown -R bahmni:bahmni /etc/openmrs
 link_dirs() {
     rm -rf /home/$OPENMRS_SERVER_USER/.OpenMRS/modules
     ln -s $MODULE_REPO /home/$OPENMRS_SERVER_USER/.OpenMRS/modules
-    chown -R bahmni:bahmni /opt/openmrs/modules
+    chown -R bahmni:bahmni $MODULE_REPO
+    chown -R bahmni:bahmni /home/$OPENMRS_SERVER_USER/.OpenMRS/modules
 }
 
 
@@ -54,6 +55,9 @@ run_migrations() {
 #}
 
 create_configuration_dirs() {
+    [ -d /home/$OPENMRS_SERVER_USER/.OpenMRS ] || mkdir /home/$OPENMRS_SERVER_USER/.OpenMRS
+    chown -R bahmni:bahmni /home/$OPENMRS_SERVER_USER/.OpenMRS
+
     ln -s /opt/openmrs/bahmnicore.properties /home/$OPENMRS_SERVER_USER/.OpenMRS/bahmnicore.properties
     mkdir -p $PATIENT_IMAGES_DIR
     mkdir -p $DOCUMENT_IMAGES_DIR
@@ -77,8 +81,8 @@ setupConfFiles() {
     	cp -f /opt/openmrs/etc/emr_ssl.conf /etc/httpd/conf.d/emr_ssl.conf
 }
 
-link_dirs
 create_configuration_dirs
+link_dirs
 
 
 if [ "${IS_PASSIVE:-0}" -ne "1" ]; then
