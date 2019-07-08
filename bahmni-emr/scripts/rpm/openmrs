@@ -55,6 +55,8 @@ link_modules() {
     if [[ ! -e /home/$OPENMRS_SERVER_USER/.OpenMRS/modules ]]; then
         ln -s $MODULE_REPO /home/$OPENMRS_SERVER_USER/.OpenMRS/modules
     fi
+
+    chown -R bahmni:bahmni /home/$OPENMRS_SERVER_USER/.OpenMRS
 }
 
 cleanup_cache(){
