@@ -48,7 +48,7 @@ link_modules() {
     fi
 
     if [ ! -f /home/$OPENMRS_SERVER_USER/.OpenMRS/openmrs-runtime.properties ]; then
-        ln -s /opt/openmrs/etc/openmrs-runtime.properties /home/$OPENMRS_SERVER_USER/.OpenMRS/openmrs-runtime.properties    
+        ln -sf /opt/openmrs/etc/openmrs-runtime.properties /home/$OPENMRS_SERVER_USER/.OpenMRS/openmrs-runtime.properties
     fi
     
 
