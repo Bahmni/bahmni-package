@@ -1,6 +1,6 @@
 #!/bin/bash
 
 #stop the server
-service bahmni-event-log-service stop || true
+systemctl stop bahmni-event-log-service || true
 
 

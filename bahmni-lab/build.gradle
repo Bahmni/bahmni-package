@@ -124,7 +124,7 @@ ospackage {
 buildRpm {
     dependsOn 'build', 'normalizeJarName', 'extractWar', 'extractMigrations'
 
-    requires('postgresql92')
+    requires('postgresql96')
 
     preInstall file("${projectDir}/scripts/preinstall.sh")
     postInstall file("${projectDir}/scripts/postinstall.sh")

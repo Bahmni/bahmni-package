@@ -1,13 +1,37 @@
 plugins {
     id "nebula.ospackage" version "3.4.0"
+    id "java"
+}
+
+repositories {
+    mavenCentral()
+    jcenter()
+    maven {
+        url 'http://mavenrepo.openmrs.org/nexus/content/repositories/public'
+    }
+    maven {
+        url 'https://oss.sonatype.org/content/repositories'
+    }
 }
 
 group 'org.bahmni.emr'
 version project.bahmniRelease
 
 task extractOmods(type: Copy) {
-    from zipTree(file("${projectDir}/resources/distro-"+project.bahmniRelease+"-SNAPSHOT-distro.zip"))
+    from zipTree(file("${projectDir}/resources/distro-0.92-SNAPSHOT-distro.zip"))
     into file("${buildDir}/distro/")
+}
+
+task extractWar(dependsOn: 'downloadMRSWar', type: Copy) {
+    from zipTree(file("${buildDir}/resources/main/openmrs.war"))
+    into file("${buildDir}/openmrs")
+}
+
+task normalizeJarName(type: Copy) {
+    from "${buildDir}" + "/libs/"
+    into "${buildDir}" + "/libs/"
+    include(project.name + '-' + project.bahmniRelease + '.jar')
+    rename(project.name + '-' + project.bahmniRelease + '.jar', 'openmrs.jar')
 }
 
 ospackage {
@@ -19,7 +43,68 @@ ospackage {
 
     into '/opt/openmrs'
 
-    from("${buildDir}/distro/distro-"+project.bahmniRelease+"-SNAPSHOT") {
+    preUninstall file("${projectDir}/scripts/preuninstall.sh")
+    preInstall file("${projectDir}/scripts/preinstall.sh")
+
+    from("${buildDir}/libs/openmrs.jar") {
+        fileMode = 0644
+        createDirectoryEntry = true
+        into 'lib/'
+    }
+
+    from("${projectDir}/resources/") {
+        fileMode = 0644
+        createDirectoryEntry = true
+        into 'etc'
+        exclude('initDB.sh')
+    }
+
+    from("${projectDir}/scripts/rpm/") {
+        fileMode = 0744
+        createDirectoryEntry = true
+        into 'bin'
+    }
+
+    from("${projectDir}/resources/placeholder") {
+        createDirectoryEntry = true
+        into 'run'
+    }
+
+    from("${projectDir}/resources/placeholder") {
+        createDirectoryEntry = true
+        into 'log'
+    }
+
+    from("${buildDir}/resources/main/openmrs.war") {
+        fileMode = 0644
+        createDirectoryEntry = true
+        into '.'
+    }
+
+    from("${projectDir}/resources/placeholder") {
+        createDirectoryEntry = true
+        into 'openmrs'
+    }
+
+    from("${projectDir}/resources/initDB.sh") {
+        fileMode = 0744
+        createDirectoryEntry = true
+        into 'openmrs/scripts'
+    }
+
+    from("${projectDir}/resources/openmrs_demo_dump.sql") {
+        fileMode = 0644
+        createDirectoryEntry = true
+        into 'openmrs/scripts'
+    }
+
+    from("${projectDir}/resources/openmrs_clean_dump.sql") {
+        fileMode = 0644
+        createDirectoryEntry = true
+        into 'openmrs/scripts'
+    }
+
+    from("${buildDir}/distro/distro-0.92-SNAPSHOT") {
         fileMode = 0644
         createDirectoryEntry = true
         into 'modules'
@@ -72,6 +157,7 @@ ospackage {
 
     from("${projectDir}/resources/"){
         fileMode = 0644
+        into '.'
         include('bahmnicore.properties')
     }
 
@@ -81,7 +167,6 @@ ospackage {
         include('blank-user.png')
     }
 
-
     from("${projectDir}/resources/") {
         fileMode = 0755
         into 'etc'
@@ -90,9 +175,42 @@ ospackage {
 }
 
 buildRpm {
-    dependsOn 'build', 'extractOmods'
-
-    preInstall file("${projectDir}/scripts/preinstall.sh")
+    dependsOn 'build', 'normalizeJarName', 'downloadMRSWar', 'extractOmods'
+    requires('unzip')
+    requires('mysql-community-client', "5.7", GREATER | EQUAL)
+    
     postInstall file("${projectDir}/scripts/postinstall.sh")
-    preUninstall file("${projectDir}/scripts/preuninstall.sh")
+}
+
+task downloadMRSWar {
+    onlyIf { !(new File("${buildDir}/resources/main/openmrs.war").exists()) }
+
+    doLast {
+        new File("${buildDir}/resources/main").mkdirs();
+        configurations.mrsWar.resolve().each { file ->
+            if (file.getName().contains("openmrs")) {
+                file.renameTo(new File("${buildDir}/resources/main/openmrs.war"))
+            }
+        }
+    }
+}
+
+configurations {
+    mrsWar
+}
+
+dependencies {
+    compile project(":core")
+    mrsWar "org.openmrs.web:openmrs-webapp:${openmrsVersion}@war"
+}
+
+jar {
+    manifest {
+        attributes 'Main-Class': "org.bahmni.deployment.launch.Main"
+    }
+    from {
+        configurations.compile.collect {
+            it.isDirectory() ? it : zipTree(it)
+        }
+    }
 }
