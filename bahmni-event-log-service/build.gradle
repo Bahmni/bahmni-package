@@ -73,6 +73,13 @@ ospackage {
         createDirectoryEntry = true
         into 'bin'
     }
+
+    from("${projectDir}/scripts/bahmni-event-log-service.service") {
+        fileMode = 0744
+        user 'root'
+        into '/usr/lib/systemd/system/'
+    }
+
     from("${projectDir}/resources/placeholder") {
         fileMode = 0744
         createDirectoryEntry = true
