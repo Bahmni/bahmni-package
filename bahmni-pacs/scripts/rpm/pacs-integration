@@ -4,9 +4,8 @@
 #
 # chkconfig: 2345 65 35
 # description: pacs-integration server
-#
+# pidfile: /var/run/pacs-integration/pacs-integration.pid
 ### BEGIN INIT INFO
-# Required-Start: mysqld
 # Description: pacs-integration init script
 ### END INIT INFO
 
@@ -39,12 +38,7 @@ start() {
     else
         create_dirs
         echo -e "\e[00;32mStarting pacs-integration \e[00m"
-        if [ `user_exists $PACS_SERVER_USER` = "1" ]  && [ "$CUR_USER" != "$PACS_SERVER_USER" ] ;
-        then
-            su -s /bin/bash $PACS_SERVER_USER $PACS_SERVER_RUN
-        else
-            sh $PACS_SERVER_RUN
-        fi
+        sh $PACS_SERVER_RUN
   fi
   exit 0
 }
@@ -57,12 +51,7 @@ debug() {
     else
         create_dirs
         echo -e "\e[00;32mStarting pacs-integration\e[00m"
-        if [ `user_exists $PACS_SERVER_USER` = "1" ]  && [ "$CUR_USER" != "$PACS_SERVER_USER" ] ;
-        then
-            su -s /bin/bash $PACS_SERVER_USER $PACS_SERVER_DEBUG
-        else
-            sh $PACS_SERVER_DEBUG
-        fi
+        sh $PACS_SERVER_DEBUG
     fi
   exit 0
 }
