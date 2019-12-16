@@ -1,0 +1,17 @@
+[Unit]
+Description=Bahmni Reports Service
+After=network-online.target
+After=network.service
+
+[Service]
+Type=forking
+KillMode=none
+GuessMainPID=no
+User=bahmni
+PIDFile=/var/run/bahmni-reports/bahmni-reports.pid
+ExecStart=/etc/init.d/bahmni-reports start
+ExecStop=/etc/init.d/bahmni-reports stop
+ExecReload=/etc/init.d/bahmni-reports restart
+
+[Install]
+WantedBy=multi-user.target

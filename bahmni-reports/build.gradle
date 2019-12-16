@@ -81,6 +81,12 @@ ospackage {
         into 'bin'
     }
 
+    from("${projectDir}/scripts/bahmni-reports.service") {
+        fileMode = 0744
+        user 'root'
+        into '/usr/lib/systemd/system/'
+    }
+
     from("${projectDir}/resources/placeholder") {
         fileMode = 0644
         createDirectoryEntry = true
