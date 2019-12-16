@@ -41,12 +41,7 @@ start(){
         # Start bahmni-lab
         create_dirs
         echo -e "\e[00;32mStarting bahmni-lab\e[00m"
-        if [ `user_exists $BAHMNI_LAB_SERVER_USER` = "1" ]  && [ "$CUR_USER" != "$BAHMNI_LAB_SERVER_USER" ] ;
-        then
-                su -s /bin/bash $BAHMNI_LAB_SERVER_USER $BAHMNI_LAB_SERVER_RUN
-        else
-                sh $BAHMNI_LAB_SERVER_RUN
-        fi
+        sh $BAHMNI_LAB_SERVER_RUN
   fi
   exit 0
 }
@@ -60,12 +55,7 @@ debug(){
         # Start bahmni-lab
         create_dirs
         echo -e "\e[00;32mStarting bahmni-lab\e[00m"
-        if [ `user_exists $BAHMNI_LAB_SERVER_USER` = "1" ]  && [ "$CUR_USER" != "$BAHMNI_LAB_SERVER_USER" ] ;
-        then
-                su -s /bin/bash $BAHMNI_LAB_SERVER_USER $BAHMNI_LAB_SERVER_DEBUG
-        else
-                sh $BAHMNI_LAB_SERVER_DEBUG
-        fi
+        sh $BAHMNI_LAB_SERVER_DEBUG
   fi
   exit 0
 }
