@@ -1,0 +1,17 @@
+[Unit]
+Description=Bahmni Event Log Service
+After=network-online.target
+After=network.service
+
+[Service]
+Type=forking
+KillMode=none
+GuessMainPID=no
+User=bahmni
+PIDFile=/var/run/bahmni-event-log-service/bahmni-event-log-service.pid
+ExecStart=/etc/init.d/bahmni-event-log-service start
+ExecStop=/etc/init.d/bahmni-event-log-service stop
+ExecReload=/etc/init.d/bahmni-event-log-service restart
+
+[Install]
+WantedBy=multi-user.target
