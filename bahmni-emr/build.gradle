@@ -65,6 +65,12 @@ ospackage {
         into 'bin'
     }
 
+    from("${projectDir}/scripts/openmrs.service") {
+        fileMode = 0744
+        user 'root'
+        into '/usr/lib/systemd/system/'
+    }
+
     from("${projectDir}/resources/placeholder") {
         createDirectoryEntry = true
         into 'run'
