@@ -75,12 +75,7 @@ start(){
         link_modules
         cleanup_cache
         echo -e "\e[00;32mStarting openmrs\e[00m"
-        if [ `user_exists $OPENMRS_SERVER_USER` = "1" ]  && [ "$CUR_USER" != "$OPENMRS_SERVER_USER" ] ;
-        then
-                su -s /bin/bash $OPENMRS_SERVER_USER $OPENMRS_SERVER_RUN
-        else
-                sh $OPENMRS_SERVER_RUN
-        fi
+        sh $OPENMRS_SERVER_RUN
   fi
   exit 0
 }
@@ -96,12 +91,7 @@ debug(){
         link_modules
         cleanup_cache
         echo -e "\e[00;32mStarting openmrs\e[00m"
-        if [ `user_exists $OPENMRS_SERVER_USER` = "1" ]  && [ "$CUR_USER" != "$OPENMRS_SERVER_USER" ] ;
-        then
-                su -s /bin/bash $OPENMRS_SERVER_USER $OPENMRS_SERVER_DEBUG
-        else
-                sh $OPENMRS_SERVER_DEBUG
-        fi
+        sh $OPENMRS_SERVER_DEBUG
   fi
   exit 0
 }
