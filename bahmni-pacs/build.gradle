@@ -105,6 +105,12 @@ task dist(type: Rpm) {
         exclude('dcm4chee')
     }
 
+    from("${projectDir}/scripts/pacs-integration.service") {
+        fileMode = 0744
+        user 'root'
+        into '/usr/lib/systemd/system/'
+    }
+
     from("${projectDir}/resources/pacs-integration/pacs-integration.conf") {
         fileMode = 0644
         createDirectoryEntry = true
