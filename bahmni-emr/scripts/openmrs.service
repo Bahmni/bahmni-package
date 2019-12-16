@@ -1,0 +1,17 @@
+[Unit]
+Description=OpenMRS Server
+After=network-online.target
+After=network.service
+
+[Service]
+Type=forking
+KillMode=none
+GuessMainPID=no
+User=bahmni
+PIDFile=/var/run/openmrs/openmrs.pid
+ExecStart=/etc/init.d/openmrs start
+ExecStop=/etc/init.d/openmrs stop
+ExecReload=/etc/init.d/openmrs restart
+
+[Install]
+WantedBy=multi-user.target
