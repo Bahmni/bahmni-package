@@ -55,7 +55,12 @@ debug(){
         # Start bahmni-erp-connect
         create_dirs
         echo -e "\e[00;32mStarting bahmni-erp-connect\e[00m"
-        sh $BAHMNI_ERP_CONNECT_DEBUG
+        if [ `user_exists $BAHMNI_ERP_CONNECT_USER` = "1" ]  && [ "$CUR_USER" != "$BAHMNI_ERP_CONNECT_USER" ] ;
+        then
+                runuser -u $BAHMNI_ERP_CONNECT_USER $BAHMNI_ERP_CONNECT_DEBUG
+        else
+                sh $BAHMNI_ERP_CONNECT_DEBUG
+        fi
     fi
   exit 0
 }

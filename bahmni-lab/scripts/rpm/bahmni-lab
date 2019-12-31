@@ -55,8 +55,13 @@ debug(){
         # Start bahmni-lab
         create_dirs
         echo -e "\e[00;32mStarting bahmni-lab\e[00m"
-        sh $BAHMNI_LAB_SERVER_DEBUG
-  fi
+        if [ `user_exists $BAHMNI_LAB_SERVER_USER` = "1" ]  && [ "$CUR_USER" != "$BAHMNI_LAB_SERVER_USER" ] ;
+        then
+                runuser -u $BAHMNI_LAB_SERVER_USER $BAHMNI_LAB_SERVER_DEBUG
+        else
+                sh $BAHMNI_LAB_SERVER_DEBUG
+        fi
+    fi
   exit 0
 }
 
