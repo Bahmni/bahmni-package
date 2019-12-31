@@ -51,7 +51,12 @@ debug() {
     else
         create_dirs
         echo -e "\e[00;32mStarting pacs-integration\e[00m"
-        sh $PACS_SERVER_DEBUG
+        if [ `user_exists $PACS_SERVER_USER` = "1" ]  && [ "$CUR_USER" != "$PACS_SERVER_USER" ] ;
+        then
+            runuser -u $PACS_SERVER_USER $PACS_SERVER_DEBUG
+        else
+            sh $PACS_SERVER_DEBUG
+        fi
     fi
   exit 0
 }

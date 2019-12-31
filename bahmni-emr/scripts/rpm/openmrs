@@ -91,7 +91,12 @@ debug(){
         link_modules
         cleanup_cache
         echo -e "\e[00;32mStarting openmrs\e[00m"
-        sh $OPENMRS_SERVER_DEBUG
+        if [ `user_exists $OPENMRS_SERVER_USER` = "1" ]  && [ "$CUR_USER" != "$OPENMRS_SERVER_USER" ] ;
+        then
+                runuser -u $OPENMRS_SERVER_USER $OPENMRS_SERVER_DEBUG
+        else
+                sh $OPENMRS_SERVER_DEBUG
+        fi
   fi
   exit 0
 }

@@ -59,7 +59,12 @@ debug(){
         # Start bahmni-reports
         create_dirs
         echo -e "\e[00;32mStarting bahmni-reports\e[00m"
-        sh $BAHMNI_REPORTS_DEBUG
+        if [ `user_exists $BAHMNI_REPORTS_USER` = "1" ]  && [ "$CUR_USER" != "$BAHMNI_REPORTS_USER" ] ;
+        then
+               runuser -u $BAHMNI_REPORTS_USER $BAHMNI_REPORTS_DEBUG
+        else
+                sh $BAHMNI_REPORTS_DEBUG
+        fi
   fi
   exit 0
 }
