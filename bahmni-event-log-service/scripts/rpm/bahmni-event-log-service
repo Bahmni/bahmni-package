@@ -55,8 +55,13 @@ debug(){
         # Start bahmni-event-log-service
         create_dirs
         echo -e "\e[00;32mStarting bahmni-event-log-service\e[00m"
-        sh $BAHMNI_EVENT_LOG_SERVICE_DEBUG
-  fi
+        if [ `user_exists $BAHMNI_EVENT_LOG_SERVICE_USER` = "1" ]  && [ "$CUR_USER" != "$BAHMNI_EVENT_LOG_SERVICE_USER" ] ;
+        then
+                runuser -u $BAHMNI_EVENT_LOG_SERVICE_USER $BAHMNI_EVENT_LOG_SERVICE_DEBUG
+        else
+                sh $BAHMNI_EVENT_LOG_SERVICE_DEBUG
+        fi
+    fi
   exit 0
 }
 
