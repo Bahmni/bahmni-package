@@ -21,8 +21,6 @@ link_directories(){
     #create links
     ln -s /opt/bahmni-event-log-service/etc /etc/bahmni-event-log-service
     ln -s /opt/bahmni-event-log-service/bin/bahmni-event-log-service /etc/init.d/bahmni-event-log-service
-    ln -s /opt/bahmni-event-log-service/run /var/run/bahmni-event-log-service
-    ln -s /opt/bahmni-event-log-service/bahmni-event-log-service /var/run/bahmni-event-log-service/bahmni-event-log-service
     ln -s /opt/bahmni-event-log-service/log /var/log/bahmni-event-log-service
 }
 
@@ -30,7 +28,6 @@ manage_permissions(){
     # permissions
     chown -R bahmni:bahmni /opt/bahmni-event-log-service
     chown -R bahmni:bahmni /var/log/bahmni-event-log-service
-    chown -R bahmni:bahmni /var/run/bahmni-event-log-service
     chown -R bahmni:bahmni /etc/init.d/bahmni-event-log-service
     chown -R bahmni:bahmni /etc/bahmni-event-log-service
 }
