@@ -21,8 +21,6 @@ link_directories(){
     #create links
     ln -s /opt/bahmni-erp-connect/etc /etc/bahmni-erp-connect
     ln -s /opt/bahmni-erp-connect/bin/bahmni-erp-connect /etc/init.d/bahmni-erp-connect
-    ln -s /opt/bahmni-erp-connect/run /var/run/bahmni-erp-connect
-    ln -s /opt/bahmni-erp-connect/bahmni-erp-connect /var/run/bahmni-erp-connect/bahmni-erp-connect
     ln -s /opt/bahmni-erp-connect/log /var/log/bahmni-erp-connect
 }
 
@@ -30,7 +28,6 @@ manage_permissions(){
     # permissions
     chown -R bahmni:bahmni /opt/bahmni-erp-connect
     chown -R bahmni:bahmni /var/log/bahmni-erp-connect
-    chown -R bahmni:bahmni /var/run/bahmni-erp-connect
     chown -R bahmni:bahmni /etc/init.d/bahmni-erp-connect
     chown -R bahmni:bahmni /etc/bahmni-erp-connect
 }
