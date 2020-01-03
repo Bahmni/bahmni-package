@@ -23,8 +23,6 @@ link_directories(){
     #create links
     ln -s /opt/bahmni-reports/etc /etc/bahmni-reports
     ln -s /opt/bahmni-reports/bin/bahmni-reports /etc/init.d/bahmni-reports
-    ln -s /opt/bahmni-reports/run /var/run/bahmni-reports
-    ln -s /opt/bahmni-reports/bahmni-reports /var/run/bahmni-reports/bahmni-reports
     ln -s /opt/bahmni-reports/log /var/log/bahmni-reports
 }
 
@@ -32,7 +30,6 @@ manage_permissions(){
     # permissions
     chown -R bahmni:bahmni /opt/bahmni-reports
     chown -R bahmni:bahmni /var/log/bahmni-reports
-    chown -R bahmni:bahmni /var/run/bahmni-reports
     chown -R bahmni:bahmni /etc/init.d/bahmni-reports
     chown -R bahmni:bahmni /etc/bahmni-reports
 }
