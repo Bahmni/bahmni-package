@@ -118,7 +118,8 @@ ospackage {
         fileMode = 0755
         into 'etc'
         include('bahmnilab_ssl.conf')
-    }
+        include('hibernate.cfg.xml')
+    } 
 }
 
 buildRpm {
