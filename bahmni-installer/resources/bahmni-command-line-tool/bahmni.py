@@ -12,25 +12,25 @@ import sys
 @click.option("--migrate", "-m", help='Give a comma seperated list of modules to run migrations for. It has to be used with run_migrations command.Ex: bahmni --migrate erp,elis,mrs run_migrations')
 @click.option("--only", "-o", help='Install only specified components. Possible values can be bahmni-emr, bahmni-reports, bahmni-lab, bahmni-erp, dcm4chee, pacs-integration, bahmni-event-log-service')
 @click.option("--skip", "-s", help='Skip installation of specified components. Possible values can be bahmni-emr, bahmni-reports, bahmni-lab, bahmni-erp, dcm4chee, pacs-integration, bahmni-event-log-service')
-@click.option("--ansible_version", "-av", default='2.4.2.0', help='Option to specify ansible version to be used for running installer playbooks')
+@click.option("--ansible_rpm_url", "-aru", default='https://releases.ansible.com/ansible/rpm/release/epel-7-x86_64/ansible-2.4.6.0-1.el7.ans.noarch.rpm',
+              help='Specify URL of the Ansible rpm')
 
 
 @click.pass_context
-def cli(ctx, implementation, inventory, verbose, implementation_play, migrate, only, skip, ansible_version):
+def cli(ctx, implementation, inventory,:q verbose, implementation_play, migrate, only, skip,
+        ansible_rpm_url):
     ctx.obj={}
     """Command line utility for Bahmni"""
     os.chdir('/opt/bahmni-installer/bahmni-playbooks')
     ctx.obj['EXTRA_VARS'] =""
 
-    addExtraVarFile(ctx, "/etc/bahmni-installer/rpm_versions.yml")
+    addExtraVarFile:wq
+    :wq(ctx, "/etc/bahmni-installer/rpm_versions.yml")
     addExtraVarFile(ctx, "/etc/bahmni-backrest.conf")
     addExtraVarFile(ctx, "/etc/bahmni-installer/setup.yml")
     addExtraVar(ctx,"implementation_name", implementation )
 
-    exisiting_ansible_version = os.popen("ansible --version").read()
-    if ansible_version not in exisiting_ansible_version:
-       subprocess.call('sudo yum install -y ansible-'+ansible_version, shell=True)
-
+    installAnsible(ansible_rpm_url)
 
     verbosity="-vvvv" if verbose else "-vv"
 
@@ -48,7 +48,20 @@ def cli(ctx, implementation, inventory, verbose, implementation_play, migrate, o
         print ("Both \"Only and Skip\" can not be used on same time")
         sys.exit()
 
-
+def installAnsible(ansible_rpm_url):
+    ansible_rpm_package = ansible_rpm_url.split('/')[-1].replace('.rpm', '')
+    installed_ansible_package = subprocess.Popen('rpm -q ' + ansible_rpm_package,
+                                             stdout=subprocess.PIPE, shell=True).communicate()[0].strip()
+    if installed_ansible_package != ansible_rpm_package:
+        print "Installing Ansible from " + ansible_rpm_url + "..."
+        ansible_installation_process = subprocess.Popen(['sudo yum install -y ' + ansible_rpm_url],
+                                                        stdout=subprocess.PIPE,
+                                                        stderr=subprocess.PIPE, shell=True)
+        output, err = ansible_installation_process.communicate()
+        print output, err
+        if ansible_installation_process.returncode != 0:
+            if "does not update installed package" not in output:
+                sys.exit()
 
 def addExtraVarFile(ctx, file_path):
     if(os.path.isfile(file_path)):
