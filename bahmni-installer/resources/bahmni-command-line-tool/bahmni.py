@@ -17,15 +17,13 @@ import sys
 
 
 @click.pass_context
-def cli(ctx, implementation, inventory,verbose, implementation_play, migrate, only, skip,
-        ansible_rpm_url):
+def cli(ctx, implementation, inventory, verbose, implementation_play, migrate, only, skip, ansible_rpm_url):
     ctx.obj={}
     """Command line utility for Bahmni"""
     os.chdir('/opt/bahmni-installer/bahmni-playbooks')
     ctx.obj['EXTRA_VARS'] =""
 
-    addExtraVarFile
-    (ctx, "/etc/bahmni-installer/rpm_versions.yml")
+    addExtraVarFile(ctx, "/etc/bahmni-installer/rpm_versions.yml")
     addExtraVarFile(ctx, "/etc/bahmni-backrest.conf")
     addExtraVarFile(ctx, "/etc/bahmni-installer/setup.yml")
     addExtraVar(ctx,"implementation_name", implementation )
