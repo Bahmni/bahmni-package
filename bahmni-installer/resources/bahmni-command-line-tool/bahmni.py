@@ -12,20 +12,20 @@ import sys
 @click.option("--migrate", "-m", help='Give a comma seperated list of modules to run migrations for. It has to be used with run_migrations command.Ex: bahmni --migrate erp,elis,mrs run_migrations')
 @click.option("--only", "-o", help='Install only specified components. Possible values can be bahmni-emr, bahmni-reports, bahmni-lab, bahmni-erp, dcm4chee, pacs-integration, bahmni-event-log-service')
 @click.option("--skip", "-s", help='Skip installation of specified components. Possible values can be bahmni-emr, bahmni-reports, bahmni-lab, bahmni-erp, dcm4chee, pacs-integration, bahmni-event-log-service')
-@click.option("--ansible_rpm_url", "-aru", default='https://releases.ansible.com/ansible/rpm/release/epel-7-x86_64/ansible-2.4.6.0-1.el7.ans.noarch.rpm',
+@click.option("--ansible_rpm_url", "-aru", default='https://dl.bintray.com/bahmni/rpm/ansible-2.4.6.0-1.el7.ans.noarch.rpm',
               help='Specify URL of the Ansible rpm')
 
 
 @click.pass_context
-def cli(ctx, implementation, inventory,:q verbose, implementation_play, migrate, only, skip,
+def cli(ctx, implementation, inventory,verbose, implementation_play, migrate, only, skip,
         ansible_rpm_url):
     ctx.obj={}
     """Command line utility for Bahmni"""
     os.chdir('/opt/bahmni-installer/bahmni-playbooks')
     ctx.obj['EXTRA_VARS'] =""
 
-    addExtraVarFile:wq
-    :wq(ctx, "/etc/bahmni-installer/rpm_versions.yml")
+    addExtraVarFile
+    (ctx, "/etc/bahmni-installer/rpm_versions.yml")
     addExtraVarFile(ctx, "/etc/bahmni-backrest.conf")
     addExtraVarFile(ctx, "/etc/bahmni-installer/setup.yml")
     addExtraVar(ctx,"implementation_name", implementation )
