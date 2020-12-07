@@ -28,6 +28,7 @@ install_openerp(){
     cd $BAHMNI_ERP
     unzip odoo_10.0.20190619.zip
     mv odoo-10.0.post20190619/* .
+    sudo pip install soupsieve
     sudo python setup.py -q install
     # cp debian/odoo.conf $BAHMNI_ERP/etc
     mkdir bahmni-addons
