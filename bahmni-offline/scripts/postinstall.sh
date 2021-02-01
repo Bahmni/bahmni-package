@@ -1,4 +1,4 @@
-ln -s /opt/bahmni-offline/bahmni-connect-apps/ /var/www/bahmni-connect-apps
+ln -s /opt/bahmni-offline/ /var/www/bahmni-connect-apps
 
 
 chown -R bahmni:bahmni /opt/bahmni-offline
