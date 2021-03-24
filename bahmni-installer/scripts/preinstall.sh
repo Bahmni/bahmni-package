@@ -10,5 +10,6 @@ rm -rf /etc/bahmni-installer/deployment-artifacts/rpm_versions.yml
 rm -rf /etc/bahmni-installer/deployment-artifacts/local
 rm -rf /var/log/bahmni-installer
 pip install pip==v19.0
+pip install pyusb
 pip uninstall click
 pip install click==v7.0
