@@ -12,9 +12,9 @@ LogsDirectory=bahmni-lab
 User=bahmni
 Group=bahmni
 PIDFile=/var/run/bahmni-lab/bahmni-lab.pid
-ExecStart=/etc/init.d/bahmni-lab start
-ExecStop=/etc/init.d/bahmni-lab stop
-ExecReload=/etc/init.d/bahmni-lab restart
+ExecStart=/opt/bahmni-lab/bin/bahmni-lab start
+ExecStop=/opt/bahmni-lab/bin/bahmni-lab stop
+ExecReload=/opt/bahmni-lab/bin/bahmni-lab restart
 
 [Install]
 WantedBy=multi-user.target
