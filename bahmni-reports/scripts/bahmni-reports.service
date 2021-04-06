@@ -12,9 +12,9 @@ LogsDirectory=bahmni-reports
 User=bahmni
 Group=bahmni
 PIDFile=/var/run/bahmni-reports/bahmni-reports.pid
-ExecStart=/etc/init.d/bahmni-reports start
-ExecStop=/etc/init.d/bahmni-reports stop
-ExecReload=/etc/init.d/bahmni-reports restart
+ExecStart=/opt/bahmni-reports/bin/bahmni-reports start
+ExecStop=/opt/bahmni-reports/bin/bahmni-reports stop
+ExecReload=/opt/bahmni-reports/bin/bahmni-reports restart
 
 [Install]
 WantedBy=multi-user.target

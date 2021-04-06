@@ -6,7 +6,6 @@ fi
 
 #create links
 sudo ln -s /opt/openmrs/etc /etc/openmrs
-sudo ln -s /opt/openmrs/bin/openmrs /etc/init.d/openmrs
 sudo ln -s /opt/openmrs/log /var/log/openmrs
 
 . /etc/openmrs/openmrs.conf
@@ -28,7 +27,6 @@ sudo cp -f /opt/openmrs/etc/web.xml /opt/openmrs/openmrs/WEB-INF/
 # permissions
 sudo chown -R bahmni:bahmni /opt/openmrs
 sudo chown -R bahmni:bahmni /var/log/openmrs
-sudo chown -R bahmni:bahmni /etc/init.d/openmrs
 sudo chown -R bahmni:bahmni /etc/openmrs
 
 link_dirs() {

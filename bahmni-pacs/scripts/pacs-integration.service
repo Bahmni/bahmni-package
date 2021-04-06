@@ -12,9 +12,9 @@ LogsDirectory=pacs-integration
 User=bahmni
 Group=bahmni
 PIDFile=/var/run/pacs-integration/pacs-integration.pid
-ExecStart=/etc/init.d/pacs-integration start
-ExecStop=/etc/init.d/pacs-integration stop
-ExecReload=/etc/init.d/pacs-integration restart
+ExecStart=/opt/pacs-integration/bin/pacs-integration start
+ExecStop=/opt/pacs-integration/bin/pacs-integration stop
+ExecReload=/opt/pacs-integration/bin/pacs-integration restart
 
 [Install]
 WantedBy=multi-user.target

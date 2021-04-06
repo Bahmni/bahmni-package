@@ -12,9 +12,9 @@ LogsDirectory=bahmni-event-log-service
 User=bahmni
 Group=bahmni
 PIDFile=/var/run/bahmni-event-log-service/bahmni-event-log-service.pid
-ExecStart=/etc/init.d/bahmni-event-log-service start
-ExecStop=/etc/init.d/bahmni-event-log-service stop
-ExecReload=/etc/init.d/bahmni-event-log-service restart
+ExecStart=/opt/bahmni-event-log-service/bin/bahmni-event-log-service start
+ExecStop=/opt/bahmni-event-log-service/bin/bahmni-event-log-service stop
+ExecReload=/opt/bahmni-event-log-service/bin/bahmni-event-log-service restart
 
 [Install]
 WantedBy=multi-user.target

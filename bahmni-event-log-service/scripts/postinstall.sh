@@ -20,7 +20,6 @@ chkconfig --add bahmni-event-log-service
 link_directories(){
     #create links
     ln -s /opt/bahmni-event-log-service/etc /etc/bahmni-event-log-service
-    ln -s /opt/bahmni-event-log-service/bin/bahmni-event-log-service /etc/init.d/bahmni-event-log-service
     ln -s /opt/bahmni-event-log-service/log /var/log/bahmni-event-log-service
 }
 
@@ -28,7 +27,6 @@ manage_permissions(){
     # permissions
     chown -R bahmni:bahmni /opt/bahmni-event-log-service
     chown -R bahmni:bahmni /var/log/bahmni-event-log-service
-    chown -R bahmni:bahmni /etc/init.d/bahmni-event-log-service
     chown -R bahmni:bahmni /etc/bahmni-event-log-service
 }
 
