@@ -12,9 +12,9 @@ LogsDirectory=openmrs
 User=bahmni
 Group=bahmni
 PIDFile=/var/run/openmrs/openmrs.pid
-ExecStart=/etc/init.d/openmrs start
-ExecStop=/etc/init.d/openmrs stop
-ExecReload=/etc/init.d/openmrs restart
+ExecStart=/opt/openmrs/bin/openmrs start
+ExecStop=/opt/openmrs/bin/openmrs stop
+ExecReload=/opt/openmrs/bin/openmrs restart
 
 [Install]
 WantedBy=multi-user.target
