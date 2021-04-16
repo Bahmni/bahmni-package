@@ -10,18 +10,15 @@ ln -s /opt/dcm4chee/etc  /etc/dcm4chee
 if [ "${IS_PASSIVE:-0}" -ne "1" ]; then
     sudo /opt/dcm4chee/etc/initDCM4CHEE-DB.sh
 fi
-
 sudo $dcm4chee_path/bin/install_jboss.sh /usr/share/jboss-4.2.3.GA
 
 rm -rf $dcm4chee_path/server/default/deploy/jboss-web.deployer/server.xml
 rm -rf $dcm4chee_path/server/default/conf/jboss-service.xml
 rm -rf $dcm4chee_path/server/default/deploy/pacs-postgres-ds.xml
-rm -rf $dcm4chee_path/server/default/deploy/jmx-console.war/inspectMBean.jsp
 ln -s /opt/dcm4chee/etc/server.xml $dcm4chee_path/server/default/deploy/jboss-web.deployer/
 ln -s /opt/dcm4chee/etc/jboss-service.xml $dcm4chee_path/server/default/conf/
 ln -s /opt/dcm4chee/etc/orm2dcm_bahmni.xsl $dcm4chee_path/server/default/conf/dcm4chee-hl7/
 ln -s /opt/dcm4chee/etc/pacs-postgres-ds.xml $dcm4chee_path/server/default/deploy/
-ln -s /opt/dcm4chee/etc/inspectMBean.jsp $dcm4chee_path/server/default/deploy/jmx-console.war/
 cp -f /opt/dcm4chee/etc/inspectMBean.jsp $dcm4chee_path/server/default/deploy/jmx-console.war/
 
 #Oviyam2 steps
