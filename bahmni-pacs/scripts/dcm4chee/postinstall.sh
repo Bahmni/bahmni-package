@@ -10,6 +10,7 @@ ln -s /opt/dcm4chee/etc  /etc/dcm4chee
 if [ "${IS_PASSIVE:-0}" -ne "1" ]; then
     sudo /opt/dcm4chee/etc/initDCM4CHEE-DB.sh
 fi
+
 sudo $dcm4chee_path/bin/install_jboss.sh /usr/share/jboss-4.2.3.GA
 
 rm -rf $dcm4chee_path/server/default/deploy/jboss-web.deployer/server.xml
