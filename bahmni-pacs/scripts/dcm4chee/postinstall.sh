@@ -30,8 +30,6 @@ mkdir -p $dcm4chee_path/server/default/work/jboss.web/localhost
 ln -s /opt/dcm4chee/etc/oviyam2-1-config.xml $dcm4chee_path/server/default/work/jboss.web/localhost/
 chmod 644 $dcm4chee_path/server/default/work/jboss.web/localhost/oviyam2-1-config.xml
 
-ln -s /opt/dcm4chee/bin/dcm4chee /etc/init.d/dcm4chee
-chown -R bahmni:bahmni /etc/init.d/dcm4chee
 chown -R bahmni:bahmni /var/lib/bahmni/dcm4chee-2.18.1-psql
 
 pacs_images_dir=/home/bahmni/pacs_images
