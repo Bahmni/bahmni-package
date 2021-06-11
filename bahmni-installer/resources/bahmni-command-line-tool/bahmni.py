@@ -12,7 +12,7 @@ import sys
 @click.option("--migrate", "-m", help='Give a comma seperated list of modules to run migrations for. It has to be used with run_migrations command.Ex: bahmni --migrate erp,elis,mrs run_migrations')
 @click.option("--only", "-o", help='Install only specified components. Possible values can be bahmni-emr, bahmni-reports, bahmni-lab, bahmni-erp, dcm4chee, pacs-integration, bahmni-event-log-service')
 @click.option("--skip", "-s", help='Skip installation of specified components. Possible values can be bahmni-emr, bahmni-reports, bahmni-lab, bahmni-erp, dcm4chee, pacs-integration, bahmni-event-log-service')
-@click.option("--ansible_rpm_url", "-aru", default='https://dl.bintray.com/bahmni/rpm/ansible-2.4.6.0-1.el7.ans.noarch.rpm',
+@click.option("--ansible_rpm_url", "-aru", default='https://repo.mybahmni.org/releases/ansible-2.4.6.0-1.el7.ans.noarch.rpm',
               help='Specify URL of the Ansible rpm')
 
 
