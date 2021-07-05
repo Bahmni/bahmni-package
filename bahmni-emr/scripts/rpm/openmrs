@@ -29,6 +29,7 @@ create_dirs() {
     fi
 
     if [[ ! -e /var/run/openmrs/openmrs ]]; then
+        # step 05 - create symlink for folder that contains unpacked openmrs web app
         ln -s /opt/openmrs/openmrs /var/run/openmrs/openmrs
     fi
 
@@ -51,10 +52,10 @@ link_modules() {
         ln -sf /opt/openmrs/etc/openmrs-runtime.properties /home/$OPENMRS_SERVER_USER/.OpenMRS/openmrs-runtime.properties
     fi
     
-
-    if [[ ! -e /home/$OPENMRS_SERVER_USER/.OpenMRS/modules ]]; then
-        ln -s $MODULE_REPO /home/$OPENMRS_SERVER_USER/.OpenMRS/modules
-    fi
+# TODO BDI-2 copy omod files into folder for bundled modules
+#    if [[ ! -e /home/$OPENMRS_SERVER_USER/.OpenMRS/modules ]]; then
+#        ln -s $MODULE_REPO /home/$OPENMRS_SERVER_USER/.OpenMRS/modules
+#    fi
 
     chown -R bahmni:bahmni /home/$OPENMRS_SERVER_USER/.OpenMRS
 }

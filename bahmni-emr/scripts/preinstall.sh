@@ -1,6 +1,6 @@
 #!/bin/bash
 
-
+# step 03 - delete existing openmrs folder
 rm -rf /opt/openmrs
 rm -rf /etc/openmrs
 

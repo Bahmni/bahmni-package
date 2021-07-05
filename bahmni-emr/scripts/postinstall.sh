@@ -12,12 +12,15 @@ sudo ln -s /opt/openmrs/log /var/log/openmrs
 
 . /etc/openmrs/bahmni-emr.conf
 
+# step 04 - unpack openmrs web app
 (cd /opt/openmrs/openmrs && unzip ../openmrs.war)
 # restore mrs db dump if database doesn't exists
 
-if [ "${IS_PASSIVE:-0}" -ne "1" ]; then
-    (cd /opt/openmrs/openmrs && scripts/initDB.sh)
-fi
+# TODO BDI-2 initialise database at all from this script in a Docker world?
+#
+#if [ "${IS_PASSIVE:-0}" -ne "1" ]; then
+#    (cd /opt/openmrs/openmrs && scripts/initDB.sh)
+#fi
 chkconfig --add openmrs
 
 #copy configs
@@ -31,8 +34,9 @@ sudo chown -R bahmni:bahmni /etc/openmrs
 
 link_dirs() {
     rm -rf /home/$OPENMRS_SERVER_USER/.OpenMRS/modules
-    ln -s $MODULE_REPO /home/$OPENMRS_SERVER_USER/.OpenMRS/modules
-    chown -R bahmni:bahmni $MODULE_REPO
+# TODO BDI-2 copy omod files into folder for bundled modules
+#    ln -s $MODULE_REPO /home/$OPENMRS_SERVER_USER/.OpenMRS/modules
+#    chown -R bahmni:bahmni $MODULE_REPO
     chown -R bahmni:bahmni /home/$OPENMRS_SERVER_USER/.OpenMRS/modules
 }
 
@@ -73,14 +77,16 @@ create_configuration_dirs() {
 
 setupConfFiles() {
     	rm -f /etc/httpd/conf.d/emr_ssl.conf
+    	mkdir -p /etc/httpd/conf.d
     	cp -f /opt/openmrs/etc/emr_ssl.conf /etc/httpd/conf.d/emr_ssl.conf
 }
 
 create_configuration_dirs
 link_dirs
 
-
-if [ "${IS_PASSIVE:-0}" -ne "1" ]; then
-    run_migrations
-fi
+# TODO BDI-2 exclude running migrations from shell script
+#
+#if [ "${IS_PASSIVE:-0}" -ne "1" ]; then
+#    run_migrations
+#fi
 setupConfFiles
