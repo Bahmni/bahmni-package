@@ -11,6 +11,9 @@
 #RUN apt-get install openjdk-8-jdk -y
 
 FROM centos:centos8
+
+# TODO BDI-2 remove installation of mysql, it is used to test connectivity to the database server
+RUN yum install mysql -y
 RUN yum install sudo -y
 RUN yum install unzip -y
 RUN yum install java-1.8.0-openjdk -y
@@ -62,4 +65,4 @@ RUN chmod 0755 ${OPT_OPENMRS}/etc/emr_ssl.conf
 
 RUN . /bahmni-emr/scripts/postinstall.sh
 
-#CMD ["/opt/openmrs/bin/openmrs"]
+#ENTRYPOINT ["/opt/openmrs/bin/openmrs", "debug"]
