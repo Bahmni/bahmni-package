@@ -62,21 +62,21 @@ task extractJBoss(dependsOn: ["downloadJBoss"], type: Copy) {
 }
 
 task downloadOviyam2(type: Download) {
-    src 'http://repo.mybahmni.org.s3.amazonaws.com/packages/build/Oviyam-2.1-bin.zip'
+    src 'https://webwerks.dl.sourceforge.net/project/dcm4che/Oviyam/2.8.1/Oviyam-2.8.1-bin.zip'
     dest buildDir
 }
 
 downloadOviyam2.onlyIf {
-    !(new File("${buildDir}/Oviyam-2.1-bin.zip").exists())
+    !(new File("${buildDir}/Oviyam-2.8.1-bin.zip").exists())
 }
 
 task extractOviyam2Zip(dependsOn: ["downloadOviyam2"], type: Copy) {
-    from zipTree("${buildDir}/Oviyam-2.1-bin.zip")
+    from zipTree("${buildDir}/Oviyam-2.8.1-bin.zip")
     into file("${buildDir}")
 }
 
 task extractOviyam2War(dependsOn: ["extractOviyam2Zip"], type: Copy) {
-    from zipTree("${buildDir}/Oviyam-2.1-bin/Oviyam-2.1-bin/oviyam2.war")
+    from zipTree("${buildDir}/Oviyam-2.8.1-bin/Oviyam-2.8.1-bin/oviyam2.war")
     into file("${projectDir}/resources/dcm4chee/oviyam2.war/")
 }
 

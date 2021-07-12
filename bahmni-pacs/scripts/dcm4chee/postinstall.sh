@@ -27,8 +27,8 @@ cp -f /opt/dcm4chee/etc/oviyam2-web.xml $dcm4chee_path/server/default/deploy/ovi
 
 mkdir -p $dcm4chee_path/server/default/work/jboss.web/localhost
 
-ln -s /opt/dcm4chee/etc/oviyam2-1-config.xml $dcm4chee_path/server/default/work/jboss.web/localhost/
-chmod 644 $dcm4chee_path/server/default/work/jboss.web/localhost/oviyam2-1-config.xml
+ln -s /opt/dcm4chee/etc/oviyam2-7-config.xml $dcm4chee_path/server/default/work/jboss.web/localhost/
+chmod 644 $dcm4chee_path/server/default/work/jboss.web/localhost/oviyam2-7-config.xml
 
 ln -s /opt/dcm4chee/bin/dcm4chee /etc/init.d/dcm4chee
 chown -R bahmni:bahmni /etc/init.d/dcm4chee
