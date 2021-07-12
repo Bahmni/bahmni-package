@@ -1,5 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+
+ 	<context-param>
+		<param-name>imgLateralityDisplay</param-name>
+	    <param-value>Yes</param-value>	    
+	</context-param>
+	  
+	<context-param>
+	    <param-name>imgLateralityModality</param-name>
+	    <param-value>ALL</param-value>	    
+	</context-param>
+	  
+	<context-param>
+    	<param-name>imgLateralityModalityList</param-name>
+    	<param-value> </param-value>    	
+ 	</context-param>
+ 	
     <servlet>
         <servlet-name>EchoServlet</servlet-name>
         <servlet-class>in.raster.oviyam.servlet.EchoServlet</servlet-class>
@@ -15,14 +31,30 @@
     <servlet>
         <servlet-name>InstanceServlet</servlet-name>
         <servlet-class>in.raster.oviyam.servlet.InstanceServlet</servlet-class>
-    </servlet>
+    </servlet>   
     <servlet>
         <servlet-name>DcmImage</servlet-name>
         <servlet-class>in.raster.oviyam.servlet.DcmImage</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>PixelData</servlet-name>
+        <servlet-class>in.raster.oviyam.servlet.PixelDataServlet</servlet-class>
+    </servlet>  
+    <servlet>
         <servlet-name>DicomRetrieve</servlet-name>
         <servlet-class>in.raster.oviyam.servlet.DicomRetrieve</servlet-class>
+    </servlet>
+     <servlet>
+        <servlet-name>DownloadStudyServlet</servlet-name>
+        <servlet-class>in.raster.oviyam.servlet.DownloadStudyServlet</servlet-class>
+    </servlet> 
+    <servlet>
+        <servlet-name>DownloadServlet</servlet-name>
+        <servlet-class>in.raster.oviyam.servlet.DownloadServlet</servlet-class>
+    </servlet> 
+    <servlet>
+        <servlet-name>OverlayTextServlet</servlet-name>
+        <servlet-class>in.raster.oviyam.servlet.OverlayConfigServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>ServerConfigServlet</servlet-name>
@@ -52,6 +84,10 @@
         <servlet-name>Listener</servlet-name>
         <servlet-class>in.raster.oviyam.servlet.ListenerServlet</servlet-class>
     </servlet>
+      <servlet>
+        <servlet-name>DownloadConfiguration</servlet-name>
+        <servlet-class>in.raster.oviyam.servlet.DownloadConfiguration</servlet-class>
+    </servlet>
     <servlet>
         <servlet-name>LanguageServlet</servlet-name>
         <servlet-class>in.raster.oviyam.servlet.LanguageServlet</servlet-class>
@@ -71,18 +107,18 @@
         <servlet-class>in.raster.oviyam.servlet.IOviyamContext</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>DirectUrlLaunch</servlet-name>
-        <servlet-class>in.raster.oviyam.servlet.DirectUrlLaunch</servlet-class>
+    	<servlet-name>DirectUrlLaunch</servlet-name>
+    	<servlet-class>in.raster.oviyam.servlet.DirectUrlLaunch</servlet-class>
+    </servlet>
+     <servlet>
+    	<servlet-name>OtherStudies</servlet-name>
+    	<servlet-class>in.raster.oviyam.servlet.OtherStudiesInfo</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>ConfigServlet</servlet-name>
-        <servlet-class>in.raster.oviyam.servlet.ConfigServlet</servlet-class>
+    	<servlet-name>NameDisplayConfig</servlet-name>
+    	<servlet-class>in.raster.oviyam.servlet.NameDisplayConfigSevlet</servlet-class>
     </servlet>
-    <!--     <servlet> -->
-    <!--     	<servlet-name>ConfigurationServlet</servlet-name> -->
-    <!--     	<servlet-class>in.raster.oviyam.servlet.ConfigurationServlet</servlet-class> -->
-    <!--     </servlet> -->
-
+        
     <servlet-mapping>
         <servlet-name>EchoServlet</servlet-name>
         <url-pattern>/Echo.do</url-pattern>
@@ -99,10 +135,26 @@
         <servlet-name>InstanceServlet</servlet-name>
         <url-pattern>/Instance.do</url-pattern>
     </servlet-mapping>
+     <servlet-mapping>
+        <servlet-name>DownloadStudyServlet</servlet-name>
+        <url-pattern>/downloadStudy.do</url-pattern>
+    </servlet-mapping>
+     <servlet-mapping>
+        <servlet-name>DownloadServlet</servlet-name>
+        <url-pattern>/download.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>OverlayTextServlet</servlet-name>
+        <url-pattern>/overlayText.do</url-pattern>
+    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>DcmImage</servlet-name>
         <url-pattern>/Image.do</url-pattern>
     </servlet-mapping>
+	<servlet-mapping>
+        <servlet-name>PixelData</servlet-name>
+        <url-pattern>/pixel.do</url-pattern>
+    </servlet-mapping> 
     <servlet-mapping>
         <servlet-name>DicomRetrieve</servlet-name>
         <url-pattern>/DcmStream.do</url-pattern>
@@ -130,7 +182,7 @@
     <servlet-mapping>
         <servlet-name>WadoServlet</servlet-name>
         <url-pattern>/Wado.do</url-pattern>
-    </servlet-mapping>
+    </servlet-mapping>    
     <servlet-mapping>
         <servlet-name>Listener</servlet-name>
         <url-pattern>/Listener.do</url-pattern>
@@ -138,12 +190,11 @@
     <servlet-mapping>
         <servlet-name>LanguageServlet</servlet-name>
         <url-pattern>/Language.do</url-pattern>
-    </servlet-mapping>
+    </servlet-mapping>   
     <servlet-mapping>
-        <servlet-name>ConfigServlet</servlet-name>
-        <url-pattern>/Config.do</url-pattern>
-    </servlet-mapping>
-
+        <servlet-name>DownloadConfiguration</servlet-name>
+        <url-pattern>/DwnStudyConfig.do</url-pattern>
+    </servlet-mapping>    
     <servlet-mapping>
         <servlet-name>CopyDicomFilesServlet</servlet-name>
         <url-pattern>/CopyDicomFiles.do</url-pattern>
@@ -157,16 +208,33 @@
     <servlet-mapping>
         <servlet-name>IOviyamContext</servlet-name>
         <url-pattern>/do/IOviyamContext</url-pattern>
+    </servlet-mapping>    
+    <servlet-mapping>
+    	<servlet-name>DirectUrlLaunch</servlet-name>
+    	<url-pattern>/oviyam</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>DirectUrlLaunch</servlet-name>
-        <url-pattern>/oviyam</url-pattern>
+    	<servlet-name>OtherStudies</servlet-name>
+    	<url-pattern>/otherStudies.do</url-pattern>
     </servlet-mapping>
-    <!--     <servlet-mapping> -->
-    <!--         <servlet-name>ConfigurationServlet</servlet-name> -->
-    <!--         <url-pattern>/configuration.do</url-pattern> -->
-    <!--     </servlet-mapping> -->
-
+    <servlet-mapping>
+    	<servlet-name>NameDisplayConfig</servlet-name>
+    	<url-pattern>/nameDisplayConfig.do</url-pattern>
+    </servlet-mapping>
+    
+    <filter>
+  		<filter-name>requestEncodeFilter</filter-name>
+  		<filter-class>in.raster.oviyam.util.RequestEncodeFilter</filter-class>
+  		<init-param>
+  			<param-name>excludedUrls</param-name>
+  			<param-value>/downloadStudy.do</param-value>
+  		</init-param>
+	</filter>
+	<filter-mapping>
+  		<filter-name>requestEncodeFilter</filter-name>
+  		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+        
     <session-config>
         <session-timeout>
             30
@@ -179,7 +247,7 @@
     <!-- A security constraint that restricts access to the
          Archive Web Administration pages to users with the role WebAdmin.
     -->
-    <!-- <security-constraint>
+  <!--  <security-constraint>
         <web-resource-collection>
             <web-resource-name>dispatcher</web-resource-name>
             <description>Only allows users with the role WebAdmin to access the Archive Web Administration pages</description>
@@ -194,10 +262,8 @@
             <role-name>*</role-name>
         </auth-constraint>
 
-                <auth-constraint>
-                    <role-name>WebUser</role-name>
-                </auth-constraint>
     </security-constraint>-->
+
     <login-config>
         <auth-method>FORM</auth-method>
         <realm-name>Archive Web Admin</realm-name>
@@ -210,16 +276,11 @@
         <role-name>*</role-name>
     </security-role>
 
-    <!--    <security-role>
-            <role-name>WebUser</role-name>
-        </security-role>
-        <security-role>
-            <role-name>WebAdmin</role-name>
-        </security-role> -->
-
-    <mime-mapping>
-        <extension>manifest</extension>
-        <mime-type>text/cache-manifest</mime-type>
-    </mime-mapping>
-
+<!--    <security-role>
+        <role-name>WebUser</role-name>
+    </security-role>
+    <security-role>
+        <role-name>WebAdmin</role-name>
+    </security-role> -->
+    
 </web-app>
