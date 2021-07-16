@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 revision='{
-    "go" : "https://ci.mybahmni.org/go/pipelines/value_stream_map/_jobname_/_pipelineCount_",
+    "go" : "https://ci-server.mybahmni.org/go/pipelines/value_stream_map/_jobname_/_pipelineCount_",
     "github": {
         "openelis" : "https://github.com/Bahmni/OpenElis/commit/_sha_"
     }
