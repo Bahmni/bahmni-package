@@ -21,7 +21,7 @@ export OPENMRS_SERVER_DEBUG=/opt/openmrs/bin/debug.sh
 export CUR_USER=`/usr/bin/whoami`
 export OPENMRS_LIB_CACHE=/tmp/*.openmrs-lib-cache
 
-. /etc/openmrs/openmrs.conf
+. /opt/openmrs/etc/openmrs.conf
 
 create_dirs() {
     if [[ ! -e /var/run/openmrs ]]; then
