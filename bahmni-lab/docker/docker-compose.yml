@@ -1,0 +1,23 @@
+version: "3.7"
+services:
+  openelis:
+    image: bahmni/openelis:latest
+    ports:
+      - "8052:8052"
+    depends_on:
+      openelisdb:
+        condition: service_healthy
+
+  openelisdb:
+    image: bahmni/openelis-db:latest
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -h localhost -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
