@@ -15,6 +15,7 @@ RUN mkdir -p ${WAR_DIRECTORY}
 RUN cd ${WAR_DIRECTORY} && jar xvf /etc/bahmni-lab/openelis.war
 
 COPY resources/hibernate.cfg.xml ${WAR_DIRECTORY}/WEB-INF/classes/us/mn/state/health/lims/hibernate/
+COPY resources/atomfeed.properties ${WAR_DIRECTORY}/WEB-INF/classes/
 
 COPY build/migrations/OpenElis/db_backup/ /opt/bahmni-lab/migrations/db_backup/
 COPY build/migrations/OpenElis/liquibase/ /opt/bahmni-lab/migrations/liquibase/
