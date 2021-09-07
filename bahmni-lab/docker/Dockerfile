@@ -23,6 +23,8 @@ COPY build/migrations/OpenElis/liquibase/ /opt/bahmni-lab/migrations/liquibase/
 COPY build/migrations/OpenElis/scripts/ /opt/bahmni-lab/migrations/scripts/
 COPY resources/migrateDb.sh /opt/bahmni-lab/migrations/scripts/
 RUN chmod +x /opt/bahmni-lab/migrations/scripts/migrateDb.sh
+COPY docker/scripts/run-implementation-openelis-implementation.sh /opt/bahmni-lab/migrations/scripts/
+RUN chmod +x /opt/bahmni-lab/migrations/scripts/run-implementation-openelis-implementation.sh
 
 COPY docker/scripts/start.sh start.sh
 RUN chmod +x start.sh
