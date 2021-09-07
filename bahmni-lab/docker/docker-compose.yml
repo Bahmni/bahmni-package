@@ -1,7 +1,7 @@
 version: "3.7"
 services:
   openelis:
-    image: bahmni/openelis:latest
+    image: "bahmni/openelis:${OPENELIS_IMAGE_VERSION}"
     ports:
       - "8052:8052"
     depends_on:
@@ -9,7 +9,7 @@ services:
         condition: service_healthy
 
   openelisdb:
-    image: bahmni/openelis-db:latest
+    image: "bahmni/openelis-db:fresh-${OPENELIS_IMAGE_VERSION}"
     ports:
       - "5432:5432"
     healthcheck:
