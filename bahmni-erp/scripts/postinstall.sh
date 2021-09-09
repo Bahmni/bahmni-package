@@ -28,6 +28,10 @@ install_openerp(){
     cd $BAHMNI_ERP
     unzip odoo_10.0.20190619.zip
     mv odoo-10.0.post20190619/* .
+    sudo pip uninstall beautifulsoup4
+    sudo pip install beautifulsoup4==v4.9.3
+    sudo pip uninstall xlsxwriter
+    sudo pip install xlsxwriter==v2.0.0 
     sudo pip install soupsieve
     sudo python setup.py -q install
     # cp debian/odoo.conf $BAHMNI_ERP/etc
