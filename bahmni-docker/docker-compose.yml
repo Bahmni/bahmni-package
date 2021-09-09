@@ -1,21 +1,21 @@
 version: "3.7"
 services:
   openelis:
-    image: "bahmni/openelis:${OPENELIS_IMAGE_VERSION}"
+    image: "bahmni/openelis:${OPENELIS_IMAGE_TAG:?[ERROR]}"
     ports:
       - "8052:8052"
     volumes:
-      - "${MIGRATION_XML_SCRIPTS_PATH:-./openelis-liquibase-migrations}:/var/www/bahmni_config/openelis/migrations"
+      - "${OPENELIS_MIGRATION_XML_SCRIPTS_PATH}:/var/www/bahmni_config/openelis/migrations"
     depends_on:
       openelisdb:
         condition: service_healthy
 
   openelisdb:
-    image: "bahmni/openelis-db:fresh-${OPENELIS_IMAGE_VERSION}"
+    image: "bahmni/openelis-db:${OPENELIS_DB_IMAGE_TAG:?[ERROR]}"
     ports:
       - "5432:5432"
     volumes:
-      - "${DB_DUMP_PATH:-./openelis-db-dump}:/resources/db-dump"
+      - "${OPENELIS_DB_DUMP_PATH}:/resources/db-dump"
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -h localhost -U postgres"]
       interval: 10s
