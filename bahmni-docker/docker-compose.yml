@@ -6,6 +6,9 @@ services:
       - "8052:8052"
     volumes:
       - "${OPENELIS_MIGRATION_XML_SCRIPTS_PATH}:/var/www/bahmni_config/openelis/migrations"
+    environment:
+      OPENMRS_HOST: ${OPENMRS_HOST}
+      OPENELIS_DB_SERVER: ${OPENELIS_DB_SERVER}
     depends_on:
       openelisdb:
         condition: service_healthy
