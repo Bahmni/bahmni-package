@@ -26,15 +26,15 @@ Note: Do this step only if needed. This will lead to loss of database data.
 *Environment Configuration:*
 * The list of configurable environment variables can be found in the `.env` file.
 * The `.env ` file can be modified to customise the application.
-* ``` OPENELIS_IMAGE_TAG ``` - This value tells which image version to be used for OpenElis Application. List of tags can be found at [bahmni/openelis - Tags](https://hub.docker.com/r/bahmni/openelis/tags) .
-* ``` OPENELIS_DB_IMAGE_TAG ``` - This value tells which image version to be used for OpenElis Database. There are two variants available.
-    * fresh db - Has only schema and default data.
-    * demo db - Has schema and demo data loaded.
 
-    List of image tags can be found at [bahmni/openelis-db - Tags](https://hub.docker.com/r/bahmni/openelis-db/tags) .
-* ``` OPENMRS_HOST ``` - This value is used as host for syncing of data from OpenMRS Application. The default value connects with default installation of bahmni running in Vagrant.
-* ```OPENELIS_MIGRATION_XML_SCRIPTS_PATH ``` - When you want to run liquibase migrations you can set the folder path to your `liquibase.xml` file in this value. The migrations runs whenenver the application container is restarted.
-* ``` OPENELIS_DB_DUMP_PATH ``` - When you want to restore an existing database of OpenElis from a dump file you can set the folder path to your dump file with this variable. This is a one time setup and the restore happens only when the database is clean and fresh. So whenever you need a restore make sure you follow the steps in **Cleaning Application data**
+
+| Variable Name                         | Description   |
+| :-------------------------------------|:------------- |
+| OPENELIS_IMAGE_TAG | This value tells which image version to  be used for OpenElis Application. List of tags can be found at [bahmni/openelis - Tags](https://hub.docker.com/r/bahmni/openelis/tags) . |
+| OPENELIS_DB_IMAGE_TAG | This value tells which image version to be used for OpenElis Database. There are two variants available. <br>**fresh db** - Has only schema and default data.<br>**demo db** - Has schema and demo data loaded.  <br>List of image tags can be found at [bahmni/openelis-db - Tags](https://hub.docker.com/r/bahmni/openelis-db/tags) .    |
+| OPENMRS_HOST | This value is used as host for syncing of data from OpenMRS Application. The default value connects with default installation of bahmni running in Vagrant.      |
+| OPENELIS_MIGRATION_XML_SCRIPTS_PATH   | When you want to run liquibase migrations you can set the folder path to your `liquibase.xml` file in this value. The migrations runs whenenver the application container is restarted. |
+| OPENELIS_DB_DUMP_PATH | When you want to restore an existing database of OpenElis from a dump file you can set the folder path to your dump file with this variable. This is a one time setup and the restore happens only when the database is clean and fresh. So whenever you need a restore make sure you follow the steps in **Cleaning Application data**  |
 
 
 # Building OpenElis Images Locally
