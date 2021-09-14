@@ -146,6 +146,7 @@ ospackage {
         include('appointments-*.omod')
         include('reportingrest-*.omod')
         include('operationtheater-*.omod')
+        include('pacsquery-*.omod')
     }
 
     from("${projectDir}/resources/") {
