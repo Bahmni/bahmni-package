@@ -1,7 +1,9 @@
 #!/bin/sh
 set -e -x
 
+if [ -f /etc/bahmni-lab/bahmni-lab.conf ]; then
 . /etc/bahmni-lab/bahmni-lab.conf
+fi
 if [ -f /etc/bahmni-installer/bahmni.conf ]; then
 . /etc/bahmni-installer/bahmni.conf
 fi

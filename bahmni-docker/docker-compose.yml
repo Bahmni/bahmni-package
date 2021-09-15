@@ -1,0 +1,33 @@
+version: "3.7"
+services:
+  openelis:
+    image: "bahmni/openelis:${OPENELIS_IMAGE_TAG:?[ERROR]}"
+    ports:
+      - "8052:8052"
+    volumes:
+      - "${OPENELIS_MIGRATION_XML_SCRIPTS_PATH}:/var/www/bahmni_config/openelis/migrations"
+    environment:
+      OPENMRS_HOST: ${OPENMRS_HOST}
+      OPENELIS_DB_SERVER: ${OPENELIS_DB_SERVER}
+    depends_on:
+      openelisdb:
+        condition: service_healthy
+
+  openelisdb:
+    image: "bahmni/openelis-db:${OPENELIS_DB_IMAGE_TAG:?[ERROR]}"
+    ports:
+      - "5432:5432"
+    volumes:
+      - "${OPENELIS_DB_DUMP_PATH}:/resources/db-dump"
+      - "openelisdbdata:/var/lib/postgresql/data"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -h localhost -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+volumes:
+  openelisdbdata:
