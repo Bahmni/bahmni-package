@@ -5,7 +5,11 @@ This directory contains bahmni dockerization replated scripts and files.
 
 This is a Work In Progress directory.
 
-# Running Using Docker Compose
+## Table of Contents
+* [Running OpenElis Using Docker Compose](#running-openelis-using-docker-compose)
+* [Building OpenElis Images Locally](#building-openelis-images-locally)
+
+# Running OpenElis Using Docker Compose
 
 *Requirements:*
 
