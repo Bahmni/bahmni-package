@@ -6,10 +6,10 @@ This directory contains bahmni dockerization replated scripts and files.
 This is a Work In Progress directory.
 
 ## Table of Contents
-* [Running OpenElis Using Docker Compose](#running-openelis-using-docker-compose)
+* [Running the application with default images](#running-the-application-with-default-images)
 * [Building OpenElis Images Locally](#building-openelis-images-locally)
 
-# Running OpenElis Using Docker Compose
+# Running the application with default images
 
 *Requirements:*
 
@@ -23,9 +23,9 @@ This is a Work In Progress directory.
 
 *Cleaning Application Data:*
 
-Note: Do this step only if needed. This will lead to loss of database data.
-* If the application is already running, you can do that as a single step by doing `docker-compose down -v` .
-* If you have already stopped by doing docker-compose down, then you can run `docker volume rm bahmni-docker_openelisdbdata` .
+Note: Do this step only if needed. This will lead to loss of database and application data.
+* From the `bahmni-docker` diretory in a terminal run, `docker-compose down -v` . This brings down the containers and destroys the volumes attached to the containers.
+
 
 *Environment Configuration:*
 * The list of configurable environment variables can be found in the `.env` file.
