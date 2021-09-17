@@ -7,7 +7,11 @@ This is a Work In Progress directory.
 
 ## Table of Contents
 * [Running the application with default images](#running-the-application-with-default-images)
+* [Environment Configuration](#environment-configuration)
+    * [OpenElis Configuration](#openelis-configurations)
+    * [Odoo Configuration](#odoo-configurations)
 * [Building OpenElis Images Locally](#building-openelis-images-locally)
+* [Loading Additional Addons to Odoo](#loading-additional-addons-to-odoo)
 
 # Running the application with default images
 
@@ -19,7 +23,12 @@ This is a Work In Progress directory.
 * Navigate to `bahmni-docker` directory in a terminal.
 * Run `docker-compose up` .
     This pulls default images from docker hub and starts the application with a fresh database. Also `docker-compose up -d` can be used to run in detach mode.
-* After the containers spin up, you will be able to access OpenElis at http://localhost:8052/openelis
+* After the containers spin up, you will be able to access different components at below mentioned configurations.
+
+| Application Name   | URL                      | Default Credentials |
+| :------------------|:-------------------------|:----------------- |
+| OpenElis           |http://localhost:8052/openelis| Username: admin <br> Password: adminADMIN! |
+| Odoo               | http://localhost:8069   | Username: admin <br> Password: admin
 
 *Cleaning Application Data:*
 
@@ -27,10 +36,11 @@ Note: Do this step only if needed. This will lead to loss of database and applic
 * From the `bahmni-docker` diretory in a terminal run, `docker-compose down -v` . This brings down the containers and destroys the volumes attached to the containers.
 
 
-*Environment Configuration:*
+# Environment Configuration:
 * The list of configurable environment variables can be found in the `.env` file.
 * The `.env ` file can be modified to customise the application.
 
+## OpenElis Configurations:
 
 | Variable Name                         | Description   |
 | :-------------------------------------|:------------- |
@@ -40,6 +50,14 @@ Note: Do this step only if needed. This will lead to loss of database and applic
 | OPENELIS_MIGRATION_XML_SCRIPTS_PATH   | When you want to run liquibase migrations you can set the folder path to your `liquibase.xml` file in this value. The migrations runs whenenver the application container is restarted. |
 | OPENELIS_DB_DUMP_PATH | When you want to restore an existing database of OpenElis from a dump file you can set the folder path to your dump file with this variable. This is a one time setup and the restore happens only when the database is clean and fresh. So whenever you need a restore make sure you follow the steps in **Cleaning Application data**  |
 
+## Odoo Configurations: 
+| Variable Name                         | Description   |
+| :-------------------------------------|:------------- |
+| ODOO_IMAGE_TAG | This value tells which image version to  be used for ODoo Application. List of tags can be found at [bahmni/odoo-10 - Tags](https://hub.docker.com/r/bahmni/odoo-10/tags) . |
+| ODOO_DB_IMAGE_TAG | This value tells which image version to be used for Odoo Database. There are two variants available. <br>**fresh db** - Has only schema and default data.<br>**demo db** - Has schema and demo data loaded.  <br>List of image tags can be found at [bahmni/odoo-10-db - Tags](https://hub.docker.com/r/bahmni/openelis-db/tags) .    |
+| ODOO_DB_USER | This value is used as username for Odoo Postgres DB instance. This is also referenced in Odoo application.      |
+| ODOO_DB_PASSWORD   | This value is used as password for Odoo Postgres DB instance. This is also referenced in Odoo application. |
+| EXTRA_ADDONS_PATH | When you want to installl an  additional addon, you can set the path of the root directory which contains your module directory.   |
 
 # Building OpenElis Images Locally
 You can also build the docker images locally and test it with the same docker-compose file.
@@ -90,3 +108,14 @@ The docker build scripts has been written in a way to be used in Dev Environemts
 In order to use the locally built images, update `OPENELIS_IMAGE_TAG` and `OPENELIS_DB_IMAGE_TAG` environment variables so that docker compose picks up local images.
 
 Note: Perform **Cleaning Application Data** before doing docker-compose up if neded.
+
+# Loading Additional Addons to Odoo
+When you want to load additional addons to Odoo instance, you can set the EXTRA_ADDONS_PATH with the directory that contains your modules.
+1. Set the path of your root directory of moduless
+2. Restart Odoo instance by running `docker-compose restart odoo`
+3. Logout and login to the application
+4. Navigate to `Settings` page in the web and enable Developer Mode
+5. Navigate to Apps page and Click on `Update Apps List`
+6. Your new module will be listed and you can install it.
+
+Note: Make sure the addons are compatible with Odoo v10.0
