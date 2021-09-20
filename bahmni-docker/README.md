@@ -123,11 +123,12 @@ Note: Perform **Cleaning Application Data** before doing docker-compose up if ne
 
 # Loading Additional Addons to Odoo
 When you want to load additional addons to Odoo instance, you can set the EXTRA_ADDONS_PATH with the directory that contains your modules.
-1. Set the path of your root directory of moduless
-2. Restart Odoo instance by running `docker-compose restart odoo`
-3. Logout and login to the application
-4. Navigate to `Settings` page in the web and enable Developer Mode
-5. Navigate to Apps page and Click on `Update Apps List`
-6. Your new module will be listed and you can install it.
+1. Bring down Odoo if it is already running by doing docker-compose down .
+2. Set the path of your root directory of modules to EXTRA_ADDONS_PATH variable.
+3. Restart Odoo instance by running `docker-compose up`
+4. Login to the application
+5. Navigate to `Settings` page in the web and enable Developer Mode
+6. Navigate to Apps page and Click on `Update Apps List`
+7. Your new module will be listed and you can install it.
 
 Note: Make sure the addons are compatible with Odoo v10.0
