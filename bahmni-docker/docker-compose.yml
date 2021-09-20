@@ -40,6 +40,7 @@ services:
     ports:
       - "8069:8069"
     volumes:
+      - odooappdata:/var/lib/odoo
       - ${EXTRA_ADDONS_PATH}:/mnt/extra-addons
       # Uncomment the below volume only when you need to modify existing bahmni-addons. Also make sure to update the .env file variable with odoo-modules github repo cloned path.
       # - ${BAHMNI_ODOO_MODULES_PATH}:/opt/bahmni-erp/bahmni-addons
@@ -71,3 +72,4 @@ services:
 volumes:
   openelisdbdata:
   odoodbdata:
+  odooappdata:
