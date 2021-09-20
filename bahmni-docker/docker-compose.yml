@@ -1,6 +1,7 @@
 version: "3.7"
 services:
   openelis:
+    profiles: ["default","openelis"]
     image: "bahmni/openelis:${OPENELIS_IMAGE_TAG:?[ERROR]}"
     ports:
       - "8052:8052"
@@ -14,6 +15,7 @@ services:
         condition: service_healthy
 
   openelisdb:
+    profiles: ["default","openelis"]
     image: "bahmni/openelis-db:${OPENELIS_DB_IMAGE_TAG:?[ERROR]}"
     ports:
       - "5432:5432"
@@ -31,6 +33,7 @@ services:
       POSTGRES_DB: postgres
 
   odoo:
+    profiles: ["default","odoo"]
     image: "bahmni/odoo-10:${ODOO_IMAGE_TAG:?[ERROR]}"
     depends_on:
       - odoodb
@@ -46,6 +49,7 @@ services:
       - USER=${ODOO_DB_USER}
       - PASSWORD=${ODOO_DB_PASSWORD}
   odoodb:
+    profiles: ["default","odoo"]
     image: "bahmni/odoo-10-db:${ODOO_DB_IMAGE_TAG:?[ERROR]}"
     ports:
       - "5431:5432"

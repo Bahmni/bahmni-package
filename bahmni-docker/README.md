@@ -6,12 +6,24 @@ This directory contains bahmni dockerization replated scripts and files.
 This is a Work In Progress directory.
 
 ## Table of Contents
+* [Profile Configuration](#profile-configuration)
 * [Running the application with default images](#running-the-application-with-default-images)
 * [Environment Configuration](#environment-configuration)
     * [OpenElis Configuration](#openelis-configurations)
     * [Odoo Configuration](#odoo-configurations)
 * [Building OpenElis Images Locally](#building-openelis-images-locally)
 * [Loading Additional Addons to Odoo](#loading-additional-addons-to-odoo)
+
+# Profile Configuration
+Bahmni docker-compose has been configured with profiles which allows you to run the required services. More about compose profiles can be found [here](https://docs.docker.com/compose/profiles/). The list of different profiles can be found below.
+| Profile   | Application       | Services |
+| :---------|:------------------|:----------------- |
+| default  | All applications    | All service defined in docker-compose.yml |
+| openelis | OpenELIS            | openelis, openelisdb
+| odoo     | Odoo                | odoo, odoodb |
+
+Profiles can be set by changing the `COMPOSE_PROFILES` variable in .env variable. You can set multiple profiles by comma seperated values.
+Example: COMPOSE_PROFILES=openelis,odoo
 
 # Running the application with default images
 
