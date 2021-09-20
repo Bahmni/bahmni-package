@@ -8,6 +8,7 @@ This is a Work In Progress directory.
 ## Table of Contents
 * [Profile Configuration](#profile-configuration)
 * [Running the application with default images](#running-the-application-with-default-images)
+* [One-time Setup for Odoo](#one-time-setup-for-odoo)
 * [Environment Configuration](#environment-configuration)
     * [OpenElis Configuration](#openelis-configurations)
     * [Odoo Configuration](#odoo-configurations)
@@ -38,16 +39,23 @@ Example: COMPOSE_PROFILES=openelis,odoo
     This pulls default images from docker hub and starts the application with a fresh database. Also `docker-compose up -d` can be used to run in detach mode.
 * After the containers spin up, you will be able to access different components at below mentioned configurations.
 
-| Application Name   | URL                      | Default Credentials |
-| :------------------|:-------------------------|:----------------- |
-| OpenElis           |http://localhost:8052/openelis| Username: admin <br> Password: adminADMIN! |
-| Odoo               | http://localhost:8069   | Username: admin <br> Password: admin
+| Application Name   | URL             | Default Credentials | Notes|
+| :------------------|:-----------------|:----------------- |:------|
+| OpenElis           |http://localhost:8052/openelis| Username: admin <br> Password: adminADMIN! |-|
+| Odoo               | http://localhost:8069   | Username: admin <br> Password: admin| Perfom [one-time](#one-time-setup-for-odoo) setup
 
 *Cleaning Application Data:*
 
 Note: Do this step only if needed. This will lead to loss of database and application data.
 * From the `bahmni-docker` diretory in a terminal run, `docker-compose down -v` . This brings down the containers and destroys the volumes attached to the containers.
 
+# One-time Setup for Odoo
+The below steps needs to be performed only once when Odoo is created.
+1. Once the container spins up, login to the application.
+2. Navigate to `Apps` from the menu bar.
+3. Click on `Bahmni Account` app and then click on `Upgrade`.
+4. Wait for the upgrade to complete and you will redirected to home page.
+5. After redirection, refresh your page once.
 
 # Environment Configuration:
 * The list of configurable environment variables can be found in the `.env` file.
