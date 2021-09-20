@@ -51,6 +51,7 @@ services:
       - HOST=odoodb
       - USER=${ODOO_DB_USER}
       - PASSWORD=${ODOO_DB_PASSWORD}
+
   odoodb:
     profiles: ["default","odoo"]
     image: "bahmni/odoo-10-db:${ODOO_DB_IMAGE_TAG:?[ERROR]}"
@@ -69,3 +70,4 @@ services:
       - POSTGRES_USER=${ODOO_DB_USER}
 volumes:
   openelisdbdata:
+  odoodbdata:
