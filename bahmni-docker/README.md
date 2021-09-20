@@ -25,7 +25,7 @@ Bahmni docker-compose has been configured with profiles which allows you to run 
 | odoo     | Odoo                | odoo, odoodb |
 
 Profiles can be set by changing the `COMPOSE_PROFILES` variable in .env variable. You can set multiple profiles by comma seperated values.
-Example: COMPOSE_PROFILES=openelis,odoo
+Example: COMPOSE_PROFILES=openelis,odoo. You can also pass this as an argument with docker-compose up command. Example: `docker-compose --profile odoo up` (or) `docker-compose --profile odoo --profile openelis up`
 
 # Running the application with default images
 
