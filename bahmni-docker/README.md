@@ -13,6 +13,7 @@ This is a Work In Progress directory.
     * [Odoo Configuration](#odoo-configurations)
 * [Building OpenElis Images Locally](#building-openelis-images-locally)
 * [Loading Additional Addons to Odoo](#loading-additional-addons-to-odoo)
+* [Developing Bahmni Odoo Modules](#developing-bahmni-odoo-modules)
 
 # Profile Configuration
 Bahmni docker-compose has been configured with profiles which allows you to run the required services. More about compose profiles can be found [here](https://docs.docker.com/compose/profiles/). The list of different profiles can be found below.
@@ -132,3 +133,17 @@ When you want to load additional addons to Odoo instance, you can set the EXTRA_
 7. Your new module will be listed and you can install it.
 
 Note: Make sure the addons are compatible with Odoo v10.0
+
+# Developing Bahmni Odoo Modules
+Note: Do these steps only if you need to update Bahmni Odoo modules.
+
+1. Clone the *Bahmni/odoo-modules* repo at https://github.com/Bahmni/odoo-modules.git
+2. Bring Bahmni down by running `docker-compose down -v` from `bahmni-docker` directory.
+3. Update the `BAHMNI_ODOO_MODULES_PATH` variable in .env file with the cloned directory path. Also update COMPOSE_PROFILE=odoo so that only odoo services start.
+4. Now in `docker-compose.yml` uncomment the volume commented under odoo service.
+5. Start Odoo services by running `docker-compose up`
+6. Enable developer mode in Odoo by navigating to `Settings` page in Odoo Web and click `Activate the Developer Mode`
+7. After you perform a change, do the following steps to reflect the changes.
+8. Run `docker-compose restart odoo`
+9. Now in the browser navigate to `Apps` menu. Click on the app that is updated and click `Upgrade`.
+10. Now you should see the changes reflected. If not try from Step 8 & 9 once again.
