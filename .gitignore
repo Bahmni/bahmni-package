@@ -60,4 +60,4 @@ bahmni-pacs/resources/dcm4chee/oviyam2.war
 *.pyc
 *.class
 bahmni-lab/resources/openelis_demo_dump.sql
-
+bahmni-erp/resources/odoo_demo_dump.sql
