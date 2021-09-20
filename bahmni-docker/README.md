@@ -141,6 +141,8 @@ When you want to load additional addons to Odoo instance, you can set the EXTRA_
 6. Navigate to Apps page and Click on `Update Apps List`
 7. Your new module will be listed and you can install it.
 
+For example you can download Open HRMS modules from [here](https://apps.odoo.com/apps/modules/10.0/ohrms_core/) which provides a complete HR Management System. You need to extract the downlooaded zip file and set the extracted folder path to EXTRA_ADDONS_PATH.
+
 Note: Make sure the addons are compatible with Odoo v10.0
 
 # Developing Bahmni Odoo Modules
