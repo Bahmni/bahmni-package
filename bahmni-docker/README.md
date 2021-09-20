@@ -70,6 +70,7 @@ Note: Do this step only if needed. This will lead to loss of database and applic
 | ODOO_DB_IMAGE_TAG | This value tells which image version to be used for Odoo Database. There are two variants available. <br>**fresh db** - Has only schema and default data.<br>**demo db** - Has schema and demo data loaded.  <br>List of image tags can be found at [bahmni/odoo-10-db - Tags](https://hub.docker.com/r/bahmni/openelis-db/tags) .    |
 | ODOO_DB_USER | This value is used as username for Odoo Postgres DB instance. This is also referenced in Odoo application.      |
 | ODOO_DB_PASSWORD   | This value is used as password for Odoo Postgres DB instance. This is also referenced in Odoo application. |
+| ODOO_DB_DUMP_PATH | When you want to restore an existing database of Odoo from a dump file you can set the folder path to your dump file with this variable. This is a one time setup and the restore happens only when the database is clean and fresh. So whenever you need a restore make sure you follow the steps in **Cleaning Application data**  |
 | EXTRA_ADDONS_PATH | When you want to installl an  additional addon, you can set the path of the root directory which contains your module directory.   |
 
 # Building OpenElis Images Locally

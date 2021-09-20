@@ -56,6 +56,9 @@ services:
     image: "bahmni/odoo-10-db:${ODOO_DB_IMAGE_TAG:?[ERROR]}"
     ports:
       - "5431:5432"
+    volumes:
+      - "${ODOO_DB_DUMP_PATH}:/resources/db-dump"
+      - "odoodbdata:/var/lib/postgresql/data"
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -h localhost -U odoo"]
       interval: 10s
