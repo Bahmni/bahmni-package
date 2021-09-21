@@ -72,7 +72,7 @@ services:
 
   odoo-connect:
     profiles: ["default","odoo"]
-    image: bahmni/odoo-connect:${ODDO_CONNECT_IMAGE_TAG}
+    image: "bahmni/odoo-connect:${ODOO_CONNECT_IMAGE_TAG:?[ERROR]}"
     environment:
       - ODOO_DB_SERVER=odoodb
       - ODOO_DB_USERNAME=${ODOO_DB_USER:?}
