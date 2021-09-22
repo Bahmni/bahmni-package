@@ -20,13 +20,13 @@ feed.id.prefix=ff554579-a19f-4bf9-b245-440814b513d9
 feed.title=Events
 feed.generator.title=Openerp
 feed.author=openerp
-customer.feed.generator.uri=http://${OPENMRS_HOST}:${OPENMRS_PORT}/openmrs/ws/atomfeed/patient/recent
-saleorder.feed.generator.uri=http://${OPENMRS_HOST}:${OPENMRS_PORT}/openmrs/ws/atomfeed/encounter/recent
-referencedata.feed.generator.uri=http://${OPENMRS_HOST}:${OPENMRS_PORT}/reference-data/ws/feed/recent
-openelis.saleorder.feed.generator.uri=http://${OPENELIS_HOST}:${OPENELIS_PORT}/openelis/ws/feed/patient/recent
-drug.feed.generator.uri=http://${OPENMRS_HOST}:${OPENMRS_PORT}/openmrs/ws/atomfeed/drug/recent
-lab.feed.generator.uri=http://${OPENMRS_HOST}:${OPENMRS_PORT}/openmrs/ws/atomfeed/lab/recent
-saleable.feed.generator.uri=http://${OPENMRS_HOST}:${OPENMRS_PORT}/openmrs/ws/atomfeed/saleable/recent
+customer.feed.generator.uri=http://${OPENMRS_HOST}:8050/openmrs/ws/atomfeed/patient/recent
+saleorder.feed.generator.uri=http://${OPENMRS_HOST}:8050/openmrs/ws/atomfeed/encounter/recent
+referencedata.feed.generator.uri=http://${OPENMRS_HOST}:8050/reference-data/ws/feed/recent
+openelis.saleorder.feed.generator.uri=http://${OPENELIS_HOST}:8052/openelis/ws/feed/patient/recent
+drug.feed.generator.uri=http://${OPENMRS_HOST}:8050/openmrs/ws/atomfeed/drug/recent
+lab.feed.generator.uri=http://${OPENMRS_HOST}:8050/openmrs/ws/atomfeed/lab/recent
+saleable.feed.generator.uri=http://${OPENMRS_HOST}:8050/openmrs/ws/atomfeed/saleable/recent
 
 chunking.strategy=number
 
@@ -41,12 +41,12 @@ openerp.maxFailedEvents=1000
 
 openelis.user=atomfeed
 openelis.password=AdminadMIN*
-openelis.uri=http://${OPENELIS_HOST}:${OPENELIS_PORT}/openelis
+openelis.uri=http://${OPENELIS_HOST}:8052/openelis
 
 openmrs.user=admin
 openmrs.password=test
-openmrs.auth.uri=http://${OPENMRS_HOST}:${OPENMRS_PORT}/openmrs/ws/rest/v1/session
+openmrs.auth.uri=http://${OPENMRS_HOST}:8050/openmrs/ws/rest/v1/session
 
 scheduler.initial.delay=60000
 
-referencedata.endpoint=http://${OPENMRS_HOST}:${OPENMRS_PORT}/reference-data
+referencedata.endpoint=http://${OPENMRS_HOST}:8050/reference-data
