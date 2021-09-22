@@ -78,9 +78,7 @@ services:
       - ODOO_DB_USERNAME=${ODOO_DB_USER:?}
       - ODOO_DB_PASSWORD=${ODOO_DB_PASSWORD:?}
       - OPENMRS_HOST=${OPENMRS_HOST:?}
-      - OPENMRS_PORT=${OPENMRS_PORT:?}
       - OPENELIS_HOST=${OPENELIS_HOST:?}
-      - OPENELIS_PORT=${OPENELIS_PORT:?}
     depends_on:
       odoodb:
         condition: service_healthy
