@@ -7,8 +7,10 @@ ENV WAR_DIRECTORY=/var/run/bahmni-erp-connect/bahmni-erp-connect
 ENV SERVER_OPTS="-Xms512m -Xmx1024m -XX:PermSize=256m -XX:MaxPermSize=512m"
 ENV DEBUG_OPTS="-agentlib:jdwp=transport=dt_socket,address=8002,server=y,suspend=n"
 
+# Used by envsubst command for replacing environment values at runtime
 RUN apk add gettext
 
+# bahmni-core.jar contains embedded tomcat server and is built from bahmni-package/core directory
 COPY docker/bahmni-core.jar /opt/bahmni-erp-connect/lib/bahmni-erp-connect.jar
 COPY resources/openerp-atomfeed-service.war /etc/bahmni-erp-connect/openerp-atomfeed-service.war
 
