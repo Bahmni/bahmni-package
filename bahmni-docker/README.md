@@ -12,9 +12,11 @@ This is a Work In Progress directory.
 * [Environment Configuration](#environment-configuration)
     * [OpenElis Configuration](#openelis-configurations)
     * [Odoo Configuration](#odoo-configurations)
+    * [Odoo Connect Configuration](#odoo-connect-configurations)
 * [Building OpenElis Images Locally](#building-openelis-images-locally)
 * [Loading Additional Addons to Odoo](#loading-additional-addons-to-odoo)
 * [Developing Bahmni Odoo Modules](#developing-bahmni-odoo-modules)
+* [Building Odoo Connect Image Locally](#building-odoo-connect-image-locally)
 
 # Profile Configuration
 Bahmni docker-compose has been configured with profiles which allows you to run the required services. More about compose profiles can be found [here](https://docs.docker.com/compose/profiles/). The list of different profiles can be found below.
@@ -81,6 +83,16 @@ The below steps needs to be performed only once when Odoo is created.
 | ODOO_DB_DUMP_PATH | When you want to restore an existing database of Odoo from a dump file you can set the folder path to your dump file with this variable. This is a one time setup and the restore happens only when the database is clean and fresh. So whenever you need a restore make sure you follow the steps in **Cleaning Application data**  |
 | EXTRA_ADDONS_PATH | When you want to installl an  additional addon, you can set the path of the root directory which contains your module directory.   |
 
+## Odoo Connect Configurations:
+| Variable Name                         | Description   |
+| :-------------------------------------|:------------- |
+| ODOO_CONNECT_IMAGE_TAG | This value tells which image version to  be used for Odoo Connect Application. List of tags can be found at [bahmni/odoo-10 - Tags](https://hub.docker.com/r/bahmni/odoo-connect/tags) . |
+|OPENMRS_HOST | Specifies the OpenMRS host to connect for Atomfeed Sync. Defaults to OpenMRS running in vagrant|
+|OPENMRS_PORT | Specifies port of OpenMRS to connect for Atomfeed Sync. Defaults to OpenMRS running in vagrant|
+|OPENELIS_HOST | Specifies the OpenELIS host to connect for Atomfeed Sync. Defaults to OpenELIS running in vagrant|
+|OPENELIS_PORT | Specifies port of OpenELIS to connect for Atomfeed Sync. Defaults to OpenELIS running in vagrant|
+
+Also picks up Odoo Database environment variables listed above.
 # Building OpenElis Images Locally
 You can also build the docker images locally and test it with the same docker-compose file.
 
@@ -158,3 +170,39 @@ Note: Do these steps only if you need to update Bahmni Odoo modules.
 8. Run `docker-compose restart odoo`
 9. Now in the browser navigate to `Apps` menu. Click on the app that is updated and click `Upgrade`.
 10. Now you should see the changes reflected. If not try from Step 8 & 9 once again.
+
+# Building Odoo Connect Image Locally
+*Cloning the required repositories:*
+1. Create a directory where you can clone the repos and cd into it.
+    * `mkdir bahmni`
+    * `cd bahmni`
+2. Clone the repos:
+    * `git clone https://github.com/Bahmni/openerp-atomfeed-service.git`
+    * `git clone https://github.com/Bahmni/bahmni-package.git`
+
+*Compile and Building Odoo Connect:*
+1. Compile openerp-atomfeed-service so that it generates the .war file.
+2. Copy the generated `.war` file in `openerp-atomfeed-service/target` directory of openerp-atomfeed-service to `bahmni-package/bahmni-erp-connect/resources`
+
+
+*Building the docker images:*
+
+The docker files and scripts for Odoo Connect can be found under `bahmni-package/bahmni-erp-connect/docker`.
+The docker build scripts has been written in a way to be used in Dev Environemts and also in CI Environment.
+1. Setting Up Environment Variables for build:
+    * BAHMNI_VERSION
+        * Example: `export BAHMNI_VERSION=0.93`
+    * GITHUB_RUN_NUMBER - Used by CI. For Dev can be set to dev
+        * Example: `export GITHUB_RUN_NUMBER=dev`
+
+    These values are concatenated to form the image tag. With the example values the image tag becomes `odoo-connect:0.93-dev`
+2. Building images:
+    * Verify your java version is 1.8 by java -version
+    * From the root directory of the cloned repos run the following command.
+
+         `./bahmni-package/bahmni-docker/build_scripts/bahmni-lab/docker_build.sh`
+    * This will generate an image with the tags set as above. `bahmni/odoo-connect:0.93-dev`
+
+*Using the local images:*
+
+In order to use the locally built images, update `ODOO_CONNECT_IMAGE_TAG` environment variable so that docker compose picks up local images.
