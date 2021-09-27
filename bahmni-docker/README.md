@@ -121,8 +121,8 @@ You can also build the docker images locally and test it with the same docker-co
 The docker files and scripts for OpenElis can be found under `bahmni-package/bahmni-lab/docker`.
 The docker build scripts has been written in a way to be used in Dev Environemts and also in CI Environment.
 1. Setting Up Environment Variables for build:
-    * OPENELIS_IMAGE_VERSION
-        * Example: `export OPENELIS_IMAGE_VERSION=0.93`
+    * BAHMNI_VERSION
+        * Example: `export BAHMNI_VERSION=0.93`
     * GITHUB_RUN_NUMBER - Used by CI. For Dev can be set to dev
         * Example: `export GITHUB_RUN_NUMBER=dev`
 
