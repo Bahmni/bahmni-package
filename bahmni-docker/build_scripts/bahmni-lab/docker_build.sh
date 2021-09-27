@@ -15,7 +15,7 @@ mkdir -p build/migrations
 fi
 unzip -u -d build/migrations resources/OpenElis.zip
 #Building Docker images
-OPENELIS_IMAGE_TAG=${OPENELIS_IMAGE_VERSION}-${GO_PIPELINE_COUNTER}
+OPENELIS_IMAGE_TAG=${OPENELIS_IMAGE_VERSION}-${GITHUB_RUN_NUMBER}
 docker build -t bahmni/openelis-db:fresh-${OPENELIS_IMAGE_TAG} -f docker/db.Dockerfile . --no-cache
 docker build -t bahmni/openelis-db:demo-${OPENELIS_IMAGE_TAG} -f docker/demodb.Dockerfile . --no-cache
 docker build -t bahmni/openelis:${OPENELIS_IMAGE_TAG} -f docker/Dockerfile . --no-cache
