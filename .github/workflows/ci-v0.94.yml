@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        dependent-repos: ["openerp-atomfeed-service","odoo-modules"]
+        dependent-repos: ["openerp-atomfeed-service","odoo-modules","OpenElis"]
     steps:
       - name: Create repository_dispatch
         env:
