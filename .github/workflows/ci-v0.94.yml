@@ -4,7 +4,7 @@ on:
     branches:
       - master
 env:
-  ORG_NAME: mohan-13
+  ORG_NAME: Bahmni
   EVENT_TYPE: bahmni-package-0.94-trigger
 jobs:
   demo:
