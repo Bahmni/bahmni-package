@@ -98,6 +98,8 @@ services:
       OPENELIS_HOST: ${OPENELIS_HOST}
     ports:
       - "8080:8080"
+    depends_on:
+      - openmrsdb
 
   openmrsdb:
     image: bahmni/openmrs-db:${OPENMRS_DB_IMAGE_TAG:?}
