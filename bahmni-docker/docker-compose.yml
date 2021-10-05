@@ -82,6 +82,34 @@ services:
     depends_on:
       odoodb:
         condition: service_healthy
+
+  openmrs:
+    profiles: ["default","openmrs"]
+    image: bahmni/openmrs:${OPENMRS_IMAGE_TAG:?}
+    environment:
+      DB_DATABASE: ${OPENMRS_DB_NAME:?}
+      DB_HOST: ${OPENMRS_DB_HOST:?}
+      DB_USERNAME: ${OPENMRS_DB_USERNAME:?}
+      DB_PASSWORD: ${OPENMRS_DB_PASSWORD:?}
+      DB_CREATE_TABLES: ${OPENMRS_DB_CREATE_TABLES}
+      DB_AUTO_UPDATE: ${OPENMRS_DB_AUTO_UPDATE}
+      MODULE_WEB_ADMIN: ${OPENMRS_MODULE_WEB_ADMIN}
+      DEBUG: ${OPENMRS_DEBUG}
+      OPENELIS_HOST: ${OPENELIS_HOST}
+    ports:
+      - "8080:8080"
+
+  openmrsdb:
+    image: bahmni/openmrs-db:${OPENMRS_DB_IMAGE_TAG:?}
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?}
+      MYSQL_DATABASE: ${OPENMRS_DB_NAME:?}
+      MYSQL_USER: ${OPENMRS_DB_USERNAME:?}
+      MYSQL_PASSWORD: ${OPENMRS_DB_PASSWORD:?}
+    ports:
+      - "3306:3306"
+
 volumes:
   openelisdbdata:
   odoodbdata:
