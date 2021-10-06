@@ -32,7 +32,7 @@ chunking.strategy=number
 
 openerp.port=${ODOO_PORT}
 openerp.host=${ODOO_HOST}
-openerp.database=${ODOO_DB_NAME}
+openerp.database=odoo
 openerp.user=${ODOO_ATOMFEED_USER}
 openerp.password=${ODOO_ATOMFEED_PASSWORD}
 openerp.connectionTimeoutInMilliseconds=5000
