@@ -6,10 +6,10 @@ bahmnicore.urls.patientimages=/patient_images
 bahmnicore.documents.baseDirectory=/home/bahmni/document_images
 
 
-openelis.uri=http://${OPENELIS_HOST}:8052/
-openelis.user=atomfeed
-openelis.password=AdminadMIN*
-patient.feed.uri=http://${OPENELIS_HOST}:8052/openelis/ws/feed/patient/recent
+openelis.uri=http://${OPENELIS_HOST}:${OPENELIS_PORT}/
+openelis.user=${OPENELIS_ATOMFEED_USER}
+openelis.password=${OPENELIS_ATOMFEED_PASSWORD}
+patient.feed.uri=http://${OPENELIS_HOST}:${OPENELIS_PORT}/openelis/ws/feed/patient/recent
 
 
 feed.maxFailedEvents=10000
