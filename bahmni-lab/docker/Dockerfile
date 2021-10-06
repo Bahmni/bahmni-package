@@ -14,8 +14,11 @@ COPY resources/openelis.war /etc/bahmni-lab/openelis.war
 RUN mkdir -p ${WAR_DIRECTORY}
 RUN cd ${WAR_DIRECTORY} && jar xvf /etc/bahmni-lab/openelis.war
 
-COPY resources/hibernate.cfg.xml ${WAR_DIRECTORY}/WEB-INF/classes/us/mn/state/health/lims/hibernate/
-COPY resources/atomfeed.properties ${WAR_DIRECTORY}/WEB-INF/classes/
+# Used by envsubst command for replacing environment values at runtime
+RUN apk add gettext
+
+COPY docker/templates/hibernate.cfg.xml.template /etc/bahmni-lab/
+COPY docker/templates/atomfeed.properties.template /etc/bahmni-lab/
 COPY resources/log4j.xml ${WAR_DIRECTORY}/WEB-INF/classes/
 
 COPY build/migrations/OpenElis/db_backup/ /opt/bahmni-lab/migrations/db_backup/
