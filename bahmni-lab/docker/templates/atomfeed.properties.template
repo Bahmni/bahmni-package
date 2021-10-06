@@ -20,7 +20,7 @@ openmrs.encounter.feed.uri=http://${OPENMRS_HOST}:${OPENMRS_PORT}/openmrs/ws/ato
 openmrs.lab.feed.uri=http://${OPENMRS_HOST}:${OPENMRS_PORT}/openmrs/ws/atomfeed/lab/recent
 
 
-openmrs.user=${OPENMRS_ATOMFEED_USERNAME}
+openmrs.user=${OPENMRS_ATOMFEED_USER}
 openmrs.password=${OPENMRS_ATOMFEED_PASSWORD}
 openmrs.connectionTimeoutInMilliseconds=10000
 openmrs.replyTimeoutInMilliseconds=20000
