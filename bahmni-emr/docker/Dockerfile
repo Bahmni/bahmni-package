@@ -5,6 +5,11 @@ COPY docker/templates/bahmnicore.properties.template /etc/bahmni-emr/templates/
 COPY resources/atomfeed-client-*.jar /etc/bahmni-lab-connect/atomfeed-client.jar
 COPY resources/liquibase-core-*.jar /etc/bahmni-lab-connect/liquibase-core.jar
 
+# Creating Upload Directories
+RUN mkdir -p /home/bahmni/patient_images
+RUN mkdir -p /home/bahmni/document_images
+COPY resources/blank-user.png /etc/bahmni/
+
 # Used by envsubst command for replacing environment values at runtime
 RUN apt-get update && apt-get install gettext-base
 
