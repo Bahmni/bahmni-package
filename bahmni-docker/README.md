@@ -14,6 +14,7 @@ This is a Work In Progress directory.
     * [OpenElis Configuration](#openelis-configurations)
     * [Odoo Configuration](#odoo-configurations)
     * [Odoo Connect Configuration](#odoo-connect-configurations)
+    * [OpenMRS Configuration](#openmrs-configurations)
 * [Building OpenElis Images Locally](#building-openelis-images-locally)
 * [Loading Additional Addons to Odoo](#loading-additional-addons-to-odoo)
 * [Developing Bahmni Odoo Modules](#developing-bahmni-odoo-modules)
@@ -106,8 +107,21 @@ Note: When connected with a different host, the master data should match. Otherw
 | :-------------------------------------|:------------- |
 | ODOO_CONNECT_IMAGE_TAG | This value tells which image version to  be used for Odoo Connect Application. List of tags can be found at [bahmni/odoo-10 - Tags](https://hub.docker.com/r/bahmni/odoo-connect/tags) . |
 
+## OpenMRS Configurations:
+| Variable Name                         | Description   |
+| :-------------------------------------|:------------- |
+| OPENMRS_IMAGE_TAG | This value tells which image version to  be used for Bahmni OpenMRS. List of tags can be found at [bahmni/openmrs - Tags](https://hub.docker.com/r/bahmni/openmrs/tags) . |
+| OPENMRS_DB_IMAGE_TAG | This value tells which image version to be used for Bahmni OpenMRS Database. There are two variants available. <br>**fresh db** - Has only schema and default data.<br>**demo db** - Has schema and demo data loaded.  <br>List of image tags can be found at [bahmni/openmrs-db - Tags](https://hub.docker.com/r/bahmni/openmrs-db/tags) .    |
+| OPENMRS_DB_NAME | Database name for OpenMRS application      |
+| OPENMRS_DB_HOST   | Host name of the MySQL Database server. |
+| OPENMRS_DB_USERNAME | Username of the OpenMRS Database. |
+| OPENMRS_DB_PASSWORD | Password of the OpenMRS Database. |
+| OPENMRS_DB_CREATE_TABLES | Takes either true/false. Setting this to true, OpenMRS creates the tables neccessary or running the application. Note: Set this to true only when you are running with a plain MySQL Database Server.  |
+| OPENMRS_DB_AUTO_UPDATE | Takes either true/false. When set to true, the migrations are run and schema is kept up to date. |
+| OPENMRS_MODULE_WEB_ADMIN | Takes either true/false. Settings this to true allows you to manage OpenMRS Modules through the Web UI. It is recommened to set to false in production. |
+| OPENMRS_DEBUG | Takes either true/false. Enables the debug mode of OpenMRS |
+| MYSQL_ROOT_PASSWORD | This is the root password for MySQL Database Server running in OpenMRS Database service.   |
 
-Also picks up Odoo Database environment variables listed above.
 # Building OpenElis Images Locally
 You can also build the docker images locally and test it with the same docker-compose file.
 
