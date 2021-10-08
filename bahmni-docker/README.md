@@ -10,6 +10,7 @@ This is a Work In Progress directory.
 * [Running the application with default images](#running-the-application-with-default-images)
 * [One-time Setup for Odoo](#one-time-setup-for-odoo)
 * [Environment Configuration](#environment-configuration)
+    * [Atomfeed Configuration](#atomfeed-configurations)
     * [OpenElis Configuration](#openelis-configurations)
     * [Odoo Configuration](#odoo-configurations)
     * [Odoo Connect Configuration](#odoo-connect-configurations)
@@ -62,6 +63,24 @@ The below steps needs to be performed only once when Odoo is created.
 # Environment Configuration:
 * The list of configurable environment variables can be found in the `.env` file.
 * The `.env ` file can be modified to customise the application.
+## Atomfeed Configurations:
+The default values specified for the below variables are for services running in Docker. It is recommened to update only when you need to connect with a service running in a different host. (Example: Vagrant).
+Note: When connected with a different host, the master data should match. Otherwise you may face issues with atomfeed sync.
+
+| Variable Name                         | Description   |
+| :-------------------------------------|:------------- |
+|OPENMRS_HOST | Specifies the OpenMRS host to connect for Atomfeed Sync |
+|OPENMRS_PORT | Specifies port of OpenMRS to connect for Atomfeed Sync |
+|OPENMRS_ATOMFEED_USER| Username for Atomfeed to connect with OpenMRS |
+|OPENMRS_ATOMFEED_PASSWORD| Password for Atomfeed to connect with OpenMRS |
+|OPENELIS_HOST | Specifies the OpenELIS host to connect for Atomfeed Sync |
+|OPENELIS_PORT | Specifies port of OpenELIS to connect for Atomfeed Sync |
+|OPENELIS_ATOMFEED_USER| Username for Atomfeed to connect with OpenElis |
+|OPENELIS_ATOMFEED_PASSWORD| Password for Atomfeed to connect with OpenElis |
+|ODOO_HOST | Specifies the Odoo host to connect for Atomfeed Sync |
+|ODOO_PORT | Specifies port of Odoo to connect for Atomfeed Sync |
+|ODOO_ATOMFEED_USER| Username for Atomfeed to connect with Odoo |
+|ODOO_ATOMFEED_PASSWORD| Password for Atomfeed to connect with Odoo |
 
 ## OpenElis Configurations:
 
