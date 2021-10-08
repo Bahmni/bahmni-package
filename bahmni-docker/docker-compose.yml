@@ -115,6 +115,10 @@ services:
       OPENELIS_ATOMFEED_PASSWORD: ${OPENELIS_ATOMFEED_PASSWORD:?}
     ports:
       - "8080:8080"
+    volumes:
+      - "openmrs-data:/usr/local/tomcat/.OpenMRS/"
+      - "${OPENMRS_UPLOAD_FILES_PATH}/patient_images:/home/bahmni/patient_images"
+      - "${OPENMRS_UPLOAD_FILES_PATH}/document_images:/home/bahmni/document_images"
     depends_on:
       - openmrsdb
 
@@ -133,3 +137,4 @@ volumes:
   openelisdbdata:
   odoodbdata:
   odooappdata:
+  openmrs-data:
