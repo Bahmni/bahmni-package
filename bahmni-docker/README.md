@@ -88,7 +88,6 @@ Note: When connected with a different host, the master data should match. Otherw
 | :-------------------------------------|:------------- |
 | OPENELIS_IMAGE_TAG | This value tells which image version to  be used for OpenElis Application. List of tags can be found at [bahmni/openelis - Tags](https://hub.docker.com/r/bahmni/openelis/tags) . |
 | OPENELIS_DB_IMAGE_TAG | This value tells which image version to be used for OpenElis Database. There are two variants available. <br>**fresh db** - Has only schema and default data.<br>**demo db** - Has schema and demo data loaded.  <br>List of image tags can be found at [bahmni/openelis-db - Tags](https://hub.docker.com/r/bahmni/openelis-db/tags) .    |
-| OPENMRS_HOST | This value is used as host for syncing of data from OpenMRS Application. The default value connects with default installation of bahmni running in Vagrant.      |
 | OPENELIS_MIGRATION_XML_SCRIPTS_PATH   | When you want to run liquibase migrations you can set the folder path to your `liquibase.xml` file in this value. The migrations runs whenenver the application container is restarted. |
 | OPENELIS_DB_DUMP_PATH | When you want to restore an existing database of OpenElis from a dump file you can set the folder path to your dump file with this variable. This is a one time setup and the restore happens only when the database is clean and fresh. So whenever you need a restore make sure you follow the steps in **Cleaning Application data**  |
 
@@ -106,10 +105,7 @@ Note: When connected with a different host, the master data should match. Otherw
 | Variable Name                         | Description   |
 | :-------------------------------------|:------------- |
 | ODOO_CONNECT_IMAGE_TAG | This value tells which image version to  be used for Odoo Connect Application. List of tags can be found at [bahmni/odoo-10 - Tags](https://hub.docker.com/r/bahmni/odoo-connect/tags) . |
-|OPENMRS_HOST | Specifies the OpenMRS host to connect for Atomfeed Sync. Defaults to OpenMRS running in vagrant|
-|OPENMRS_PORT | Specifies port of OpenMRS to connect for Atomfeed Sync. Defaults to OpenMRS running in vagrant|
-|OPENELIS_HOST | Specifies the OpenELIS host to connect for Atomfeed Sync. Defaults to OpenELIS running in vagrant|
-|OPENELIS_PORT | Specifies port of OpenELIS to connect for Atomfeed Sync. Defaults to OpenELIS running in vagrant|
+
 
 Also picks up Odoo Database environment variables listed above.
 # Building OpenElis Images Locally
