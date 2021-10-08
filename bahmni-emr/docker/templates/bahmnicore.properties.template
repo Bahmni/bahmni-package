@@ -1,7 +1,7 @@
 # Note: This file nas been copied and modified from bahmni-playbooks/roles/bahmni-emr/templates
 
 bahmnicore.images.directory=/home/bahmni/patient_images
-bahmnicore.images.directory.defaultImage=/home/bahmni/patient_images/blank-user.png
+bahmnicore.images.directory.defaultImage=/etc/bahmni/blank-user.png
 bahmnicore.urls.patientimages=/patient_images
 bahmnicore.documents.baseDirectory=/home/bahmni/document_images
 
