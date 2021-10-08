@@ -41,7 +41,7 @@ openerp.maxFailedEvents=1000
 
 openelis.user=${OPENELIS_ATOMFEED_USER}
 openelis.password=${OPENELIS_ATOMFEED_PASSWORD}
-openelis.uri=http://${OPENELIS_HOST}:${OPENELIS_PORT}/openelis
+openelis.uri=http://${OPENELIS_HOST}:${OPENELIS_PORT}/openelis/ws/feed/patient/recent
 
 openmrs.user=${OPENMRS_ATOMFEED_USER}
 openmrs.password=${OPENMRS_ATOMFEED_PASSWORD}
