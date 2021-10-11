@@ -250,7 +250,8 @@ Note: Method 1 is the recommended approach for managing modules.
 
     > `docker-compose up openmrs`
 3. Navigate to Administration --> Manage Modules
-4. When you want to add a new module click on `Browse button` in the Add Module section and then select your .omod file.
-5. When you want to add a new module click on `Browse button` in the Upgrade Module section and then select your .omod file.
+4. Click on Add or Upgrade module
+4. When you want to add a new module click on `Choose file` in the Add Module section and then select your .omod file.
+5. When you want to add a new module click on `Choose file` in the Upgrade Module section and then select your .omod file.
 6. Then click on Upload. OpenMRS will pick up the new module and will be available to use.
 7. The modules folder has been volume mounted and will persist until you remove your volume.
