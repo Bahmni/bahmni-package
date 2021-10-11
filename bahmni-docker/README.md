@@ -120,6 +120,7 @@ Note: When connected with a different host, the master data should match. Otherw
 | OPENMRS_DB_AUTO_UPDATE | Takes either true/false. When set to true, the migrations are run and schema is kept up to date. |
 | OPENMRS_MODULE_WEB_ADMIN | Takes either true/false. Settings this to true allows you to manage OpenMRS Modules through the Web UI. It is recommened to set to false in production. |
 | OPENMRS_DEBUG | Takes either true/false. Enables the debug mode of OpenMRS |
+| OPENMRS_UPLOAD_FILES_PATH | This variable can be specified with a directory of the host machine where the uploaded files from OpenMRS needs to be stroed. Defaults to `openmrs-uploads` directory in the docker-compose directory itself. |
 | MYSQL_ROOT_PASSWORD | This is the root password for MySQL Database Server running in OpenMRS Database service.   |
 
 # Building OpenElis Images Locally
