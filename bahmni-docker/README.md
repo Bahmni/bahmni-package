@@ -255,3 +255,20 @@ Note: Method 1 is the recommended approach for managing modules.
 5. When you want to add a new module click on `Choose file` in the Upgrade Module section and then select your .omod file.
 6. Then click on Upload. OpenMRS will pick up the new module and will be available to use.
 7. The modules folder has been volume mounted and will persist until you remove your volume.
+
+*Method 2:*
+
+Note: Use this approach only when you want to manage all Bahmni OpenMRS module OMDS from Host machine.
+
+**Prerequisite:**
+You need to download or build bahmni distro zip before proceeding.
+
+1. Extract bahmni distro zip to a directory in the host machine.
+2. Set the path of the directory to `BAHMNI_OPENMRS_MODULES_PATH` in .env file.
+3. Comment the openmrs-data volume in docker-compose under openmrs service.
+4. Uncomment the host mounted volume in docker-compose under openmrs service.
+5. After uncommenting, recreate OpenMRS by running the below commands from the directory where docker-compose is found.
+    >`docker-compose rm -s -v openmrs`
+
+    > `docker-compose up openmrs`
+6. Now OpenMRS picks up omods from the host mounted directory.
