@@ -19,6 +19,7 @@ This is a Work In Progress directory.
 * [Loading Additional Addons to Odoo](#loading-additional-addons-to-odoo)
 * [Developing Bahmni Odoo Modules](#developing-bahmni-odoo-modules)
 * [Building Odoo Connect Image Locally](#building-odoo-connect-image-locally)
+* [Adding / Upgrading OpenMRS Modules](#adding-upgrading-openmrs-modules)
 
 # Profile Configuration
 Bahmni docker-compose has been configured with profiles which allows you to run the required services. More about compose profiles can be found [here](https://docs.docker.com/compose/profiles/). The list of different profiles can be found below.
@@ -236,3 +237,20 @@ The docker build scripts has been written in a way to be used in Dev Environemts
 *Using the local images:*
 
 In order to use the locally built images, update `ODOO_CONNECT_IMAGE_TAG` environment variable so that docker compose picks up local images.
+
+# Adding/ Upgrading OpenMRS Modules
+OpenMRS modules can be added or upgraded through the OpenMRS Web Interface.
+
+Note: Method 1 is the recommended approach for managing modules.
+
+*Method 1:*
+1. Set the `OPENMRS_MODULE_WEB_ADMIN` variable to `true` in the .env file.
+2. Restart OpenMRS by running the follwoing commands from the directory where docker-compose file is present.
+    >`docker-compose rm -s -v openmrs`
+
+    > `docker-compose up openmrs`
+3. Navigate to Administration --> Manage Modules
+4. When you want to add a new module click on `Browse button` in the Add Module section and then select your .omod file.
+5. When you want to add a new module click on `Browse button` in the Upgrade Module section and then select your .omod file.
+6. Then click on Upload. OpenMRS will pick up the new module and will be available to use.
+7. The modules folder has been volume mounted and will persist until you remove your volume.
