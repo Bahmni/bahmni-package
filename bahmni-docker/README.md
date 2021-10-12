@@ -10,13 +10,16 @@ This is a Work In Progress directory.
 * [Running the application with default images](#running-the-application-with-default-images)
 * [One-time Setup for Odoo](#one-time-setup-for-odoo)
 * [Environment Configuration](#environment-configuration)
+    * [Atomfeed Configuration](#atomfeed-configurations)
     * [OpenElis Configuration](#openelis-configurations)
     * [Odoo Configuration](#odoo-configurations)
     * [Odoo Connect Configuration](#odoo-connect-configurations)
+    * [OpenMRS Configuration](#openmrs-configurations)
 * [Building OpenElis Images Locally](#building-openelis-images-locally)
 * [Loading Additional Addons to Odoo](#loading-additional-addons-to-odoo)
 * [Developing Bahmni Odoo Modules](#developing-bahmni-odoo-modules)
 * [Building Odoo Connect Image Locally](#building-odoo-connect-image-locally)
+* [Adding / Upgrading OpenMRS Modules](#adding-upgrading-openmrs-modules)
 
 # Profile Configuration
 Bahmni docker-compose has been configured with profiles which allows you to run the required services. More about compose profiles can be found [here](https://docs.docker.com/compose/profiles/). The list of different profiles can be found below.
@@ -62,6 +65,24 @@ The below steps needs to be performed only once when Odoo is created.
 # Environment Configuration:
 * The list of configurable environment variables can be found in the `.env` file.
 * The `.env ` file can be modified to customise the application.
+## Atomfeed Configurations:
+The default values specified for the below variables are for services running in Docker. It is recommened to update only when you need to connect with a service running in a different host. (Example: Vagrant).
+Note: When connected with a different host, the master data should match. Otherwise you may face issues with atomfeed sync.
+
+| Variable Name                         | Description   |
+| :-------------------------------------|:------------- |
+|OPENMRS_HOST | Specifies the OpenMRS host to connect for Atomfeed Sync |
+|OPENMRS_PORT | Specifies port of OpenMRS to connect for Atomfeed Sync |
+|OPENMRS_ATOMFEED_USER| Username for Atomfeed to connect with OpenMRS |
+|OPENMRS_ATOMFEED_PASSWORD| Password for Atomfeed to connect with OpenMRS |
+|OPENELIS_HOST | Specifies the OpenELIS host to connect for Atomfeed Sync |
+|OPENELIS_PORT | Specifies port of OpenELIS to connect for Atomfeed Sync |
+|OPENELIS_ATOMFEED_USER| Username for Atomfeed to connect with OpenElis |
+|OPENELIS_ATOMFEED_PASSWORD| Password for Atomfeed to connect with OpenElis |
+|ODOO_HOST | Specifies the Odoo host to connect for Atomfeed Sync |
+|ODOO_PORT | Specifies port of Odoo to connect for Atomfeed Sync |
+|ODOO_ATOMFEED_USER| Username for Atomfeed to connect with Odoo |
+|ODOO_ATOMFEED_PASSWORD| Password for Atomfeed to connect with Odoo |
 
 ## OpenElis Configurations:
 
@@ -69,7 +90,6 @@ The below steps needs to be performed only once when Odoo is created.
 | :-------------------------------------|:------------- |
 | OPENELIS_IMAGE_TAG | This value tells which image version to  be used for OpenElis Application. List of tags can be found at [bahmni/openelis - Tags](https://hub.docker.com/r/bahmni/openelis/tags) . |
 | OPENELIS_DB_IMAGE_TAG | This value tells which image version to be used for OpenElis Database. There are two variants available. <br>**fresh db** - Has only schema and default data.<br>**demo db** - Has schema and demo data loaded.  <br>List of image tags can be found at [bahmni/openelis-db - Tags](https://hub.docker.com/r/bahmni/openelis-db/tags) .    |
-| OPENMRS_HOST | This value is used as host for syncing of data from OpenMRS Application. The default value connects with default installation of bahmni running in Vagrant.      |
 | OPENELIS_MIGRATION_XML_SCRIPTS_PATH   | When you want to run liquibase migrations you can set the folder path to your `liquibase.xml` file in this value. The migrations runs whenenver the application container is restarted. |
 | OPENELIS_DB_DUMP_PATH | When you want to restore an existing database of OpenElis from a dump file you can set the folder path to your dump file with this variable. This is a one time setup and the restore happens only when the database is clean and fresh. So whenever you need a restore make sure you follow the steps in **Cleaning Application data**  |
 
@@ -87,12 +107,23 @@ The below steps needs to be performed only once when Odoo is created.
 | Variable Name                         | Description   |
 | :-------------------------------------|:------------- |
 | ODOO_CONNECT_IMAGE_TAG | This value tells which image version to  be used for Odoo Connect Application. List of tags can be found at [bahmni/odoo-10 - Tags](https://hub.docker.com/r/bahmni/odoo-connect/tags) . |
-|OPENMRS_HOST | Specifies the OpenMRS host to connect for Atomfeed Sync. Defaults to OpenMRS running in vagrant|
-|OPENMRS_PORT | Specifies port of OpenMRS to connect for Atomfeed Sync. Defaults to OpenMRS running in vagrant|
-|OPENELIS_HOST | Specifies the OpenELIS host to connect for Atomfeed Sync. Defaults to OpenELIS running in vagrant|
-|OPENELIS_PORT | Specifies port of OpenELIS to connect for Atomfeed Sync. Defaults to OpenELIS running in vagrant|
 
-Also picks up Odoo Database environment variables listed above.
+## OpenMRS Configurations:
+| Variable Name                         | Description   |
+| :-------------------------------------|:------------- |
+| OPENMRS_IMAGE_TAG | This value tells which image version to  be used for Bahmni OpenMRS. List of tags can be found at [bahmni/openmrs - Tags](https://hub.docker.com/r/bahmni/openmrs/tags) . |
+| OPENMRS_DB_IMAGE_TAG | This value tells which image version to be used for Bahmni OpenMRS Database. There are two variants available. <br>**fresh db** - Has only schema and default data.<br>**demo db** - Has schema and demo data loaded.  <br>List of image tags can be found at [bahmni/openmrs-db - Tags](https://hub.docker.com/r/bahmni/openmrs-db/tags) .    |
+| OPENMRS_DB_NAME | Database name for OpenMRS application      |
+| OPENMRS_DB_HOST   | Host name of the MySQL Database server. |
+| OPENMRS_DB_USERNAME | Username of the OpenMRS Database. |
+| OPENMRS_DB_PASSWORD | Password of the OpenMRS Database. |
+| OPENMRS_DB_CREATE_TABLES | Takes either true/false. Setting this to true, OpenMRS creates the tables neccessary or running the application. Note: Set this to true only when you are running with a plain MySQL Database Server.  |
+| OPENMRS_DB_AUTO_UPDATE | Takes either true/false. When set to true, the migrations are run and schema is kept up to date. |
+| OPENMRS_MODULE_WEB_ADMIN | Takes either true/false. Settings this to true allows you to manage OpenMRS Modules through the Web UI. It is recommened to set to false in production. |
+| OPENMRS_DEBUG | Takes either true/false. Enables the debug mode of OpenMRS |
+| OPENMRS_UPLOAD_FILES_PATH | This variable can be specified with a directory of the host machine where the uploaded files from OpenMRS needs to be stroed. Defaults to `openmrs-uploads` directory in the docker-compose directory itself. |
+| MYSQL_ROOT_PASSWORD | This is the root password for MySQL Database Server running in OpenMRS Database service.   |
+
 # Building OpenElis Images Locally
 You can also build the docker images locally and test it with the same docker-compose file.
 
@@ -206,3 +237,38 @@ The docker build scripts has been written in a way to be used in Dev Environemts
 *Using the local images:*
 
 In order to use the locally built images, update `ODOO_CONNECT_IMAGE_TAG` environment variable so that docker compose picks up local images.
+
+# Adding/ Upgrading OpenMRS Modules
+OpenMRS modules can be added or upgraded through the OpenMRS Web Interface.
+
+Note: Method 1 is the recommended approach for managing modules.
+
+*Method 1:*
+1. Set the `OPENMRS_MODULE_WEB_ADMIN` variable to `true` in the .env file.
+2. Restart OpenMRS by running the follwoing commands from the directory where docker-compose file is present.
+    >`docker-compose rm -s -v openmrs`
+
+    > `docker-compose up openmrs`
+3. Navigate to Administration --> Manage Modules
+4. Click on Add or Upgrade module
+4. When you want to add a new module click on `Choose file` in the Add Module section and then select your .omod file.
+5. When you want to add a new module click on `Choose file` in the Upgrade Module section and then select your .omod file.
+6. Then click on Upload. OpenMRS will pick up the new module and will be available to use.
+7. The modules folder has been volume mounted and will persist until you remove your volume.
+
+*Method 2:*
+
+Note: Use this approach only when you want to manage all Bahmni OpenMRS module OMDS from Host machine.
+
+**Prerequisite:**
+You need to download or build bahmni distro zip before proceeding.
+
+1. Extract bahmni distro zip to a directory in the host machine.
+2. Set the path of the directory to `BAHMNI_OPENMRS_MODULES_PATH` in .env file.
+3. Comment the openmrs-data volume in docker-compose under openmrs service.
+4. Uncomment the host mounted volume in docker-compose under openmrs service.
+5. After uncommenting, recreate OpenMRS by running the below commands from the directory where docker-compose is found.
+    >`docker-compose rm -s -v openmrs`
+
+    > `docker-compose up openmrs`
+6. Now OpenMRS picks up omods from the host mounted directory.
