@@ -2,8 +2,8 @@
 set -xe
 
 #Fetching Database Backup Data
-gunzip -f -k emr-functional-tests/dbdump/odoo_backup.sql.gz
-cp emr-functional-tests/dbdump/odoo_backup.sql bahmni-package/bahmni-erp/resources/odoo_demo_dump.sql
+gunzip -f -k bahmni-scripts/demo/db-backups/v0.92/odoo_backup.sql.gz
+cp bahmni-scripts/demo/db-backups/v0.92/odoo_backup.sql bahmni-package/bahmni-erp/resources/odoo_demo_dump.sql
 
 cd bahmni-package/bahmni-erp
 # Unzipping Odoo Modules copied by CI

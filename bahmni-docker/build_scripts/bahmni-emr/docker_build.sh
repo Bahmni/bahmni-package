@@ -5,8 +5,8 @@ set -xe
 # distro-${BAHMNI_VERSION}-SNAPSHOT.zip
 
 # Using Database Backup data from emr-functional-tests repo
-gunzip -f -k emr-functional-tests/dbdump/openmrs_backup.sql.gz
-cp emr-functional-tests/dbdump/openmrs_backup.sql bahmni-package/bahmni-emr/resources/openmrs_demo_dump.sql
+gunzip -f -k bahmni-scripts/demo/db-backups/v0.92/openmrs_backup.sql.gz
+cp bahmni-scripts/demo/db-backups/v0.92/openmrs_backup.sql bahmni-package/bahmni-emr/resources/openmrs_demo_dump.sql
 
 cd bahmni-package/bahmni-emr
 
