@@ -9,6 +9,7 @@ This is a Work In Progress directory.
 * [Profile Configuration](#profile-configuration)
 * [Running the application with default images](#running-the-application-with-default-images)
 * [One-time Setup for Odoo](#one-time-setup-for-odoo)
+* [Overriding Default Config](#overriding-default-config)
 * [Environment Configuration](#environment-configuration)
     * [Atomfeed Configuration](#atomfeed-configurations)
     * [OpenElis Configuration](#openelis-configurations)
@@ -61,6 +62,15 @@ The below steps needs to be performed only once when Odoo is created.
 3. Click on `Bahmni Account` app and then click on `Upgrade`.
 4. Wait for the upgrade to complete and you will redirected to home page.
 5. After redirection, refresh your page once.
+
+# Overriding Default Config
+Certain services(OpenMRS, OpenELIS, Bahmni Web) of Bahmni comes with default config loaded. You can find the default_config [here](https://github.com/Bahmni/default-config).
+
+You can override these configurations by setting the path to your config folder using the `BAHMNI_CONFIG_PATH` environment varibale.
+
+Note: Make sure your config directory follows the same structure as default_config.
+
+Once you have created the config files, uncomment the volume mount in the required services which begins with BAHMNI_CONFIG_PATH.
 
 # Environment Configuration:
 * The list of configurable environment variables can be found in the `.env` file.
