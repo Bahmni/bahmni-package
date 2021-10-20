@@ -135,6 +135,13 @@ services:
     ports:
       - "3306:3306"
 
+  bahmni-web:
+    image: bahmni/bahmni-web:${BAHMNI_WEB_IMAGE_TAG:?}
+    profiles: ["default","openmrs"]
+    volumes:
+      #- "${BAHMNI_CONFIG_PATH:?}/:/usr/local/apache2/htdocs/bahmni_config/"
+      #- "${BAHMNI_UI_DIST_PATH}/:/usr/local/apache2/htdocs/bahmni/"
+
 volumes:
   openelisdbdata:
   odoodbdata:
