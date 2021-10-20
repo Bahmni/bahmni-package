@@ -17,6 +17,7 @@ This is a Work In Progress directory.
     * [Odoo Configuration](#odoo-configurations)
     * [Odoo Connect Configuration](#odoo-connect-configurations)
     * [OpenMRS Configuration](#openmrs-configurations)
+    * [Bahmni Web Configuration](#bahmni-web-configurations)
 * [Proxy Service](#proxy-service)
 * [Building OpenElis Images Locally](#building-openelis-images-locally)
 * [Loading Additional Addons to Odoo](#loading-additional-addons-to-odoo)
@@ -150,6 +151,12 @@ Note: When connected with a different host, the master data should match. Otherw
 | OPENMRS_DEBUG | Takes either true/false. Enables the debug mode of OpenMRS |
 | OPENMRS_UPLOAD_FILES_PATH | This variable can be specified with a directory of the host machine where the uploaded files from OpenMRS needs to be stroed. Defaults to `openmrs-uploads` directory in the docker-compose directory itself. |
 | MYSQL_ROOT_PASSWORD | This is the root password for MySQL Database Server running in OpenMRS Database service.   |
+
+## Bahmni Web Configurations:
+| Variable Name                         | Description   |
+| :-------------------------------------|:------------- |
+| BAHMNI_WEB_IMAGE_TAG | This value specifies which image version needs to be used for bahmni-web service. List of tags can be found at [bahmni/bahmni-web - Tags](https://hub.docker.com/r/bahmni/bahmni-web/tags) . |
+| BAHMNI_UI_DIST_PATH | Set this variable with the path of your dist folder of openmrs-module-bahmniapps when you want to develop on Bahmni UI. |
 
 # Proxy Service
 The proxy service runs with every profile configuration. It renders the Bahmni Landing Page. Also ProxyPass and ProxyPassReverse configurations are done with this container.
