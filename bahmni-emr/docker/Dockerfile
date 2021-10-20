@@ -4,6 +4,7 @@ COPY build/openmrs-modules/*.omod /usr/local/tomcat/.OpenMRS/modules/
 COPY docker/templates/bahmnicore.properties.template /etc/bahmni-emr/templates/
 COPY resources/atomfeed-client-*.jar /etc/bahmni-lab-connect/atomfeed-client.jar
 COPY resources/liquibase-core-*.jar /etc/bahmni-lab-connect/liquibase-core.jar
+COPY build/default_config /etc/bahmni_config/
 
 # Creating Upload Directories
 RUN mkdir -p /home/bahmni/patient_images
