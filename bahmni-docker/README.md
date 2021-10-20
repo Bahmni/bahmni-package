@@ -17,19 +17,26 @@ This is a Work In Progress directory.
     * [Odoo Configuration](#odoo-configurations)
     * [Odoo Connect Configuration](#odoo-connect-configurations)
     * [OpenMRS Configuration](#openmrs-configurations)
+    * [Bahmni Web Configuration](#bahmni-web-configurations)
+* [Proxy Service](#proxy-service)
 * [Building OpenElis Images Locally](#building-openelis-images-locally)
 * [Loading Additional Addons to Odoo](#loading-additional-addons-to-odoo)
 * [Developing Bahmni Odoo Modules](#developing-bahmni-odoo-modules)
 * [Building Odoo Connect Image Locally](#building-odoo-connect-image-locally)
 * [Adding / Upgrading OpenMRS Modules](#adding-upgrading-openmrs-modules)
+* [Development on Bahmni UI](#development-on-bahmni-ui)
 
 # Profile Configuration
 Bahmni docker-compose has been configured with profiles which allows you to run the required services. More about compose profiles can be found [here](https://docs.docker.com/compose/profiles/). The list of different profiles can be found below.
+
+Note: `proxy` is a generic service and it will start always irrespective of below profiles.
+
 | Profile   | Application       | Services |
 | :---------|:------------------|:----------------- |
 | default  | All applications    | All service defined in docker-compose.yml |
 | openelis | OpenELIS            | openelis, openelisdb
 | odoo     | Odoo                | odoo, odoodb |
+| openmrs  | Bahmni EMR          | openmrs, openmrsdb, bahmni-web |
 
 Profiles can be set by changing the `COMPOSE_PROFILES` variable in .env variable. You can set multiple profiles by comma seperated values.
 Example: COMPOSE_PROFILES=openelis,odoo. You can also pass this as an argument with docker-compose up command. Example: `docker-compose --profile odoo up` (or) `docker-compose --profile odoo --profile openelis up`
@@ -48,8 +55,10 @@ Example: COMPOSE_PROFILES=openelis,odoo. You can also pass this as an argument w
 
 | Application Name   | URL             | Default Credentials | Notes|
 | :------------------|:-----------------|:----------------- |:------|
-| OpenElis           |http://localhost:8052/openelis| Username: admin <br> Password: adminADMIN! |-|
+| OpenElis           |http://localhost/openelis| Username: admin <br> Password: adminADMIN! |-|
 | Odoo               | http://localhost:8069   | Username: admin <br> Password: admin| Perfom [one-time](#one-time-setup-for-odoo) setup
+| OpenMRS            | http://localhost/openmrs | Username: superman <br> Password: Admin123 | Perfom [one-time](#one-time-setup-for-openmrs) setup |
+| Bahmni EMR | http://localhost/bahmni/home | Username: superman <br> Password: Admin123 | If you use fresh db images, then you need to configure locations, visits etc as mentioned [here](https://bahmni.atlassian.net/wiki/spaces/BAH/pages/34013673/OpenMRS+configuration). |
 
 *Cleaning Application Data:*
 
@@ -142,6 +151,15 @@ Note: When connected with a different host, the master data should match. Otherw
 | OPENMRS_DEBUG | Takes either true/false. Enables the debug mode of OpenMRS |
 | OPENMRS_UPLOAD_FILES_PATH | This variable can be specified with a directory of the host machine where the uploaded files from OpenMRS needs to be stroed. Defaults to `openmrs-uploads` directory in the docker-compose directory itself. |
 | MYSQL_ROOT_PASSWORD | This is the root password for MySQL Database Server running in OpenMRS Database service.   |
+
+## Bahmni Web Configurations:
+| Variable Name                         | Description   |
+| :-------------------------------------|:------------- |
+| BAHMNI_WEB_IMAGE_TAG | This value specifies which image version needs to be used for bahmni-web service. List of tags can be found at [bahmni/bahmni-web - Tags](https://hub.docker.com/r/bahmni/bahmni-web/tags) . |
+| BAHMNI_UI_DIST_PATH | Set this variable with the path of your dist folder of openmrs-module-bahmniapps when you want to develop on Bahmni UI. |
+
+# Proxy Service
+The proxy service runs with every profile configuration. It renders the Bahmni Landing Page. Also ProxyPass and ProxyPassReverse configurations are done with this container.
 
 # Building OpenElis Images Locally
 You can also build the docker images locally and test it with the same docker-compose file.
@@ -277,7 +295,7 @@ Note: Method 1 is the recommended approach for managing modules.
 
 *Method 2:*
 
-Note: Use this approach only when you want to manage all Bahmni OpenMRS module OMDS from Host machine.
+Note: Use this approach only when you want to manage all Bahmni OpenMRS module OMODS from Host machine.
 
 **Prerequisite:**
 You need to download or build bahmni distro zip before proceeding.
@@ -291,3 +309,21 @@ You need to download or build bahmni distro zip before proceeding.
 
     > `docker-compose up openmrs`
 6. Now OpenMRS picks up omods from the host mounted directory.
+
+# Development on Bahmni UI
+When you want to develop or modify bahmni UI code, you can follow these steps.
+1. Clone the [openmrs-module-bahmniapps](https://github.com/Bahmni/openmrs-module-bahmniapps) repository in your localmachine.
+2. Follow the instructions in the README of the repository to install the required tools and dependencies.
+3. Build the code by running `yarn ci` from the UI directory of openmrs-module-bahmniapps.
+4. Once the build is successfull, you will see a `dist` folder generated inside ui directory.
+5. Copy the path to your dist directory and set it to `BAHMNI_UI_DIST_PATH` environment variable in the .env file in bahmni-package/bahmni-docker repository.
+6. Now open the docker-compose.yml file and in the bahmni-web service uncomment the volumes section with the volume starting with BAHMNI_UI_DIST_PATH. Do not add / at the last.
+7. You can start the application by running `docker-compose up`. If you have your container already running, you need to recreate it so that the volume mounted code is used. To recreate bahmni-web container run the following commands from bahmni-docker directory.
+`docker-compose rm -s bahmni-web`
+
+    `docker-compose up -d bahmni-web`
+
+8. Now you can make changes in the codebase. After making the change, build the code by running `yarn bundle && yarn uglify-and-rename`. If you want to build along with the tests then run `yarn ci`.
+9. When you refresh your browser, then you can see the changes reflected.
+
+Note: If your change is not reflected, it could be because your browser would be rendering it from its cache. Try the same in Incognito or after clearing cached data.
