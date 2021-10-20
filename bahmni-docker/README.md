@@ -9,6 +9,7 @@ This is a Work In Progress directory.
 * [Profile Configuration](#profile-configuration)
 * [Running the application with default images](#running-the-application-with-default-images)
 * [One-time Setup for Odoo](#one-time-setup-for-odoo)
+* [One-time Setup for OpenMRS](#one-time-setup-for-openmrs)
 * [Environment Configuration](#environment-configuration)
     * [Atomfeed Configuration](#atomfeed-configurations)
     * [OpenElis Configuration](#openelis-configurations)
@@ -61,6 +62,13 @@ The below steps needs to be performed only once when Odoo is created.
 3. Click on `Bahmni Account` app and then click on `Upgrade`.
 4. Wait for the upgrade to complete and you will redirected to home page.
 5. After redirection, refresh your page once.
+
+# One-time Setup for OpenMRS:
+The below steps needs to performed only onve after OpenMRS application is loaded.
+1. When OpenMRS is completely loaded, login to the application at `<host>/openmrs`
+2. Navigate to Administration -> Maintenance -> Search Index.
+3. In that page click on `Rebuild Search Index`
+4. This rebuilds concept index of OpenMRS application.
 
 # Environment Configuration:
 * The list of configurable environment variables can be found in the `.env` file.
