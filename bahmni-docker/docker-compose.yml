@@ -1,5 +1,10 @@
 version: "3.7"
 services:
+  proxy:
+    image: "bahmni/proxy:${PROXY_IMAGE_TAG:?}"
+    ports:
+      - "80:80"
+
   openelis:
     profiles: ["default","openelis"]
     image: "bahmni/openelis:${OPENELIS_IMAGE_TAG:?[ERROR]}"
