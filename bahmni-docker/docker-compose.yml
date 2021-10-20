@@ -118,6 +118,7 @@ services:
     volumes:
       - "openmrs-data:/usr/local/tomcat/.OpenMRS/modules"
       #- "${BAHMNI_OPENMRS_MODULES_PATH:?}/:/usr/local/tomcat/.OpenMRS/modules/"
+      #- "${BAHMNI_CONFIG_PATH:?}/:/etc/bahmni_config/"
       - "${OPENMRS_UPLOAD_FILES_PATH}/patient_images:/home/bahmni/patient_images"
       - "${OPENMRS_UPLOAD_FILES_PATH}/document_images:/home/bahmni/document_images"
     depends_on:
