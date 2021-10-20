@@ -56,6 +56,8 @@ Example: COMPOSE_PROFILES=openelis,odoo. You can also pass this as an argument w
 | :------------------|:-----------------|:----------------- |:------|
 | OpenElis           |http://localhost:8052/openelis| Username: admin <br> Password: adminADMIN! |-|
 | Odoo               | http://localhost:8069   | Username: admin <br> Password: admin| Perfom [one-time](#one-time-setup-for-odoo) setup
+| OpenMRS            | http://localhost/openmrs | Username: superman <br> Password: Admin123 | Perfom [one-time](#one-time-setup-for-openmrs) setup |
+| Bahmni EMR | http://localhost/bahmni/home | Username: superman <br> Password: Admin123 | If you use fresh db images, then you need to configure locations, visits etc as mentioned [here](https://bahmni.atlassian.net/wiki/spaces/BAH/pages/34013673/OpenMRS+configuration). |
 
 *Cleaning Application Data:*
 
