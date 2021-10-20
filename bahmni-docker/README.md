@@ -295,7 +295,7 @@ Note: Method 1 is the recommended approach for managing modules.
 
 *Method 2:*
 
-Note: Use this approach only when you want to manage all Bahmni OpenMRS module OMDS from Host machine.
+Note: Use this approach only when you want to manage all Bahmni OpenMRS module OMODS from Host machine.
 
 **Prerequisite:**
 You need to download or build bahmni distro zip before proceeding.
