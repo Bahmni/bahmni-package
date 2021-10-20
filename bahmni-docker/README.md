@@ -65,7 +65,7 @@ The below steps needs to be performed only once when Odoo is created.
 5. After redirection, refresh your page once.
 
 # One-time Setup for OpenMRS:
-The below steps needs to performed only onve after OpenMRS application is loaded.
+The below steps needs to performed only once after OpenMRS application is loaded.
 1. When OpenMRS is completely loaded, login to the application at `<host>/openmrs`
 2. Navigate to Administration -> Maintenance -> Search Index.
 3. In that page click on `Rebuild Search Index`
