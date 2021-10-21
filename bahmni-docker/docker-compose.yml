@@ -1,5 +1,10 @@
 version: "3.7"
 services:
+  proxy:
+    image: "bahmni/proxy:${PROXY_IMAGE_TAG:?}"
+    ports:
+      - "80:80"
+
   openelis:
     profiles: ["default","openelis"]
     image: "bahmni/openelis:${OPENELIS_IMAGE_TAG:?[ERROR]}"
@@ -138,7 +143,7 @@ services:
   bahmni-web:
     image: bahmni/bahmni-web:${BAHMNI_WEB_IMAGE_TAG:?}
     profiles: ["default","openmrs"]
-    volumes:
+    #volumes:
       #- "${BAHMNI_CONFIG_PATH:?}/:/usr/local/apache2/htdocs/bahmni_config/"
       #- "${BAHMNI_UI_DIST_PATH}/:/usr/local/apache2/htdocs/bahmni/"
 
