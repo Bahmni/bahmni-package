@@ -177,7 +177,8 @@ You can also build the docker images locally and test it with the same docker-co
 2. Clone the repos:
     * `git clone https://github.com/Bahmni/OpenElis.git`
     * `git clone https://github.com/Bahmni/bahmni-package.git`
-    * `git clone https://github.com/Bahmni/emr-functional-tests.git`
+    * `git clone https://github.com/Bahmni/bahmni-scripts.git`
+    * `git clone https://github.com/Bahmni/default-config.git`
 
 *Compile and Building OpenElis:*
 1. Follow the instruction in `README` of OpenElis and compile it.
