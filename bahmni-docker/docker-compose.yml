@@ -132,6 +132,7 @@ services:
   openmrsdb:
     image: bahmni/openmrs-db:${OPENMRS_DB_IMAGE_TAG:?}
     restart: always
+    profiles: ["default","openmrs"]
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?}
       MYSQL_DATABASE: ${OPENMRS_DB_NAME:?}
