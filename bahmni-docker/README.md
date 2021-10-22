@@ -118,7 +118,7 @@ Note: When connected with a different host, the master data should match. Otherw
 | :-------------------------------------|:------------- |
 | OPENELIS_IMAGE_TAG | This value tells which image version to  be used for OpenElis Application. List of tags can be found at [bahmni/openelis - Tags](https://hub.docker.com/r/bahmni/openelis/tags) . |
 | OPENELIS_DB_IMAGE_TAG | This value tells which image version to be used for OpenElis Database. There are two variants available. <br>**fresh db** - Has only schema and default data.<br>**demo db** - Has schema and demo data loaded.  <br>List of image tags can be found at [bahmni/openelis-db - Tags](https://hub.docker.com/r/bahmni/openelis-db/tags) .    |
-| OPENELIS_MIGRATION_XML_SCRIPTS_PATH   | When you want to run liquibase migrations you can set the folder path to your `liquibase.xml` file in this value. The migrations runs whenenver the application container is restarted. |
+| BAHMNI_CONFIG_PATH   | This is a shared variable. When you want to run any liquibase migrations for OpenELIS, set the value to the path of default_config and then uncomment the volumes in openelis service. Now add liquibase changesets to default_config/openelis/migrations/liquibase.xml . Now restart OpenELIS by running `docker-compose restart openelis` from bahmni-docker directory. |
 | OPENELIS_DB_DUMP_PATH | When you want to restore an existing database of OpenElis from a dump file you can set the folder path to your dump file with this variable. This is a one time setup and the restore happens only when the database is clean and fresh. So whenever you need a restore make sure you follow the steps in **Cleaning Application data**  |
 
 ## Odoo Configurations: 
@@ -177,7 +177,8 @@ You can also build the docker images locally and test it with the same docker-co
 2. Clone the repos:
     * `git clone https://github.com/Bahmni/OpenElis.git`
     * `git clone https://github.com/Bahmni/bahmni-package.git`
-    * `git clone https://github.com/Bahmni/emr-functional-tests.git`
+    * `git clone https://github.com/Bahmni/bahmni-scripts.git`
+    * `git clone https://github.com/Bahmni/default-config.git`
 
 *Compile and Building OpenElis:*
 1. Follow the instruction in `README` of OpenElis and compile it.

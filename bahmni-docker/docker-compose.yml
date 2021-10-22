@@ -10,8 +10,8 @@ services:
     image: "bahmni/openelis:${OPENELIS_IMAGE_TAG:?[ERROR]}"
     ports:
       - "8052:8052"
-    volumes:
-      - "${OPENELIS_MIGRATION_XML_SCRIPTS_PATH}:/var/www/bahmni_config/openelis/migrations"
+    #volumes:
+      #- "${BAHMNI_CONFIG_PATH}/openelis/:/etc/bahmni_config/openelis/"
     environment:
       OPENMRS_HOST: ${OPENMRS_HOST}
       OPENMRS_PORT: ${OPENMRS_PORT:?}

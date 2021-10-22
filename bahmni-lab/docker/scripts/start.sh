@@ -8,6 +8,11 @@ replaceConfigFiles(){
     envsubst < /etc/bahmni-lab/hibernate.cfg.xml.template > ${HIBERNATE_CONFIG_FILE}
 }
 
+# Linking bahmni config
+rm -rf /var/www/bahmni_config/
+mkdir -p /var/www/bahmni_config/
+ln -s /etc/bahmni_config/openelis /var/www/bahmni_config/openelis
+
 replaceConfigFiles
 echo "[INFO] Running Default Liquibase migrations"
 cd /opt/bahmni-lab/migrations/liquibase/ && sh /opt/bahmni-lab/migrations/scripts/migrateDb.sh

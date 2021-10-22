@@ -10,6 +10,7 @@ ENV OPENELIS_DB_SERVER='openelisdb'
 
 COPY docker/bahmni-core.jar /opt/bahmni-lab/lib/bahmni-lab.jar
 COPY resources/openelis.war /etc/bahmni-lab/openelis.war
+COPY build/default_config/openelis /etc/bahmni_config/openelis/
 
 RUN mkdir -p ${WAR_DIRECTORY}
 RUN cd ${WAR_DIRECTORY} && jar xvf /etc/bahmni-lab/openelis.war
