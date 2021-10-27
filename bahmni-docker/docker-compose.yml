@@ -140,6 +140,8 @@ services:
       MYSQL_PASSWORD: ${OPENMRS_DB_PASSWORD:?}
     ports:
       - "3306:3306"
+    volumes:
+      - "openmrsdbdata:/var/lib/mysql"
 
   bahmni-web:
     image: bahmni/bahmni-web:${BAHMNI_WEB_IMAGE_TAG:?}
@@ -153,3 +155,4 @@ volumes:
   odoodbdata:
   odooappdata:
   openmrs-data:
+  openmrsdbdata:
