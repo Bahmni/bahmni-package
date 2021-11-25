@@ -6,6 +6,7 @@ This directory contains bahmni dockerization replated scripts and files.
 This is a Work In Progress directory.
 
 ## Table of Contents
+* [Prerequisites](#prerequisites)
 * [Profile Configuration](#profile-configuration)
 * [Running the application with default images](#running-the-application-with-default-images)
 * [One-time Setup for Odoo](#one-time-setup-for-odoo)
@@ -25,6 +26,21 @@ This is a Work In Progress directory.
 * [Building Odoo Connect Image Locally](#building-odoo-connect-image-locally)
 * [Adding / Upgrading OpenMRS Modules](#adding-upgrading-openmrs-modules)
 * [Development on Bahmni UI](#development-on-bahmni-ui)
+
+# Prerequisites
+## Docker Installations
+You can install Docker from [here](https://docs.docker.com/engine/install/). Choose the appropriate installers for your host machine and follow the instructions mentioned for the host platform.  MacOS: You can get the dmg file for Docker [here](https://store.docker.com/editions/community/docker-ce-desktop-mac). 
+
+Note: If you are using Docker Desktop for Mac / Docker Desktop for Windows , it is recommended to increase the Memory resource to **at-least 4GB**. Please find the reference for [Mac](https://docs.docker.com/desktop/mac/) / [Windows](https://docs.docker.com/desktop/windows/).
+
+Once you have Docker installed, ensure that you are running the daemon. If you want to tune and configure docker, please find detailed information [here](https://docs.docker.com/engine/admin/)
+
+## Docker-Compose Installations
+
+**Note** : If you are using Docker Desktop for Mac / Docker Desktop for Windows, then docker-compose comes bundled with docker and you need not follow the below steps. But make sure to disable Experimental Features for docker-compose from your Docker Dashboard preferences. For other operating systems, you can install docker compose from [here](https://docs.docker.com/compose/install/).
+
+Currently Bahmni has been tested on **docker-compose version 1.29.2**. If you are using older versions of docker-compose, please upgrade to the latest version. You can check docker compose version by running `docker-compose version`
+
 
 # Profile Configuration
 Bahmni docker-compose has been configured with profiles which allows you to run the required services. More about compose profiles can be found [here](https://docs.docker.com/compose/profiles/). The list of different profiles can be found below.
