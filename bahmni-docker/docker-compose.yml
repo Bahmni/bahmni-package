@@ -43,8 +43,6 @@ services:
   odoo:
     profiles: ["default","odoo"]
     image: "bahmni/odoo-10:${ODOO_IMAGE_TAG:?[ERROR]}"
-    depends_on:
-      - odoodb
     ports:
       - "8069:8069"
     volumes:
@@ -52,7 +50,6 @@ services:
       - ${EXTRA_ADDONS_PATH}:/mnt/extra-addons
       # Uncomment the below volume only when you need to modify existing bahmni-addons. Also make sure to update the .env file variable with odoo-modules github repo cloned path.
       # - ${BAHMNI_ODOO_MODULES_PATH}:/opt/bahmni-erp/bahmni-addons
-
     depends_on:
       odoodb:
         condition: service_healthy
@@ -113,7 +110,6 @@ services:
       DB_AUTO_UPDATE: ${OPENMRS_DB_AUTO_UPDATE}
       MODULE_WEB_ADMIN: ${OPENMRS_MODULE_WEB_ADMIN}
       DEBUG: ${OPENMRS_DEBUG}
-      OPENELIS_HOST: ${OPENELIS_HOST}
       OPENELIS_HOST: ${OPENELIS_HOST:?}
       OPENELIS_PORT: ${OPENELIS_PORT:?}
       OPENELIS_ATOMFEED_USER: ${OPENELIS_ATOMFEED_USER:?}
