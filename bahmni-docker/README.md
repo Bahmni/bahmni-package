@@ -8,9 +8,10 @@ This is a Work In Progress directory.
 ## Table of Contents
 * [Prerequisites](#prerequisites)
 * [Profile Configuration](#profile-configuration)
-* [Running the application with default images](#running-the-application-with-default-images)
+* [Running Bahmni with default images](#running-bahmni-with-default-images)
 * [One-time Setup for Odoo](#one-time-setup-for-odoo)
 * [One-time Setup for OpenMRS](#one-time-setup-for-openmrs)
+* [Odoo not synchronizing old patient data](#odoo-not-synchronizing-old-patient-data)
 * [Overriding Default Config](#overriding-default-config)
 * [Environment Configuration](#environment-configuration)
     * [Atomfeed Configuration](#atomfeed-configurations)
@@ -57,29 +58,31 @@ Note: `proxy` is a generic service and it will start always irrespective of belo
 Profiles can be set by changing the `COMPOSE_PROFILES` variable in .env variable. You can set multiple profiles by comma seperated values.
 Example: COMPOSE_PROFILES=openelis,odoo. You can also pass this as an argument with docker-compose up command. Example: `docker-compose --profile odoo up` (or) `docker-compose --profile odoo --profile openelis up`
 
-# Running the application with default images
+# Running Bahmni with default images
+### Starting all Bahmni Components
+1. Navigate to `bahmni-docker` directory in a terminal.
+2. Run `docker-compose up` .
+    This pulls default images from docker hub and starts the application with demo database. Also `docker-compose up -d` can be used to run in detach mode.
+3. After the containers spin up, you will be able to access different components at below mentioned configurations.
 
-*Requirements:*
+**Note:**
+* When Bahmni docker-compose comes up, it reads the `.env` for all configuration settings like DB name, URL, ports, credentials, etc. You can change those to suit your needs. For more details on configuration options, see [Environment Configuration](#environment-configuration).
+* By default the docker containers use Demo database image. One can also choose a fresh DB, but recommended to use demoDB if you are new to Bahmni and wish to have some pre-created master data, forms, terminology and patients. 
+* To see the list of existing patients in Bahmni, go to Bahmni web UI, Registration Module, and for Patient Name type "%" (percentage sign) in the search box.
 
-* docker-compose
-
-*Starting the application:*
-* Navigate to `bahmni-docker` directory in a terminal.
-* Run `docker-compose up` .
-    This pulls default images from docker hub and starts the application with a fresh database. Also `docker-compose up -d` can be used to run in detach mode.
-* After the containers spin up, you will be able to access different components at below mentioned configurations.
 
 | Application Name   | URL             | Default Credentials | Notes|
 | :------------------|:-----------------|:----------------- |:------|
-| OpenElis           |http://localhost/openelis| Username: admin <br> Password: adminADMIN! |-|
-| Odoo               | http://localhost:8069   | Username: admin <br> Password: admin| Perfom [one-time](#one-time-setup-for-odoo) setup
-| OpenMRS            | http://localhost/openmrs | Username: superman <br> Password: Admin123 | Perfom [one-time](#one-time-setup-for-openmrs) setup |
-| Bahmni EMR | http://localhost/bahmni/home | Username: superman <br> Password: Admin123 | If you use fresh db images, then you need to configure locations, visits etc as mentioned [here](https://bahmni.atlassian.net/wiki/spaces/BAH/pages/34013673/OpenMRS+configuration). |
+| Bahmni EMR | http://localhost/bahmni/home | Username: `superman` <br> Password: `Admin123` | If you use fresh db images, then you need to configure locations, visits etc as mentioned [here](https://bahmni.atlassian.net/wiki/spaces/BAH/pages/34013673/OpenMRS+configuration). |
+| OpenMRS            | http://localhost/openmrs | Username: `superman` <br> Password: `Admin123` | Perfom [one-time](#one-time-setup-for-openmrs) setup |
+| OpenElis           |http://localhost/openelis| Username: `admin` <br> Password: `adminADMIN!` |-|
+| Odoo               | http://localhost:8069   | Username: `admin` <br> Password: `admin`| Perfom [one-time](#one-time-setup-for-odoo) setup
 
-*Cleaning Application Data:*
 
-Note: Do this step only if needed. This will lead to loss of database and application data.
-* From the `bahmni-docker` diretory in a terminal run, `docker-compose down -v` . This brings down the containers and destroys the volumes attached to the containers.
+### Cleaning All Bahmni Application Data
+
+Warning: Do this step carefully! This will lead to loss of database and application data.
+* From the `bahmni-docker` directory in a terminal run, `docker-compose down -v` . This brings down the containers and destroys the *volumes* attached to the containers.
 
 # One-time Setup for Odoo
 The below steps needs to be performed only once when Odoo is created.
@@ -89,12 +92,29 @@ The below steps needs to be performed only once when Odoo is created.
 4. Wait for the upgrade to complete and you will redirected to home page.
 5. After redirection, refresh your page once.
 
+Now Odoo should be working fine. If you don't see old patient data coming into Odoo in 10 mins, please read [Odoo not synchronizing old patient data](#odoo-not-synchronizing-old-patient-data)
+
 # One-time Setup for OpenMRS:
 The below steps needs to performed only once after OpenMRS application is loaded.
 1. When OpenMRS is completely loaded, login to the application at `<host>/openmrs`
 2. Navigate to Administration -> Maintenance -> Search Index.
 3. In that page click on `Rebuild Search Index`
 4. This rebuilds concept index of OpenMRS application.
+
+# Odoo not synchronizing old patient data
+Perform the followinng steps if older patient data is not being sent to Odoo. This likely happened because the ATOM Feed reader has already exhausted its max retry limit for failed events (by default set to 5 times). You can set the Failed events retry back to 1, and that should sync them immediately. Steps to fix this:
+1. Open terminal in your local machine, in `bahmni-docker` folder.
+2. Execute `docker ps` to see the list of running containers.
+3. Connect to the Odoo postgres DB container by executing the command: `docker container exec -it  bahmni-docker_odoodb_1  /bin/bash`
+where `bahmni-docker_odoodb_1` is the name of the odoo postgres container. You should now be within the container. 
+4. Connect to the postgres console using command: `psql -Uodoo odoo`. For more info on how to connect to Bahmni Databases, refer to this wiki page: [Connecting to various databases](https://bahmni.atlassian.net/wiki/spaces/BAH/pages/49545219/Connecting+to+various+databases).
+5. In the psql prompt type: `select count(*) from failed_events;` This will show you the number of failed events. 
+6. If 1 or more events are there, then you can fire the query: `select id,retries from failed_events;`. You should see all failed events have reached their retry limit.
+7. Fire an *update* statement to reset the retry count for all failed events: `update failed_events set retries=1;`
+8. Now in about a minute, all failed events should be processed and old patient data should get synced to Odoo.
+9. To exit the container, first type `\q` to exit postgres shell, and then type `exit` to exit bash shell without stopping the postgres container. 
+
+
 
 # Overriding Default Config
 Certain services(OpenMRS, OpenELIS, Bahmni Web) of Bahmni comes with default config loaded. You can find the default_config [here](https://github.com/Bahmni/default-config).
