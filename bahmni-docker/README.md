@@ -108,7 +108,7 @@ Perform the followinng steps if older patient data is not being sent to Odoo. Th
 3. Connect to the Odoo postgres DB container by executing the command: `docker container exec -it  bahmni-docker_odoodb_1  /bin/bash`
 where `bahmni-docker_odoodb_1` is the name of the odoo postgres container. You should now be within the container. 
 4. Connect to the postgres console using command: `psql -Uodoo odoo`. For more info on how to connect to Bahmni Databases, refer to this wiki page: [Connecting to various databases](https://bahmni.atlassian.net/wiki/spaces/BAH/pages/49545219/Connecting+to+various+databases).
-5. In the psql prompty type: `select count(*) from failed_events;` This will show you the number of failed events. 
+5. In the psql prompt type: `select count(*) from failed_events;` This will show you the number of failed events. 
 6. If 1 or more events are there, then you can fire the query: `select id,retries from failed_events;`. You should see all failed events have reached their retry limit.
 7. Fire an *update* statement to reset the retry count for all failed events: `update failed_events set retries=1;`
 8. Now in about a minute, all failed events should be processed and old patient data should get synced to Odoo.
