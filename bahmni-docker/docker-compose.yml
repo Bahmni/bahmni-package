@@ -1,13 +1,13 @@
 version: "3.7"
 services:
   proxy:
-    image: "bahmni/proxy:${PROXY_IMAGE_TAG:?}"
+    image: "icapeth.jfrog.io/bahmni-docker/proxy:${PROXY_IMAGE_TAG:?}"
     ports:
       - "80:80"
 
   openelis:
     profiles: ["default","openelis"]
-    image: "bahmni/openelis:${OPENELIS_IMAGE_TAG:?[ERROR]}"
+    image: "icapeth.jfrog.io/bahmni-docker/openelis:${OPENELIS_IMAGE_TAG:?[ERROR]}"
     ports:
       - "8052:8052"
     #volumes:
@@ -24,7 +24,7 @@ services:
 
   openelisdb:
     profiles: ["default","openelis"]
-    image: "bahmni/openelis-db:${OPENELIS_DB_IMAGE_TAG:?[ERROR]}"
+    image: "icapeth.jfrog.io/bahmni-docker/openelis-db:${OPENELIS_DB_IMAGE_TAG:?[ERROR]}"
     ports:
       - "5432:5432"
     volumes:
@@ -42,7 +42,7 @@ services:
 
   odoo:
     profiles: ["default","odoo"]
-    image: "bahmni/odoo-10:${ODOO_IMAGE_TAG:?[ERROR]}"
+    image: "icapeth.jfrog.io/bahmni-docker/odoo-10:${ODOO_IMAGE_TAG:?[ERROR]}"
     ports:
       - "8069:8069"
     volumes:
@@ -60,7 +60,7 @@ services:
 
   odoodb:
     profiles: ["default","odoo"]
-    image: "bahmni/odoo-10-db:${ODOO_DB_IMAGE_TAG:?[ERROR]}"
+    image: "icapeth.jfrog.io/bahmni-docker/odoo-10-db:${ODOO_DB_IMAGE_TAG:?[ERROR]}"
     ports:
       - "5431:5432"
     volumes:
@@ -77,7 +77,7 @@ services:
 
   odoo-connect:
     profiles: ["default","odoo"]
-    image: "bahmni/odoo-connect:${ODOO_CONNECT_IMAGE_TAG:?[ERROR]}"
+    image: "icapeth.jfrog.io/bahmni-docker/odoo-connect:${ODOO_CONNECT_IMAGE_TAG:?[ERROR]}"
     environment:
       ODOO_DB_SERVER: odoodb
       ODOO_DB_USERNAME: ${ODOO_DB_USER:?}
@@ -100,7 +100,7 @@ services:
 
   openmrs:
     profiles: ["default","openmrs"]
-    image: bahmni/openmrs:${OPENMRS_IMAGE_TAG:?}
+    image: icapeth.jfrog.io/bahmni-docker/openmrs:${OPENMRS_IMAGE_TAG:?}
     environment:
       DB_DATABASE: ${OPENMRS_DB_NAME:?}
       DB_HOST: ${OPENMRS_DB_HOST:?}
@@ -119,14 +119,14 @@ services:
     volumes:
       - "openmrs-data:/usr/local/tomcat/.OpenMRS/modules"
       #- "${BAHMNI_OPENMRS_MODULES_PATH:?}/:/usr/local/tomcat/.OpenMRS/modules/"
-      #- "${BAHMNI_CONFIG_PATH:?}/:/etc/bahmni_config/"
+      - "${BAHMNI_CONFIG_PATH:?}/:/etc/bahmni_config/"
       - "${OPENMRS_UPLOAD_FILES_PATH}/patient_images:/home/bahmni/patient_images"
       - "${OPENMRS_UPLOAD_FILES_PATH}/document_images:/home/bahmni/document_images"
     depends_on:
       - openmrsdb
 
   openmrsdb:
-    image: bahmni/openmrs-db:${OPENMRS_DB_IMAGE_TAG:?}
+    image: icapeth.jfrog.io/bahmni-docker/openmrs-db:${OPENMRS_DB_IMAGE_TAG:?}
     restart: always
     profiles: ["default","openmrs"]
     environment:
@@ -140,11 +140,11 @@ services:
       - "openmrsdbdata:/var/lib/mysql"
 
   bahmni-web:
-    image: bahmni/bahmni-web:${BAHMNI_WEB_IMAGE_TAG:?}
+    image: icapeth.jfrog.io/bahmni-docker/bahmni-web:${BAHMNI_WEB_IMAGE_TAG:?}
     profiles: ["default","openmrs"]
-    #volumes:
-      #- "${BAHMNI_CONFIG_PATH:?}/:/usr/local/apache2/htdocs/bahmni_config/"
-      #- "${BAHMNI_UI_DIST_PATH}/:/usr/local/apache2/htdocs/bahmni/"
+    volumes:
+      - "${BAHMNI_CONFIG_PATH:?}/:/usr/local/apache2/htdocs/bahmni_config/"
+      - "${BAHMNI_UI_DIST_PATH}/:/usr/local/apache2/htdocs/bahmni/"
 
 volumes:
   openelisdbdata:
