@@ -3,7 +3,7 @@ services:
   proxy:
     image: "bahmni/proxy:${PROXY_IMAGE_TAG:?}"
     volumes: 
-      - ../bahmni-proxy/resources/tls:/etc/tls
+      - ./resources/tls:/etc/tls
     ports:
       - "80:80"
       - "443:443"
