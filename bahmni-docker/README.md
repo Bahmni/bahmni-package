@@ -43,7 +43,12 @@ Once you have Docker installed, ensure that you are running the daemon. If you w
 Currently Bahmni has been tested on **docker-compose version 1.29.2**. If you are using older versions of docker-compose, please upgrade to the latest version. You can check docker compose version by running `docker-compose version`
 
 ## Adding SSL Certificate
-A self signed OpenSSL Certificate has been added and volume mounted. You can generate your own certificate and place the files inside `bahmni-docker/resources/tls` folder with same name as 'cert.pem' and 'key.pem' and restart proxy container and the changes would be reflected.
+A self signed OpenSSL Certificate has been generated and bundled in the `bahmni-proxy` image. You can generate your own certificate and volume mount the folder containing the certificate to `/etc/tls` by uncommenting the lines in `docker-compose.yml`. 
+```
+volumes: 
+   - ${CERTIFICATE_PATH}:/etc/tls
+```
+Replace the `${CERTIFICATE_PATH}` to the path at which the certificate and key file are present. Also make sure to name the certificate file as `cert.pem` and key file as `key.pem`
 
 
 # Profile Configuration
