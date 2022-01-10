@@ -7,6 +7,7 @@ services:
     - "${OPENMRS_UPLOAD_FILES_PATH}/patient_images:/home/bahmni/patient_images"
     - "${OPENMRS_UPLOAD_FILES_PATH}/document_images:/home/bahmni/document_images"
     - "${BAHMNI_APPS_PATH:?}/ui/app/:/usr/local/apache2/htdocs/bahmni"
+    - "${BAHMNI_CONFIG_PATH:?}/:/usr/local/apache2/htdocs/bahmni_config/"
 
     ports:
       - "80:80"
@@ -152,7 +153,7 @@ services:
     volumes:
       - "${BAHMNI_APPS_PATH:?}/ui/app/:/usr/local/apache2/htdocs/bahmni"
       #- "${BAHMNI_APPS_PATH:?}/ui/node_modules/@bower_components/:/usr/local/apache2/htdocs/bahmni/components"
-      #- "${BAHMNI_CONFIG_PATH:?}/:/usr/local/apache2/htdocs/bahmni_config/"
+      - "${BAHMNI_CONFIG_PATH:?}/:/usr/local/apache2/htdocs/bahmni_config/"
 
 volumes:
   openelisdbdata:
