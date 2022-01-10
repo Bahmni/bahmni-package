@@ -2,8 +2,11 @@ version: "3.7"
 services:
   proxy:
     image: "bahmni/proxy:${PROXY_IMAGE_TAG:?}"
+    # volumes: 
+    #   - ${CERTIFICATE_PATH}:/etc/tls
     ports:
       - "80:80"
+      - "443:443"
 
   openelis:
     profiles: ["default","openelis"]
