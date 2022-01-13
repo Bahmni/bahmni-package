@@ -1,62 +1,27 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
-
-<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
-   
-   <appender name="fileAppender" class="org.apache.log4j.RollingFileAppender">
-        <param name="File" value="/var/log/openmrs/openmrs.log"/>
-       <param name="MaxFileSize" value="10MB" />
-       <param name="MaxBackupIndex" value="10" />
-        <layout class="org.apache.log4j.PatternLayout">
-            <param name="ConversionPattern" value="%d{dd-MM-yyyy HH:mm:ss} [%-5p] %c{1} - %m%n"/>
-        </layout>
-    </appender>
-
-    <logger name="org.apache">
-        <level value="WARN" />
-    </logger>
-
-    <logger name="org.hibernate">
-        <level value="ERROR" />
-    </logger>
-
-    <logger name="net.sf.ehcache">
-        <level value="ERROR" />
-    </logger>
-
-    <logger name="org.springframework">
-        <level value="WARN" />
-    </logger>
-
-    <logger name="org.openmrs">
-        <level value="WARN" />
-    </logger>
-
-    <logger name="org.bahmni">
-        <level value="WARN" />
-    </logger>
-
-    <!--
-         This controls the LoggingAdvice class that wraps around the OpenMRS services
-         WARN == don't log anything special for the services
-         INFO == log all setters
-         DEBUG == log all setters & log all getters & log execution time
-     -->
-    <logger name="org.openmrs.api">
-        <level value="WARN" />
-    </logger>
-
-    <logger name="org.apache.fop">
-        <level value="ERROR" />
-    </logger>
-
-    <!-- Hide the useless MissingResourceException -->
-    <logger name="org.springframework.context.support.ResourceBundleMessageSource">
-        <level value="ERROR" />
-    </logger>
-
-    <root>
-        <level value="WARN" />
-        <appender-ref ref="fileAppender" />
-    </root>
-</log4j:configuration>
+<Configuration xmlns="http://logging.apache.org/log4j/2.0/">
+    <Appenders>
+        <RollingFile name="fileAppender"
+                     fileName="/var/log/openmrs/openmrs.log">
+            <PatternLayout pattern="%d{dd-MM-yyyy HH:mm:ss} [%-5p] %c{1} - %m%n"/>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="10MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="10"/>
+        </RollingFile>
+    </Appenders>
+    <Loggers>
+        <Logger name="org.apache" level ="WARN"/>
+        <Logger name="org.hibernate" level ="ERROR"/>
+        <Logger name="net.sf.ehcache" level ="ERROR"/>
+        <Logger name="org.springframework" level ="WARN"/>
+        <Logger name="org.openmrs" level ="WARN"/>
+        <Logger name="org.bahmni" level ="WARN"/>
+        <Logger name="oorg.openmrs.api" level ="WARN"/>
+        <Logger name="org.apache.fop" level ="ERROR"/>
+        <Logger name="org.springframework.context.support.ResourceBundleMessageSource" level ="ERROR"/>
+    </Loggers>
+    <Root level="WARN">
+        <AppenderRef ref="fileAppender" />
+    </Root>
+</Configuration>

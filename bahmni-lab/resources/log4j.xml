@@ -1,34 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
-<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
-    <appender name="file" class="org.apache.log4j.RollingFileAppender">
-        <param name="File" value="/var/log/bahmni-lab/bahmni-lab.log" />
-        <param name="MaxFileSize" value="10MB" />
-        <param name="MaxBackupIndex" value="10" />
-        <layout class="org.apache.log4j.PatternLayout">
-            <param name="ConversionPattern" value="%d %-5p [ELIS][%c{1}] %m%n" />
-        </layout>
-    </appender>
-
-    <appender name="EMAIL"  class="org.bahmni.util.EmailAppender">
-        <param name="BufferSize" value="512" />
-        <param name="SMTPHost" value="TO_BE_REPLACED_WITH_IMPLEMENTATION_SPECIFIC_DATA" />
-        <param name="From" value="TO_BE_REPLACED_WITH_IMPLEMENTATION_SPECIFIC_DATA" />
-        <param name="To" value="TO_BE_REPLACED_WITH_IMPLEMENTATION_SPECIFIC_DATA" />
-        <param name="Subject" value="OpenELIS Error : " />
-        <layout class="org.apache.log4j.PatternLayout">
-            <param name="ConversionPattern"
-                   value="[%t] - %d %p [%c] - %m%n" />
-        </layout>
-        <filter class="org.apache.log4j.varia.LevelRangeFilter">
-            <param name="LevelMin" value="ERROR"/>
-            <param name="LevelMax" value="FATAL"/>
-        </filter>
-    </appender>
-
-    <root>
-        <priority value="WARN"/>
-        <appender-ref ref="file"/>
-    </root>
-
-</log4j:configuration>
+<Configuration xmlns="https://logging.apache.org/log4j/2.x/">
+    <Appenders>
+        <RollingFile name="file" fileName="/var/log/bahmni-lab/bahmni-lab.log">
+            <PatternLayout>
+                <Pattern>%d %-5p [ELIS][%c{1}] %m%n</Pattern>
+            </PatternLayout>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="10MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="10"/>
+        </RollingFile>
+        <SMTP name="EMAIL" subject="OpenELIS Error : " to="TO_BE_REPLACED_WITH_IMPLEMENTATION_SPECIFIC_DATA" smtpPort="25" bufferSize="512"
+              from="TO_BE_REPLACED_WITH_IMPLEMENTATION_SPECIFIC_DATA" smtpHost="TO_BE_REPLACED_WITH_IMPLEMENTATION_SPECIFIC_DATA">
+            <PatternLayout>
+                <Pattern>[%t] - %d %p [%c] - %m%n</Pattern>
+            </PatternLayout>
+            <LevelRangeFilter minLevel="ERROR" maxLevel="FATAL" />
+        </SMTP>
+    </Appenders>
+    <Root level="WARN">
+        <AppenderRef ref="file"/>
+        <AppenderRef ref="EMAIL"/>
+    </Root>
+</Configuration>
