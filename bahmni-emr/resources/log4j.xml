@@ -17,7 +17,7 @@
         <Logger name="org.springframework" level ="WARN"/>
         <Logger name="org.openmrs" level ="WARN"/>
         <Logger name="org.bahmni" level ="WARN"/>
-        <Logger name="oorg.openmrs.api" level ="WARN"/>
+        <Logger name="org.openmrs.api" level ="WARN"/>
         <Logger name="org.apache.fop" level ="ERROR"/>
         <Logger name="org.springframework.context.support.ResourceBundleMessageSource" level ="ERROR"/>
     </Loggers>
