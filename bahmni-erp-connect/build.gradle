@@ -41,7 +41,7 @@ ospackage {
 
     into '/opt/bahmni-erp-connect'
 
-    from("${projectDir}/resources/log4j.xml") {
+    from("${projectDir}/resources/log4j2.xml") {
         fileMode = 0644
         createDirectoryEntry = true
         into 'bahmni-erp-connect/WEB-INF/classes'
