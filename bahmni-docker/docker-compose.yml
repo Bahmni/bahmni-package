@@ -159,7 +159,5 @@ volumes:
   odooappdata:
   openmrs-data:
   openmrsdbdata:
-  bahmniapps-data:
-  bahmniconfig-data:
   bahmni-patient-images:
   bahmni-document-images:
