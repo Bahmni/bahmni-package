@@ -2,9 +2,13 @@ version: "3.7"
 services:
   proxy:
     image: "bahmni/proxy:${PROXY_IMAGE_TAG:?}"
+    # volumes: 
+    #   - ${CERTIFICATE_PATH}:/etc/tls
+    #   - "${CLIENT_SIDE_LOGGING_PATH}:/usr/local/apache2/htdocs/client_side_logging"
     ports:
       - "80:80"
-
+      - "443:443"
+      
   openelis:
     profiles: ["default","openelis"]
     image: "bahmni/openelis:${OPENELIS_IMAGE_TAG:?[ERROR]}"

@@ -11,6 +11,8 @@ RUN cd /etc/ &&\
     mkdir tls &&\
     cd tls &&\
     openssl req -new -newkey rsa:4096 -days 365 -nodes -x509 -subj "/C=US/ST=Denial/L=Springfield/O=Dis/CN=localhost" -keyout key.pem  -out cert.pem
+
+
 RUN apk add --no-cache --virtual .build-deps \
 		apr-dev \
 		apr-util-dev \
@@ -21,6 +23,10 @@ RUN apk add --no-cache --virtual .build-deps \
 		py-pip \
 		tar \
         python3-dev 
-	
-RUN pip install mod_wsgi
 
+RUN mkdir -p /var/log/client-side-logs/ &&\
+	touch /var/log/client-side-logs/client-side.log &&\
+	chmod 777 /var/log/client-side-logs/client-side.log &&\
+	ln -s /usr/local/apache2/htdocs/client_side_logging /usr/lib/python3*/site-packages/ 
+
+RUN pip install Flask pyyaml==5.4.1 mod_wsgi
