@@ -6,8 +6,6 @@ services:
     #   - ${CERTIFICATE_PATH}:/etc/tls
     - "bahmni-patient-images:/home/bahmni/patient_images"
     - "bahmni-document-images:/home/bahmni/document_images"
-    - "bahmniapps-data:/usr/local/apache2/htdocs/bahmni"
-    - "bahmniconfig-data:/usr/local/apache2/htdocs/bahmni_config/"
 
     ports:
       - "80:80"

@@ -8,6 +8,7 @@ COPY resources/bahmni-logo.png /usr/local/apache2/htdocs/bahmni-logo.png
 COPY resources/favicon.png /usr/local/apache2/htdocs/favicon.png
 COPY resources/maintenance.html /usr/local/apache2/htdocs/maintenance.html
 COPY resources/src.jpeg /usr/local/apache2/htdocs/src.jpeg
+RUN mkdir /var/cache/mod_proxy
 RUN apk add --update openssl && \
     rm -rf /var/cache/apk/*
 RUN cd /etc/ &&\
