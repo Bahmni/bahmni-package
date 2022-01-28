@@ -148,10 +148,10 @@ services:
   bahmni-web:
     image: bahmni/bahmni-web:${BAHMNI_WEB_IMAGE_TAG:?}
     profiles: ["default","openmrs"]
-    volumes:
-      - "bahmniapps-data:/usr/local/apache2/htdocs/bahmni"
+    #volumes:
+      #- "${BAHMNI_APPS_PATH:?}/ui/app/:/usr/local/apache2/htdocs/bahmni"
       #- "${BAHMNI_APPS_PATH:?}/ui/node_modules/@bower_components/:/usr/local/apache2/htdocs/bahmni/components"
-      - "bahmniconfig-data:/usr/local/apache2/htdocs/bahmni_config/"
+      #- "${BAHMNI_CONFIG_PATH:?}/:/usr/local/apache2/htdocs/bahmni_config/"
 
 volumes:
   openelisdbdata:
