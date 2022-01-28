@@ -45,6 +45,15 @@ Currently Bahmni has been tested on **docker-compose version 1.29.2**. If you ar
 ## Client Side Logging
 Client side logging has been configured using python-flask. To build a fresh image, set the `CLIENT_SIDE_LOGGING_PATH` to the path containing [client_side_logging](https://github.com/Bahmni/client_side_logging) files and volume mount the same in [docker-compose.yml](https://github.com/Bahmni/bahmni-package/blob/master/bahmni-docker/docker-compose.yml#L7)
 
+## Adding SSL Certificate
+A self signed OpenSSL Certificate has been generated and bundled in the `bahmni-proxy` image. You can generate your own certificate and volume mount the folder containing the certificate to `/etc/tls` by uncommenting the lines in `docker-compose.yml`. 
+```
+volumes: 
+   - ${CERTIFICATE_PATH}:/etc/tls
+```
+Replace the `${CERTIFICATE_PATH}` to the path at which the certificate and key file are present. Also make sure to name the certificate file as `cert.pem` and key file as `key.pem`
+
+
 # Profile Configuration
 Bahmni docker-compose has been configured with profiles which allows you to run the required services. More about compose profiles can be found [here](https://docs.docker.com/compose/profiles/). The list of different profiles can be found below.
 
