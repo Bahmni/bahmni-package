@@ -42,9 +42,6 @@ Once you have Docker installed, ensure that you are running the daemon. If you w
 
 Currently Bahmni has been tested on **docker-compose version 1.29.2**. If you are using older versions of docker-compose, please upgrade to the latest version. You can check docker compose version by running `docker-compose version`
 
-## Client Side Logging
-Client side logging has been configured using python-flask. To build a fresh image, set the `CLIENT_SIDE_LOGGING_PATH` to the path containing [client_side_logging](https://github.com/Bahmni/client_side_logging) files and volume mount the same in [docker-compose.yml](https://github.com/Bahmni/bahmni-package/blob/master/bahmni-docker/docker-compose.yml#L7)
-
 ## Adding SSL Certificate
 A self signed OpenSSL Certificate has been generated and bundled in the `bahmni-proxy` image. You can generate your own certificate and volume mount the folder containing the certificate to `/etc/tls` by uncommenting the lines in `docker-compose.yml`. 
 ```
