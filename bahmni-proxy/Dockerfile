@@ -5,12 +5,17 @@ COPY resources/bahmni-proxy.conf /usr/local/apache2/conf/
 RUN echo "Include conf/bahmni-proxy.conf" >> /usr/local/apache2/conf/httpd.conf
 COPY resources/index.html /usr/local/apache2/htdocs/index.html
 COPY resources/systemdate.sh /usr/local/apache2/cgi-bin/systemdate
+COPY resources/bahmni-logo.png /usr/local/apache2/htdocs/bahmni-logo.png
+COPY resources/favicon.png /usr/local/apache2/htdocs/favicon.png
+COPY resources/maintenance.html /usr/local/apache2/htdocs/maintenance.html
+COPY resources/src.jpeg /usr/local/apache2/htdocs/src.jpeg
+RUN mkdir /var/cache/mod_proxy
 COPY resources/__init__.py \
 	 resources/client_side_logging.py \
 	 resources/client_side_logging.wsgi \
 	 resources/logging.yml \
 	 resources/RotatingLogger.py \
-	 /usr/local/apache2/htdocs/client_side_logging
+	 /usr/local/apache2/htdocs/client_side_logging/
 	
 RUN apk add --update openssl && \
     rm -rf /var/cache/apk/*

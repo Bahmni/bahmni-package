@@ -2,8 +2,11 @@ version: "3.7"
 services:
   proxy:
     image: "bahmni/proxy:${PROXY_IMAGE_TAG:?}"
-    # volumes: 
+    volumes: 
     #   - ${CERTIFICATE_PATH}:/etc/tls
+    - "bahmni-patient-images:/home/bahmni/patient_images"
+    - "bahmni-document-images:/home/bahmni/document_images"
+
     ports:
       - "80:80"
       - "443:443"
@@ -123,8 +126,8 @@ services:
       - "openmrs-data:/usr/local/tomcat/.OpenMRS/modules"
       #- "${BAHMNI_OPENMRS_MODULES_PATH:?}/:/usr/local/tomcat/.OpenMRS/modules/"
       #- "${BAHMNI_CONFIG_PATH:?}/:/etc/bahmni_config/"
-      - "${OPENMRS_UPLOAD_FILES_PATH}/patient_images:/home/bahmni/patient_images"
-      - "${OPENMRS_UPLOAD_FILES_PATH}/document_images:/home/bahmni/document_images"
+      - "bahmni-patient-images:/home/bahmni/patient_images"
+      - "bahmni-document-images:/home/bahmni/document_images"
     depends_on:
       - openmrsdb
 
@@ -156,3 +159,5 @@ volumes:
   odooappdata:
   openmrs-data:
   openmrsdbdata:
+  bahmni-patient-images:
+  bahmni-document-images:
