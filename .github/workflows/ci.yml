@@ -1,11 +1,11 @@
-name: Continuous Integration-v0.94
+name: Continuous Integration
 on:
   push:
     branches:
       - master
 env:
   ORG_NAME: Bahmni
-  EVENT_TYPE: bahmni-package-0.94-trigger
+  EVENT_TYPE: bahmni-package-trigger
 jobs:
   demo:
     name: Trigger Workflows
