@@ -9,7 +9,7 @@ rm -rf build/
 mkdir build/
 
 # Unzipping Resources
-#unzip -q -u -d build/default_config resources/default_config.zip
+unzip -q -u -d build/default_config resources/default_config.zip
 unzip -q -u -d build/bahmniapps resources/bahmniapps.zip
 
 #Building Docker images
