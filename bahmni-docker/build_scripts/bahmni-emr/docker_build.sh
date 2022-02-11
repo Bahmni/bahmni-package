@@ -7,7 +7,6 @@ set -xe
 # Packaging default config and distro snapshot to embed into default image
 # Working directory : default-config
 cp default_config.zip bahmni-package/bahmni-emr/resources/
-cp distro-${BAHMNI_VERSION}-SNAPSHOT-distro.zip bahmni-package/bahmni-emr/resources/
 
 # Using Database Backup data from emr-functional-tests repo
 gunzip -f -k bahmni-scripts/demo/db-backups/v0.92/openmrs_backup.sql.gz
