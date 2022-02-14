@@ -4,7 +4,7 @@ set -xe
 # Build Artifacts copied by CI to bahmni-package/bahmni-emr/resources
 # distro-${BAHMNI_VERSION}-SNAPSHOT.zip
 
-# Packaging default config and distro snapshot to embed into default image
+# Packaging default config to embed into default image
 # Working directory : default-config
 cp default_config.zip bahmni-package/bahmni-emr/resources/
 
