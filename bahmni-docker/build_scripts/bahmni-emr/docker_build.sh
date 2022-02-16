@@ -34,3 +34,5 @@ OPENMRS_IMAGE_TAG=${BAHMNI_VERSION}-${GITHUB_RUN_NUMBER}
 docker build -t bahmni/openmrs-db:fresh-${OPENMRS_IMAGE_TAG} -f docker/db.Dockerfile  . --no-cache
 docker build -t bahmni/openmrs-db:demo-${OPENMRS_IMAGE_TAG} -f docker/demodb.Dockerfile  . --no-cache
 docker build -t bahmni/openmrs:${OPENMRS_IMAGE_TAG} -f docker/Dockerfile  . --no-cache
+
+## Added new line!

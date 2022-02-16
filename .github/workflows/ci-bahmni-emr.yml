@@ -3,6 +3,7 @@ on:
   push:
     paths:
     - 'bahmni-emr/**'
+    - 'bahmni-docker/build_scripts/bahmni-emr/**'
 env:
   ORG_NAME: Bahmni
   EVENT_TYPE: bahmni-emr-package-trigger
