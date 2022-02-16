@@ -105,7 +105,7 @@ services:
         condition: service_healthy
 
   openmrs:
-    profiles: ["default","openmrs"]
+    profiles: ["default","openmrs","implementer-interface"]
     image: bahmni/openmrs:${OPENMRS_IMAGE_TAG:?}
     environment:
       DB_DATABASE: ${OPENMRS_DB_NAME:?}
@@ -134,7 +134,7 @@ services:
   openmrsdb:
     image: bahmni/openmrs-db:${OPENMRS_DB_IMAGE_TAG:?}
     restart: always
-    profiles: ["default","openmrs"]
+    profiles: ["default","openmrs","implementer-interface"]
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?}
       MYSQL_DATABASE: ${OPENMRS_DB_NAME:?}
@@ -156,6 +156,8 @@ services:
   implementer-interface:
     image: bahmni/implementer-interface:${IMPLEMENTER_INTERFACE_IMAGE_TAG:?}
     profiles: ["default","implementer-interface"]
+    depends_on:
+      - openmrs
 
 volumes:
   openelisdbdata:
