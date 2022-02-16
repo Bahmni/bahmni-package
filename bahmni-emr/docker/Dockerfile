@@ -20,5 +20,6 @@ RUN chmod +x /usr/local/tomcat/bahmni_startup.sh
 # Removing FHIR OMOD that comes bundled with OMRS base image
 RUN unzip -o /usr/local/tomcat/webapps/openmrs.war -d /usr/local/tomcat/webapps/openmrs/
 RUN rm /usr/local/tomcat/webapps/openmrs/WEB-INF/bundledModules/fhir-*.omod
+RUN echo "Hello, World!"
 
 CMD ["./bahmni_startup.sh"]
