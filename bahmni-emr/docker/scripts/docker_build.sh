@@ -6,8 +6,7 @@ set -xe
 
 # Packaging default config to embed into default image
 # Working directory : default-config
-cd default-config && scripts/package.sh && cd ..
-cp default-config/target/default_config.zip bahmni-package/bahmni-emr/resources/
+cp default_config.zip bahmni-package/bahmni-emr/resources/
 
 # Using Database Backup data from emr-functional-tests repo
 gunzip -f -k bahmni-scripts/demo/db-backups/v0.92/openmrs_backup.sql.gz
@@ -20,6 +19,9 @@ ATOMFEED_CLIENT_VERSION=${ATOMFEED_CLIENT_VERSION:-1.9.4}
 LIQUIBASE_VERSION=${LIQUIBASE_VERSION:-2.0.5}
 curl -L -o resources/atomfeed-client-${ATOMFEED_CLIENT_VERSION}.jar "https://oss.sonatype.org/content/repositories/releases/org/ict4h/atomfeed-client/${ATOMFEED_CLIENT_VERSION}/atomfeed-client-${ATOMFEED_CLIENT_VERSION}.jar"
 curl -L -o resources/liquibase-core-${LIQUIBASE_VERSION}.jar "https://oss.sonatype.org/content/repositories/releases/org/liquibase/liquibase-core/${LIQUIBASE_VERSION}/liquibase-core-${LIQUIBASE_VERSION}.jar"
+
+#Create build directory
+mkdir build
 
 # Unzipping Bahmni OMODs
 unzip -q -u -j -d build/openmrs-modules resources/distro-${BAHMNI_VERSION}-SNAPSHOT-distro.zip
