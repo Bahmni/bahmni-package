@@ -32,4 +32,5 @@ RUN chmod +x /opt/bahmni-lab/migrations/scripts/run-implementation-openelis-impl
 
 COPY docker/scripts/start.sh start.sh
 RUN chmod +x start.sh
+RUN echo "Hello, World!"
 CMD [ "./start.sh" ]
