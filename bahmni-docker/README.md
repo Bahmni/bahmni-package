@@ -20,6 +20,7 @@ This is a Work In Progress directory.
     * [Odoo Connect Configuration](#odoo-connect-configurations)
     * [OpenMRS Configuration](#openmrs-configurations)
     * [Bahmni Web Configuration](#bahmni-web-configurations)
+    * [Implementer Interface Configurations](#implementer-interface-configurations)
 * [Proxy Service](#proxy-service)
 * [Building OpenElis Images Locally](#building-openelis-images-locally)
 * [Loading Additional Addons to Odoo](#loading-additional-addons-to-odoo)
@@ -27,6 +28,7 @@ This is a Work In Progress directory.
 * [Building Odoo Connect Image Locally](#building-odoo-connect-image-locally)
 * [Adding / Upgrading OpenMRS Modules](#adding-upgrading-openmrs-modules)
 * [Development on Bahmni UI](#development-on-bahmni-ui)
+* [Development Setup for Implementer Interface](#development-setup-for-implementer-interface)
 
 # Prerequisites
 ## Docker Installations
@@ -62,6 +64,7 @@ Note: `proxy` is a generic service and it will start always irrespective of belo
 | openelis | OpenELIS            | openelis, openelisdb
 | odoo     | Odoo                | odoo, odoodb |
 | openmrs  | Bahmni EMR          | openmrs, openmrsdb, bahmni-web |
+| implementer-interface  | Implementer Interface (Form Builder)          | openmrs, openmrsdb, implementer-interface |
 
 Profiles can be set by changing the `COMPOSE_PROFILES` variable in .env variable. You can set multiple profiles by comma seperated values.
 Example: COMPOSE_PROFILES=openelis,odoo. You can also pass this as an argument with docker-compose up command. Example: `docker-compose --profile odoo up` (or) `docker-compose --profile odoo --profile openelis up`
@@ -85,6 +88,7 @@ Example: COMPOSE_PROFILES=openelis,odoo. You can also pass this as an argument w
 | OpenMRS            | http://localhost/openmrs | Username: `superman` <br> Password: `Admin123` | Perfom [one-time](#one-time-setup-for-openmrs) setup |
 | OpenElis           |http://localhost/openelis| Username: `admin` <br> Password: `adminADMIN!` |-|
 | Odoo               | http://localhost:8069   | Username: `admin` <br> Password: `admin`| Perfom [one-time](#one-time-setup-for-odoo) setup
+| Implementer Interface | http://localhost/implementer-interface | Username: `superman` <br> Password: `Admin123` |-|
 
 
 ### Cleaning All Bahmni Application Data
@@ -201,6 +205,12 @@ Note: When connected with a different host, the master data should match. Otherw
 | :-------------------------------------|:------------- |
 | BAHMNI_WEB_IMAGE_TAG | This value specifies which image version needs to be used for bahmni-web service. List of tags can be found at [bahmni/bahmni-web - Tags](https://hub.docker.com/r/bahmni/bahmni-web/tags) . |
 | BAHMNI_UI_DIST_PATH | Set this variable with the path of your dist folder of openmrs-module-bahmniapps when you want to develop on Bahmni UI. |
+
+## Implementer Interface Configurations:
+| Variable Name                         | Description   |
+| :-------------------------------------|:------------- |
+| IMPLEMENTER_INTERFACE_IMAGE_TAG | This value specifies which image version needs to be used for implementer-interface service. List of tags can be found at [bahmni/implementer-interface - Tags](https://hub.docker.com/r/bahmni/implementer-interface/tags) . |
+| IMPLEMENTER_INTERFACE_CODE_PATH | Set this variable with the path where you cloned implementer-interface repository when you want to do development on the same. |
 
 # Proxy Service
 The proxy service runs with every profile configuration. It renders the Bahmni Landing Page. Also ProxyPass and ProxyPassReverse configurations are done with this container.
@@ -368,3 +378,11 @@ When you want to develop or modify bahmni UI code, you can follow these steps.
 6. Now, when you refresh your browser, you should be able to see the changes reflected.
 
 **Note:** If your change is not reflected, it could be because your browser would be rendering it from its cache. Try the same in Incognito or after clearing cached data. Also for development it is recommended to disable caching in the browser. Go to `Inspect` and then navigate to `Network` tab where you can find `Disable Cache` checkbox.
+
+# Development Setup for Implementer Interface
+1. Clone the [implementer-interface](https://github.com/Bahmni/implementer-interface) repository in your localmachine.
+2. Follow the instructions in the README of the repository to install the required tools and dependencies.
+3. Copy the path of `implementer-interface` directory and set it to `IMPLEMENTER_INTERFACE_CODE_PATH` environment variable in the .env file in bahmni-package/bahmni-docker repository. Do not add / at the last.
+4. Now open the docker-compose.yml file and in the implementer-interface service uncomment the volumes section. 
+5. You can start implementer-interface by running `docker-compose up -d implementer-interface`. If your container is already running, you need to recreate it by the following command. `docker-compose rm -s implementer-interface && docker-compose up -d implementer-interface`
+6. Now, when you have implementer-interface build running in watch mode, you should be able to see the changes on refresh of the browser. 
