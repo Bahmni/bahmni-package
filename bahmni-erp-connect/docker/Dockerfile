@@ -17,7 +17,7 @@ COPY resources/openerp-atomfeed-service.war /etc/bahmni-erp-connect/openerp-atom
 RUN mkdir -p ${WAR_DIRECTORY}
 RUN cd ${WAR_DIRECTORY} && jar xvf /etc/bahmni-erp-connect/openerp-atomfeed-service.war
 
-COPY resources/log4j.xml ${WAR_DIRECTORY}/WEB-INF/classes/
+COPY resources/log4j2.xml ${WAR_DIRECTORY}/WEB-INF/classes/
 COPY docker/templates/erp-atomfeed.properties.template /opt/bahmni-erp-connect/etc/erp-atomfeed.properties.template
 COPY docker/scripts/run-liquibase.sh /opt/bahmni-erp-connect/etc/run-liquibase.sh
 RUN chmod +x /opt/bahmni-erp-connect/etc/run-liquibase.sh

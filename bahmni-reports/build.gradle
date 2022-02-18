@@ -41,7 +41,7 @@ ospackage {
 
     into '/opt/bahmni-reports'
 
-    from("${projectDir}/resources/log4j.properties") {
+    from("${projectDir}/resources/log4j2.properties") {
         fileMode = 0644
         createDirectoryEntry = true
         into 'bahmni-reports/WEB-INF/classes'

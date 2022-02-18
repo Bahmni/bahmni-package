@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Configuration xmlns="http://logging.apache.org/log4j/2.0/">
+    <Appenders>
+        <RollingFile name="fileAppender"
+                     fileName="/var/log/openmrs/openmrs.log">
+            <PatternLayout pattern="%d{dd-MM-yyyy HH:mm:ss} [%-5p] %c{1} - %m%n"/>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="10MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="10"/>
+        </RollingFile>
+    </Appenders>
+    <Loggers>
+        <Logger name="org.apache" level ="WARN"/>
+        <Logger name="org.hibernate" level ="ERROR"/>
+        <Logger name="net.sf.ehcache" level ="ERROR"/>
+        <Logger name="org.springframework" level ="WARN"/>
+        <Logger name="org.openmrs" level ="WARN"/>
+        <Logger name="org.bahmni" level ="WARN"/>
+        <Logger name="org.openmrs.api" level ="WARN"/>
+        <Logger name="org.apache.fop" level ="ERROR"/>
+        <Logger name="org.springframework.context.support.ResourceBundleMessageSource" level ="ERROR"/>
+    </Loggers>
+    <Root level="WARN">
+        <AppenderRef ref="fileAppender" />
+    </Root>
+</Configuration>

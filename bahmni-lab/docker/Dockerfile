@@ -20,7 +20,7 @@ RUN apk add gettext
 
 COPY docker/templates/hibernate.cfg.xml.template /etc/bahmni-lab/
 COPY docker/templates/atomfeed.properties.template /etc/bahmni-lab/
-COPY resources/log4j.xml ${WAR_DIRECTORY}/WEB-INF/classes/
+COPY resources/log4j2.xml ${WAR_DIRECTORY}/WEB-INF/classes/
 
 COPY build/migrations/OpenElis/db_backup/ /opt/bahmni-lab/migrations/db_backup/
 COPY build/migrations/OpenElis/liquibase/ /opt/bahmni-lab/migrations/liquibase/
