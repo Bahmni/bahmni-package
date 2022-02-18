@@ -1,0 +1,21 @@
+
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration xmlns="http://logging.apache.org/log4j/2.0/">
+    <Appenders>
+        <RollingFile name="fileAppender"
+                     fileName="/var/log/bahmni-erp-connect/bahmni-erp-connect.log">
+            <PatternLayout pattern="%d %-5p [openerp-atomfeed-service] [%c] %m%n"/>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="10MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="10"/>
+        </RollingFile>
+    </Appenders>
+
+    <Loggers>
+        <Logger name="org.springframework" level ="WARN"/>
+    </Loggers>
+    <Root level="WARN">
+        <AppenderRef ref="fileAppender" />
+    </Root>
+</Configuration>
