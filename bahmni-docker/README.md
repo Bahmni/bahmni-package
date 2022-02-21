@@ -32,7 +32,7 @@ This is a Work In Progress directory.
 ## Docker Installations
 You can install Docker from [here](https://docs.docker.com/engine/install/). Choose the appropriate installers for your host machine and follow the instructions mentioned for the host platform.  MacOS: You can get the dmg file for Docker [here](https://store.docker.com/editions/community/docker-ce-desktop-mac). 
 
-Note: If you are using Docker Desktop for Mac / Docker Desktop for Windows , it is recommended to increase the Memory resource to **at-least 4GB**. Please find the reference for [Mac](https://docs.docker.com/desktop/mac/) / [Windows](https://docs.docker.com/desktop/windows/).
+Note: If you are using Docker Desktop for Mac / Docker Desktop for Windows , it is recommended to increase the Memory resource to **at-least 8GB**. Please find the reference for [Mac](https://docs.docker.com/desktop/mac/) / [Windows](https://docs.docker.com/desktop/windows/).
 
 Once you have Docker installed, ensure that you are running the daemon. If you want to tune and configure docker, please find detailed information [here](https://docs.docker.com/engine/admin/)
 
