@@ -19,6 +19,8 @@ jobs:
           path: client_side_logging
       - name: Checkout bahmni-package
         uses: actions/checkout@v2
+        with:
+          path: bahmni-package
       - name: Build Docker Image
-        run: ./bahmni-proxy/scripts/docker_build.sh
+        run: cd bahmni-package && ./bahmni-proxy/scripts/docker_build.sh
 
