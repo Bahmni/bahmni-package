@@ -3,7 +3,6 @@ on:
   push:
     branches:
       - master
-      - BAH-1416
     paths:
       - 'bahmni-proxy/**'
       - '.github/workflows/proxy_image_build.yml'
