@@ -1,4 +1,4 @@
-name: Build and Publish Proxy Docker Image
+name: Build and Publish
 on:
   push:
     branches:
@@ -10,16 +10,16 @@ env:
   BAHMNI_VERSION: 0.94
 
 jobs:
-  build-publish:
-    name: Build and Publish
+  docker-build-publish:
+    name: Docker Build & Publish
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout client_side_logging
+      - name: Copy logging related resources for build scripts
         uses: actions/checkout@v2
         with:
           repository: Bahmni/client_side_logging
           path: client_side_logging
-      - name: Checkout bahmni-package
+      - name: Checkout bahmni_package to get build/publish scripts
         uses: actions/checkout@v2
         with:
           path: bahmni-package
