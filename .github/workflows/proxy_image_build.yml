@@ -1,0 +1,23 @@
+name: Build and Publish Proxy Docker Image
+on:
+  push:
+    branches:
+      - master
+      - BAH-1416
+    paths:
+      - 'bahmni-proxy/**'
+jobs:
+  build-publish:
+    name: Build and Publish
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout client_side_logging
+        uses: actions/checkout@v2
+        with:
+          repository: Bahmni/client_side_logging
+          path: client_side_logging
+      - name: Checkout bahmni-package
+        uses: actions/checkout@v2
+      - name: Build Docker Image
+        run: ./bahmni-proxy/scripts/docker_build.sh
+
