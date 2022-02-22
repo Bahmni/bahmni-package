@@ -7,6 +7,9 @@ on:
     paths:
       - 'bahmni-proxy/**'
       - '.github/workflows/proxy_image_build.yml'
+env:
+  BAHMNI_VERSION: 0.94
+
 jobs:
   build-publish:
     name: Build and Publish
