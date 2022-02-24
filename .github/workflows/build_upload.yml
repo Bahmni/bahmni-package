@@ -1,9 +1,8 @@
-name: Build and Upload
+name: Build and upload artifact
 on:
   push:
     branches:
       - master
-      - BAH-1416
     paths:
       - "core/**"
 
@@ -14,6 +13,7 @@ env:
 
 jobs:
   build-upload-artifact:
+    name: Build and upload embedded Tomcat Server artifact
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
