@@ -14,20 +14,16 @@ jobs:
     name: Docker Build & Publish
     runs-on: ubuntu-latest
     steps:
-      - name: Copy logging related resources for build scripts
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v2
+      - name: Login to DockerHub
+        uses: docker/login-action@v1 
         with:
-          repository: Bahmni/client_side_logging
-          path: client_side_logging
-      - name: Checkout bahmni_package to get build/publish scripts
-        uses: actions/checkout@v2
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_TOKEN }}
+      - name: Docker Build and push
+        uses: docker/build-push-action@v2
         with:
-          path: bahmni-package
-      - name: Build Docker Image
-        run: cd bahmni-package && ./bahmni-proxy/scripts/docker_build.sh
-      - name: Publish Docker Image
-        run: cd bahmni-package && ./bahmni-proxy/scripts/docker_publish.sh
-        env:
-          DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
-          DOCKER_HUB_TOKEN: ${{ secrets.DOCKER_HUB_TOKEN}}
+          context: bahmni-proxy/
+          push: true
+          tags: bahmni/proxy:${{env.BAHMNI_VERSION}}-${{github.run_number}},bahmni/proxy:latest
 
