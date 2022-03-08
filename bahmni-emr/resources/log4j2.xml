@@ -1,27 +1,37 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Configuration xmlns="http://logging.apache.org/log4j/2.0/">
+<Configuration xmlns="http://logging.apache.org/log4j/2.0/config">
     <Appenders>
-        <RollingFile name="fileAppender"
-                     fileName="/var/log/openmrs/openmrs.log">
-            <PatternLayout pattern="%d{dd-MM-yyyy HH:mm:ss} [%-5p] %c{1} - %m%n"/>
+        <Console name="CONSOLE" target="SYSTEM_OUT">
+            <PatternLayout pattern="%p - %C{1}.%M(%L) |%d{ISO8601}| %m%n" />
+        </Console>
+        <RollingFile name="DEBUGGING_FILE_APPENDER" fileName="${sys:LOGS_DIR}/openmrs.log" filePattern="${sys:LOGS_DIR}/openmrs.%i.log.gz" append="true">
+            <PatternLayout pattern="%d{ABSOLUTE} %-5p [%c{1}] %m%n" />
             <Policies>
-                <SizeBasedTriggeringPolicy size="10MB"/>
+                <OnStartupTriggeringPolicy />
+                <SizeBasedTriggeringPolicy size="10 MB" />
             </Policies>
-            <DefaultRolloverStrategy max="10"/>
+            <DefaultRolloverStrategy max="5" />
         </RollingFile>
+        <Memory name="MEMORY_APPENDER" bufferSize="200">
+            <PatternLayout pattern="%p - %C{1}.%M(%L) |%d{ISO8601}| %m%n" />
+        </Memory>
     </Appenders>
     <Loggers>
-        <Logger name="org.apache" level ="WARN"/>
-        <Logger name="org.hibernate" level ="ERROR"/>
-        <Logger name="net.sf.ehcache" level ="ERROR"/>
-        <Logger name="org.springframework" level ="WARN"/>
-        <Logger name="org.openmrs" level ="WARN"/>
+        <Logger name="org.apache" level="WARN" />
+        <Logger name="org.hibernate" level="ERROR" />
+        <Logger name="net.sf.ehcache" level="ERROR" />
+        <Logger name="org.springframework" level="WARN" />
+        <Logger name="org.openmrs" level="WARN" />
         <Logger name="org.bahmni" level ="WARN"/>
-        <Logger name="org.openmrs.api" level ="WARN"/>
-        <Logger name="org.apache.fop" level ="ERROR"/>
-        <Logger name="org.springframework.context.support.ResourceBundleMessageSource" level ="ERROR"/>
+        <Logger name="liquibase" level="INFO" />
+        <Logger name="org.openmrs.api" level="WARN" />
+        <Logger name="org.apache.fop" level="ERROR" />
+        <Logger name="org.springframework.context.support.ResourceBundleMessageSource" level="ERROR" />
+        <Logger name="org.springframework.beans.factory.support.DefaultListableBeanFactory" level="ERROR" />
+        <Root level="WARN">
+            <AppenderRef ref="CONSOLE" />
+            <AppenderRef ref="MEMORY_APPENDER" />
+            <AppenderRef ref="DEBUGGING_FILE_APPENDER" />
+        </Root>
     </Loggers>
-    <Root level="WARN">
-        <AppenderRef ref="fileAppender" />
-    </Root>
 </Configuration>
