@@ -159,7 +159,7 @@ services:
     #- "${BAHMNI_CONFIG_PATH:?}/:/usr/local/apache2/htdocs/bahmni_config/"
 
   reports:
-    image: bahmni/bahmni-reports:0.94-1
+    image: bahmni/reports:${REPORTS_IMAGE_TAG:?}
     profiles: ["default","reports"]
     environment:
       OPENMRS_DB_HOST: ${OPENMRS_DB_HOST:?}
