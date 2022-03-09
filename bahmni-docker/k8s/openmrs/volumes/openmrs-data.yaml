@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  labels:
+    name: openmrs-data-pvc
+  name: openmrs-data-pvc
+spec:
+  storageClassName: standard
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 2Gi
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: openmrs-data-pv
+spec:
+  storageClassName: standard
+  claimRef:
+    name: openmrs-data-pvc
+  capacity:
+    storage: 2Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: '/mnt/bahmni/openmrs-data'

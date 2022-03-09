@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: bahmni-web
+    environment: dev
+  name: bahmni-web
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bahmni-web
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: bahmni-web
+        environment: dev
+    spec:
+      containers:
+        - image: bahmni/bahmni-web:latest
+          name: bahmni-web
+          resources: {}
+          volumeMounts:
+            # - mountPath: /usr/local/apache2/htdocs/bahmni
+            #   name: bahmni
+            # - mountPath: /usr/local/apache2/htdocs/bahmni/components
+            #   name: bahmni-components
+            - mountPath: /usr/local/apache2/htdocs/bahmni/mf
+              name: bahmni-mf
+      restartPolicy: Always
+      volumes:
+        # - name: bahmni
+        #   persistentVolumeClaim:
+        #     claimName: bahmni-pvc
+        # - name: bahmni-components
+        #   persistentVolumeClaim:
+        #     claimName: bahmni-components-pvc
+        - name: bahmni-mf
+          persistentVolumeClaim:
+            claimName: bahmni-mf-pvc

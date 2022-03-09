@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  labels:
+    name: openmrs-patient-images-pvc
+  name: openmrs-patient-images-pvc
+spec:
+  storageClassName: standard
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 2Gi
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: openmrs-patient-images-pv
+spec:
+  storageClassName: standard
+  claimRef:
+    name: openmrs-patient-images-pvc
+  capacity:
+    storage: 2Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: '/mnt/bahmni/openmrs-patient-images'

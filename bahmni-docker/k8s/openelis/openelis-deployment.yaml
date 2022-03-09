@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: openelis
+    environment: dev
+  name: openelis
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: openelis
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: openelis
+        environment: dev
+    spec:
+      containers:
+        - env:
+            - name: OPENELIS_DB_SERVER
+              value: openelisdb
+            - name: OPENMRS_ATOMFEED_PASSWORD
+              value: test
+            - name: OPENMRS_ATOMFEED_USER
+              value: admin
+            - name: OPENMRS_HOST
+              value: openmrs
+            - name: OPENMRS_PORT
+              value: '8080'
+          image: bahmni/openelis:0.94-23
+          name: openelis
+          ports:
+            - containerPort: 8052
+          resources: {}
+      restartPolicy: Always

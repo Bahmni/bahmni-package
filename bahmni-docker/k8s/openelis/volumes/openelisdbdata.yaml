@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  labels:
+    name: openelisdbdata-pvc
+  name: openelisdbdata-pvc
+spec:
+  storageClassName: standard
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 2Gi
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: openelisdbdata-pv
+spec:
+  storageClassName: standard
+  claimRef:
+    name: openelisdbdata-pvc
+  capacity:
+    storage: 2Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: '/mnt/bahmni/openelisdbdata'

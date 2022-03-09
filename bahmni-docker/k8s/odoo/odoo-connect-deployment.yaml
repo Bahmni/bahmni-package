@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: odoo-connect
+    environment: dev
+  name: odoo-connect
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: odoo-connect
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: odoo-connect
+        environment: dev
+    spec:
+      containers:
+        - env:
+            - name: ODOO_ATOMFEED_PASSWORD
+              value: admin
+            - name: ODOO_ATOMFEED_USER
+              value: admin
+            - name: ODOO_DB_PASSWORD
+              value: odoo
+            - name: ODOO_DB_SERVER
+              value: odoodb
+            - name: ODOO_DB_USERNAME
+              value: odoo
+            - name: ODOO_HOST
+              value: odoo
+            - name: ODOO_PORT
+              value: '8069'
+            - name: OPENELIS_ATOMFEED_PASSWORD
+              value: AdminadMIN*
+            - name: OPENELIS_ATOMFEED_USER
+              value: atomfeed
+            - name: OPENELIS_HOST
+              value: openelis
+            - name: OPENELIS_PORT
+              value: '8052'
+            - name: OPENMRS_ATOMFEED_PASSWORD
+              value: test
+            - name: OPENMRS_ATOMFEED_USER
+              value: admin
+            - name: OPENMRS_HOST
+              value: openmrs
+            - name: OPENMRS_PORT
+              value: '8080'
+          image: bahmni/odoo-connect:0.94-19
+          name: odoo-connect
+          resources: {}
+      restartPolicy: Always
