@@ -1,22 +1,32 @@
-### Start minikube with decent resources
+# Bahmni on Kubernetes
+
+Bahmni on Kubernetes can be setup locally using minikube.
+
+## Prerequisites:
+1. Install [docker](https://docs.docker.com/engine/install/)
+2. Install [minikube](https://minikube.sigs.k8s.io/docs/start/) >=1.25.2
+3. Increase resources of your docker to a memory of atleast 8GB. ([Mac](https://docs.docker.com/desktop/mac/) / [Windows](https://docs.docker.com/desktop/windows/))
+
+Note: You can also run minikube without using docker. Look [here](https://minikube.sigs.k8s.io/docs/drivers/).
+## Start minikube with decent resources
 
 ```
-minikube start --driver=docker --memory 5000 --cpus=4
-
+minikube start --driver=docker --memory 7000 --cpus=4 
+```
 you should see
-
+```
 😄  minikube v1.25.2 on Darwin 10.15.7
 ✨  Using the docker driver based on user configuration
 👍  Starting control plane node minikube in cluster minikube
 🚜  Pulling base image ...
-🔥  Creating docker container (CPUs=4, Memory=5000MB) ...\
+🔥  Creating docker container (CPUs=4, Memory=7000MB) ...\
 ```
 
-### Enable Ingress
+## Enable Ingress
 
 `minikube addons enable ingress`
 
-### Add nginx ingress entry to etc host
+## Add nginx ingress entry to etc host
 
 ```
 sudo vi /etc/hosts
@@ -25,23 +35,43 @@ sudo vi /etc/hosts
 127.0.0.1 bahmni.k8s
 ```
 
-### Start the tunnel for minicube
+## Start the tunnel for minikube
 
 `minikube tunnel --alsologtostderr -v=1`
 
-### Create ingress
+Note: Keep this process running
+## Create ingress
 
-`kubectl apply -f ingress.yaml`
+``` 
+kubectl apply -f bahmni-ingress.yaml 
+```
 
-### Provision hello and echo service
-
-`kubectl apply -f hello.yaml -f echo.yaml`
-
-### Test
+## Provision All Bahmni Resources
 
 ```
-curl bahmni.k8s/echo
+kubectl apply -R -f . 
+```
 
-curl bahmni.k8s/hello
+## Provision Specific Resources
 
 ```
+kubectl apply -R -f <directory_of_resource>/
+```
+
+Example: `kubectl apply -R -f openmrs/`
+
+## View resources
+
+```
+ kubectl get all
+ ```
+## Accessing Application
+Once the pods and servies are running you can access it from the browser on 
+1. Bahmni EMR --> http://bahmni.k8s/bahmni/home
+2. OpenMRS --> http://bahmni.k8s/openmrs
+3. OpenELIS --> http://bahmni.k8s/openelis
+### References: 
+1. [kubectl Commands cheatsheet](https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands)
+2. [Minikube Docs](https://minikube.sigs.k8s.io/docs/start/)
+3. [NGINX Ingress](https://kubernetes.github.io/ingress-nginx/)
+4. [Kubernetes API Config](https://kubernetes.io/docs/reference/kubernetes-api/)
