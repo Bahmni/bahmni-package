@@ -1,0 +1,69 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: openmrs
+    environment: dev
+  name: openmrs
+spec:
+  selector:
+    matchLabels:
+      app: openmrs
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: openmrs
+        environment: dev
+    spec:
+      containers:
+        - env:
+            - name: DB_AUTO_UPDATE
+              value: 'true'
+            - name: DB_CREATE_TABLES
+              value: 'false'
+            - name: DB_DATABASE
+              value: openmrs
+            - name: DB_HOST
+              value: openmrsdb
+            - name: DB_PASSWORD
+              value: password
+            - name: DB_USERNAME
+              value: openmrs-user
+            - name: DEBUG
+              value: 'true'
+            - name: MODULE_WEB_ADMIN
+              value: 'false'
+            - name: OPENELIS_ATOMFEED_PASSWORD
+              value: AdminadMIN*
+            - name: OPENELIS_ATOMFEED_USER
+              value: atomfeed
+            - name: OPENELIS_HOST
+              value: openelis
+            - name: OPENELIS_PORT
+              value: '8052'
+          image: bahmni/openmrs:latest
+          name: openmrs
+          ports:
+            - containerPort: 8080
+          resources: {}
+          volumeMounts:
+            - mountPath: /usr/local/tomcat/.OpenMRS/modules
+              name: openmrs-data
+            - mountPath: /home/bahmni/patient_images
+              name: openmrs-patient-images
+            - mountPath: /home/bahmni/document_images
+              name: openmrs-document-images
+      restartPolicy: Always
+      volumes:
+        - name: openmrs-data
+          persistentVolumeClaim:
+            claimName: openmrs-data-pvc
+        - name: openmrs-patient-images
+          persistentVolumeClaim:
+            claimName: openmrs-patient-images-pvc
+        - name: openmrs-document-images
+          persistentVolumeClaim:
+            claimName: openmrs-document-images-pvc

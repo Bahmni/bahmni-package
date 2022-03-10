@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: odoo
+    environment: dev
+  name: odoo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: odoo
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: odoo
+        environment: dev
+    spec:
+      containers:
+        - env:
+            - name: HOST
+              value: odoodb
+            - name: PASSWORD
+              value: odoo
+            - name: USER
+              value: odoo
+          image: bahmni/odoo-10:0.94-20
+          name: odoo
+          ports:
+            - containerPort: 8069
+          resources: {}
+          volumeMounts:
+            - mountPath: /var/lib/odoo
+              name: odooappdata
+            - mountPath: /mnt/extra-addons
+              name: odoo-extra-addons
+      restartPolicy: Always
+      volumes:
+        - name: odooappdata
+          persistentVolumeClaim:
+            claimName: odooappdata-pvc
+        - name: odoo-extra-addons
+          persistentVolumeClaim:
+            claimName: odoo-extra-addons-pvc

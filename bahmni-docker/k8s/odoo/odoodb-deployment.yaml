@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: odoodb
+    environment: dev
+  name: odoodb
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: odoodb
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: odoodb
+        environment: dev
+    spec:
+      containers:
+        - env:
+            - name: POSTGRES_DB
+              value: postgres
+            - name: POSTGRES_PASSWORD
+              value: odoo
+            - name: POSTGRES_USER
+              value: odoo
+          image: bahmni/odoo-10-db:demo-0.94-20
+          livenessProbe:
+            exec:
+              command:
+                - pg_isready -h localhost -U odoo
+            periodSeconds: 10
+            timeoutSeconds: 5
+          name: odoodb
+          ports:
+            - containerPort: 5432
+          resources: {}
+          volumeMounts:
+            - mountPath: /resources/db-dump
+              name: db-dump
+            - mountPath: /var/lib/postgresql/data
+              name: odoo-db-data
+      restartPolicy: Always
+      volumes:
+        - name: db-dump
+          persistentVolumeClaim:
+            claimName: odoo-db-dump-pvc
+        - name: odoo-db-data
+          persistentVolumeClaim:
+            claimName: odoo-db-data-pvc

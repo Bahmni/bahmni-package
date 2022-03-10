@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: proxy
+    environment: dev
+  name: proxy
+spec:
+  # Match the pods being deployed using the label. It does not match automatically from template
+  selector:
+    matchLabels:
+      app: proxy
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: proxy
+        environment: dev
+    spec:
+      containers:
+        - image: bahmni/proxy:0.94-1
+          name: proxy
+          ports:
+            - containerPort: 80
+            - containerPort: 443
+          resources: {}
+      restartPolicy: Always
+status: {}
