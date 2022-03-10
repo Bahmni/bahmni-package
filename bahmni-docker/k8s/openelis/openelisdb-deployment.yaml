@@ -26,14 +26,7 @@ spec:
               value: postgres
             - name: POSTGRES_USER
               value: postgres
-          image: bahmni/openelis-db:demo-0.94-23
-          livenessProbe:
-            exec:
-              command:
-                - pg_isready -h localhost -U postgres
-            failureThreshold: 5
-            periodSeconds: 10
-            timeoutSeconds: 5
+          image: bahmni/openelis-db:demo-latest
           name: openelisdb
           ports:
             - containerPort: 5432

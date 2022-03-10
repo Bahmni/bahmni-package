@@ -26,7 +26,7 @@ spec:
               value: odoo
             - name: USER
               value: odoo
-          image: bahmni/odoo-10:0.94-20
+          image: bahmni/odoo-10:latest
           name: odoo
           ports:
             - containerPort: 8069

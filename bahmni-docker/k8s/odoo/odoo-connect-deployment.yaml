@@ -49,7 +49,7 @@ spec:
               value: openmrs
             - name: OPENMRS_PORT
               value: '8080'
-          image: bahmni/odoo-connect:0.94-19
+          image: bahmni/odoo-connect:latest
           name: odoo-connect
           resources: {}
       restartPolicy: Always

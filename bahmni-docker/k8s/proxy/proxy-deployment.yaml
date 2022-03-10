@@ -20,7 +20,7 @@ spec:
         environment: dev
     spec:
       containers:
-        - image: bahmni/proxy:0.94-1
+        - image: bahmni/proxy:latest
           name: proxy
           ports:
             - containerPort: 80

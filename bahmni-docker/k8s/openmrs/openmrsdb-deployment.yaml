@@ -28,7 +28,7 @@ spec:
               value: adminAdmin!123
             - name: MYSQL_USER
               value: openmrs-user
-          image: bahmni/openmrs-db:demo-0.94-1
+          image: bahmni/openmrs-db:demo-latest
           name: openmrsdb
           ports:
             - containerPort: 3306

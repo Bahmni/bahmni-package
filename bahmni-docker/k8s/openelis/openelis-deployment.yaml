@@ -29,7 +29,7 @@ spec:
               value: openmrs
             - name: OPENMRS_PORT
               value: '8080'
-          image: bahmni/openelis:0.94-23
+          image: bahmni/openelis:latest
           name: openelis
           ports:
             - containerPort: 8052
