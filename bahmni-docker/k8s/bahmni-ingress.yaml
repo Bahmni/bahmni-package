@@ -5,9 +5,9 @@ metadata:
   annotations:
     kubernetes.io/ingress.class: nginx
     # nginx.ingress.kubernetes.io/rewrite-target: /$2/
+    # nginx.ingress.kubernetes.io/configuration-snippet: |
+    #   rewrite ^(/bahmni)$ /$2/ redirect; # Attention: the trailing slash of "$1/" prevent redirect looping.
 
-    nginx.ingress.kubernetes.io/configuration-snippet: |
-      rewrite ^(/bahmni)$ /$2/ redirect; # Attention: the trailing slash of "$1/" prevent redirect looping.
 spec:
   rules:
     - host: bahmni.k8s
@@ -20,3 +20,27 @@ spec:
                 name: bahmni-web
                 port:
                   number: 8091
+
+          - path: /bahmni_config(/|$)(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: bahmni-web
+                port:
+                  number: 8091
+
+          - path: /openmrs(/|$)(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: openmrs
+                port:
+                  number: 8080
+          
+          - path: /openelis(/|$)(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: openelis
+                port:
+                  number: 8052
