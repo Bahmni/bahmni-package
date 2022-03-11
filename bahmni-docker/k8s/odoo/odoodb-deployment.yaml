@@ -26,13 +26,7 @@ spec:
               value: odoo
             - name: POSTGRES_USER
               value: odoo
-          image: bahmni/odoo-10-db:demo-0.94-20
-          livenessProbe:
-            exec:
-              command:
-                - pg_isready -h localhost -U odoo
-            periodSeconds: 10
-            timeoutSeconds: 5
+          image: bahmni/odoo-10-db:demo-latest
           name: odoodb
           ports:
             - containerPort: 5432
