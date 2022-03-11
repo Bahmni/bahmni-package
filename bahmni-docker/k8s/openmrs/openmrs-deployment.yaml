@@ -53,21 +53,21 @@ spec:
               memory: "4Gi"
             limits:
               memory: "5Gi"
-          volumeMounts:
-            - mountPath: /usr/local/tomcat/.OpenMRS/modules
-              name: openmrs-data
-            - mountPath: /home/bahmni/patient_images
-              name: openmrs-patient-images
-            - mountPath: /home/bahmni/document_images
-              name: openmrs-document-images
+          # volumeMounts:
+          #   - mountPath: /usr/local/tomcat/.OpenMRS/modules
+          #     name: openmrs-data
+          #   - mountPath: /home/bahmni/patient_images
+          #     name: openmrs-patient-images
+          #   - mountPath: /home/bahmni/document_images
+          #     name: openmrs-document-images
       restartPolicy: Always
-      volumes:
-        - name: openmrs-data
-          persistentVolumeClaim:
-            claimName: openmrs-data-pvc
-        - name: openmrs-patient-images
-          persistentVolumeClaim:
-            claimName: openmrs-patient-images-pvc
-        - name: openmrs-document-images
-          persistentVolumeClaim:
-            claimName: openmrs-document-images-pvc
+      # volumes:
+      #   - name: openmrs-data
+      #     persistentVolumeClaim:
+      #       claimName: openmrs-data-pvc
+      #   - name: openmrs-patient-images
+      #     persistentVolumeClaim:
+      #       claimName: openmrs-patient-images-pvc
+      #   - name: openmrs-document-images
+      #     persistentVolumeClaim:
+      #       claimName: openmrs-document-images-pvc

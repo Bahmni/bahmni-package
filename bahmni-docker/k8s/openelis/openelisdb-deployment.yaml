@@ -31,16 +31,16 @@ spec:
           ports:
             - containerPort: 5432
           resources: {}
-          volumeMounts:
-            - mountPath: /resources/db-dump
-              name: openelis-db-dump
-            - mountPath: /var/lib/postgresql/data
-              name: openelisdbdata
+          # volumeMounts:
+          #   - mountPath: /resources/db-dump
+          #     name: openelis-db-dump
+          #   - mountPath: /var/lib/postgresql/data
+          #     name: openelisdbdata
       restartPolicy: Always
-      volumes:
-        - name: openelis-db-dump
-          persistentVolumeClaim:
-            claimName: openelis-db-dump-pvc
-        - name: openelisdbdata
-          persistentVolumeClaim:
-            claimName: openelisdbdata-pvc
+      # volumes:
+      #   - name: openelis-db-dump
+      #     persistentVolumeClaim:
+      #       claimName: openelis-db-dump-pvc
+      #   - name: openelisdbdata
+      #     persistentVolumeClaim:
+      #       claimName: openelisdbdata-pvc

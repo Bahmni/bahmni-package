@@ -31,16 +31,16 @@ spec:
           ports:
             - containerPort: 5432
           resources: {}
-          volumeMounts:
-            - mountPath: /resources/db-dump
-              name: db-dump
-            - mountPath: /var/lib/postgresql/data
-              name: odoo-db-data
+          # volumeMounts:
+          #   - mountPath: /resources/db-dump
+          #     name: db-dump
+          #   - mountPath: /var/lib/postgresql/data
+          #     name: odoo-db-data
       restartPolicy: Always
-      volumes:
-        - name: db-dump
-          persistentVolumeClaim:
-            claimName: odoo-db-dump-pvc
-        - name: odoo-db-data
-          persistentVolumeClaim:
-            claimName: odoo-db-data-pvc
+      # volumes:
+      #   - name: db-dump
+      #     persistentVolumeClaim:
+      #       claimName: odoo-db-dump-pvc
+      #   - name: odoo-db-data
+      #     persistentVolumeClaim:
+      #       claimName: odoo-db-data-pvc

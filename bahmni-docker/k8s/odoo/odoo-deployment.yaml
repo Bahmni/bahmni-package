@@ -31,16 +31,16 @@ spec:
           ports:
             - containerPort: 8069
           resources: {}
-          volumeMounts:
-            - mountPath: /var/lib/odoo
-              name: odooappdata
-            - mountPath: /mnt/extra-addons
-              name: odoo-extra-addons
+          # volumeMounts:
+          #   - mountPath: /var/lib/odoo
+          #     name: odooappdata
+          #   - mountPath: /mnt/extra-addons
+          #     name: odoo-extra-addons
       restartPolicy: Always
-      volumes:
-        - name: odooappdata
-          persistentVolumeClaim:
-            claimName: odooappdata-pvc
-        - name: odoo-extra-addons
-          persistentVolumeClaim:
-            claimName: odoo-extra-addons-pvc
+      # volumes:
+      #   - name: odooappdata
+      #     persistentVolumeClaim:
+      #       claimName: odooappdata-pvc
+      #   - name: odoo-extra-addons
+      #     persistentVolumeClaim:
+      #       claimName: odoo-extra-addons-pvc

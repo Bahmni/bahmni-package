@@ -33,11 +33,11 @@ spec:
           ports:
             - containerPort: 3306
           resources: {}
-          volumeMounts:
-            - mountPath: /var/lib/mysql
-              name: openmrsdbdata
+          # volumeMounts:
+          #   - mountPath: /var/lib/mysql
+          #     name: openmrsdbdata
       restartPolicy: Always
-      volumes:
-        - name: openmrsdbdata
-          persistentVolumeClaim:
-            claimName: openmrsdbdata-pvc
+      # volumes:
+      #   - name: openmrsdbdata
+      #     persistentVolumeClaim:
+      #       claimName: openmrsdbdata-pvc
