@@ -20,6 +20,7 @@ This is a Work In Progress directory.
     * [Odoo Connect Configuration](#odoo-connect-configurations)
     * [OpenMRS Configuration](#openmrs-configurations)
     * [Bahmni Web Configuration](#bahmni-web-configurations)
+    * [Bahmni Reports Configurations](#bahmni-reports-configurations)
 * [Proxy Service](#proxy-service)
 * [Building OpenElis Images Locally](#building-openelis-images-locally)
 * [Loading Additional Addons to Odoo](#loading-additional-addons-to-odoo)
@@ -73,6 +74,7 @@ Note: `proxy` is a generic service and it will start always irrespective of belo
 | openelis | OpenELIS            | openelis, openelisdb
 | odoo     | Odoo                | odoo, odoodb |
 | openmrs  | Bahmni EMR          | openmrs, openmrsdb, bahmni-web |
+| reports | Bahmni Reports | reports, reportsdb |
 
 Profiles can be set by changing the `COMPOSE_PROFILES` variable in .env variable. You can set multiple profiles by comma seperated values.
 Example: COMPOSE_PROFILES=openelis,odoo. You can also pass this as an argument with docker-compose up command. Example: `docker-compose --profile odoo up` (or) `docker-compose --profile odoo --profile openelis up`
@@ -96,6 +98,7 @@ Example: COMPOSE_PROFILES=openelis,odoo. You can also pass this as an argument w
 | OpenMRS            | http://localhost/openmrs | Username: `superman` <br> Password: `Admin123` | Perfom [one-time](#one-time-setup-for-openmrs) setup |
 | OpenElis           |http://localhost/openelis| Username: `admin` <br> Password: `adminADMIN!` |-|
 | Odoo               | http://localhost:8069   | Username: `admin` <br> Password: `admin`| Perfom [one-time](#one-time-setup-for-odoo) setup
+| Bahmni Reports     | http://localhost/bahmni-reports   | Username: `superman` <br> Password: `Admin123`| Openmrs profile should be running |
 
 
 ### Cleaning All Bahmni Application Data
@@ -213,6 +216,14 @@ Note: When connected with a different host, the master data should match. Otherw
 | BAHMNI_WEB_IMAGE_TAG | This value specifies which image version needs to be used for bahmni-web service. List of tags can be found at [bahmni/bahmni-web - Tags](https://hub.docker.com/r/bahmni/bahmni-web/tags) . |
 | BAHMNI_UI_DIST_PATH | Set this variable with the path of your dist folder of openmrs-module-bahmniapps when you want to develop on Bahmni UI. |
 
+## Bahmni Reports Configurations:
+ | Variable Name                         | Description   |
+ | :-------------------------------------|:------------- |
+ | REPORTS_IMAGE_TAG | This value specifies which image version needs to be used for reports service. List of tags can be found at [bahmni/reports - Tags](https://hub.docker.com/r/bahmni/reports/tags) . |
+ | REPORTS_DB_NAME | Database name for Reports |
+ | REPORTS_DB_USERNAME | Username of Reports Database |
+ | REPORTS_DB_PASSWORD | Password of Reports Database |
+ 
 # Proxy Service
 The proxy service runs with every profile configuration. It renders the Bahmni Landing Page. Also ProxyPass and ProxyPassReverse configurations are done with this container.
 
