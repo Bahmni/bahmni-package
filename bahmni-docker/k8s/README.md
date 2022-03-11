@@ -33,6 +33,9 @@ sudo vi /etc/hosts
 
 # bahmni kubernetes nginx-ingress
 127.0.0.1 bahmni.k8s
+
+# bahmni-odoo kubernetes nginx-ingress
+127.0.0.1 erp-bahmni.k8s
 ```
 
 ## Start the tunnel for minikube
@@ -67,9 +70,10 @@ Example: `kubectl apply -R -f openmrs/`
  ```
 ## Accessing Application
 Once the pods and servies are running you can access it from the browser on 
-1. Bahmni EMR --> http://bahmni.k8s/bahmni/home
-2. OpenMRS --> http://bahmni.k8s/openmrs
-3. OpenELIS --> http://bahmni.k8s/openelis
+1. Bahmni EMR --> https://bahmni.k8s/bahmni/home
+2. OpenMRS --> https://bahmni.k8s/openmrs
+3. OpenELIS --> https://bahmni.k8s/openelis
+4. Odoo --> https://erp-bahmni.k8s/
 ### References: 
 1. [kubectl Commands cheatsheet](https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands)
 2. [Minikube Docs](https://minikube.sigs.k8s.io/docs/start/)
