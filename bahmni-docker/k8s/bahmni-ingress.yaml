@@ -13,7 +13,7 @@ spec:
     - host: bahmni.k8s
       http:
         paths:
-          - path: /bahmni(/|$)(.*)
+          - path: /bahmni
             pathType: Prefix
             backend:
               service:
@@ -21,7 +21,7 @@ spec:
                 port:
                   number: 8091
 
-          - path: /bahmni_config(/|$)(.*)
+          - path: /bahmni_config
             pathType: Prefix
             backend:
               service:
@@ -29,7 +29,7 @@ spec:
                 port:
                   number: 8091
 
-          - path: /openmrs(/|$)(.*)
+          - path: /openmrs
             pathType: Prefix
             backend:
               service:
@@ -37,7 +37,7 @@ spec:
                 port:
                   number: 8080
           
-          - path: /openelis(/|$)(.*)
+          - path: /openelis
             pathType: Prefix
             backend:
               service:
