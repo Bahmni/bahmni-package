@@ -68,6 +68,12 @@ Example: `kubectl apply -R -f openmrs/`
 ```
  kubectl get all
  ```
+
+ ## Delete all resources
+
+ ```
+ kubectl delete -R -f .
+ ```
 ## Accessing Application
 Once the pods and servies are running you can access it from the browser on 
 1. Bahmni EMR --> https://bahmni.k8s/bahmni/home
