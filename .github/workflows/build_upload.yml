@@ -35,7 +35,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        dependent-repos: ["OpenElis", "openerp-atomfeed-service"]
+        dependent-repos: ["OpenElis", "openerp-atomfeed-service", "bahmni-reports"]
     steps:
       - name: Create repository_dispatch
         env:
