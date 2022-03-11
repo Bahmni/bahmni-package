@@ -48,7 +48,11 @@ spec:
           name: openmrs
           ports:
             - containerPort: 8080
-          resources: {}
+          resources:
+            requests:
+              memory: "4Gi"
+            limits:
+              memory: "5Gi"
           volumeMounts:
             - mountPath: /usr/local/tomcat/.OpenMRS/modules
               name: openmrs-data
