@@ -368,3 +368,9 @@ When you want to develop or modify bahmni UI code, you can follow these steps.
 6. Now, when you refresh your browser, you should be able to see the changes reflected.
 
 **Note:** If your change is not reflected, it could be because your browser would be rendering it from its cache. Try the same in Incognito or after clearing cached data. Also for development it is recommended to disable caching in the browser. Go to `Inspect` and then navigate to `Network` tab where you can find `Disable Cache` checkbox.
+
+# Common Troubleshooting Steps
+
+### OpenMRS shows UI Module Not Found / OpenMRS shows Exception
+- The reason for this error would be the OMODS are not loaded properly. This could happen because of inssuficient memory during initial startup by OpenMRS.
+- **Fix**: Make sure you have increased your docker resources. Then try restarting OpenMRS alone with `docker-compose restart openmrs` 
