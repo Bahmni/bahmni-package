@@ -1,6 +1,8 @@
 FROM httpd:2.4-alpine
 
-RUN mkdir /usr/local/apache2/htdocs/client_side_logging
+RUN apk add curl
+COPY scripts/get_client_side_logging.sh /tmp/get_client_side_logging.sh
+RUN sh /tmp/get_client_side_logging.sh && rm /tmp/get_client_side_logging.sh
 COPY resources/bahmni-proxy.conf /usr/local/apache2/conf/
 RUN echo "Include conf/bahmni-proxy.conf" >> /usr/local/apache2/conf/httpd.conf
 COPY resources/index.html /usr/local/apache2/htdocs/index.html
@@ -10,12 +12,6 @@ COPY resources/favicon.png /usr/local/apache2/htdocs/favicon.png
 COPY resources/maintenance.html /usr/local/apache2/htdocs/maintenance.html
 COPY resources/src.jpeg /usr/local/apache2/htdocs/src.jpeg
 RUN mkdir /var/cache/mod_proxy
-COPY resources/__init__.py \
-	 resources/client_side_logging.py \
-	 resources/client_side_logging.wsgi \
-	 resources/logging.yml \
-	 resources/RotatingLogger.py \
-	 /usr/local/apache2/htdocs/client_side_logging/
 	
 RUN apk add --update openssl && \
     rm -rf /var/cache/apk/*

@@ -41,7 +41,7 @@ ospackage {
 
     into '/opt/bahmni-event-log-service'
 
-    from("${projectDir}/resources/log4j.properties") {
+    from("${projectDir}/resources/log4j2.properties") {
         fileMode = 0644
         createDirectoryEntry = true
         into 'bahmni-event-log-service/WEB-INF/classes'

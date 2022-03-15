@@ -46,7 +46,7 @@ ospackage {
 
     into '/opt/bahmni-lab'
 
-    from("${projectDir}/resources/log4j.xml") {
+    from("${projectDir}/resources/log4j2.xml") {
         fileMode = 0644
         createDirectoryEntry = true
         into 'bahmni-lab/WEB-INF/classes'

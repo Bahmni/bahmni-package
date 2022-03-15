@@ -127,7 +127,7 @@
        | Modify the SubscriptionList below to subscribe for any notification
        | in the system and treat it as an alarm.
        | The JMXNotificationAppender is a log4j Appender that can be configured
-       | in log4j.xml, that trasforms logging events to JMX notification so they
+       | in log4j2.xml, that trasforms logging events to JMX notification so they
        | can be fed back into the table. By storing the WARN or higher level logging
        | events you can have a quick view of important system faults.
        |

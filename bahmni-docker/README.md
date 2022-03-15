@@ -34,7 +34,7 @@ This is a Work In Progress directory.
 ## Docker Installations
 You can install Docker from [here](https://docs.docker.com/engine/install/). Choose the appropriate installers for your host machine and follow the instructions mentioned for the host platform.  MacOS: You can get the dmg file for Docker [here](https://store.docker.com/editions/community/docker-ce-desktop-mac). 
 
-Note: If you are using Docker Desktop for Mac / Docker Desktop for Windows , it is recommended to increase the Memory resource to **at-least 4GB**. Please find the reference for [Mac](https://docs.docker.com/desktop/mac/) / [Windows](https://docs.docker.com/desktop/windows/).
+Note: If you are using Docker Desktop for Mac / Docker Desktop for Windows , it is recommended to increase the Memory resource to **at-least 8GB**. Please find the reference for [Mac](https://docs.docker.com/desktop/mac/) / [Windows](https://docs.docker.com/desktop/windows/).
 
 Once you have Docker installed, ensure that you are running the daemon. If you want to tune and configure docker, please find detailed information [here](https://docs.docker.com/engine/admin/)
 
@@ -379,6 +379,7 @@ When you want to develop or modify bahmni UI code, you can follow these steps.
 
 **Note:** If your change is not reflected, it could be because your browser would be rendering it from its cache. Try the same in Incognito or after clearing cached data. Also for development it is recommended to disable caching in the browser. Go to `Inspect` and then navigate to `Network` tab where you can find `Disable Cache` checkbox.
 
+
 # Development Setup for Implementer Interface
 1. Clone the [implementer-interface](https://github.com/Bahmni/implementer-interface) repository in your localmachine.
 2. Follow the instructions in the README of the repository to install the required tools and dependencies.
@@ -386,3 +387,10 @@ When you want to develop or modify bahmni UI code, you can follow these steps.
 4. Now open the docker-compose.yml file and in the implementer-interface service uncomment the volumes section. 
 5. You can start implementer-interface by running `docker-compose up -d implementer-interface`. If your container is already running, you need to recreate it by the following command. `docker-compose rm -s implementer-interface && docker-compose up -d implementer-interface`
 6. Now, when you have implementer-interface build running in watch mode, you should be able to see the changes on refresh of the browser. 
+
+# Common Troubleshooting Steps
+
+### OpenMRS shows UI Module Not Found / OpenMRS shows Exception
+- The reason for this error would be the OMODS are not loaded properly. This could happen because of inssuficient memory during initial startup by OpenMRS.
+- **Fix**: Make sure you have increased your docker resources. Then try restarting OpenMRS alone with `docker-compose restart openmrs` 
+
