@@ -22,7 +22,13 @@ curl -L -o resources/atomfeed-client-${ATOMFEED_CLIENT_VERSION}.jar "https://oss
 curl -L -o resources/liquibase-core-${LIQUIBASE_VERSION}.jar "https://oss.sonatype.org/content/repositories/releases/org/liquibase/liquibase-core/${LIQUIBASE_VERSION}/liquibase-core-${LIQUIBASE_VERSION}.jar"
 
 # Unzipping Bahmni OMODs
-unzip -q -u -j -d build/openmrs-modules resources/distro-${BAHMNI_VERSION}-SNAPSHOT-distro.zip
+rm -rf build/
+mkdir build/
+unzip -q -u -j -d build/openmrs-modules resources/distro-0.93-SNAPSHOT-distro.zip
+
+# Copy NDHM OMODS
+cp resources/fhir2-omod-1.0.0-SNAPSHOT.omod build/openmrs-modules/
+cp resources/hipmodule-omod-0.1-SNAPSHOT.omod build/openmrs-modules/
 
 # Unzipping Default Config
 unzip -q -u -d build/default_config resources/default_config.zip

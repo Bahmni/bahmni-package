@@ -12,6 +12,11 @@ mkdir build/
 # Unzipping Resources
 unzip -q -u -d build/default_config resources/default_config.zip
 unzip -q -u -d build/bahmniapps resources/bahmniapps.zip
+unzip -q -u -d build/NDHMReact resources/ndhm-react.zip
+# unzip -q -u -d build/bahmniapps build/bahmniapps.zip
+# unzip -q -u -d build/NDHMReact build/ndhm-react.zip
+cp -a build/NDHMReact/build/. build/NDHMReact/
+rm -rf build/NDHMReact/build/
 
 #Building Docker images
 BAHMNI_WEB_IMAGE_TAG=${BAHMNI_VERSION}-${GITHUB_RUN_NUMBER}

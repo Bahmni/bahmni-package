@@ -153,6 +153,114 @@ services:
       #- "${BAHMNI_APPS_PATH:?}/ui/node_modules/@bower_components/:/usr/local/apache2/htdocs/bahmni/components"
       #- "${BAHMNI_CONFIG_PATH:?}/:/usr/local/apache2/htdocs/bahmni_config/"
 
+  db:
+    container_name: db
+    image: "postgres:latest"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=welcome
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgresql:/var/lib/postgresql
+      - postgresql_data:/var/lib/postgresql/data
+  rabbitmq:
+      image: "rabbitmq:3"
+      container_name: rabbitmq
+      ports:
+        - "5672:5672"
+  otp:
+      image: "ganesan92/otp-service"
+      container_name: otp
+      depends_on:
+        - db
+      environment:
+        whitelisted:numbers: ""
+
+  hiu-db-setup:
+      image: bahmnicovid19/hiu-db-initializer
+      container_name: hiu-db-setup
+      environment:
+        - 'JAVA_TOOL_OPTIONS=-Djdbc.url=jdbc:postgresql://db:5432/health_information_user -Djdbc.username=postgres -Djdbc.password=welcome'
+
+  hip:
+    container_name: hip
+    image: "bahmnicovid19/health-information-provider"
+    ports:
+      - "8000:80"
+    depends_on:
+      - db
+      - otp
+      - rabbitmq
+    volumes:
+      - ./:/shared
+    environment:
+      Gateway:clientSecret: ${HIP_SECRET:?}
+      Gateway:clientId: ${HIP_CLIENTID:?}
+      Gateway:url: ${GATEWAY_URL:?}
+      OpenMrs:url: ${OPENMRS_URL:?}
+      OpenMrs:password: ${OPENMRS_PASSWORD:?}
+      Gateway:cmSuffix: ${CONSENT_MANAGEMENT_SUFFIX:?}
+      OtpService:BaseUrl: http://otp
+      hip:url: http://hip:8000
+      HEALTH_CHECK_DURATION: 30000
+      Cors:allowedOrigins: ${CORS_ALLOWED_ORIGIN:?}
+      Hip-Service:Url: ${HIP_URL:?}
+      Bahmni:Id: ${HIP_ID:?}
+
+  hiu:
+    image: "bahmnicovid19/health-information-user:latest"
+    container_name: hiu
+    volumes:
+      - ./:/shared
+    environment:
+      HIU_ID: ${HIU_ID:?}
+      HIU_NAME: ${HIU_NAME:?}
+      IDENTITY_JWK_URL: ${IDENTITY_JWK_URL:?}
+      DATA_PUSH_URL: ${DATA_PUSH_URL:?}
+      CONSENT_NOTIFICATION_URL: ${CONSENT_NOTIFICATION_URL:?}
+      CONSENT_MANAGEMENT_SUFFIX:  ${CONSENT_MANAGEMENT_SUFFIX:?}
+      CONSENT_MANAGEMENT_URL: ${CONSENT_MANAGEMENT_URL:?}
+      DEFAULT_PAGE_SIZE: 20
+      MAX_PAGE_SIZE: 100
+      LOCAL_STORAGE_PATH: /tmp/
+      HIU_CLIENT_ID: ${HIU_CLIENT_ID:?}
+      HIU_CLIENT_SECRET: ${HIU_CLIENT_SECRET:?}
+      POSTGRES_HOST: db
+      POSTGRES_PORT: 5432
+      CONSENT_MANAGER_DB_NAME: health_information_user
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: welcome
+      DB_CONNECTION_POOL_SIZE: 5
+      OFFSET_IN_DAYS: 2
+      USING_GATEWAY: 'true'
+      GATEWAY_BASE_URL: ${GATEWAY_BASE_URL:?}
+      GATEWAY_REQUEST_TIMEOUT: 2000
+      GATEWAY_JWK_URL: ${GATEWAY_JWK_URL:?}
+      HFR_AFFINITY_DOMAINS: facilitysbx.ndhm.gov.in
+      RABBITMQ_HOST: rabbitmq
+      RABBITMQ_PORT: 5672
+      RABBITMQ_USERNAME: ${RABBITMQ_USERNAME:?}
+      RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD:?}
+      MAX_IN_MEMORY_SIZE: 500MB
+      DATA_FLOW_CONSENT_REQUEST_WAIT_TIME: 1
+      DATA_FLOW_CONSENT_ARTEFACT_WAIT_TIME: 1
+      DATA_FLOW_PART_WAIT_TIME: 1440
+    ports:
+      - "9053:8003"
+
+  hiu-ui:
+    image: "bahmnicovid19/hiu-ui:latest"
+    container_name: hiu-ui
+    environment:
+      BACKEND_BASE_URL: http://hiu:8080
+
+    ports:
+      - "5000:5000"
+
+
+
+
 volumes:
   openelisdbdata:
   odoodbdata:
@@ -161,3 +269,5 @@ volumes:
   openmrsdbdata:
   bahmni-patient-images:
   bahmni-document-images:
+  postgresql:
+  postgresql_data:
