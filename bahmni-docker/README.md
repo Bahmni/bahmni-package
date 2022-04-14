@@ -52,18 +52,15 @@ Replace the `${CERTIFICATE_PATH}` to the path at which the certificate and key f
 
 Note: Self-signed certificates are inherently not trusted by your browser because a certificate hasn't signed by trusted Certificate Authority
 
-To generate a trusted SSL Certificate, required dependencies bundled in the `bahmni-proxy` image. You need to run the following command inside a proxy container
+To generate a trusted SSL Certificate, required dependencies bundled in the `bahmni-proxy` image. You need to run the following command. It will generate certificate and replace it with `/etc/tls/cert.pem` and `/etc/tls/key.pem`
 ```
-certbot certonly --webroot -w /usr/local/apache2/htdocs -d $DOMAIN_NAME
+docker exec -it {{PROXY_CONTAINER_NAME/ID}} sh -c \
+   "certbot certonly --webroot -w /usr/local/apache2/htdocs -d {{DOMAIN_NAME}} --email {{EMAIL}} \
+      --agree-tos --noninteractive ;
+   cp /etc/letsencrypt/live/{{DOMAIN_NAME}}/fullchain.pem /etc/tls/cert.pem ;
+   cp /etc/letsencrypt/live/{{DOMAIN_NAME}}/privkey.pem /etc/tls/key.pem"
 ``` 
-It will ask for an email address at the time of certificate generation.
-
-The certificate will be generated in these paths `/etc/letsencrypt/live/<domain_name>/fullchain.pem` and `/etc/letsencrypt/live/<domain_name>/privkey.pem`, replace it with `/etc/tls/cert.pem` and `/etc/tls/key.pem`
-```
-cp /etc/letsencrypt/live/<domain_name>/fullchain.pem /etc/tls/cert.pem
-cp /etc/letsencrypt/live/<domain_name>/privkey.pem /etc/tls/key.pem
-```
-restart the proxy container `docker restart <proxy_container>`
+Restart the proxy container `docker restart {PROXY_CONTAINER_NAME/ID}}`
 
 # Profile Configuration
 Bahmni docker-compose has been configured with profiles which allows you to run the required services. More about compose profiles can be found [here](https://docs.docker.com/compose/profiles/). The list of different profiles can be found below.
