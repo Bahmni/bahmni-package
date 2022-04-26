@@ -158,6 +158,38 @@ services:
     #- "${BAHMNI_APPS_PATH:?}/ui/node_modules/@bower_components/:/usr/local/apache2/htdocs/bahmni/components"
     #- "${BAHMNI_CONFIG_PATH:?}/:/usr/local/apache2/htdocs/bahmni_config/"
 
+  reports:
+    image: bahmni/reports:${REPORTS_IMAGE_TAG:?}
+    profiles: ["default","reports"]
+    environment:
+      OPENMRS_DB_HOST: ${OPENMRS_DB_HOST:?}
+      OPENMRS_DB_NAME: ${OPENMRS_DB_NAME:?}
+      OPENMRS_DB_USERNAME: ${OPENMRS_DB_USERNAME:?}
+      OPENMRS_DB_PASSWORD: ${OPENMRS_DB_PASSWORD:?}
+      OPENMRS_HOST: ${OPENMRS_HOST:?}
+      OPENMRS_PORT: ${OPENMRS_PORT:?}
+      OPENELIS_DB_SERVER: ${OPENELIS_DB_SERVER}
+      REPORTS_DB_SERVER: reportsdb
+      REPORTS_DB_NAME: ${REPORTS_DB_NAME:?}
+      REPORTS_DB_USERNAME: ${REPORTS_DB_USERNAME:?}
+      REPORTS_DB_PASSWORD: ${REPORTS_DB_PASSWORD:?}
+      ODOO_DB_SERVER: odoodb
+      ODOO_DB_USERNAME: ${ODOO_DB_USER:?}
+      ODOO_DB_PASSWORD: ${ODOO_DB_PASSWORD:?}
+    depends_on:
+      - reportsdb
+      - openmrsdb
+      - bahmni-web
+
+  reportsdb:
+    image: mysql:5.6
+    profiles: ["default","reports"]
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?}
+      MYSQL_DATABASE: ${REPORTS_DB_NAME:?}
+      MYSQL_USER: ${REPORTS_DB_USERNAME:?}
+      MYSQL_PASSWORD: ${REPORTS_DB_PASSWORD:?}
+
 volumes:
   openelisdbdata:
   odoodbdata:
