@@ -63,6 +63,16 @@ docker exec -it {{PROXY_CONTAINER_NAME/ID}} sh -c \
 ``` 
 Restart the proxy container `docker restart {PROXY_CONTAINER_NAME/ID}}`
 
+## Setup for Macbook with M1 chip
+The below steps needs to be performed before docker-compose.
+1. Open `bahmni-proxy.conf`, update `Mutex default` to `Mutex posixsem`.
+2. Build `bahmni-proxy` image in local.
+```
+docker build --platform linux/amd64 -t bahmni-local-proxy .
+```
+3. Open `docker-compose.yml`, replace `bahmni/proxy:${PROXY_IMAGE_TAG:?}` with `bahmni-local-proxy` 
+
+
 # Profile Configuration
 Bahmni docker-compose has been configured with profiles which allows you to run the required services. More about compose profiles can be found [here](https://docs.docker.com/compose/profiles/). The list of different profiles can be found below.
 
