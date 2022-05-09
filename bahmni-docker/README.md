@@ -19,6 +19,7 @@ This is a Work In Progress directory.
     * [Odoo Configuration](#odoo-configurations)
     * [Odoo Connect Configuration](#odoo-connect-configurations)
     * [OpenMRS Configuration](#openmrs-configurations)
+    * [Crater Configuration](#crater-configurations)
     * [Bahmni Web Configuration](#bahmni-web-configurations)
     * [Implementer Interface Configurations](#implementer-interface-configurations)
     * [Bahmni Reports Configurations](#bahmni-reports-configurations)
@@ -33,6 +34,7 @@ This is a Work In Progress directory.
 * [Adding Custom Reports](#adding-custom-reports)
 
 # Prerequisites
+
 ## Docker Installations
 You can install Docker from [here](https://docs.docker.com/engine/install/). Choose the appropriate installers for your host machine and follow the instructions mentioned for the host platform.  MacOS: You can get the dmg file for Docker [here](https://store.docker.com/editions/community/docker-ce-desktop-mac). 
 
@@ -41,7 +43,6 @@ Note: If you are using Docker Desktop for Mac / Docker Desktop for Windows , it 
 Once you have Docker installed, ensure that you are running the daemon. If you want to tune and configure docker, please find detailed information [here](https://docs.docker.com/engine/admin/)
 
 ## Docker-Compose Installations
-
 **Note** : If you are using Docker Desktop for Mac / Docker Desktop for Windows, then docker-compose comes bundled with docker and you need not follow the below steps. But make sure to disable Experimental Features for docker-compose from your Docker Dashboard preferences. For other operating systems, you can install docker compose from [here](https://docs.docker.com/compose/install/).
 
 Currently Bahmni has been tested on **docker-compose version 1.29.2**. If you are using older versions of docker-compose, please upgrade to the latest version. You can check docker compose version by running `docker-compose version`
@@ -71,20 +72,21 @@ Bahmni docker-compose has been configured with profiles which allows you to run 
 
 Note: `proxy` is a generic service and it will start always irrespective of below profiles.
 
-| Profile               | Application                          | Services                                  |
-|:----------------------|:-------------------------------------|:------------------------------------------|
-| default               | All applications                     | All service defined in docker-compose.yml |
-| openelis              | OpenELIS                             | openelis, openelisdb                      |
-| odoo                  | Odoo                                 | odoo, odoodb                              |
-| openmrs               | Bahmni EMR                           | openmrs, openmrsdb, bahmni-web            |
-| implementer-interface | Implementer Interface (Form Builder) | openmrs, openmrsdb, implementer-interface |
-| reports               | Bahmni Reports                       | reports, reportsdb                        |
-
+| Profile               | Application                          | Services                                   |
+|--:--------------------|--:-----------------------------------|--:-----------------------------------------|
+| default               | All applications                     | All services defined in docker-compose.yml |
+| openelis              | OpenELIS                             | openelis, openelisdb                       |
+| odoo                  | Odoo                                 | odoo, odoodb                               |
+| openmrs               | Bahmni EMR                           | openmrs, openmrsdb, bahmni-web             |
+| crater                | Crater                               | crater-php, crater-nginx, craterdb         |
+| implementer-interface | Implementer Interface (Form Builder) | openmrs, openmrsdb, implementer-interface  |
+| reports               | Bahmni Reports                       | reports, reportsdb                         |
 
 Profiles can be set by changing the `COMPOSE_PROFILES` variable in .env variable. You can set multiple profiles by comma seperated values.
 Example: COMPOSE_PROFILES=openelis,odoo. You can also pass this as an argument with docker-compose up command. Example: `docker-compose --profile odoo up` (or) `docker-compose --profile odoo --profile openelis up`
 
 # Running Bahmni with default images
+
 ### Starting all Bahmni Components
 1. Navigate to `bahmni-docker` directory in a terminal.
 2. Run `docker-compose up` .
@@ -96,20 +98,17 @@ Example: COMPOSE_PROFILES=openelis,odoo. You can also pass this as an argument w
 * By default the docker containers use Demo database image. One can also choose a fresh DB, but recommended to use demoDB if you are new to Bahmni and wish to have some pre-created master data, forms, terminology and patients. 
 * To see the list of existing patients in Bahmni, go to Bahmni web UI, Registration Module, and for Patient Name type "%" (percentage sign) in the search box.
 
-
 | Application Name      | URL                                    | Default Credentials                            | Notes                                                                                                                                                                                |
-|:----------------------|:---------------------------------------|:-----------------------------------------------|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|--:--------------------|--:-------------------------------------|--:---------------------------------------------|--:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | Bahmni EMR            | http://localhost/bahmni/home           | Username: `superman` <br> Password: `Admin123` | If you use fresh db images, then you need to configure locations, visits etc as mentioned [here](https://bahmni.atlassian.net/wiki/spaces/BAH/pages/34013673/OpenMRS+configuration). |
 | OpenMRS               | http://localhost/openmrs               | Username: `superman` <br> Password: `Admin123` | Perfom [one-time](#one-time-setup-for-openmrs) setup                                                                                                                                 |
+| Crater                | http://crater.test                     |                                                | Perfom [one-time](#one-time-setup-for-crater) setup                                                                                                                                  |
 | OpenElis              | http://localhost/openelis              | Username: `admin` <br> Password: `adminADMIN!` | -                                                                                                                                                                                    |
 | Odoo                  | http://localhost:8069                  | Username: `admin` <br> Password: `admin`       | Perfom [one-time](#one-time-setup-for-odoo) setup                                                                                                                                    |
 | Implementer Interface | http://localhost/implementer-interface | Username: `superman` <br> Password: `Admin123` | -                                                                                                                                                                                    |
 | Bahmni Reports        | http://localhost/bahmni-reports        | Username: `superman` <br> Password: `Admin123` | Openmrs profile should be running                                                                                                                                                    |
 
-
-
 ### Cleaning All Bahmni Application Data
-
 Warning: Do this step carefully! This will lead to loss of database and application data.
 * From the `bahmni-docker` directory in a terminal run, `docker-compose down -v` . This brings down the containers and destroys the *volumes* attached to the containers.
 
@@ -129,6 +128,16 @@ The below steps needs to performed only once after OpenMRS application is loaded
 2. Navigate to Administration -> Maintenance -> Search Index.
 3. In that page click on `Rebuild Search Index`
 4. This rebuilds concept index of OpenMRS application.
+
+# One-time Setup for Crater:
+If you don't wish to do let crater do automatic installation, you can set the `CRATER_AUTO_INSTALL` to `"false"` an follow the below steps:
+1. Open your web browser and go to your given domain (http://crater.test) and follow the installation wizard.
+2. On Installation wizard - Database setup, use below credentials:
+    - Database Host: craterdb
+    - Database Name: crater
+    - Database Username: crater
+    - Database Password: crater
+3. In the later steps, create a super admin for crater and configure the Hospital as a Company.
 
 # Odoo not synchronizing old patient data
 Perform the followinng steps if older patient data is not being sent to Odoo. This likely happened because the ATOM Feed reader has already exhausted its max retry limit for failed events (by default set to 5 times). You can set the Failed events retry back to 1, and that should sync them immediately. Steps to fix this:
@@ -158,6 +167,7 @@ Once you have created the config files, uncomment the volume mount in the requir
 # Environment Configuration:
 * The list of configurable environment variables can be found in the `.env` file.
 * The `.env ` file can be modified to customise the application.
+
 ## Atomfeed Configurations:
 The default values specified for the below variables are for services running in Docker. It is recommened to update only when you need to connect with a service running in a different host. (Example: Vagrant).
 Note: When connected with a different host, the master data should match. Otherwise you may face issues with atomfeed sync.
@@ -219,6 +229,28 @@ Note: When connected with a different host, the master data should match. Otherw
 
 ### Setting up a fresh OpenMRS Instance
 By default, the configuration of openmrs and openmrsdb services are set to load demo data from a backup file. If you want to start the installation with a fresh schema, set `OPENMRS_DB_CREATE_TABLES` to `true` and then set `OPENMRS_DB_IMAGE_NAME` to `mysql:5.6`. Now when start the schema will be created by liquibase migrations of OpenMRS and other OMODS loaded.
+
+## Crater Configurations:
+| Variable Name                   | Description |
+|--:------------------------------|--:----------|
+| CRATER_PHP_IMAGE_TAG            | This value tells which image version to be used for Crater PHP. A list of tags can be found at [bahmni/crater-php - Tags](https://hub.docker.com/r/bahmni/crater-php/tags). |
+| CRATER_NGINX_IMAGE_TAG          | This value tells which image version to be used for Crater NGINX. A list of tags can be found at [bahmni/crater-nginx - Tags](https://hub.docker.com/r/bahmni/crater-nginx/tags). |
+| CRATER_APP_URL                  | URL of the crater instance where it will be hosted. |
+| CRATER_DB_HOST                  | Host of the Crater Database. |
+| CRATER_DB_PORT                  | Port of the Crater Database. |
+| CRATER_DB_DATABASE              | Name of the Crater Database. |
+| CRATER_DB_USERNAME              | Username of the Crater Database. |
+| CRATER_DB_PASSWORD              | Password of the Crater Database. |
+| CRATER_SANCTUM_STATEFUL_DOMAINS | `CRATER_APP_URL` without `http://`. |
+| CRATER_SESSION_DOMAIN           | `CRATER_APP_URL` without `http://` and port. |
+| CRATER_AUTO_INSTALL             | Flag to set up Crater automatically. |
+| CRATER_ADMIN_NAME               | Admin name of the Crater instance (used for automatic installation). |
+| CRATER_ADMIN_EMAIL              | Admin email of the Crater instance (used for automatic installation). |
+| CRATER_ADMIN_PASSWORD           | Admin password of the Crater instance (used for automatic installation). |
+| CRATER_COMPANY_NAME             | Company name of the Crater instance (used for automatic installation). |
+| CRATER_COMPANY_SLUG             | Company slug of the Crater instance (used for automatic installation). |
+| CRATER_COMPANY_ID               | Company id of the Crater instance (used for automatic installation). |
+
 ## Bahmni Web Configurations:
 | Variable Name        | Description                                                                                                                                                                                  |
 |:---------------------|:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
