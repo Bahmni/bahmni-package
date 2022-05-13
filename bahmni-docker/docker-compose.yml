@@ -1,26 +1,27 @@
-version: '3.7'
+version: "3.7"
 services:
   proxy:
-    image: 'bahmni/proxy:${PROXY_IMAGE_TAG:?}'
+    image: "bahmni/proxy:${PROXY_IMAGE_TAG:?}"
     volumes:
       #   - ${CERTIFICATE_PATH}:/etc/tls
-      - 'bahmni-patient-images:/home/bahmni/patient_images'
-      - 'bahmni-document-images:/home/bahmni/document_images'
+      - "bahmni-patient-images:/home/bahmni/patient_images"
+      - "bahmni-document-images:/home/bahmni/document_images"
+    ports:
+      - "80:80"
+      - "443:443"
 
-    ports:
-      - '80:80'
-      - '443:443'
   bahmni-lab:
-    image: 'bahmni/bahmni-lab:${BAHMNI_LAB_IMAGE_TAG:?}'
+    profiles: ["default", "bahmni-full"]
+    image: "bahmni/bahmni-lab:${BAHMNI_LAB_IMAGE_TAG:?}"
     ports:
-      - '8090:80'
-      - '8443:443'
+      - "8090:80"
+      - "8443:443"
 
   openelis:
-    profiles: ['default', 'openelis']
-    image: 'bahmni/openelis:${OPENELIS_IMAGE_TAG:?[ERROR]}'
+    profiles: ["default", "openelis", "bahmni-full"]
+    image: "bahmni/openelis:${OPENELIS_IMAGE_TAG:?[ERROR]}"
     ports:
-      - '8052:8052'
+      - "8052:8052"
     #volumes:
     #- "${BAHMNI_CONFIG_PATH}/openelis/:/etc/bahmni_config/openelis/"
     environment:
@@ -34,15 +35,15 @@ services:
         condition: service_healthy
 
   openelisdb:
-    profiles: ['default', 'openelis']
-    image: 'bahmni/openelis-db:${OPENELIS_DB_IMAGE_TAG:?[ERROR]}'
+    profiles: ["default", "openelis", "bahmni-full"]
+    image: "bahmni/openelis-db:${OPENELIS_DB_IMAGE_TAG:?[ERROR]}"
     ports:
-      - '5432:5432'
+      - "5432:5432"
     volumes:
-      - '${OPENELIS_DB_DUMP_PATH}:/resources/db-dump'
-      - 'openelisdbdata:/var/lib/postgresql/data'
+      - "${OPENELIS_DB_DUMP_PATH}:/resources/db-dump"
+      - "openelisdbdata:/var/lib/postgresql/data"
     healthcheck:
-      test: ['CMD-SHELL', 'pg_isready -h localhost -U postgres']
+      test: ["CMD-SHELL", "pg_isready -h localhost -U postgres"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -52,10 +53,10 @@ services:
       POSTGRES_DB: postgres
 
   odoo:
-    profiles: ['default', 'odoo']
-    image: 'bahmni/odoo-10:${ODOO_IMAGE_TAG:?[ERROR]}'
+    profiles: ["default", "odoo", "bahmni-full"]
+    image: "bahmni/odoo-10:${ODOO_IMAGE_TAG:?[ERROR]}"
     ports:
-      - '8069:8069'
+      - "8069:8069"
     volumes:
       - odooappdata:/var/lib/odoo
       - ${EXTRA_ADDONS_PATH}:/mnt/extra-addons
@@ -70,15 +71,15 @@ services:
       PASSWORD: ${ODOO_DB_PASSWORD}
 
   odoodb:
-    profiles: ['default', 'odoo']
-    image: 'bahmni/odoo-10-db:${ODOO_DB_IMAGE_TAG:?[ERROR]}'
+    profiles: ["default", "odoo", "bahmni-full"]
+    image: "bahmni/odoo-10-db:${ODOO_DB_IMAGE_TAG:?[ERROR]}"
     ports:
-      - '5431:5432'
+      - "5431:5432"
     volumes:
-      - '${ODOO_DB_DUMP_PATH}:/resources/db-dump'
-      - 'odoodbdata:/var/lib/postgresql/data'
+      - "${ODOO_DB_DUMP_PATH}:/resources/db-dump"
+      - "odoodbdata:/var/lib/postgresql/data"
     healthcheck:
-      test: ['CMD-SHELL', 'pg_isready -h localhost -U odoo']
+      test: ["CMD-SHELL", "pg_isready -h localhost -U odoo"]
       interval: 10s
       timeout: 5s
     environment:
@@ -87,8 +88,8 @@ services:
       POSTGRES_USER: ${ODOO_DB_USER}
 
   odoo-connect:
-    profiles: ['default', 'odoo']
-    image: 'bahmni/odoo-connect:${ODOO_CONNECT_IMAGE_TAG:?[ERROR]}'
+    profiles: ["default", "odoo", "bahmni-full"]
+    image: "bahmni/odoo-connect:${ODOO_CONNECT_IMAGE_TAG:?[ERROR]}"
     environment:
       ODOO_DB_SERVER: odoodb
       ODOO_DB_USERNAME: ${ODOO_DB_USER:?}
@@ -110,7 +111,7 @@ services:
         condition: service_healthy
 
   openmrs:
-    profiles: ['default', 'openmrs']
+    profiles: ["default", "openmrs", "bahmni-lite", "bahmni-full"]
     image: bahmni/openmrs:${OPENMRS_IMAGE_TAG:?}
     environment:
       DB_DATABASE: ${OPENMRS_DB_NAME:?}
@@ -126,33 +127,33 @@ services:
       OPENELIS_ATOMFEED_USER: ${OPENELIS_ATOMFEED_USER:?}
       OPENELIS_ATOMFEED_PASSWORD: ${OPENELIS_ATOMFEED_PASSWORD:?}
     ports:
-      - '8080:8080'
+      - "8080:8080"
     volumes:
-      - 'openmrs-data:/usr/local/tomcat/.OpenMRS/modules'
+      - "openmrs-data:/usr/local/tomcat/.OpenMRS/modules"
       #- "${BAHMNI_OPENMRS_MODULES_PATH:?}/:/usr/local/tomcat/.OpenMRS/modules/"
       #- "${BAHMNI_CONFIG_PATH:?}/:/etc/bahmni_config/"
-      - 'bahmni-patient-images:/home/bahmni/patient_images'
-      - 'bahmni-document-images:/home/bahmni/document_images'
+      - "bahmni-patient-images:/home/bahmni/patient_images"
+      - "bahmni-document-images:/home/bahmni/document_images"
     depends_on:
       - openmrsdb
 
   openmrsdb:
     image: bahmni/openmrs-db:${OPENMRS_DB_IMAGE_TAG:?}
     restart: always
-    profiles: ['default', 'openmrs']
+    profiles: ["default", "openmrs", "bahmni-lite", "bahmni-full"]
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?}
       MYSQL_DATABASE: ${OPENMRS_DB_NAME:?}
       MYSQL_USER: ${OPENMRS_DB_USERNAME:?}
       MYSQL_PASSWORD: ${OPENMRS_DB_PASSWORD:?}
     ports:
-      - '3306:3306'
+      - "3306:3306"
     volumes:
-      - 'openmrsdbdata:/var/lib/mysql'
+      - "openmrsdbdata:/var/lib/mysql"
 
   bahmni-web:
     image: bahmni/bahmni-web:${BAHMNI_WEB_IMAGE_TAG:?}
-    profiles: ['default', 'openmrs']
+    profiles: ["default", "openmrs", "bahmni-lite", "bahmni-full"]
     #volumes:
     #- "${BAHMNI_APPS_PATH:?}/ui/app/:/usr/local/apache2/htdocs/bahmni"
     #- "${BAHMNI_APPS_PATH:?}/ui/node_modules/@bower_components/:/usr/local/apache2/htdocs/bahmni/components"
