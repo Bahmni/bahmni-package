@@ -70,14 +70,14 @@ Bahmni docker-compose has been configured with profiles which allows you to run 
 
 Note: `proxy` is a generic service and it will start always irrespective of below profiles.
 
-| Profile   | Application       | Services |
-| :---------|:------------------|:----------------- |
-| default  | All applications    | All service defined in docker-compose.yml |
-| openelis | OpenELIS            | openelis, openelisdb
-| odoo     | Odoo                | odoo, odoodb |
-| openmrs  | Bahmni EMR          | openmrs, openmrsdb, bahmni-web |
-| implementer-interface  | Implementer Interface (Form Builder)          | openmrs, openmrsdb, implementer-interface |
-| reports | Bahmni Reports | reports, reportsdb |
+| Profile               | Application                          | Services                                  |
+|:----------------------|:-------------------------------------|:------------------------------------------|
+| default               | All applications                     | All service defined in docker-compose.yml |
+| openelis              | OpenELIS                             | openelis, openelisdb                      |
+| odoo                  | Odoo                                 | odoo, odoodb                              |
+| openmrs               | Bahmni EMR                           | openmrs, openmrsdb, bahmni-web            |
+| implementer-interface | Implementer Interface (Form Builder) | openmrs, openmrsdb, implementer-interface |
+| reports               | Bahmni Reports                       | reports, reportsdb                        |
 
 
 Profiles can be set by changing the `COMPOSE_PROFILES` variable in .env variable. You can set multiple profiles by comma seperated values.
@@ -96,14 +96,14 @@ Example: COMPOSE_PROFILES=openelis,odoo. You can also pass this as an argument w
 * To see the list of existing patients in Bahmni, go to Bahmni web UI, Registration Module, and for Patient Name type "%" (percentage sign) in the search box.
 
 
-| Application Name   | URL             | Default Credentials | Notes|
-| :------------------|:-----------------|:----------------- |:------|
-| Bahmni EMR | http://localhost/bahmni/home | Username: `superman` <br> Password: `Admin123` | If you use fresh db images, then you need to configure locations, visits etc as mentioned [here](https://bahmni.atlassian.net/wiki/spaces/BAH/pages/34013673/OpenMRS+configuration). |
-| OpenMRS            | http://localhost/openmrs | Username: `superman` <br> Password: `Admin123` | Perfom [one-time](#one-time-setup-for-openmrs) setup |
-| OpenElis           |http://localhost/openelis| Username: `admin` <br> Password: `adminADMIN!` |-|
-| Odoo               | http://localhost:8069   | Username: `admin` <br> Password: `admin`| Perfom [one-time](#one-time-setup-for-odoo) setup
-| Implementer Interface | http://localhost/implementer-interface | Username: `superman` <br> Password: `Admin123` |-|
-| Bahmni Reports     | http://localhost/bahmni-reports   | Username: `superman` <br> Password: `Admin123`| Openmrs profile should be running |
+| Application Name      | URL                                    | Default Credentials                            | Notes                                                                                                                                                                                |
+|:----------------------|:---------------------------------------|:-----------------------------------------------|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Bahmni EMR            | http://localhost/bahmni/home           | Username: `superman` <br> Password: `Admin123` | If you use fresh db images, then you need to configure locations, visits etc as mentioned [here](https://bahmni.atlassian.net/wiki/spaces/BAH/pages/34013673/OpenMRS+configuration). |
+| OpenMRS               | http://localhost/openmrs               | Username: `superman` <br> Password: `Admin123` | Perfom [one-time](#one-time-setup-for-openmrs) setup                                                                                                                                 |
+| OpenElis              | http://localhost/openelis              | Username: `admin` <br> Password: `adminADMIN!` | -                                                                                                                                                                                    |
+| Odoo                  | http://localhost:8069                  | Username: `admin` <br> Password: `admin`       | Perfom [one-time](#one-time-setup-for-odoo) setup                                                                                                                                    |
+| Implementer Interface | http://localhost/implementer-interface | Username: `superman` <br> Password: `Admin123` | -                                                                                                                                                                                    |
+| Bahmni Reports        | http://localhost/bahmni-reports        | Username: `superman` <br> Password: `Admin123` | Openmrs profile should be running                                                                                                                                                    |
 
 
 
@@ -161,66 +161,68 @@ Once you have created the config files, uncomment the volume mount in the requir
 The default values specified for the below variables are for services running in Docker. It is recommened to update only when you need to connect with a service running in a different host. (Example: Vagrant).
 Note: When connected with a different host, the master data should match. Otherwise you may face issues with atomfeed sync.
 
-| Variable Name                         | Description   |
-| :-------------------------------------|:------------- |
-|OPENMRS_HOST | Specifies the OpenMRS host to connect for Atomfeed Sync |
-|OPENMRS_PORT | Specifies port of OpenMRS to connect for Atomfeed Sync |
-|OPENMRS_ATOMFEED_USER| Username for Atomfeed to connect with OpenMRS |
-|OPENMRS_ATOMFEED_PASSWORD| Password for Atomfeed to connect with OpenMRS |
-|OPENELIS_HOST | Specifies the OpenELIS host to connect for Atomfeed Sync |
-|OPENELIS_PORT | Specifies port of OpenELIS to connect for Atomfeed Sync |
-|OPENELIS_ATOMFEED_USER| Username for Atomfeed to connect with OpenElis |
-|OPENELIS_ATOMFEED_PASSWORD| Password for Atomfeed to connect with OpenElis |
-|ODOO_HOST | Specifies the Odoo host to connect for Atomfeed Sync |
-|ODOO_PORT | Specifies port of Odoo to connect for Atomfeed Sync |
-|ODOO_ATOMFEED_USER| Username for Atomfeed to connect with Odoo |
-|ODOO_ATOMFEED_PASSWORD| Password for Atomfeed to connect with Odoo |
+| Variable Name              | Description                                              |
+|:---------------------------|:---------------------------------------------------------|
+| OPENMRS_HOST               | Specifies the OpenMRS host to connect for Atomfeed Sync  |
+| OPENMRS_PORT               | Specifies port of OpenMRS to connect for Atomfeed Sync   |
+| OPENMRS_ATOMFEED_USER      | Username for Atomfeed to connect with OpenMRS            |
+| OPENMRS_ATOMFEED_PASSWORD  | Password for Atomfeed to connect with OpenMRS            |
+| OPENELIS_HOST              | Specifies the OpenELIS host to connect for Atomfeed Sync |
+| OPENELIS_PORT              | Specifies port of OpenELIS to connect for Atomfeed Sync  |
+| OPENELIS_ATOMFEED_USER     | Username for Atomfeed to connect with OpenElis           |
+| OPENELIS_ATOMFEED_PASSWORD | Password for Atomfeed to connect with OpenElis           |
+| ODOO_HOST                  | Specifies the Odoo host to connect for Atomfeed Sync     |
+| ODOO_PORT                  | Specifies port of Odoo to connect for Atomfeed Sync      |
+| ODOO_ATOMFEED_USER         | Username for Atomfeed to connect with Odoo               |
+| ODOO_ATOMFEED_PASSWORD     | Password for Atomfeed to connect with Odoo               |
 
 ## OpenElis Configurations:
 
-| Variable Name                         | Description   |
-| :-------------------------------------|:------------- |
-| OPENELIS_IMAGE_TAG | This value tells which image version to  be used for OpenElis Application. List of tags can be found at [bahmni/openelis - Tags](https://hub.docker.com/r/bahmni/openelis/tags) . |
-| OPENELIS_DB_IMAGE_TAG | This value tells which image version to be used for OpenElis Database. There are two variants available. <br>**fresh db** - Has only schema and default data.<br>**demo db** - Has schema and demo data loaded.  <br>List of image tags can be found at [bahmni/openelis-db - Tags](https://hub.docker.com/r/bahmni/openelis-db/tags) .    |
-| BAHMNI_CONFIG_PATH   | This is a shared variable. When you want to run any liquibase migrations for OpenELIS, set the value to the path of default_config and then uncomment the volumes in openelis service. Now add liquibase changesets to default_config/openelis/migrations/liquibase.xml . Now restart OpenELIS by running `docker-compose restart openelis` from bahmni-docker directory. |
-| OPENELIS_DB_DUMP_PATH | When you want to restore an existing database of OpenElis from a dump file you can set the folder path to your dump file with this variable. This is a one time setup and the restore happens only when the database is clean and fresh. So whenever you need a restore make sure you follow the steps in **Cleaning Application data**  |
+| Variable Name         | Description                                                                                                                                                                                                                                                                                                                                                               |
+|:----------------------|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| OPENELIS_IMAGE_TAG    | This value tells which image version to  be used for OpenElis Application. List of tags can be found at [bahmni/openelis - Tags](https://hub.docker.com/r/bahmni/openelis/tags) .                                                                                                                                                                                         |
+| OPENELIS_DB_IMAGE_TAG | This value tells which image version to be used for OpenElis Database. There are two variants available. <br>**fresh db** - Has only schema and default data.<br>**demo db** - Has schema and demo data loaded.  <br>List of image tags can be found at [bahmni/openelis-db - Tags](https://hub.docker.com/r/bahmni/openelis-db/tags) .                                   |
+| BAHMNI_CONFIG_PATH    | This is a shared variable. When you want to run any liquibase migrations for OpenELIS, set the value to the path of default_config and then uncomment the volumes in openelis service. Now add liquibase changesets to default_config/openelis/migrations/liquibase.xml . Now restart OpenELIS by running `docker-compose restart openelis` from bahmni-docker directory. |
+| OPENELIS_DB_DUMP_PATH | When you want to restore an existing database of OpenElis from a dump file you can set the folder path to your dump file with this variable. This is a one time setup and the restore happens only when the database is clean and fresh. So whenever you need a restore make sure you follow the steps in **Cleaning Application data**                                   |
 
 ## Odoo Configurations: 
-| Variable Name                         | Description   |
-| :-------------------------------------|:------------- |
-| ODOO_IMAGE_TAG | This value tells which image version to  be used for ODoo Application. List of tags can be found at [bahmni/odoo-10 - Tags](https://hub.docker.com/r/bahmni/odoo-10/tags) . |
-| ODOO_DB_IMAGE_TAG | This value tells which image version to be used for Odoo Database. There are two variants available. <br>**fresh db** - Has only schema and default data.<br>**demo db** - Has schema and demo data loaded.  <br>List of image tags can be found at [bahmni/odoo-10-db - Tags](https://hub.docker.com/r/bahmni/odoo-10-db/tags) .    |
-| ODOO_DB_USER | This value is used as username for Odoo Postgres DB instance. This is also referenced in Odoo application.      |
-| ODOO_DB_PASSWORD   | This value is used as password for Odoo Postgres DB instance. This is also referenced in Odoo application. |
-| ODOO_DB_DUMP_PATH | When you want to restore an existing database of Odoo from a dump file you can set the folder path to your dump file with this variable. This is a one time setup and the restore happens only when the database is clean and fresh. So whenever you need a restore make sure you follow the steps in **Cleaning Application data**  |
-| EXTRA_ADDONS_PATH | When you want to installl an  additional addon, you can set the path of the root directory which contains your module directory.   |
+| Variable Name     | Description                                                                                                                                                                                                                                                                                                                         |
+|:------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| ODOO_IMAGE_TAG    | This value tells which image version to  be used for ODoo Application. List of tags can be found at [bahmni/odoo-10 - Tags](https://hub.docker.com/r/bahmni/odoo-10/tags) .                                                                                                                                                         |
+| ODOO_DB_IMAGE_TAG | This value tells which image version to be used for Odoo Database. There are two variants available. <br>**fresh db** - Has only schema and default data.<br>**demo db** - Has schema and demo data loaded.  <br>List of image tags can be found at [bahmni/odoo-10-db - Tags](https://hub.docker.com/r/bahmni/odoo-10-db/tags) .   |
+| ODOO_DB_USER      | This value is used as username for Odoo Postgres DB instance. This is also referenced in Odoo application.                                                                                                                                                                                                                          |
+| ODOO_DB_PASSWORD  | This value is used as password for Odoo Postgres DB instance. This is also referenced in Odoo application.                                                                                                                                                                                                                          |
+| ODOO_DB_DUMP_PATH | When you want to restore an existing database of Odoo from a dump file you can set the folder path to your dump file with this variable. This is a one time setup and the restore happens only when the database is clean and fresh. So whenever you need a restore make sure you follow the steps in **Cleaning Application data** |
+| EXTRA_ADDONS_PATH | When you want to installl an  additional addon, you can set the path of the root directory which contains your module directory.                                                                                                                                                                                                    |
 
 ## Odoo Connect Configurations:
-| Variable Name                         | Description   |
-| :-------------------------------------|:------------- |
+| Variable Name          | Description                                                                                                                                                                              |
+|:-----------------------|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | ODOO_CONNECT_IMAGE_TAG | This value tells which image version to  be used for Odoo Connect Application. List of tags can be found at [bahmni/odoo-10 - Tags](https://hub.docker.com/r/bahmni/odoo-connect/tags) . |
 
 ## OpenMRS Configurations:
-| Variable Name                         | Description   |
-| :-------------------------------------|:------------- |
-| OPENMRS_IMAGE_TAG | This value tells which image version to  be used for Bahmni OpenMRS. List of tags can be found at [bahmni/openmrs - Tags](https://hub.docker.com/r/bahmni/openmrs/tags) . |
-| OPENMRS_DB_IMAGE_TAG | This value tells which image version to be used for Bahmni OpenMRS Database. There are two variants available. <br>**fresh db** - Has only schema and default data.<br>**demo db** - Has schema and demo data loaded.  <br>List of image tags can be found at [bahmni/openmrs-db - Tags](https://hub.docker.com/r/bahmni/openmrs-db/tags) .    |
-| OPENMRS_DB_NAME | Database name for OpenMRS application      |
-| OPENMRS_DB_HOST   | Host name of the MySQL Database server. |
-| OPENMRS_DB_USERNAME | Username of the OpenMRS Database. |
-| OPENMRS_DB_PASSWORD | Password of the OpenMRS Database. |
-| OPENMRS_DB_CREATE_TABLES | Takes either true/false. Setting this to true, OpenMRS creates the tables neccessary or running the application. Note: Set this to true only when you are running with a plain MySQL Database Server.  |
-| OPENMRS_DB_AUTO_UPDATE | Takes either true/false. When set to true, the migrations are run and schema is kept up to date. |
-| OPENMRS_MODULE_WEB_ADMIN | Takes either true/false. Settings this to true allows you to manage OpenMRS Modules through the Web UI. It is recommened to set to false in production. |
-| OPENMRS_DEBUG | Takes either true/false. Enables the debug mode of OpenMRS |
-| OPENMRS_UPLOAD_FILES_PATH | This variable can be specified with a directory of the host machine where the uploaded files from OpenMRS needs to be stroed. Defaults to `openmrs-uploads` directory in the docker-compose directory itself. |
-| MYSQL_ROOT_PASSWORD | This is the root password for MySQL Database Server running in OpenMRS Database service.   |
+| Variable Name             | Description                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+|:--------------------------|:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| OPENMRS_IMAGE_TAG         | This value tells which image version to  be used for Bahmni OpenMRS. List of tags can be found at [bahmni/openmrs - Tags](https://hub.docker.com/r/bahmni/openmrs/tags) .                                                                                                                                                                                                                                                                          |
+| OPENMRS_DB_NAME           | Database name for OpenMRS application                                                                                                                                                                                                                                                                                                                                                                                                              |
+| OPENMRS_DB_HOST           | Host name of the MySQL Database server.                                                                                                                                                                                                                                                                                                                                                                                                            |
+| OPENMRS_DB_USERNAME       | Username of the OpenMRS Database. OpenMRS container will create a database user with this credential.                                                                                                                                                                                                                                                                                                                                              |
+| OPENMRS_DB_PASSWORD       | Password of the OpenMRS Database. OpenMRS container will create a database user with this credential.                                                                                                                                                                                                                                                                                                                                              |
+| OPENMRS_DB_CREATE_TABLES  | Takes either true/false. Setting this to true, OpenMRS creates the tables neccessary or running the application. Note: Set this to true only when you are running with a plain MySQL Database Server.                                                                                                                                                                                                                                              |
+| OPENMRS_DB_AUTO_UPDATE    | Takes either true/false. When set to true, the migrations are run and schema is kept up to date.                                                                                                                                                                                                                                                                                                                                                   |
+| OPENMRS_MODULE_WEB_ADMIN  | Takes either true/false. Settings this to true allows you to manage OpenMRS Modules through the Web UI. It is recommened to set to false in production.                                                                                                                                                                                                                                                                                            |
+| OPENMRS_DEBUG             | Takes either true/false. Enables the debug mode of OpenMRS                                                                                                                                                                                                                                                                                                                                                                                         |
+| OPENMRS_UPLOAD_FILES_PATH | This variable can be specified with a directory of the host machine where the uploaded files from OpenMRS needs to be stroed. Defaults to `openmrs-uploads` directory in the docker-compose directory itself.                                                                                                                                                                                                                                      |
+| MYSQL_ROOT_USERNAME       | This is the root username for MySQL Database Server used by OpenMRS DB service. This credential will be used to create & setup database user.                                                                                                                                                                                                                                                                                                      |
+| MYSQL_ROOT_PASSWORD       | This is the root password for MySQL Database Server used by OpenMRS DB service. This credential will be used to create & setup database user.                                                                                                                                                                                                                                                                                                      |
+| OPENMRS_LOAD_DEMO_DATA    | Takes either true/false. When set to true, if the database server doesn't contain the database then OpenMRS container will load [demo data](https://github.com/Bahmni/bahmni-scripts/blob/master/demo/db-backups/v0.93/openmrs_backup.sql.gz) into the database. <br> Setting this to false will only load [fresh schema](https://github.com/Bahmni/openmrs-distro-bahmni/blob/master/package/resources/openmrs_clean_dump.sql) into the database. |
+| OPENMRS_DB_DUMP_GZIP_URL  | This can be used to override default demo data that would be loaded in the database. The URL should provide a valid [SQL GZIP backup](https://www.knownhost.com/kb/creating-mysql-backups-and-importing-them-via-command-line/#creating_a_mysql_backups). Set `OPENMRS_LOAD_DEMO_DATA` to true and then set the URL.                                                                                                                               |
 
 ## Bahmni Web Configurations:
-| Variable Name                         | Description   |
-| :-------------------------------------|:------------- |
+| Variable Name        | Description                                                                                                                                                                                  |
+|:---------------------|:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | BAHMNI_WEB_IMAGE_TAG | This value specifies which image version needs to be used for bahmni-web service. List of tags can be found at [bahmni/bahmni-web - Tags](https://hub.docker.com/r/bahmni/bahmni-web/tags) . |
-| BAHMNI_UI_DIST_PATH | Set this variable with the path of your dist folder of openmrs-module-bahmniapps when you want to develop on Bahmni UI. |
+| BAHMNI_UI_DIST_PATH  | Set this variable with the path of your dist folder of openmrs-module-bahmniapps when you want to develop on Bahmni UI.                                                                      |
 
 ## Implementer Interface Configurations:
 | Variable Name                         | Description   |
@@ -229,12 +231,12 @@ Note: When connected with a different host, the master data should match. Otherw
 | IMPLEMENTER_INTERFACE_CODE_PATH | Set this variable with the path where you cloned implementer-interface repository when you want to do development on the same. |
 
 ## Bahmni Reports Configurations:
- | Variable Name                         | Description   |
- | :-------------------------------------|:------------- |
- | REPORTS_IMAGE_TAG | This value specifies which image version needs to be used for reports service. List of tags can be found at [bahmni/reports - Tags](https://hub.docker.com/r/bahmni/reports/tags) . |
- | REPORTS_DB_NAME | Database name for Reports |
- | REPORTS_DB_USERNAME | Username of Reports Database |
- | REPORTS_DB_PASSWORD | Password of Reports Database |
+| Variable Name       | Description                                                                                                                                                                         |
+|:--------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+ | REPORTS_IMAGE_TAG   | This value specifies which image version needs to be used for reports service. List of tags can be found at [bahmni/reports - Tags](https://hub.docker.com/r/bahmni/reports/tags) . |
+ | REPORTS_DB_NAME     | Database name for Reports                                                                                                                                                           |
+ | REPORTS_DB_USERNAME | Username of Reports Database                                                                                                                                                        |
+ | REPORTS_DB_PASSWORD | Password of Reports Database                                                                                                                                                        |
  
 # Proxy Service
 The proxy service runs with every profile configuration. It renders the Bahmni Landing Page. Also ProxyPass and ProxyPassReverse configurations are done with this container.
