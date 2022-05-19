@@ -21,6 +21,7 @@ This is a Work In Progress directory.
     * [OpenMRS Configuration](#openmrs-configurations)
     * [Bahmni Web Configuration](#bahmni-web-configurations)
     * [Implementer Interface Configurations](#implementer-interface-configurations)
+    * [Bahmni Reports Configurations](#bahmni-reports-configurations)
 * [Proxy Service](#proxy-service)
 * [Building OpenElis Images Locally](#building-openelis-images-locally)
 * [Loading Additional Addons to Odoo](#loading-additional-addons-to-odoo)
@@ -52,6 +53,17 @@ volumes:
 ```
 Replace the `${CERTIFICATE_PATH}` to the path at which the certificate and key file are present. Also make sure to name the certificate file as `cert.pem` and key file as `key.pem`
 
+Note: Self-signed certificates are inherently not trusted by your browser because a certificate hasn't signed by trusted Certificate Authority
+
+To generate a trusted SSL Certificate, required dependencies bundled in the `bahmni-proxy` image. You need to run the following command. It will generate certificate and replace it with `/etc/tls/cert.pem` and `/etc/tls/key.pem`
+```
+docker exec -it {{PROXY_CONTAINER_NAME/ID}} sh -c \
+   "certbot certonly --webroot -w /usr/local/apache2/htdocs -d {{DOMAIN_NAME}} --email {{EMAIL}} \
+      --agree-tos --noninteractive ;
+   cp /etc/letsencrypt/live/{{DOMAIN_NAME}}/fullchain.pem /etc/tls/cert.pem ;
+   cp /etc/letsencrypt/live/{{DOMAIN_NAME}}/privkey.pem /etc/tls/key.pem"
+``` 
+Restart the proxy container `docker restart {PROXY_CONTAINER_NAME/ID}}`
 
 # Profile Configuration
 Bahmni docker-compose has been configured with profiles which allows you to run the required services. More about compose profiles can be found [here](https://docs.docker.com/compose/profiles/). The list of different profiles can be found below.
@@ -65,6 +77,8 @@ Note: `proxy` is a generic service and it will start always irrespective of belo
 | odoo     | Odoo                | odoo, odoodb |
 | openmrs  | Bahmni EMR          | openmrs, openmrsdb, bahmni-web |
 | implementer-interface  | Implementer Interface (Form Builder)          | openmrs, openmrsdb, implementer-interface |
+| reports | Bahmni Reports | reports, reportsdb |
+
 
 Profiles can be set by changing the `COMPOSE_PROFILES` variable in .env variable. You can set multiple profiles by comma seperated values.
 Example: COMPOSE_PROFILES=openelis,odoo. You can also pass this as an argument with docker-compose up command. Example: `docker-compose --profile odoo up` (or) `docker-compose --profile odoo --profile openelis up`
@@ -89,6 +103,8 @@ Example: COMPOSE_PROFILES=openelis,odoo. You can also pass this as an argument w
 | OpenElis           |http://localhost/openelis| Username: `admin` <br> Password: `adminADMIN!` |-|
 | Odoo               | http://localhost:8069   | Username: `admin` <br> Password: `admin`| Perfom [one-time](#one-time-setup-for-odoo) setup
 | Implementer Interface | http://localhost/implementer-interface | Username: `superman` <br> Password: `Admin123` |-|
+| Bahmni Reports     | http://localhost/bahmni-reports   | Username: `superman` <br> Password: `Admin123`| Openmrs profile should be running |
+
 
 
 ### Cleaning All Bahmni Application Data
@@ -212,6 +228,14 @@ Note: When connected with a different host, the master data should match. Otherw
 | IMPLEMENTER_INTERFACE_IMAGE_TAG | This value specifies which image version needs to be used for implementer-interface service. List of tags can be found at [bahmni/implementer-interface - Tags](https://hub.docker.com/r/bahmni/implementer-interface/tags) . |
 | IMPLEMENTER_INTERFACE_CODE_PATH | Set this variable with the path where you cloned implementer-interface repository when you want to do development on the same. |
 
+## Bahmni Reports Configurations:
+ | Variable Name                         | Description   |
+ | :-------------------------------------|:------------- |
+ | REPORTS_IMAGE_TAG | This value specifies which image version needs to be used for reports service. List of tags can be found at [bahmni/reports - Tags](https://hub.docker.com/r/bahmni/reports/tags) . |
+ | REPORTS_DB_NAME | Database name for Reports |
+ | REPORTS_DB_USERNAME | Username of Reports Database |
+ | REPORTS_DB_PASSWORD | Password of Reports Database |
+ 
 # Proxy Service
 The proxy service runs with every profile configuration. It renders the Bahmni Landing Page. Also ProxyPass and ProxyPassReverse configurations are done with this container.
 

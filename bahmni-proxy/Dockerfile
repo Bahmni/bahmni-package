@@ -30,7 +30,12 @@ RUN apk add --no-cache --virtual .build-deps \
 		apache2-utils \
 		py-pip \
 		tar \
-        python3-dev 
+        python3-dev \
+        libffi-dev
+
+RUN python3 -m venv /opt/certbot/ &&\
+        /opt/certbot/bin/pip install certbot &&\
+        ln -s /opt/certbot/bin/certbot /usr/bin/certbot
 
 RUN mkdir -p /var/log/client-side-logs/ &&\
 	touch /var/log/client-side-logs/client-side.log &&\
