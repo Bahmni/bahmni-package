@@ -237,7 +237,8 @@ Note: When connected with a different host, the master data should match. Otherw
  | REPORTS_DB_NAME     | Database name for Reports                                                                                                                                                           |
  | REPORTS_DB_USERNAME | Username of Reports Database                                                                                                                                                        |
  | REPORTS_DB_PASSWORD | Password of Reports Database                                                                                                                                                        |
- 
+ | BAHMNI_CONFIG_REPORTS_PATH  | Set this variable with the path of your reports folder of default-config when you want to develop on custom SQL reports.                                                                      |
+
 # Proxy Service
 The proxy service runs with every profile configuration. It renders the Bahmni Landing Page. Also ProxyPass and ProxyPassReverse configurations are done with this container.
 

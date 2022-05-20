@@ -187,6 +187,8 @@ services:
       ODOO_DB_SERVER: odoodb
       ODOO_DB_USERNAME: ${ODOO_DB_USER:?}
       ODOO_DB_PASSWORD: ${ODOO_DB_PASSWORD:?}
+      #volumes:
+      #- "${BAHMNI_CONFIG_REPORTS_PATH:?}:/etc/bahmni_config/reports/"
     depends_on:
       - reportsdb
       - openmrsdb
