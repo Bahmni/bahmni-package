@@ -145,7 +145,7 @@ where `bahmni-docker_odoodb_1` is the name of the odoo postgres container. You s
 
 
 # Overriding Default Config
-Certain services(OpenMRS, OpenELIS, Bahmni Web) of Bahmni comes with default config loaded. You can find the default_config [here](https://github.com/Bahmni/default-config).
+Certain services(OpenMRS, OpenELIS, Bahmni Web, Bahmni Reports) of Bahmni comes with default config loaded. You can find the default_config [here](https://github.com/Bahmni/default-config).
 
 You can override these configurations by setting the path to your config folder using the `BAHMNI_CONFIG_PATH` environment varibale.
 
@@ -237,7 +237,6 @@ Note: When connected with a different host, the master data should match. Otherw
  | REPORTS_DB_NAME     | Database name for Reports                                                                                                                                                           |
  | REPORTS_DB_USERNAME | Username of Reports Database                                                                                                                                                        |
  | REPORTS_DB_PASSWORD | Password of Reports Database                                                                                                                                                        |
- | BAHMNI_CONFIG_REPORTS_PATH  | Set this variable with the path of your reports folder of default-config when you want to develop on custom SQL reports.                                                                      |
 
 # Proxy Service
 The proxy service runs with every profile configuration. It renders the Bahmni Landing Page. Also ProxyPass and ProxyPassReverse configurations are done with this container.
@@ -414,6 +413,14 @@ When you want to develop or modify bahmni UI code, you can follow these steps.
 4. Now open the docker-compose.yml file and in the implementer-interface service uncomment the volumes section. 
 5. You can start implementer-interface by running `docker-compose up -d implementer-interface`. If your container is already running, you need to recreate it by the following command. `docker-compose rm -s implementer-interface && docker-compose up -d implementer-interface`
 6. Now, when you have implementer-interface build running in watch mode, you should be able to see the changes on refresh of the browser. 
+
+# Development Setup for Bahmni Reports
+1. Clone the [bahmni-reports](https://github.com/Bahmni/bahmni-reports) repository in your localmachine.
+2. Follow the instructions in the README of the repository to install the required tools and dependencies.
+3. Now open the docker-compose.yml file and in the reports service uncomment the volumes section.
+4. You can start reports by running `docker-compose up -d reports`. If your container is already running, you need to recreate it by the following command. `docker-compose rm -s reports && docker-compose up -d reports`
+5. Now, when you have reports running, you should be able to access the reports on refresh of the browser.
+
 
 # Common Troubleshooting Steps
 
