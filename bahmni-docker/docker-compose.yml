@@ -110,15 +110,20 @@ services:
         condition: service_healthy
 
   openmrs:
-    profiles: ['default', 'openmrs']
+    profiles: ["default","openmrs","implementer-interface"]
     image: bahmni/openmrs:${OPENMRS_IMAGE_TAG:?}
     environment:
       DB_DATABASE: ${OPENMRS_DB_NAME:?}
       DB_HOST: ${OPENMRS_DB_HOST:?}
-      DB_USERNAME: ${OPENMRS_DB_USERNAME:?}
-      DB_PASSWORD: ${OPENMRS_DB_PASSWORD:?}
+      # We need to remove the ROOT user access from the container and create the user and DB outside of openmrs container
+      DB_USERNAME: ${MYSQL_ROOT_USERNAME:?}
+      DB_PASSWORD: ${MYSQL_ROOT_PASSWORD:?}
+      DB_ROOT_USERNAME: ${MYSQL_ROOT_USERNAME:?}
+      DB_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?}
       DB_CREATE_TABLES: ${OPENMRS_DB_CREATE_TABLES}
       DB_AUTO_UPDATE: ${OPENMRS_DB_AUTO_UPDATE}
+      LOAD_DEMO_DATA: ${OPENMRS_LOAD_DEMO_DATA}
+      DB_DUMP_GZIP_URL: ${OPENMRS_DB_DUMP_GZIP_URL}
       MODULE_WEB_ADMIN: ${OPENMRS_MODULE_WEB_ADMIN}
       DEBUG: ${OPENMRS_DEBUG}
       OPENELIS_HOST: ${OPENELIS_HOST:?}
@@ -137,14 +142,11 @@ services:
       - openmrsdb
 
   openmrsdb:
-    image: bahmni/openmrs-db:${OPENMRS_DB_IMAGE_TAG:?}
+    image: mysql:5.6
     restart: always
-    profiles: ['default', 'openmrs']
+    profiles: ["default","openmrs","implementer-interface"]
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?}
-      MYSQL_DATABASE: ${OPENMRS_DB_NAME:?}
-      MYSQL_USER: ${OPENMRS_DB_USERNAME:?}
-      MYSQL_PASSWORD: ${OPENMRS_DB_PASSWORD:?}
     ports:
       - '3306:3306'
     volumes:
@@ -157,6 +159,15 @@ services:
     #- "${BAHMNI_APPS_PATH:?}/ui/app/:/usr/local/apache2/htdocs/bahmni"
     #- "${BAHMNI_APPS_PATH:?}/ui/node_modules/@bower_components/:/usr/local/apache2/htdocs/bahmni/components"
     #- "${BAHMNI_CONFIG_PATH:?}/:/usr/local/apache2/htdocs/bahmni_config/"
+
+
+  implementer-interface:
+    image: bahmni/implementer-interface:${IMPLEMENTER_INTERFACE_IMAGE_TAG:?}
+    profiles: ["default","implementer-interface"]
+    #volumes:
+    #  - "${IMPLEMENTER_INTERFACE_CODE_PATH:?}/dist:/usr/local/apache2/htdocs/implementer_interface"
+    depends_on:
+      - openmrs
 
   reports:
     image: bahmni/reports:${REPORTS_IMAGE_TAG:?}
@@ -189,6 +200,7 @@ services:
       MYSQL_DATABASE: ${REPORTS_DB_NAME:?}
       MYSQL_USER: ${REPORTS_DB_USERNAME:?}
       MYSQL_PASSWORD: ${REPORTS_DB_PASSWORD:?}
+
 
 volumes:
   openelisdbdata:
