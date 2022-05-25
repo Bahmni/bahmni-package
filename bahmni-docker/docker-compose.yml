@@ -193,6 +193,7 @@ services:
       - bahmni-web
 
   reportsdb:
+    platform: linux/amd64
     image: mysql:5.6
     profiles: ["default","reports"]
     environment:
