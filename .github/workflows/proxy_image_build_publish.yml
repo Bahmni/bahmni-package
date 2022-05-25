@@ -24,6 +24,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: bahmni-proxy/
+          no-cache: true
           push: true
           tags: bahmni/proxy:${{env.BAHMNI_VERSION}}-${{github.run_number}},bahmni/proxy:latest
 
