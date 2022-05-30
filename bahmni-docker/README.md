@@ -30,6 +30,7 @@ This is a Work In Progress directory.
 * [Adding / Upgrading OpenMRS Modules](#adding-upgrading-openmrs-modules)
 * [Development on Bahmni UI](#development-on-bahmni-ui)
 * [Development Setup for Implementer Interface](#development-setup-for-implementer-interface)
+* [Adding Custom Reports](#adding-custom-reports)
 
 # Prerequisites
 ## Docker Installations
@@ -414,12 +415,11 @@ When you want to develop or modify bahmni UI code, you can follow these steps.
 5. You can start implementer-interface by running `docker-compose up -d implementer-interface`. If your container is already running, you need to recreate it by the following command. `docker-compose rm -s implementer-interface && docker-compose up -d implementer-interface`
 6. Now, when you have implementer-interface build running in watch mode, you should be able to see the changes on refresh of the browser. 
 
-# Development Setup for Bahmni Reports
-1. Clone the [bahmni-reports](https://github.com/Bahmni/bahmni-reports) repository in your localmachine.
-2. Follow the instructions in the README of the repository to install the required tools and dependencies.
-3. Now open the docker-compose.yml file and in the reports service uncomment the volumes section.
-4. You can start reports by running `docker-compose up -d reports`. If your container is already running, you need to recreate it by the following command. `docker-compose rm -s reports && docker-compose up -d reports`
-5. Now, when you have reports running, you should be able to access the reports on refresh of the browser.
+# Adding Custom Reports
+1. When you want to add custom reports to Bahmni Reports, add the config directory path to the `BAHMNI_CONFIG_PATH` variable. Make sure to follow the directory structure of [default-config](https://github.com/Bahmni/default-config).
+2. Now open the docker-compose.yml file and in the reports service uncomment the volumes section.
+3. You can start reports by running `docker-compose up -d reports`. If your container is already running, you need to recreate it by the following command. `docker-compose rm -s reports && docker-compose up -d reports`
+4. Now, when you have reports running, you should be able to access the reports on refresh of the browser.
 
 
 # Common Troubleshooting Steps
