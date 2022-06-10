@@ -18,12 +18,16 @@ groupadd bahmni
 useradd -g bahmni bahmni
 
 mkdir -p /opt/bahmni-lab/uploaded-files
-mkdir -p /home/bahmni/uploaded-files/elis
+mkdir -p /opt/bahmni-lab/uploaded-files/elis
+
+chown -R bahmni:bahmni /opt/bahmni-lab/uploaded-files/elis
 
 #create links
 ln -s /opt/bahmni-lab/etc /etc/bahmni-lab
 ln -s /opt/bahmni-lab/log /var/log/bahmni-lab
 ln -s /opt/bahmni-lab/uploaded-files/elis /home/bahmni/uploaded-files/elis
+
+chown -R bahmni:bahmni /home/bahmni/uploaded-files/elis
 
 setupConfFiles() {
     	rm -f /etc/httpd/conf.d/bahmnilab_ssl.conf
