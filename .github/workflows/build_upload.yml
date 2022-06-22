@@ -5,6 +5,7 @@ on:
       - master
     paths:
       - "core/**"
+  workflow_dispatch:
 
 env:
   ORG_NAME: Bahmni
