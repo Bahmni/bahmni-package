@@ -242,6 +242,9 @@ By default, the configuration of openmrs and openmrsdb services are set to load 
 # Proxy Service
 The proxy service runs with every profile configuration. It renders the Bahmni Landing Page. Also ProxyPass and ProxyPassReverse configurations are done with this container.
 
+# Patient Documents Service
+The patient-documents service validates the session before rendering patient documents.   
+
 # Building OpenElis Images Locally
 You can also build the docker images locally and test it with the same docker-compose file.
 
