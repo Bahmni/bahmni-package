@@ -1,7 +1,7 @@
 version: '3.7'
 services:
   proxy:
-    image: 'stavtnameh/proxy:${PROXY_IMAGE_TAG:?}'
+    image: 'bahmni/proxy:${PROXY_IMAGE_TAG:?}'
     volumes:
       #   - ${CERTIFICATE_PATH}:/etc/tls
       - 'bahmni-patient-images:/home/bahmni/patient_images'
@@ -212,8 +212,8 @@ services:
       - OPENMRS_HOST=${OPENMRS_HOST:?}
 
   appointments-v2:
-    image: stavtnameh/appointments-v2:latest
-    profile: ["default","implementer-interface"]
+    image: bahmni/appointments-v2:${APPOINTMENTS-V2_IMAGE_TAG:?}
+    profiles: ["default","appointments-v2"]
     depends_on:
       - openmrs
 

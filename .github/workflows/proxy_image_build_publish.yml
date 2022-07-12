@@ -26,5 +26,5 @@ jobs:
           context: bahmni-proxy/
           no-cache: true
           push: true
-          tags: stavtnameh/proxy:${{env.BAHMNI_VERSION}}-${{github.run_number}},stavtnameh/proxy:latest
+          tags: bahmni/proxy:${{env.BAHMNI_VERSION}}-${{github.run_number}},bahmni/proxy:latest
 
