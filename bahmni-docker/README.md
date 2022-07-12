@@ -27,6 +27,7 @@ This is a Work In Progress directory.
 * [Loading Additional Addons to Odoo](#loading-additional-addons-to-odoo)
 * [Developing Bahmni Odoo Modules](#developing-bahmni-odoo-modules)
 * [Building Odoo Connect Image Locally](#building-odoo-connect-image-locally)
+* [Debugging OpenMRS Application](#debugging-openmrs-application)
 * [Adding / Upgrading OpenMRS Modules](#adding-upgrading-openmrs-modules)
 * [Development on Bahmni UI](#development-on-bahmni-ui)
 * [Development Setup for Implementer Interface](#development-setup-for-implementer-interface)
@@ -362,6 +363,16 @@ The docker build scripts has been written in a way to be used in Dev Environemts
 *Using the local images:*
 
 In order to use the locally built images, update `ODOO_CONNECT_IMAGE_TAG` environment variable so that docker compose picks up local images.
+
+# Debugging OpenMRS Application
+Since OpenMRS is running on Tomcat, remote debugging can be enabled and can be connected with IDE supporting remote debugging.(Eclipse, Intellij IDEA etc.)
+
+1. Enable debugging by setting `OPENMRS_DEBUG` to `true` in the `.env` file
+2. Now remote debugging for OpenMRS is exposed on port `8000` in your local machine.
+3. Now you can follow the IDE configuration to setup remote debugging using host as `localhost` and port as `8000`. 
+4. For example in Intellij IDEA navigate to Run -> Edit Configurations. In the dialog box click on `+` icon to create a new config and select `Remote JVM Debug`. Fill in the host,port and name and click Apply. Now you can use the debugger.
+
+    > ```⚠ Make sure to disable debugging by setting the variable to false if you are running in a Production Environment```
 
 # Adding/ Upgrading OpenMRS Modules
 OpenMRS modules can be added or upgraded through the OpenMRS Web Interface.

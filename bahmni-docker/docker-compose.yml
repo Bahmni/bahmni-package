@@ -126,6 +126,7 @@ services:
       OPENELIS_ATOMFEED_PASSWORD: ${OPENELIS_ATOMFEED_PASSWORD:?}
     ports:
       - '8080:8080'
+      - '8000:1044'
     volumes:
       - 'openmrs-data:/usr/local/tomcat/.OpenMRS/modules'
       #- "${BAHMNI_OPENMRS_MODULES_PATH:?}/:/usr/local/tomcat/.OpenMRS/modules/"
