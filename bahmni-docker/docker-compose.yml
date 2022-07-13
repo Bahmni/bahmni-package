@@ -211,9 +211,9 @@ services:
     environment:
       - OPENMRS_HOST=${OPENMRS_HOST:?}
 
-  appointments-v2:
-    image: bahmni/appointments-v2:${APPOINTMENTS-V2_IMAGE_TAG:?}
-    profiles: ["default","appointments-v2"]
+  appointments:
+    image: bahmni/appointments:${APPOINTMENTS_IMAGE_TAG:?}
+    profiles: ["default","appointments"]
     depends_on:
       - openmrs
 
