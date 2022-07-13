@@ -211,6 +211,12 @@ services:
     environment:
       - OPENMRS_HOST=${OPENMRS_HOST:?}
 
+  appointments:
+    image: bahmni/appointments:test
+    profiles: ["default","appointments"]
+    depends_on:
+      - openmrs
+
 volumes:
   openelisdbdata:
   odoodbdata:
