@@ -217,7 +217,8 @@ services:
     profiles: ["default","appointments"]
     depends_on:
       - openmrs
-
+    #volumes:
+    #- "${APPOINTMENTS_PATH:?}/ui/app/:/usr/local/apache2/htdocs/appointments-v2"
 volumes:
   openelisdbdata:
   odoodbdata:
