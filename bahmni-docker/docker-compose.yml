@@ -255,6 +255,10 @@ services:
     image: grafana/grafana:latest
     ports:
       - "3000:3000"
+    environment:
+      GF_SERVER_SERVE_FROM_SUB_PATH: "true"
+      GF_SERVER_ROOT_URL: "%(protocol)s://%(domain)s:%(http_port)s/grafana"
+      GF_LIVE_ALLOWED_ORIGINS: "*"
     volumes:
     - ./monitoring/datasource.yml:/etc/grafana/provisioning/datasources/datasource.yml
 
