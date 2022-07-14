@@ -9,12 +9,21 @@ services:
     ports:
       - '80:80'
       - '443:443'
+    logging:
+      driver: loki
+      options:
+        loki-url: http://localhost:3100/loki/api/v1/push
+
   bahmni-lab:
     image: 'bahmni/bahmni-lab:${BAHMNI_LAB_IMAGE_TAG:?}'
     ports:
       - '8090:80'
       - '8443:443'
-
+    logging:
+      driver: loki
+      options:
+        loki-url: http://localhost:3100/loki/api/v1/push
+        
   openelis:
     profiles: ['default', 'openelis']
     image: 'bahmni/openelis:${OPENELIS_IMAGE_TAG:?[ERROR]}'
@@ -31,6 +40,10 @@ services:
     depends_on:
       openelisdb:
         condition: service_healthy
+    logging:
+      driver: loki
+      options:
+        loki-url: http://localhost:3100/loki/api/v1/push
 
   openelisdb:
     profiles: ['default', 'openelis']
@@ -49,6 +62,10 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: postgres
+    logging:
+      driver: loki
+      options:
+        loki-url: http://localhost:3100/loki/api/v1/push
 
   odoo:
     profiles: ['default', 'odoo']
@@ -67,6 +84,10 @@ services:
       HOST: odoodb
       USER: ${ODOO_DB_USER}
       PASSWORD: ${ODOO_DB_PASSWORD}
+    logging:
+      driver: loki
+      options:
+        loki-url: http://localhost:3100/loki/api/v1/push
 
   odoodb:
     profiles: ['default', 'odoo']
@@ -84,6 +105,10 @@ services:
       POSTGRES_DB: postgres
       POSTGRES_PASSWORD: ${ODOO_DB_PASSWORD}
       POSTGRES_USER: ${ODOO_DB_USER}
+    logging:
+      driver: loki
+      options:
+        loki-url: http://localhost:3100/loki/api/v1/push
 
   odoo-connect:
     profiles: ['default', 'odoo']
@@ -107,6 +132,10 @@ services:
     depends_on:
       odoodb:
         condition: service_healthy
+    logging:
+      driver: loki
+      options:
+        loki-url: http://localhost:3100/loki/api/v1/push
 
   openmrs:
     profiles: ["default","openmrs","implementer-interface"]
@@ -135,6 +164,10 @@ services:
       - 'bahmni-document-images:/home/bahmni/document_images'
     depends_on:
       - openmrsdb
+    logging:
+      driver: loki
+      options:
+        loki-url: http://localhost:3100/loki/api/v1/push
 
   openmrsdb:
     image: ${OPENMRS_DB_IMAGE_NAME:?}
@@ -149,6 +182,10 @@ services:
       - '3306:3306'
     volumes:
       - 'openmrsdbdata:/var/lib/mysql'
+    logging:
+      driver: loki
+      options:
+        loki-url: http://localhost:3100/loki/api/v1/push
 
   bahmni-web:
     image: bahmni/bahmni-web:${BAHMNI_WEB_IMAGE_TAG:?}
@@ -157,7 +194,11 @@ services:
     #- "${BAHMNI_APPS_PATH:?}/ui/app/:/usr/local/apache2/htdocs/bahmni"
     #- "${BAHMNI_APPS_PATH:?}/ui/node_modules/@bower_components/:/usr/local/apache2/htdocs/bahmni/components"
     #- "${BAHMNI_CONFIG_PATH:?}/:/usr/local/apache2/htdocs/bahmni_config/"
-
+    
+    logging:
+      driver: loki
+      options:
+        loki-url: http://localhost:3100/loki/api/v1/push
 
   implementer-interface:
     image: bahmni/implementer-interface:${IMPLEMENTER_INTERFACE_IMAGE_TAG:?}
@@ -166,6 +207,10 @@ services:
     #  - "${IMPLEMENTER_INTERFACE_CODE_PATH:?}/dist:/usr/local/apache2/htdocs/implementer_interface"
     depends_on:
       - openmrs
+    logging:
+      driver: loki
+      options:
+        loki-url: http://localhost:3100/loki/api/v1/push
 
   reports:
     image: bahmni/reports:${REPORTS_IMAGE_TAG:?}
@@ -191,6 +236,10 @@ services:
       - reportsdb
       - openmrsdb
       - bahmni-web
+    logging:
+      driver: loki
+      options:
+        loki-url: http://localhost:3100/loki/api/v1/push
 
   reportsdb:
     platform: linux/amd64
@@ -201,6 +250,10 @@ services:
       MYSQL_DATABASE: ${REPORTS_DB_NAME:?}
       MYSQL_USER: ${REPORTS_DB_USERNAME:?}
       MYSQL_PASSWORD: ${REPORTS_DB_PASSWORD:?}
+    logging:
+      driver: loki
+      options:
+        loki-url: http://localhost:3100/loki/api/v1/push
 
   patient-documents:
     image: 'bahmni/patient-documents:${PATIENT_DOCUMENTS_TAG:?}'
@@ -211,6 +264,32 @@ services:
       - 'bahmni-document-images:/usr/share/nginx/html/document_images'
     environment:
       - OPENMRS_HOST=${OPENMRS_HOST:?}
+    logging:
+      driver: loki
+      options:
+        loki-url: http://localhost:3100/loki/api/v1/push
+
+  loki:
+    profiles : ["default","monitoring"]
+    image: grafana/loki:2.6.0
+    ports:
+      - "3100:3100"
+    command: -config.file=/etc/loki/local-config.yaml
+
+  promtail:
+    profiles : ["default","monitoring"]
+    image: grafana/promtail:2.6.0
+    volumes:
+      - /var/log:/var/log
+    command: -config.file=/etc/promtail/config.yml
+
+  grafana:
+    profiles : ["default","monitoring"]
+    image: grafana/grafana:latest
+    ports:
+      - "3000:3000"
+    volumes:
+    - ./monitoring/datasource.yml:/etc/grafana/provisioning/datasources/datasource.yml
 
 volumes:
   openelisdbdata:
