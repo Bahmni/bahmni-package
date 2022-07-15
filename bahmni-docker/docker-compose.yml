@@ -1,12 +1,18 @@
 version: '3.7'
 
-x-config: &log-config
+x-default-logging: &default-logging
+  {}
+
+x-loki-logging: &loki-logging
   driver: loki
   options:
     loki-url: http://localhost:3100/loki/api/v1/push
     mode: non-blocking
     max-buffer-size: 4m
     loki-retries: "3"
+
+x-log-config: &log-config
+  <<: *default-logging   # update this value to loki-logging if needed to see logs in grafana dashboard.
 
 services:
   proxy:
@@ -270,3 +276,4 @@ volumes:
   openmrsdbdata:
   bahmni-patient-images:
   bahmni-document-images:
+      - ../bahmni-proxy/resources/bahmni-proxy.conf:/usr/local/apache2/conf/bahmni-proxy.conf
