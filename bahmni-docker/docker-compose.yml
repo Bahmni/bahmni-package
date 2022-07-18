@@ -213,12 +213,10 @@ services:
       - OPENMRS_HOST=${OPENMRS_HOST:?}
 
   appointments:
-    image: bahmni/appointments:test
+    image: bahmni/appointments:${APPOINTMENTS_IMAGE_TAG:?}
     profiles: ["default","appointments"]
-    depends_on:
-      - openmrs
-    #volumes:
-    #- "${APPOINTMENTS_PATH:?}/ui/app/:/usr/local/apache2/htdocs/appointments-v2"
+    # volumes:
+    # - "${APPOINTMENTS_PATH:?}/dist/:/usr/local/apache2/htdocs/appointments-v2"
 volumes:
   openelisdbdata:
   odoodbdata:
