@@ -216,7 +216,7 @@ services:
     image: bahmni/appointments:${APPOINTMENTS_IMAGE_TAG:?}
     profiles: ["default","appointments"]
     # volumes:
-    # - "${APPOINTMENTS_PATH:?}/dist/:/usr/local/apache2/htdocs/appointments-v2"
+    # - "${APPOINTMENTS_PATH:?}/dist/:/usr/local/apache2/htdocs/appointments"
 volumes:
   openelisdbdata:
   odoodbdata:
