@@ -102,13 +102,13 @@ Bahmni docker-compose has been configured with profiles which allows you to run 
 
 Note: `proxy` is a generic service and it will start always irrespective of below profiles.
 
-| Profile               | Application                          | Services                                   |
-|--:--------------------|--:-----------------------------------|--:-----------------------------------------|
-| default               | All applications                     | All services defined in docker-compose.yml |
-| openelis              | OpenELIS                             | openelis, openelisdb                       |
-| odoo                  | Odoo                                 | odoo, odoodb                               |
-| openmrs               | Bahmni EMR                           | openmrs, openmrsdb, bahmni-web             |
-| crater                | Crater                               | crater-php, crater-nginx, craterdb         |
+| Profile               | Application                          | Services                                  |
+|--:--------------------|--:-----------------------------------|--:----------------------------------------|
+| default               | All applications                     | All service defined in docker-compose.yml |
+| openelis              | OpenELIS                             | openelis, openelisdb                      |
+| odoo                  | Odoo                                 | odoo, odoodb                              |
+| openmrs               | Bahmni EMR                           | openmrs, openmrsdb, bahmni-web            |
+| crater                | Crater                               | crater-php, crater-nginx, craterdb        |
 | implementer-interface | Implementer Interface (Form Builder) | openmrs, openmrsdb, implementer-interface |
 | reports               | Bahmni Reports                       | reports, reportsdb                        |
 | appointments          | Bahmni Appointments Frontend         | appointments                              |
@@ -136,13 +136,13 @@ Example: COMPOSE_PROFILES=openelis,odoo. You can also pass this as an argument w
 |:-------------------------------|:---------------------------------------|:-----------------------------------------------|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | Bahmni EMR                     | http://localhost/bahmni/home           | Username: `superman` <br> Password: `Admin123` | If you use fresh db images, then you need to configure locations, visits etc as mentioned [here](https://bahmni.atlassian.net/wiki/spaces/BAH/pages/34013673/OpenMRS+configuration). |
 | OpenMRS                        | http://localhost/openmrs               | Username: `superman` <br> Password: `Admin123` | Perfom [one-time](#one-time-setup-for-openmrs) setup                                                                                                                                 |
+| Crater                | http://crater.test                     |                                                | Perfom [one-time](#one-time-setup-for-crater) setup                                                                                                                                  |
 | OpenElis                       | http://localhost/openelis              | Username: `admin` <br> Password: `adminADMIN!` | -                                                                                                                                                                                    |
 | Odoo                           | http://localhost:8069                  | Username: `admin` <br> Password: `admin`       | Perfom [one-time](#one-time-setup-for-odoo) setup                                                                                                                                    |
 | Implementer Interface          | http://localhost/implementer-interface | Username: `superman` <br> Password: `Admin123` | -                                                                                                                                                                                    |
 | Bahmni Reports                 | http://localhost/bahmni-reports        | Username: `superman` <br> Password: `Admin123` | openmrs profile should be running                                                                                                                                                    |
 | Bahmni Appointments Scheduling | http://localhost/appointments          | Username: `superman` <br> Password: `Admin123` | openmrs profile should be running                                                                                                                                                    |
 | Grafana                        | http://localhost/grafana               | Username: `admin` <br> Password: `admin`       | Recommended to change password on first login                                                                                                                                        |
-| Crater                | http://crater.test                     |                                                | Perfom [one-time](#one-time-setup-for-crater) setup                                                                                                                                  |
 
 
 ### Cleaning All Bahmni Application Data
