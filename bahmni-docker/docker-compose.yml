@@ -202,7 +202,7 @@ services:
     profiles: ['default', 'crater']
     restart: unless-stopped
     ports:
-      - 80:80
+      - 80:81
 
   craterdb:
     image: mysql:5.7
@@ -228,7 +228,8 @@ services:
     #   - "${BAHMNI_APPS_PATH:?}/ui/app/:/usr/local/apache2/htdocs/bahmni"
     #   - "${BAHMNI_APPS_PATH:?}/ui/node_modules/@bower_components/:/usr/local/apache2/htdocs/bahmni/components"
     #   - "${BAHMNI_CONFIG_PATH:?}/:/usr/local/apache2/htdocs/bahmni_config/"
-
+    
+    logging: *log-config
 
   implementer-interface:
     image: bahmni/implementer-interface:${IMPLEMENTER_INTERFACE_IMAGE_TAG:?}
