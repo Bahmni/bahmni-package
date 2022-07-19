@@ -7,6 +7,7 @@ This is a Work In Progress directory.
 
 ## Table of Contents
 * [Prerequisites](#prerequisites)
+* [Setup Centralised Logging](#setup-centralised-logging)
 * [Profile Configuration](#profile-configuration)
 * [Running Bahmni with default images](#running-bahmni-with-default-images)
 * [One-time Setup for Odoo](#one-time-setup-for-odoo)
@@ -67,6 +68,33 @@ docker exec -it {{PROXY_CONTAINER_NAME/ID}} sh -c \
 ``` 
 Restart the proxy container `docker restart {PROXY_CONTAINER_NAME/ID}}`
 
+# Setup Centralised Logging
+>```Note: This is an optional configuration and is needed only when centralised logging with Loki Stack is needed.```
+
+### 1. Install Loki Logging Driver
+[Loki stack](https://grafana.com/oss/loki/) uses Loki [Docker Driver Client](https://grafana.com/docs/loki/latest/clients/docker-driver/) for getting logs of container and pushing to Loki.
+Run the following command to install the driver or take a look [here](https://grafana.com/docs/loki/latest/clients/docker-driver/#installing).
+```shell
+docker plugin install grafana/loki-docker-driver:latest --alias loki --grant-all-permissions
+```
+
+### 2. Update Logging Method in docker-compose.yml
+The default configuration of docker-compose ships with default logging that is configured in docker daemon. 
+
+To enable loki logging for the services, in the docker-compose file find the `x-log-config` section and update the value from `*default` to `*loki`
+
+### 3. Start Loki stack services
+Now loki stack services can be started by running,
+```shell
+docker-compose --profile logging up -d
+```
+
+### 4. Viewing Logs
+- Now navigate to `https://localhost/grafana` and login with `admin` as username and password and reset your password.
+- Next click on [Explore Icon ](https://grafana.com/static/img/docs/explore/access-explore-7-4.png) in the Grafana Left Panel.
+- Use the log browser to choose label as `compose_service` and value with the container needed, then Click on `Run Query` on the top right of the screen. This will show the current logs.
+- You can also click on `Live` on the top right to see the live stream of the logs.
+
 # Profile Configuration
 Bahmni docker-compose has been configured with profiles which allows you to run the required services. More about compose profiles can be found [here](https://docs.docker.com/compose/profiles/). The list of different profiles can be found below.
 
@@ -80,6 +108,7 @@ Note: `proxy` is a generic service and it will start always irrespective of belo
 | openmrs               | Bahmni EMR                           | openmrs, openmrsdb, bahmni-web            |
 | implementer-interface | Implementer Interface (Form Builder) | openmrs, openmrsdb, implementer-interface |
 | reports               | Bahmni Reports                       | reports, reportsdb                        |
+| logging               | Loki Stack - Centralised Logging     | grafana, promtail, loki                   |
 
 
 Profiles can be set by changing the `COMPOSE_PROFILES` variable in .env variable. You can set multiple profiles by comma seperated values.
@@ -106,6 +135,7 @@ Example: COMPOSE_PROFILES=openelis,odoo. You can also pass this as an argument w
 | Odoo                  | http://localhost:8069                  | Username: `admin` <br> Password: `admin`       | Perfom [one-time](#one-time-setup-for-odoo) setup                                                                                                                                    |
 | Implementer Interface | http://localhost/implementer-interface | Username: `superman` <br> Password: `Admin123` | -                                                                                                                                                                                    |
 | Bahmni Reports        | http://localhost/bahmni-reports        | Username: `superman` <br> Password: `Admin123` | Openmrs profile should be running                                                                                                                                                    |
+| Grafana               | http://localhost/grafana               | Username: `admin` <br> Password: `admin`       | Recommended to change password on first login                                                                                                                                        |
 
 
 

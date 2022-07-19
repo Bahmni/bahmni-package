@@ -1,4 +1,19 @@
 version: '3.7'
+
+x-default-logging: &default
+  {}
+
+x-loki-logging: &loki
+  driver: loki
+  options:
+    loki-url: http://localhost:3100/loki/api/v1/push
+    mode: non-blocking
+    max-buffer-size: 4m
+    loki-retries: "3"
+
+x-log-config: &log-config
+  <<: *default   # update this value to *loki if needed to see logs in grafana dashboard.
+
 services:
   proxy:
     image: 'bahmni/proxy:${PROXY_IMAGE_TAG:?}'
@@ -9,12 +24,15 @@ services:
     ports:
       - '80:80'
       - '443:443'
+    logging: *log-config
+
   bahmni-lab:
     image: 'bahmni/bahmni-lab:${BAHMNI_LAB_IMAGE_TAG:?}'
     ports:
       - '8090:80'
       - '8443:443'
-
+    logging: *log-config
+        
   openelis:
     profiles: ['default', 'openelis']
     image: 'bahmni/openelis:${OPENELIS_IMAGE_TAG:?[ERROR]}'
@@ -31,6 +49,7 @@ services:
     depends_on:
       openelisdb:
         condition: service_healthy
+    logging: *log-config
 
   openelisdb:
     profiles: ['default', 'openelis']
@@ -49,6 +68,7 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: postgres
+    logging: *log-config
 
   odoo:
     profiles: ['default', 'odoo']
@@ -67,6 +87,7 @@ services:
       HOST: odoodb
       USER: ${ODOO_DB_USER}
       PASSWORD: ${ODOO_DB_PASSWORD}
+    logging: *log-config
 
   odoodb:
     profiles: ['default', 'odoo']
@@ -84,6 +105,7 @@ services:
       POSTGRES_DB: postgres
       POSTGRES_PASSWORD: ${ODOO_DB_PASSWORD}
       POSTGRES_USER: ${ODOO_DB_USER}
+    logging: *log-config
 
   odoo-connect:
     profiles: ['default', 'odoo']
@@ -107,6 +129,7 @@ services:
     depends_on:
       odoodb:
         condition: service_healthy
+    logging: *log-config
 
   openmrs:
     profiles: ["default","openmrs","implementer-interface"]
@@ -135,6 +158,7 @@ services:
       - 'bahmni-document-images:/home/bahmni/document_images'
     depends_on:
       - openmrsdb
+    logging: *log-config
 
   openmrsdb:
     image: ${OPENMRS_DB_IMAGE_NAME:?}
@@ -149,6 +173,7 @@ services:
       - '3306:3306'
     volumes:
       - 'openmrsdbdata:/var/lib/mysql'
+    logging: *log-config
 
   bahmni-web:
     image: bahmni/bahmni-web:${BAHMNI_WEB_IMAGE_TAG:?}
@@ -157,7 +182,8 @@ services:
     #- "${BAHMNI_APPS_PATH:?}/ui/app/:/usr/local/apache2/htdocs/bahmni"
     #- "${BAHMNI_APPS_PATH:?}/ui/node_modules/@bower_components/:/usr/local/apache2/htdocs/bahmni/components"
     #- "${BAHMNI_CONFIG_PATH:?}/:/usr/local/apache2/htdocs/bahmni_config/"
-
+    
+    logging: *log-config
 
   implementer-interface:
     image: bahmni/implementer-interface:${IMPLEMENTER_INTERFACE_IMAGE_TAG:?}
@@ -166,6 +192,7 @@ services:
     #  - "${IMPLEMENTER_INTERFACE_CODE_PATH:?}/dist:/usr/local/apache2/htdocs/implementer_interface"
     depends_on:
       - openmrs
+    logging: *log-config
 
   reports:
     image: bahmni/reports:${REPORTS_IMAGE_TAG:?}
@@ -191,6 +218,7 @@ services:
       - reportsdb
       - openmrsdb
       - bahmni-web
+    logging: *log-config
 
   reportsdb:
     platform: linux/amd64
@@ -201,6 +229,7 @@ services:
       MYSQL_DATABASE: ${REPORTS_DB_NAME:?}
       MYSQL_USER: ${REPORTS_DB_USERNAME:?}
       MYSQL_PASSWORD: ${REPORTS_DB_PASSWORD:?}
+    logging: *log-config
 
   patient-documents:
     image: 'bahmni/patient-documents:${PATIENT_DOCUMENTS_TAG:?}'
@@ -211,6 +240,31 @@ services:
       - 'bahmni-document-images:/usr/share/nginx/html/document_images'
     environment:
       - OPENMRS_HOST=${OPENMRS_HOST:?}
+    logging: *log-config
+
+  loki:
+    profiles : ["default","logging"]
+    image: grafana/loki:${LOKI_IMAGE_TAG:?}
+    ports:
+      - "3100:3100"
+    command: -config.file=/etc/loki/local-config.yaml
+
+  promtail:
+    profiles : ["default","logging"]
+    image: grafana/promtail:${PROMTAIL_IMAGE_TAG:?}
+    volumes:
+      - /var/log:/var/log
+    command: -config.file=/etc/promtail/config.yml
+
+  grafana:
+    profiles : ["default","logging"]
+    image: grafana/grafana:${GRAFANA_IMAGE_TAG:?}
+    environment:
+      GF_SERVER_SERVE_FROM_SUB_PATH: "true"
+      GF_SERVER_ROOT_URL: "%(protocol)s://%(domain)s:%(http_port)s/grafana"
+    volumes:
+    - ./logging/datasource.yml:/etc/grafana/provisioning/datasources/datasource.yml
+    - grafana-storage:/var/lib/grafana
 
 volumes:
   openelisdbdata:
@@ -220,3 +274,4 @@ volumes:
   openmrsdbdata:
   bahmni-patient-images:
   bahmni-document-images:
+  grafana-storage:
