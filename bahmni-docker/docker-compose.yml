@@ -290,6 +290,28 @@ services:
       - openmrs
     logging: *log-config
 
+  dcm4chee:
+    image: bahmni/dcm4chee
+    profiles: ["default","pacs"]
+    environment:
+      DB_HOST: pacsdb
+      DB_PORT: 5432
+      DB_NAME: pacsdb
+      DB_USERNAME: postgres
+      DB_PASSWORD: postgres
+    ports:
+      - '8081:8080'
+    logging: *log-config
+
+  pacsdb:
+    image: postgres:9.6
+    profiles: ["default","pacs"]
+    environment:
+      POSTGRES_DB: pacsdb
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+    logging: *log-config
+
   loki:
     profiles : ["default","logging"]
     image: grafana/loki:${LOKI_IMAGE_TAG:?}
