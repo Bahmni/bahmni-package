@@ -300,7 +300,7 @@ services:
       DB_USERNAME: postgres
       DB_PASSWORD: postgres
     ports:
-      - '8081:8080'
+      - '8055:8055'
     logging: *log-config
 
   pacsdb:
