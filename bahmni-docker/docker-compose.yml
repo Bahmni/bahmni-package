@@ -317,6 +317,67 @@ services:
     profiles: ["default","appointments"]
     # volumes:
     # - "${APPOINTMENTS_PATH:?}/dist/:/usr/local/apache2/htdocs/appointments"
+
+  dcm4chee:
+    image: bahmni/dcm4chee
+    profiles: [ "default","pacs" ]
+    environment:
+      DB_HOST: pacsdb
+      DB_PORT: 5432
+      DB_NAME: pacsdb
+      DB_USERNAME: postgres
+      DB_PASSWORD: postgres
+    ports:
+      - '8055:8055'
+    logging: *log-config
+
+  pacsdb:
+    image: postgres:9.6
+    profiles: [ "default","pacs" ]
+    environment:
+      POSTGRES_DB: pacsdb
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+    logging: *log-config
+
+  pacs-integration:
+    image: bahmni/pacs-integration
+    profiles: [ "default","pacs" ]
+    environment:
+      DB_HOST: pacs-integration-db
+      DB_PORT: 5432
+      DB_NAME: bahmni_pacs
+      DB_USERNAME: postgres
+      DB_PASSWORD: postgres
+      OPENMRS_HOST: ${OPENMRS_HOST:?}
+      OPENMRS_PORT: ${OPENMRS_PORT:?}
+      OPENMRS_ATOMFEED_USER: ${OPENMRS_ATOMFEED_USER:?}
+      OPENMRS_ATOMFEED_PASSWORD: ${OPENMRS_ATOMFEED_PASSWORD:?}
+    logging: *log-config
+
+  pacs-integration-db:
+    image: postgres:9.6
+    profiles: [ "default","pacs" ]
+    environment:
+      POSTGRES_DB: bahmni_pacs
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+    logging: *log-config
+
+  pacs-simulator:
+    image: bahmni/pacs-simulator
+    profiles: [ "default","pacs-simulator" ]
+    environment:
+      PACS_SIMULATOR_TIMEOUT: 20000
+      PACS_SERVER_TYPE: dcm4chee
+      PACS_SERVER_URL: DCM4CHEE@dcm4chee:11112
+      PACS_INTEGRATION_DB_HOST: pacs-integration-db
+      PACS_INTEGRATION_DB_PORT: 5432
+      PACS_INTEGRATION_DB_PASSWORD: postgres
+      PACS_INTEGRATION_DB_USERNAME: postgres
+      PACS_INTEGRATION_DB_NAME: bahmni_pacs
+    logging: *log-config
+
 volumes:
   openelisdbdata:
   odoodbdata:
