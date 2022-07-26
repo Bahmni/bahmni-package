@@ -31,6 +31,7 @@ This is a Work In Progress directory.
 * [Debugging OpenMRS Application](#debugging-openmrs-application)
 * [Adding / Upgrading OpenMRS Modules](#adding-upgrading-openmrs-modules)
 * [Development on Bahmni UI](#development-on-bahmni-ui)
+* [Development on Appointments Frontend](#development-on-appointments-frontend)
 * [Development Setup for Implementer Interface](#development-setup-for-implementer-interface)
 * [Adding Custom Reports](#adding-custom-reports)
 
@@ -108,6 +109,7 @@ Note: `proxy` is a generic service and it will start always irrespective of belo
 | openmrs               | Bahmni EMR                           | openmrs, openmrsdb, bahmni-web            |
 | implementer-interface | Implementer Interface (Form Builder) | openmrs, openmrsdb, implementer-interface |
 | reports               | Bahmni Reports                       | reports, reportsdb                        |
+| appointments          | Bahmni Appointments Frontend         | appointments                              |
 | logging               | Loki Stack - Centralised Logging     | grafana, promtail, loki                   |
 
 
@@ -127,16 +129,16 @@ Example: COMPOSE_PROFILES=openelis,odoo. You can also pass this as an argument w
 * To see the list of existing patients in Bahmni, go to Bahmni web UI, Registration Module, and for Patient Name type "%" (percentage sign) in the search box.
 
 
-| Application Name      | URL                                    | Default Credentials                            | Notes                                                                                                                                                                                |
-|:----------------------|:---------------------------------------|:-----------------------------------------------|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Bahmni EMR            | http://localhost/bahmni/home           | Username: `superman` <br> Password: `Admin123` | If you use fresh db images, then you need to configure locations, visits etc as mentioned [here](https://bahmni.atlassian.net/wiki/spaces/BAH/pages/34013673/OpenMRS+configuration). |
-| OpenMRS               | http://localhost/openmrs               | Username: `superman` <br> Password: `Admin123` | Perfom [one-time](#one-time-setup-for-openmrs) setup                                                                                                                                 |
-| OpenElis              | http://localhost/openelis              | Username: `admin` <br> Password: `adminADMIN!` | -                                                                                                                                                                                    |
-| Odoo                  | http://localhost:8069                  | Username: `admin` <br> Password: `admin`       | Perfom [one-time](#one-time-setup-for-odoo) setup                                                                                                                                    |
-| Implementer Interface | http://localhost/implementer-interface | Username: `superman` <br> Password: `Admin123` | -                                                                                                                                                                                    |
-| Bahmni Reports        | http://localhost/bahmni-reports        | Username: `superman` <br> Password: `Admin123` | Openmrs profile should be running                                                                                                                                                    |
-| Grafana               | http://localhost/grafana               | Username: `admin` <br> Password: `admin`       | Recommended to change password on first login                                                                                                                                        |
-
+| Application Name               | URL                                    | Default Credentials                            | Notes                                                                                                                                                                                |
+|:-------------------------------|:---------------------------------------|:-----------------------------------------------|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Bahmni EMR                     | http://localhost/bahmni/home           | Username: `superman` <br> Password: `Admin123` | If you use fresh db images, then you need to configure locations, visits etc as mentioned [here](https://bahmni.atlassian.net/wiki/spaces/BAH/pages/34013673/OpenMRS+configuration). |
+| OpenMRS                        | http://localhost/openmrs               | Username: `superman` <br> Password: `Admin123` | Perfom [one-time](#one-time-setup-for-openmrs) setup                                                                                                                                 |
+| OpenElis                       | http://localhost/openelis              | Username: `admin` <br> Password: `adminADMIN!` | -                                                                                                                                                                                    |
+| Odoo                           | http://localhost:8069                  | Username: `admin` <br> Password: `admin`       | Perfom [one-time](#one-time-setup-for-odoo) setup                                                                                                                                    |
+| Implementer Interface          | http://localhost/implementer-interface | Username: `superman` <br> Password: `Admin123` | -                                                                                                                                                                                    |
+| Bahmni Reports                 | http://localhost/bahmni-reports        | Username: `superman` <br> Password: `Admin123` | openmrs profile should be running                                                                                                                                                    |
+| Bahmni Appointments Scheduling | http://localhost/appointments          | Username: `superman` <br> Password: `Admin123` | openmrs profile should be running                                                                                                                                                    |
+| Grafana                        | http://localhost/grafana               | Username: `admin` <br> Password: `admin`       | Recommended to change password on first login                                                                                                                                        |
 
 
 ### Cleaning All Bahmni Application Data
@@ -257,10 +259,10 @@ By default, the configuration of openmrs and openmrsdb services are set to load 
 | BAHMNI_UI_DIST_PATH  | Set this variable with the path of your dist folder of openmrs-module-bahmniapps when you want to develop on Bahmni UI.                                                                      |
 
 ## Implementer Interface Configurations:
-| Variable Name                         | Description   |
-| :-------------------------------------|:------------- |
+| Variable Name                   | Description                                                                                                                                                                                                                   |
+|:--------------------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | IMPLEMENTER_INTERFACE_IMAGE_TAG | This value specifies which image version needs to be used for implementer-interface service. List of tags can be found at [bahmni/implementer-interface - Tags](https://hub.docker.com/r/bahmni/implementer-interface/tags) . |
-| IMPLEMENTER_INTERFACE_CODE_PATH | Set this variable with the path where you cloned implementer-interface repository when you want to do development on the same. |
+| IMPLEMENTER_INTERFACE_CODE_PATH | Set this variable with the path where you cloned implementer-interface repository when you want to do development on the same.                                                                                                |
 
 ## Bahmni Reports Configurations:
 | Variable Name       | Description                                                                                                                                                                         |
@@ -269,6 +271,13 @@ By default, the configuration of openmrs and openmrsdb services are set to load 
  | REPORTS_DB_NAME     | Database name for Reports                                                                                                                                                           |
  | REPORTS_DB_USERNAME | Username of Reports Database                                                                                                                                                        |
  | REPORTS_DB_PASSWORD | Password of Reports Database                                                                                                                                                        |
+
+## Appointments Configuration
+| Variable Name          | Description                                                                                                                                                                                                    |
+|:-----------------------|:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| APPOINTMENTS_IMAGE_TAG | This value specifies which image version needs to be used for appointments service. List of tags can be found at [bahmni/appointments - Tags](https://hub.docker.com/r/bahmni/appointments/tags) .             |
+| APPOINTMENTS_PATH      | Set this to the directory path where you have cloned  [openmrs-module-appointments-frontend](https://github.com/Bahmni/openmrs-module-appointments-frontend) repository. Needed only for development purposes. |
+
 
 # Proxy Service
 The proxy service runs with every profile configuration. It renders the Bahmni Landing Page. Also ProxyPass and ProxyPassReverse configurations are done with this container.
@@ -441,7 +450,7 @@ You need to download or build bahmni distro zip before proceeding.
 
 # Development on Bahmni UI
 When you want to develop or modify bahmni UI code, you can follow these steps.
-1. Clone the [openmrs-module-bahmniapps](https://github.com/Bahmni/openmrs-module-bahmniapps) repository in your localmachine.
+1. Clone the [openmrs-module-bahmniapps](https://github.com/Bahmni/openmrs-module-bahmniapps) repository in your local machine.
 2. Follow the instructions in the README of the repository to install the required tools and dependencies.
 3. Copy the path of `openmrs-module-bahmniapps` directory and set it to `BAHMNI_APPS_PATH` environment variable in the .env file in bahmni-package/bahmni-docker repository. Do not add / at the last.
 4. Now open the docker-compose.yml file and in the bahmni-web service uncomment the volumes section with the volumes starting with BAHMNI_APPS_PATH.
@@ -453,9 +462,18 @@ When you want to develop or modify bahmni UI code, you can follow these steps.
 
 **Note:** If your change is not reflected, it could be because your browser would be rendering it from its cache. Try the same in Incognito or after clearing cached data. Also for development it is recommended to disable caching in the browser. Go to `Inspect` and then navigate to `Network` tab where you can find `Disable Cache` checkbox.
 
+# Development on Appointments Frontend
+When you want to develop on appointments frontend code, follow the below steps.
+1. Clone the [openmrs-module-appointments-frontend](https://github.com/Bahmni/openmrs-module-appointments-frontend) repository in your local machine.
+2. Follow the instructions in the README of the repository to install the required tools and dependencies.
+3. Copy the path of `openmrs-module-appointments-frontend` directory and set it to `APPOINTMENTS_PATH` environment variable in the .env file in bahmni-package/bahmni-docker repository. Do not add / at the last.
+4. Now open the docker-compose.yml file and in the appointments service uncomment the volumes section.
+5. Start / Recreate appointments service by doing
+    >docker-compose up -d appointments
+6. For every change you make, build the appointments code and the changes will reflect on refresh of the browser.
 
 # Development Setup for Implementer Interface
-1. Clone the [implementer-interface](https://github.com/Bahmni/implementer-interface) repository in your localmachine.
+1. Clone the [implementer-interface](https://github.com/Bahmni/implementer-interface) repository in your local machine.
 2. Follow the instructions in the README of the repository to install the required tools and dependencies.
 3. Copy the path of `implementer-interface` directory and set it to `IMPLEMENTER_INTERFACE_CODE_PATH` environment variable in the .env file in bahmni-package/bahmni-docker repository. Do not add / at the last.
 4. Now open the docker-compose.yml file and in the implementer-interface service uncomment the volumes section. 

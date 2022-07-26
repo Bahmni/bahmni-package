@@ -288,6 +288,11 @@ services:
     - ./logging/datasource.yml:/etc/grafana/provisioning/datasources/datasource.yml
     - grafana-storage:/var/lib/grafana
 
+  appointments:
+    image: bahmni/appointments:${APPOINTMENTS_IMAGE_TAG:?}
+    profiles: ["default","appointments"]
+    # volumes:
+    # - "${APPOINTMENTS_PATH:?}/dist/:/usr/local/apache2/htdocs/appointments"
 volumes:
   openelisdbdata:
   odoodbdata:
