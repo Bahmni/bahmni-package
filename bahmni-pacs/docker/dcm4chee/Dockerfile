@@ -36,9 +36,8 @@ RUN apk add gettext postgresql-client
 COPY docker/dcm4chee/templates/pacs-postgres-ds.xml.template /etc/pacs-postgres-ds.xml.template
 COPY resources/dcm4chee/server.xml ${DCM4CHEE_PATH}/server/default/deploy/jboss-web.deployer/
 COPY resources/dcm4chee/jboss-service.xml ${DCM4CHEE_PATH}/server/default/conf/
-COPY resources/dcm4chee/orm2dcm_bahmni.xsl ${DCM4CHEE_PATH}/server/default/conf/dcm4chee-hl7/
+COPY resources/dcm4chee/orm2dcm_bahmni.xsl ${DCM4CHEE_PATH}/server/default/conf/dcm4chee-hl7/orm2dcm.xsl
 COPY resources/dcm4chee/inspectMBean.jsp ${DCM4CHEE_PATH}/server/default/deploy/jmx-console.war/
-# COPY resources/dcm4chee/oviyam2-web.xml ${DCM4CHEE_PATH}/server/default/deploy/oviyam2.war/WEB-INF/web.xml
 COPY resources/dcm4chee/oviyam2-7-config.xml ${DCM4CHEE_PATH}/server/default/work/jboss.web/localhost/
 
 COPY docker/dcm4chee/scripts/startup.sh startup.sh
