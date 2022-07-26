@@ -5,7 +5,7 @@ on:
       - master
     paths:
       - 'bahmni-proxy/**'
-      - '.github/workflows/proxy_image_build.yml'
+      - '.github/workflows/proxy_image_build_publish.yml'
 env:
   BAHMNI_VERSION: 0.94
 
