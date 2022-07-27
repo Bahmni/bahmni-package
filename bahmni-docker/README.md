@@ -136,7 +136,7 @@ Example: COMPOSE_PROFILES=openelis,odoo. You can also pass this as an argument w
 |:-------------------------------|:---------------------------------------|:-----------------------------------------------|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | Bahmni EMR                     | http://localhost/bahmni/home           | Username: `superman` <br> Password: `Admin123` | If you use fresh db images, then you need to configure locations, visits etc as mentioned [here](https://bahmni.atlassian.net/wiki/spaces/BAH/pages/34013673/OpenMRS+configuration). |
 | OpenMRS                        | http://localhost/openmrs               | Username: `superman` <br> Password: `Admin123` | Perfom [one-time](#one-time-setup-for-openmrs) setup                                                                                                                                 |
-| Crater                | http://crater.test                     |                                                | Perfom [one-time](#one-time-setup-for-crater) setup                                                                                                                                  |
+| Crater                | http://localhost:81                     |                                                | Perfom [one-time](#one-time-setup-for-crater) setup                                                                                                                                  |
 | OpenElis                       | http://localhost/openelis              | Username: `admin` <br> Password: `adminADMIN!` | -                                                                                                                                                                                    |
 | Odoo                           | http://localhost:8069                  | Username: `admin` <br> Password: `admin`       | Perfom [one-time](#one-time-setup-for-odoo) setup                                                                                                                                    |
 | Implementer Interface          | http://localhost/implementer-interface | Username: `superman` <br> Password: `Admin123` | -                                                                                                                                                                                    |
@@ -168,7 +168,7 @@ The below steps needs to performed only once after OpenMRS application is loaded
 
 # One-time Setup for Crater:
 If you don't wish to do let crater do automatic installation, you can set the `CRATER_AUTO_INSTALL` to `"false"` an follow the below steps:
-1. Open your web browser and go to your given domain (http://crater.test) and follow the installation wizard.
+1. Open your web browser and go to your given domain (http://localhost:81) and follow the installation wizard.
 2. On Installation wizard - Database setup, use below credentials:
     - Database Host: craterdb
     - Database Name: crater

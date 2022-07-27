@@ -202,14 +202,14 @@ services:
     profiles: ['default', 'crater']
     restart: unless-stopped
     ports:
-      - 80:81
+      - 81:80
 
   craterdb:
     image: mysql:5.7
     profiles: ['default', 'crater']
     restart: always
     volumes:
-      - db:/var/lib/mysql
+      - craterdb:/var/lib/mysql
       # # If you want to persist data on the host, comment the line above this one...
       # # and uncomment the line under this one.
       # - ./docker-compose/db/data:/var/lib/mysql:rw,delegated
