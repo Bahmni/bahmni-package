@@ -278,46 +278,43 @@ services:
     environment:
       DB_HOST: pacsdb
       DB_PORT: 5432
-      DB_NAME: pacsdb
-      DB_USERNAME: postgres
-      DB_PASSWORD: postgres
+      DB_NAME: pacs_db
+      DB_USERNAME: pacs_user
+      DB_PASSWORD: Password@123
     ports:
       - '8055:8055'
     volumes:
       - 'dcm4chee-archive:/var/lib/bahmni/dcm4chee/server/default/archive'
     logging: *log-config
 
-  pacsdb:
-    image: postgres:9.6
-    profiles: [ "default","pacs" ]
-    environment:
-      POSTGRES_DB: pacsdb
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_USER: postgres
-    logging: *log-config
-
   pacs-integration:
     image: bahmni/pacs-integration
     profiles: [ "default","pacs" ]
     environment:
-      DB_HOST: pacs-integration-db
+      DB_HOST: pacsdb
       DB_PORT: 5432
-      DB_NAME: bahmni_pacs
-      DB_USERNAME: postgres
-      DB_PASSWORD: postgres
+      DB_NAME: pacs_integration_db
+      DB_USERNAME: pacs_integration_user
+      DB_PASSWORD: Password@123
       OPENMRS_HOST: ${OPENMRS_HOST:?}
       OPENMRS_PORT: ${OPENMRS_PORT:?}
       OPENMRS_ATOMFEED_USER: ${OPENMRS_ATOMFEED_USER:?}
       OPENMRS_ATOMFEED_PASSWORD: ${OPENMRS_ATOMFEED_PASSWORD:?}
     logging: *log-config
 
-  pacs-integration-db:
+  pacsdb:
     image: postgres:9.6
     profiles: [ "default","pacs" ]
     environment:
-      POSTGRES_DB: bahmni_pacs
       POSTGRES_PASSWORD: postgres
-      POSTGRES_USER: postgres
+      PACS_DB_NAME: pacs_db
+      PACS_DB_USERNAME: pacs_user
+      PACS_DB_PASSWORD: Password@123
+      PACS_INTEGRATION_DB_NAME: pacs_integration_db
+      PACS_INTEGRATION_DB_USERNAME: pacs_integration_user
+      PACS_INTEGRATION_DB_PASSWORD: Password@123
+    volumes:
+      - './init_pacs_dbs.sh:/docker-entrypoint-initdb.d/init_pacs_dbs.sh'
     logging: *log-config
 
   pacs-simulator:
@@ -327,11 +324,11 @@ services:
       PACS_SIMULATOR_TIMEOUT: 20000
       PACS_SERVER_TYPE: dcm4chee
       PACS_SERVER_URL: DCM4CHEE@dcm4chee:11112
-      PACS_INTEGRATION_DB_HOST: pacs-integration-db
+      PACS_INTEGRATION_DB_HOST: pacsdb
       PACS_INTEGRATION_DB_PORT: 5432
-      PACS_INTEGRATION_DB_PASSWORD: postgres
-      PACS_INTEGRATION_DB_USERNAME: postgres
-      PACS_INTEGRATION_DB_NAME: bahmni_pacs
+      PACS_INTEGRATION_DB_NAME: pacs_integration_db
+      PACS_INTEGRATION_DB_USERNAME: pacs_integration_user
+      PACS_INTEGRATION_DB_PASSWORD: Password@123
     logging: *log-config
 
 volumes:
