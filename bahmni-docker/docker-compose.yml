@@ -286,6 +286,8 @@ services:
       - 'bahmni-document-images:/usr/share/nginx/html/document_images'
     environment:
       - OPENMRS_HOST=${OPENMRS_HOST:?}
+    depends_on:
+      - openmrs
     logging: *log-config
 
   loki:
@@ -319,14 +321,14 @@ services:
     # - "${APPOINTMENTS_PATH:?}/dist/:/usr/local/apache2/htdocs/appointments"
 
   dcm4chee:
-    image: bahmni/dcm4chee
+    image: bahmni/dcm4chee:${DCM4CHEE_IMAGE_TAG:?}
     profiles: [ "default","pacs" ]
     environment:
-      DB_HOST: pacsdb
-      DB_PORT: 5432
-      DB_NAME: pacs_db
-      DB_USERNAME: pacs_user
-      DB_PASSWORD: Password@123
+      DB_HOST: ${PACS_DB_HOST:?}
+      DB_PORT: ${PACS_DB_PORT:?}
+      DB_NAME: ${DCM4CHEE_DB_NAME:?}
+      DB_USERNAME: ${DCM4CHEE_DB_USERNAME:?}
+      DB_PASSWORD: ${DCM4CHEE_DB_PASSWORD:?}
     ports:
       - '8055:8055'
     volumes:
@@ -334,14 +336,14 @@ services:
     logging: *log-config
 
   pacs-integration:
-    image: bahmni/pacs-integration
+    image: bahmni/pacs-integration:${PACS_INTEGRATION_IMAGE_TAG:?}
     profiles: [ "default","pacs" ]
     environment:
-      DB_HOST: pacsdb
-      DB_PORT: 5432
-      DB_NAME: pacs_integration_db
-      DB_USERNAME: pacs_integration_user
-      DB_PASSWORD: Password@123
+      DB_HOST: ${PACS_DB_HOST:?}
+      DB_PORT: ${PACS_DB_PORT:?}
+      DB_NAME: ${PACS_INTEGRATION_DB_NAME:?}
+      DB_USERNAME: ${PACS_INTEGRATION_DB_USERNAME:?}
+      DB_PASSWORD: ${PACS_INTEGRATION_DB_PASSWORD:?}
       OPENMRS_HOST: ${OPENMRS_HOST:?}
       OPENMRS_PORT: ${OPENMRS_PORT:?}
       OPENMRS_ATOMFEED_USER: ${OPENMRS_ATOMFEED_USER:?}
@@ -352,13 +354,13 @@ services:
     image: postgres:9.6
     profiles: [ "default","pacs" ]
     environment:
-      POSTGRES_PASSWORD: postgres
-      PACS_DB_NAME: pacs_db
-      PACS_DB_USERNAME: pacs_user
-      PACS_DB_PASSWORD: Password@123
-      PACS_INTEGRATION_DB_NAME: pacs_integration_db
-      PACS_INTEGRATION_DB_USERNAME: pacs_integration_user
-      PACS_INTEGRATION_DB_PASSWORD: Password@123
+      POSTGRES_PASSWORD: ${PACS_DB_ROOT_PASSWORD}
+      DCM4CHEE_DB_NAME: ${DCM4CHEE_DB_NAME:?}
+      DCM4CHEE_DB_USERNAME: ${DCM4CHEE_DB_USERNAME:?}
+      DCM4CHEE_DB_PASSWORD: ${DCM4CHEE_DB_PASSWORD:?}
+      PACS_INTEGRATION_DB_NAME: ${PACS_INTEGRATION_DB_NAME:?}
+      PACS_INTEGRATION_DB_USERNAME: ${PACS_INTEGRATION_DB_USERNAME:?}
+      PACS_INTEGRATION_DB_PASSWORD: ${PACS_INTEGRATION_DB_PASSWORD:?}
     volumes:
       - './init_pacs_dbs.sh:/docker-entrypoint-initdb.d/init_pacs_dbs.sh'
     logging: *log-config
@@ -367,14 +369,14 @@ services:
     image: bahmni/pacs-simulator
     profiles: [ "default","pacs-simulator" ]
     environment:
-      PACS_SIMULATOR_TIMEOUT: 20000
-      PACS_SERVER_TYPE: dcm4chee
-      PACS_SERVER_URL: DCM4CHEE@dcm4chee:11112
-      PACS_INTEGRATION_DB_HOST: pacsdb
-      PACS_INTEGRATION_DB_PORT: 5432
-      PACS_INTEGRATION_DB_NAME: pacs_integration_db
-      PACS_INTEGRATION_DB_USERNAME: pacs_integration_user
-      PACS_INTEGRATION_DB_PASSWORD: Password@123
+      PACS_SIMULATOR_TIMEOUT: ${PACS_SIMULATOR_TIMEOUT:?}
+      PACS_SERVER_TYPE: ${PACS_SERVER_TYPE:?}
+      PACS_SERVER_URL: ${PACS_SERVER_URL:?}
+      PACS_INTEGRATION_DB_HOST: ${PACS_DB_HOST:?}
+      PACS_INTEGRATION_DB_PORT: ${PACS_DB_PORT:?}
+      PACS_INTEGRATION_DB_NAME: ${PACS_INTEGRATION_DB_NAME:?}
+      PACS_INTEGRATION_DB_USERNAME: ${PACS_INTEGRATION_DB_USERNAME:?}
+      PACS_INTEGRATION_DB_PASSWORD: ${PACS_INTEGRATION_DB_PASSWORD:?}
     logging: *log-config
 
 volumes:
