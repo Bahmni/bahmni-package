@@ -3,7 +3,6 @@ on:
   push:
     branches:
       - master
-      - BAH-2054
     paths:
       - 'bahmni-pacs/**'
       - '.github/workflows/dcm4chee_build_publish.yml'
