@@ -43,4 +43,6 @@ COPY resources/dcm4chee/oviyam2-7-config.xml ${DCM4CHEE_PATH}/server/default/wor
 COPY docker/dcm4chee/scripts/startup.sh startup.sh
 RUN chmod +x startup.sh
 RUN chmod +x wait-for.sh
+RUN rm -rf ${DOWNLOAD_PATH}
+
 CMD ["./startup.sh"]
