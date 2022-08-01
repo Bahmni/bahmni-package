@@ -2,8 +2,8 @@
 set -e
 initialise_database() {
     export PGPASSWORD="${DB_PASSWORD}"
-    RESULT=$(psql "${DB_NAME}" --host "${DB_HOST}" --port "${DB_PORT}" -U "${DB_USERNAME}" -A -t -c "SELECT count(*) FROM pg_tables WHERE schemaname='public';")
-    if [ "$RESULT" = "0" ]
+    TABLE_COUNT=$(psql "${DB_NAME}" --host "${DB_HOST}" --port "${DB_PORT}" -U "${DB_USERNAME}" -A -t -c "SELECT count(*) FROM pg_tables WHERE schemaname='public';")
+    if [ "$TABLE_COUNT" = "0" ]
     then
       echo "[INFO] Initialising tables in "${DB_NAME}" database.."
       PGPASSWORD="${DB_PASSWORD}" psql "${DB_NAME}" --host "${DB_HOST}" --port "${DB_PORT}" -U "${DB_USERNAME}" -f "${DCM4CHEE_PATH}"/sql/create.psql
