@@ -271,6 +271,11 @@ services:
     profiles: ["default","appointments"]
     # volumes:
     # - "${APPOINTMENTS_PATH:?}/dist/:/usr/local/apache2/htdocs/appointments"
+
+  crater-atomfeed:
+    image: bahmni/crater-atomfeed:latest
+    profiles: ["default","crater-atomfeed"]
+    
 volumes:
   openelisdbdata:
   odoodbdata:
