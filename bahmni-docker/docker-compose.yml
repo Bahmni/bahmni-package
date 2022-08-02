@@ -285,6 +285,7 @@ services:
       DB_PASSWORD: ${DCM4CHEE_DB_PASSWORD:?}
     ports:
       - '8055:8055'
+      - '11112:11112'
     volumes:
       - 'dcm4chee-archive:/var/lib/bahmni/dcm4chee/server/default/archive'
     logging: *log-config
