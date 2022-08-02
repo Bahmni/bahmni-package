@@ -13,7 +13,7 @@ RUN mkdir -p ${DCM4CHEE_PATH}
 RUN mkdir -p ${JBOSS_PATH}
 RUN mkdir -p ${DOWNLOAD_PATH}
 
-RUN apk add curl
+RUN apk add curl gettext postgresql-client
 
 RUN curl -L -o ${DOWNLOAD_PATH}/dcm4chee.zip "http://repo.mybahmni.org.s3.amazonaws.com/packages/build/${DCM4CHEE_VERSION}.zip"
 RUN unzip -d ${DOWNLOAD_PATH} ${DOWNLOAD_PATH}/dcm4chee.zip
@@ -29,9 +29,6 @@ RUN cp ${DOWNLOAD_PATH}/Oviyam-${OVIYAM_VERSION}-bin/Oviyam-${OVIYAM_VERSION}-bi
 
 RUN curl -o wait-for.sh 'https://raw.githubusercontent.com/eficode/wait-for/v2.2.3/wait-for'
 RUN ${DCM4CHEE_PATH}/bin/install_jboss.sh /usr/share/jboss
-
-
-RUN apk add gettext postgresql-client
 
 COPY docker/dcm4chee/templates/pacs-postgres-ds.xml.template /etc/pacs-postgres-ds.xml.template
 COPY resources/dcm4chee/server.xml ${DCM4CHEE_PATH}/server/default/deploy/jboss-web.deployer/
