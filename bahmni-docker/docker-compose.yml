@@ -275,7 +275,33 @@ services:
   crater-atomfeed:
     image: bahmni/crater-atomfeed:latest
     profiles: ["default","crater-atomfeed"]
-    
+    environment:
+      CRATER_DB_HOST:     ${CRATER_DB_HOST:?}
+      CRATER_DB_PORT:     ${CRATER_DB_PORT:?}
+      OPENMRS_HOST:       ${OPENMRS_HOST:?}
+      OPENMRS_PORT:       ${OPENMRS_PORT:?}
+      CRATER_DEVICE_NAME: ${CRATER_DEVICE_NAME}
+      CRATER_USERNAME: admin@craterapp.com
+      CRATER_PASSWORD: crater@123
+      CRATER_DB_USERNAME: beehyv
+      CRATER_DB_PASSWORD: beehyv123
+      CRATER_ROOT_PASSWORD: beehyv123
+      CRATER_DB_HOST: crater-atomfeeddb
+      CRATER_DB_PORT: 3306
+      CRATER_DB_NAME: crater_atomfeed
+      OPENMRS_ATOMFEED_USER: superman
+      OPENMRS_ATOMFEED_PASSWORD: Admin123
+
+  crater-atomfeeddb:
+    platform: linux/amd64
+    image: mysql:5.7
+    profiles: ["default","crater-atomfeed"]
+    environment:
+      MYSQL_ROOT_PASSWORD: ${CRATER_ROOT_PASSWORD:?}
+      MYSQL_DATABASE: ${CRATER_DB_NAME:?}
+      MYSQL_USER: ${CRATER_DB_USERNAME:?}
+      MYSQL_PASSWORD: ${CRATER_DB_PASSWORD:?}
+      
 volumes:
   openelisdbdata:
   odoodbdata:
