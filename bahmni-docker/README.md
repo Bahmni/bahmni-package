@@ -23,6 +23,11 @@ This is a Work In Progress directory.
     * [Bahmni Web Configuration](#bahmni-web-configurations)
     * [Implementer Interface Configurations](#implementer-interface-configurations)
     * [Bahmni Reports Configurations](#bahmni-reports-configurations)
+    * [Appointments Configurations](#appointments-configurations)
+    * [PACS DB Configurations](#pacs-db-configurations)
+    * [DCM4CHEE Configurations](#dcm4chee-configurations)
+    * [PACS Integration Configurations](#pacs-integration-configurations)
+    * [PACS Simulator Configurations](#pacs-simulator-configurations)
 * [Proxy Service](#proxy-service)
 * [Building OpenElis Images Locally](#building-openelis-images-locally)
 * [Loading Additional Addons to Odoo](#loading-additional-addons-to-odoo)
@@ -34,6 +39,10 @@ This is a Work In Progress directory.
 * [Development on Appointments Frontend](#development-on-appointments-frontend)
 * [Development Setup for Implementer Interface](#development-setup-for-implementer-interface)
 * [Adding Custom Reports](#adding-custom-reports)
+* [Setting up PACS](#setting-up-pacs)
+  * [Using PACS Simulator](#using-pacs-simulator)
+    * [Manual Upload](#1-manually-upload-dicom-images)
+    * [Automatic Order Processing](#2-automated-method-by-running-pacs-simulator)
 
 # Prerequisites
 ## Docker Installations
@@ -110,6 +119,8 @@ Note: `proxy` is a generic service and it will start always irrespective of belo
 | implementer-interface | Implementer Interface (Form Builder) | openmrs, openmrsdb, implementer-interface |
 | reports               | Bahmni Reports                       | reports, reportsdb                        |
 | appointments          | Bahmni Appointments Frontend         | appointments                              |
+| pacs                  | Bahmni PACS Setup with DCM4CHEE      | dcm4chee, pacs-integration, pacs_db       |
+| pacs-simulator        | PACS Simulator to test PACS setup    | pacs-simulator                            |
 | logging               | Loki Stack - Centralised Logging     | grafana, promtail, loki                   |
 
 
@@ -138,6 +149,8 @@ Example: COMPOSE_PROFILES=openelis,odoo. You can also pass this as an argument w
 | Implementer Interface          | http://localhost/implementer-interface | Username: `superman` <br> Password: `Admin123` | -                                                                                                                                                                                    |
 | Bahmni Reports                 | http://localhost/bahmni-reports        | Username: `superman` <br> Password: `Admin123` | openmrs profile should be running                                                                                                                                                    |
 | Bahmni Appointments Scheduling | http://localhost/appointments          | Username: `superman` <br> Password: `Admin123` | openmrs profile should be running                                                                                                                                                    |
+| Bahmni PACS (DCM4CHEE)         | http://localhost/dcm4chee-web3         | Username: `admin` <br> Password: `admin`       | Perform step 4 in [this](https://bahmni.atlassian.net/wiki/spaces/BAH/pages/36077574/Setup+DCM4CHEE+Server+with+Oviyam2) page.                                                       |
+| Oviyam 2 (DICOM Web Viewer)    | http://localhost/oviyam2               | Username: `admin` <br> Password: `admin`       | -                                                                                                                                                                                    |
 | Grafana                        | http://localhost/grafana               | Username: `admin` <br> Password: `admin`       | Recommended to change password on first login                                                                                                                                        |
 
 
@@ -272,12 +285,42 @@ By default, the configuration of openmrs and openmrsdb services are set to load 
  | REPORTS_DB_USERNAME | Username of Reports Database                                                                                                                                                        |
  | REPORTS_DB_PASSWORD | Password of Reports Database                                                                                                                                                        |
 
-## Appointments Configuration
+## Appointments Configurations
 | Variable Name          | Description                                                                                                                                                                                                    |
 |:-----------------------|:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | APPOINTMENTS_IMAGE_TAG | This value specifies which image version needs to be used for appointments service. List of tags can be found at [bahmni/appointments - Tags](https://hub.docker.com/r/bahmni/appointments/tags) .             |
 | APPOINTMENTS_PATH      | Set this to the directory path where you have cloned  [openmrs-module-appointments-frontend](https://github.com/Bahmni/openmrs-module-appointments-frontend) repository. Needed only for development purposes. |
 
+## PACS DB Configurations
+| Variable Name         | Description                                                                                |
+|:----------------------|:-------------------------------------------------------------------------------------------|
+| PACS_DB_HOST          | The host name of the postgres server which runs database for dcm4chee and pacs-integration |
+| PACS_DB_PORT          | The port of the postgres server for dcm4chee and pacs-integration                          |
+| PACS_DB_ROOT_PASSWORD | The root password given to the postgres container ie pacsdb service                        |
+
+## DCM4CHEE Configurations
+| Variable Name        | Description                                                                                                                                                                           |
+|:---------------------|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| DCM4CHEE_IMAGE_TAG   | This value specifies which image version needs to be used for reports service. List of tags can be found at [bahmni/dcm4chee - Tags](https://hub.docker.com/r/bahmni/dcm4chee/tags) . |
+| DCM4CHEE_DB_NAME     | The name of the database for dcm4chee service                                                                                                                                         |
+| DCM4CHEE_DB_USERNAME | Username for dcm4chee database                                                                                                                                                        |
+| DCM4CHEE_DB_PASSWORD | Password for dcm4chee database                                                                                                                                                        |
+
+## PACS-Integration Configurations
+| Variable Name                | Description                                                                                                                                                                                           |
+|:-----------------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| PACS_INTEGRATION_IMAGE_TAG   | This value specifies which image version needs to be used for reports service. List of tags can be found at [bahmni/pacs-integration - Tags](https://hub.docker.com/r/bahmni/pacs-integration/tags) . |
+| PACS_INTEGRATION_DB_NAME     | The name of the database for pacs-integration service                                                                                                                                                 |
+| PACS_INTEGRATION_DB_USERNAME | Username for pacs-integration database                                                                                                                                                                |
+| PACS_INTEGRATION_DB_PASSWORD | Password for pacs-integration database                                                                                                                                                                |
+
+## PACS Simulator Configurations
+| Variable Name              | Description                                                                                                                                                                                                   |
+|:---------------------------|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| PACS_SIMULATOR_TIMEOUT     | The timeout value for PACS Simulator while sending DICOM Image to the given server                                                                                                                            |
+| PACS_SERVER_TYPE           | Takes either `dcm4chee` (or) `orthanc`                                                                                                                                                                        |
+| PACS_SERVER_URL            | The URL of the PACS server. For DCM4CHEE it would be like `DCM4CHEE@dcm4chee:11112`                                                                                                                           |
+| UPDATE_PACS_INTEGRATION_DB | Set this to true if you want PACS Simulator automatically register itself as a modality for `Radiology Order` type in PACS Integration database. When set to true this would connect with pacs_integration_db |         
 
 # Proxy Service
 The proxy service runs with every profile configuration. It renders the Bahmni Landing Page. Also ProxyPass and ProxyPassReverse configurations are done with this container.
@@ -485,6 +528,38 @@ When you want to develop on appointments frontend code, follow the below steps.
 2. Now open the docker-compose.yml file and in the reports service uncomment the volumes section.
 3. You can start reports by running `docker-compose up -d reports`. If your container is already running, you need to recreate it by the following command. `docker-compose rm -s reports && docker-compose up -d reports`
 4. Now, when you have reports running, you should be able to access the reports on refresh of the browser.
+
+# Setting Up PACS
+PACS setup of Bahmni uses DCM4CHEE. You can read more about it [here](https://bahmni.atlassian.net/wiki/spaces/BAH/pages/32014588/Radiology+and+PACS+Integration).
+
+In docker compose we use two different profiles `pacs` and `pacs-simulator`.
+
+When the `pacs` profile is started, and when an order is made from Bahmni -> Consultation -> Orders -> Radiology Order you will be able to see the orders in `Modality Worklist` of DCM4CHEE / PACS.
+There is a one-time setup in OpenMRS that needs to be done to view Radiology Images properly. Refer 4th point in this [Wiki Page](https://bahmni.atlassian.net/wiki/spaces/BAH/pages/36077574/Setup+DCM4CHEE+Server+with+Oviyam2)
+### Using PACS Simulator
+There are two ways of uploading a DICOM image against a PACS order.
+
+#### 1. Manually upload DICOM Images
+First find out the patient id, patient first name, patient last name and accession number of the order from modality worklist page of DCM4CHEE.
+Now from your terminal navigated to the bahmni-docker directory run the following command after replacing the appropriate values.
+```shell
+docker compose run pacs-simulator sh -c './upload.sh DCM4CHEE@dcm4chee:11112 <PATIENT_ID> <PATIENT_FIRST_NAME> <PATIENT_LAST_NAME> <ACCESSION_NUMBER>'
+```
+An example command would look like
+
+`docker compose run pacs-simulator sh -c './upload.sh DCM4CHEE@dcm4chee:11112 GAN203010 Test Radiology ORD-329'`
+
+#### 2. Automated Method by running PACS-Simulator
+The PACS Simulator service can also be started in a listen mode by running `docker-compose --profile pacs-simulator up -d`.
+When `pacs-simulator` profile is started, the order would be received by pacs-simulator service and a sample DICOM image will be uploaded to DCM4CHEE by pacs-simulator. And the completed order can be found in `Folder` tab of DCM4CHEE and also in Oviyam viewer. Now the orders will not be visible in Modality Worklist.
+
+❗_Note:_ When pacs-simulator is started, it will update entries in `pacs_integration_db` modality table. Now when you want to receive the orders back in DCM4CHEE Modality Worklist make sure to update the modality table by running the below commands.
+```
+docker compose stop pacs-simulator
+docker compose exec -it pacsdb sh
+psql -U ${PACS_INTEGRATION_DB_USERNAME} -d ${PACS_INTEGRATION_DB_NAME} -c "UPDATE modality set ip='dcm4chee',port=2575 where id=1;"
+exit 
+```
 
 
 # Common Troubleshooting Steps
