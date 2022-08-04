@@ -367,7 +367,7 @@ services:
     logging: *log-config
 
   pacs-simulator:
-    image: bahmni/pacs-simulator
+    image: bahmni/pacs-simulator:${PACS_SIMULATOR_IMAGE_TAG:?}
     profiles: [ "default","pacs-simulator" ]
     environment:
       PACS_SIMULATOR_TIMEOUT: ${PACS_SIMULATOR_TIMEOUT:?}
