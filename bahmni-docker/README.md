@@ -299,24 +299,27 @@ By default, the configuration of openmrs and openmrsdb services are set to load 
 | PACS_DB_ROOT_PASSWORD | The root password given to the postgres container ie pacsdb service                        |
 
 ## DCM4CHEE Configurations
-| Variable Name        | Description                                                                                                                                                                           |
-|:---------------------|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| DCM4CHEE_IMAGE_TAG   | This value specifies which image version needs to be used for reports service. List of tags can be found at [bahmni/dcm4chee - Tags](https://hub.docker.com/r/bahmni/dcm4chee/tags) . |
-| DCM4CHEE_DB_NAME     | The name of the database for dcm4chee service                                                                                                                                         |
-| DCM4CHEE_DB_USERNAME | Username for dcm4chee database                                                                                                                                                        |
-| DCM4CHEE_DB_PASSWORD | Password for dcm4chee database                                                                                                                                                        |
+| Variable Name        | Description                                                                                                                                                                            |
+|:---------------------|:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| DCM4CHEE_IMAGE_TAG   | This value specifies which image version needs to be used for dcm4chee service. List of tags can be found at [bahmni/dcm4chee - Tags](https://hub.docker.com/r/bahmni/dcm4chee/tags) . |
+| DCM4CHEE_DB_NAME     | The name of the database for dcm4chee service                                                                                                                                          |
+| DCM4CHEE_DB_USERNAME | Username for connecting to dcm4chee database                                                                                                                                           |
+| DCM4CHEE_DB_PASSWORD | Password for connecting to dcm4chee database                                                                                                                                           |
 
 ## PACS-Integration Configurations
-| Variable Name                | Description                                                                                                                                                                                           |
-|:-----------------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| PACS_INTEGRATION_IMAGE_TAG   | This value specifies which image version needs to be used for reports service. List of tags can be found at [bahmni/pacs-integration - Tags](https://hub.docker.com/r/bahmni/pacs-integration/tags) . |
-| PACS_INTEGRATION_DB_NAME     | The name of the database for pacs-integration service                                                                                                                                                 |
-| PACS_INTEGRATION_DB_USERNAME | Username for pacs-integration database                                                                                                                                                                |
-| PACS_INTEGRATION_DB_PASSWORD | Password for pacs-integration database                                                                                                                                                                |
+| Variable Name                | Description                                                                                                                                                                                                    |
+|:-----------------------------|:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| PACS_INTEGRATION_IMAGE_TAG   | This value specifies which image version needs to be used for pacs-integration service. List of tags can be found at [bahmni/pacs-integration - Tags](https://hub.docker.com/r/bahmni/pacs-integration/tags) . |
+| PACS_INTEGRATION_DB_NAME     | The name of the database for pacs-integration service                                                                                                                                                          |
+| PACS_INTEGRATION_DB_USERNAME | Username for connecting to pacs-integration database                                                                                                                                                           |
+| PACS_INTEGRATION_DB_PASSWORD | Password for connecting to pacs-integration database                                                                                                                                                           |
 
 ## PACS Simulator Configurations
+Should be used for testing / demo environments. In a production setup this would be replaced by actual Modality machine (Example: X-Ray Machine)
+
 | Variable Name              | Description                                                                                                                                                                                                   |
 |:---------------------------|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| PACS_SIMULATOR_IMAGE_TAG   | This value specifies which image version needs to be used for pacs-simulator service. List of tags can be found at [bahmni/pacs-simulator - Tags](https://hub.docker.com/r/bahmni/pacs-simulator/tags) .      |
 | PACS_SIMULATOR_TIMEOUT     | The timeout value for PACS Simulator while sending DICOM Image to the given server                                                                                                                            |
 | PACS_SERVER_TYPE           | Takes either `dcm4chee` (or) `orthanc`                                                                                                                                                                        |
 | PACS_SERVER_URL            | The URL of the PACS server. For DCM4CHEE it would be like `DCM4CHEE@dcm4chee:11112`                                                                                                                           |
