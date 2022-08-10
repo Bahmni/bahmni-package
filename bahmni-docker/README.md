@@ -112,7 +112,7 @@ Bahmni docker-compose has been configured with profiles which allows you to run 
 Note: `proxy` is a generic service and it will start always irrespective of below profiles.
 
 | Profile               | Application                          | Services                                  |
-|--:--------------------|--:-----------------------------------|--:----------------------------------------|
+|:----------------------|:-------------------------------------|:------------------------------------------|
 | default               | All applications                     | All service defined in docker-compose.yml |
 | openelis              | OpenELIS                             | openelis, openelisdb                      |
 | odoo                  | Odoo                                 | odoo, odoodb                              |
@@ -281,25 +281,25 @@ Note: When connected with a different host, the master data should match. Otherw
 By default, the configuration of openmrs and openmrsdb services are set to load demo data from a backup file. If you want to start the installation with a fresh schema, set `OPENMRS_DB_CREATE_TABLES` to `true` and then set `OPENMRS_DB_IMAGE_NAME` to `mysql:5.6`. Now when start the schema will be created by liquibase migrations of OpenMRS and other OMODS loaded.
 
 ## Crater Configurations:
-| Variable Name                   | Description |
-|--:------------------------------|--:----------|
-| CRATER_PHP_IMAGE_TAG            | This value tells which image version to be used for Crater PHP. A list of tags can be found at [bahmni/crater-php - Tags](https://hub.docker.com/r/bahmni/crater-php/tags). |
+| Variable Name                   | Description                                                                                                                                                                       |
+|:--------------------------------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| CRATER_PHP_IMAGE_TAG            | This value tells which image version to be used for Crater PHP. A list of tags can be found at [bahmni/crater-php - Tags](https://hub.docker.com/r/bahmni/crater-php/tags).       |
 | CRATER_NGINX_IMAGE_TAG          | This value tells which image version to be used for Crater NGINX. A list of tags can be found at [bahmni/crater-nginx - Tags](https://hub.docker.com/r/bahmni/crater-nginx/tags). |
-| CRATER_APP_URL                  | URL of the crater instance where it will be hosted. |
-| CRATER_DB_HOST                  | Host of the Crater Database. |
-| CRATER_DB_PORT                  | Port of the Crater Database. |
-| CRATER_DB_DATABASE              | Name of the Crater Database. |
-| CRATER_DB_USERNAME              | Username of the Crater Database. |
-| CRATER_DB_PASSWORD              | Password of the Crater Database. |
-| CRATER_SANCTUM_STATEFUL_DOMAINS | `CRATER_APP_URL` without `http://`. |
-| CRATER_SESSION_DOMAIN           | `CRATER_APP_URL` without `http://` and port. |
-| CRATER_AUTO_INSTALL             | Flag to set up Crater automatically. |
-| CRATER_ADMIN_NAME               | Admin name of the Crater instance (used for automatic installation). |
-| CRATER_ADMIN_EMAIL              | Admin email of the Crater instance (used for automatic installation). |
-| CRATER_ADMIN_PASSWORD           | Admin password of the Crater instance (used for automatic installation). |
-| CRATER_COMPANY_NAME             | Company name of the Crater instance (used for automatic installation). |
-| CRATER_COMPANY_SLUG             | Company slug of the Crater instance (used for automatic installation). |
-| CRATER_COMPANY_ID               | Company id of the Crater instance (used for automatic installation). |
+| CRATER_APP_URL                  | URL of the crater instance where it will be hosted.                                                                                                                               |
+| CRATER_DB_HOST                  | Host of the Crater Database.                                                                                                                                                      |
+| CRATER_DB_PORT                  | Port of the Crater Database.                                                                                                                                                      |
+| CRATER_DB_DATABASE              | Name of the Crater Database.                                                                                                                                                      |
+| CRATER_DB_USERNAME              | Username of the Crater Database.                                                                                                                                                  |
+| CRATER_DB_PASSWORD              | Password of the Crater Database.                                                                                                                                                  |
+| CRATER_SANCTUM_STATEFUL_DOMAINS | `CRATER_APP_URL` without `http://`.                                                                                                                                               |
+| CRATER_SESSION_DOMAIN           | `CRATER_APP_URL` without `http://` and port.                                                                                                                                      |
+| CRATER_AUTO_INSTALL             | Flag to set up Crater automatically.                                                                                                                                              |
+| CRATER_ADMIN_NAME               | Admin name of the Crater instance (used for automatic installation).                                                                                                              |
+| CRATER_ADMIN_EMAIL              | Admin email of the Crater instance (used for automatic installation).                                                                                                             |
+| CRATER_ADMIN_PASSWORD           | Admin password of the Crater instance (used for automatic installation).                                                                                                          |
+| CRATER_COMPANY_NAME             | Company name of the Crater instance (used for automatic installation).                                                                                                            |
+| CRATER_COMPANY_SLUG             | Company slug of the Crater instance (used for automatic installation).                                                                                                            |
+| CRATER_COMPANY_ID               | Company id of the Crater instance (used for automatic installation).                                                                                                              |
 
 ## Bahmni Web Configurations:
 | Variable Name        | Description                                                                                                                                                                                  |
