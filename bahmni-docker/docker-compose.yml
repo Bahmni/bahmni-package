@@ -272,37 +272,18 @@ services:
     # volumes:
     # - "${APPOINTMENTS_PATH:?}/dist/:/usr/local/apache2/htdocs/appointments"
 
-  crater-atomfeed:
-    image: bahmni/crater-atomfeed:latest
-    profiles: ["default","crater-atomfeed"]
-    environment:
-      OPENMRS_HOST: ${OPENMRS_HOST:?}
-      OPENMRS_PORT: ${OPENMRS_PORT:?}
-      OPENMRS_ATOMFEED_USER: ${OPENMRS_ATOMFEED_USER}
-      OPENMRS_ATOMFEED_PASSWORD: ${OPENMRS_ATOMFEED_PASSWORD}
-      CRATER_ATOMFEED_DB_HOST: ${CRATER_ATOMFEED_DB_HOST:?}
-      CRATER_ATOMFEED_DB_PORT: ${CRATER_ATOMFEED_DB_PORT:?}
-      CRATER_USERNAME: ${CRATER_USERNAME}
-      CRATER_PASSWORD: ${CRATER_PASSWORD}
-      CRATER_ATOMFEED_DB_USERNAME: ${CRATER_ATOMFEED_DB_USERNAME}
-      CRATER_ATOMFEED_DB_PASSWORD: ${CRATER_ATOMFEED_DB_PASSWORD}
-      CRATER_ATOMFEED_DB_NAME: ${CRATER_ATOMFEED_DB_NAME}
-
-  crater-atomfeed-db:
-    platform: linux/amd64
-    image: mysql:5.7
-    profiles: ["default","crater-atomfeed"]
-    environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-      MYSQL_DATABASE: ${CRATER_ATOMFEED_DB_NAME:?}
-      MYSQL_USER: ${CRATER_ATOMFEED_DB_USERNAME:?}
-      MYSQL_PASSWORD: ${CRATER_ATOMFEED_DB_PASSWORD:?}
-      
   atomfeed-console:
     image: bahmni/atomfeed-console:latest
+    ports:
+      - "9080:9080"
     profiles: ["default","atomfeed-console"]
     environment:
-      JAVA_OPTS: ${JAVA_OPTS}
+      OPENMRS_DB_HOST: ${OPENMRS_DB_HOST}
+      OPENMRS_DB_USERNAME: ${OPENMRS_DB_USERNAME}
+      OPENMRS_DB_PASSWORD: ${OPENMRS_DB_PASSWORD}
+      ODOO_DB_USER: ${ODOO_DB_USER}
+      ODOO_DB_PASSWORD: ${ODOO_DB_PASSWORD}
+
       
 volumes:
   openelisdbdata:

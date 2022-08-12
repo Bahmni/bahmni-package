@@ -1,0 +1,14 @@
+server:
+  port: 9080
+  contextPath: /atomfeed-console
+appConfigs:
+-
+   appName: OpenMRS
+   dbUrl: jdbc:mysql://${OPENMRS_DB_HOST}/openmrs
+   dbUser: ${OPENMRS_DB_USERNAME}
+   dbPassword: ${OPENMRS_DB_PASSWORD}
+-
+   appName: OpenERP
+   dbUrl: jdbc:mysql://odoodb/openmrs
+   dbUser: ${ODOO_DB_USER}
+   dbPassword: ${ODOO_DB_PASSWORD}
