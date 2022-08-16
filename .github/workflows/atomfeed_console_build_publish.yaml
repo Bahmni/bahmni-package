@@ -1,7 +1,9 @@
 name: Build and Publish atomfeed-console
 on:
+  repository_dispatch:
+    types: [atomfeed-console-trigger]
   push:
-    branches: [BAH-2139]
+    branches: [master]
     paths:
       - 'atomfeed-console/**'
       - '.github/workflows/atomfeed_console_build_publish.yml'

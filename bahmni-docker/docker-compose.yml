@@ -414,4 +414,4 @@ volumes:
   bahmni-patient-images:
   bahmni-document-images:
   grafana-storage:
-  dcm4chee-archive: 
+  dcm4chee-archive:
