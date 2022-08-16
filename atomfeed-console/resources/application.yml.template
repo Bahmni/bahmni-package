@@ -17,3 +17,9 @@ appConfigs:
    dbUrl: jdbc:postgresql://openelisdb/clinlims?currentSchema=clinlims
    dbUser: ${OPENELIS_DB_USER}
    dbPassword: ${OPENELIS_DB_PASSWORD}
+-
+   appName: Pacs Integration
+   dbUrl: jdbc:postgresql://pacsdb/bahmni_pacs
+   dbUser: ${PACS_INTEGRATION_DB_USERNAME}
+   dbPassword: ${PACS_INTEGRATION_DB_PASSWORD}
+   

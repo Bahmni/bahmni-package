@@ -395,6 +395,8 @@ services:
       ODOO_DB_PASSWORD: ${ODOO_DB_PASSWORD}
       OPENELIS_DB_USER: ${OPENELIS_DB_USER}
       OPENELIS_DB_PASSWORD: ${OPENELIS_DB_PASSWORD}
+      PACS_INTEGRATION_DB_USERNAME: ${PACS_INTEGRATION_DB_USERNAME:?}
+      PACS_INTEGRATION_DB_PASSWORD: ${PACS_INTEGRATION_DB_PASSWORD:?}
       
 volumes:
   openelisdbdata:
@@ -405,6 +407,5 @@ volumes:
   craterdb:
   bahmni-patient-images:
   bahmni-document-images:
-<<<<<<< HEAD
   grafana-storage:
-  dcm4chee-archive:
+  dcm4chee-archive: 
