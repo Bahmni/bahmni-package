@@ -9,6 +9,11 @@ appConfigs:
    dbPassword: ${OPENMRS_DB_PASSWORD}
 -
    appName: OpenERP
-   dbUrl: jdbc:mysql://odoodb/openmrs
+   dbUrl: jdbc:postgresql://odoodb/odoo
    dbUser: ${ODOO_DB_USER}
    dbPassword: ${ODOO_DB_PASSWORD}
+-
+   appName: OpenELIS
+   dbUrl: jdbc:postgresql://openelisdb/clinlims?currentSchema=clinlims
+   dbUser: ${OPENELIS_DB_USER}
+   dbPassword: ${OPENELIS_DB_PASSWORD}
