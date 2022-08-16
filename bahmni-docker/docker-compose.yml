@@ -156,6 +156,7 @@ services:
       # - "${BAHMNI_CONFIG_PATH:?}/:/etc/bahmni_config/"
       - 'bahmni-patient-images:/home/bahmni/patient_images'
       - 'bahmni-document-images:/home/bahmni/document_images'
+      - 'bahmni-clinical-forms:/home/bahmni/clinical_forms'
     depends_on:
       - openmrsdb
     logging: *log-config
@@ -390,5 +391,6 @@ volumes:
   craterdb:
   bahmni-patient-images:
   bahmni-document-images:
+  bahmni-clinical-forms:
   grafana-storage:
   dcm4chee-archive:
