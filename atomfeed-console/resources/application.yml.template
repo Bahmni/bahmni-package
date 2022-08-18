@@ -8,7 +8,7 @@ appConfigs:
    dbUser: ${OPENMRS_DB_USERNAME}
    dbPassword: ${OPENMRS_DB_PASSWORD}
 -
-   appName: OpenERP
+   appName: Odoo
    dbUrl: jdbc:postgresql://${ODOO_DB_HOST}/${ODOO_DB_NAME}
    dbUser: ${ODOO_DB_USER}
    dbPassword: ${ODOO_DB_PASSWORD}
