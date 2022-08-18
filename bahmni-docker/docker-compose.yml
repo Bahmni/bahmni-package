@@ -384,8 +384,6 @@ services:
 
   atomfeed-console:
     image: bahmni/atomfeed-console:latest
-    ports:
-      - "9080:9080"
     profiles: ["default","atomfeed-console"]
     environment:
       OPENMRS_DB_HOST: ${OPENMRS_DB_HOST}
