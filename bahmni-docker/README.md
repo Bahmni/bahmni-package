@@ -124,6 +124,7 @@ Note: `proxy` is a generic service and it will start always irrespective of belo
 | pacs                  | Bahmni PACS Setup with DCM4CHEE      | dcm4chee, pacs-integration, pacs_db       |
 | pacs-simulator        | PACS Simulator to test PACS setup    | pacs-simulator                            |
 | logging               | Loki Stack - Centralised Logging     | grafana, promtail, loki                   |
+| atomfeed-console               | Atomfeed Console     | atomfeed-console                   |
 
 
 Profiles can be set by changing the `COMPOSE_PROFILES` variable in .env variable. You can set multiple profiles by comma seperated values.
@@ -156,6 +157,7 @@ Example: COMPOSE_PROFILES=openelis,odoo. You can also pass this as an argument w
 | Bahmni PACS (DCM4CHEE)         | http://localhost/dcm4chee-web3         | Username: `admin` <br> Password: `admin`       | Perform step 4 in [this](https://bahmni.atlassian.net/wiki/spaces/BAH/pages/36077574/Setup+DCM4CHEE+Server+with+Oviyam2) page.                                                       |
 | Oviyam 2 (DICOM Web Viewer)    | http://localhost/oviyam2               | Username: `admin` <br> Password: `admin`       | -                                                                                                                                                                                    |
 | Grafana                        | http://localhost/grafana               | Username: `admin` <br> Password: `admin`       | Recommended to change password on first login                                                                                                                                        |
+| Atomfeed Console                        |https://localhost/atomfeed-console               |        | -                                                                                                   |
 
 
 ### Cleaning All Bahmni Application Data
@@ -359,7 +361,7 @@ Should be used for testing / demo environments. In a production setup this would
 | PACS_SIMULATOR_TIMEOUT     | The timeout value for PACS Simulator while sending DICOM Image to the given server                                                                                                                            |
 | PACS_SERVER_TYPE           | Takes either `dcm4chee` (or) `orthanc`                                                                                                                                                                        |
 | PACS_SERVER_URL            | The URL of the PACS server. For DCM4CHEE it would be like `DCM4CHEE@dcm4chee:11112`                                                                                                                           |
-| UPDATE_PACS_INTEGRATION_DB | Set this to true if you want PACS Simulator automatically register itself as a modality for `Radiology Order` type in PACS Integration database. When set to true this would connect with pacs_integration_db |         
+| UPDATE_PACS_INTEGRATION_DB | Set this to true if you want PACS Simulator automatically register itself as a modality for `Radiology Order` type in PACS Integration database. When set to true this would connect with pacs_integration_db |     
 
 # Proxy Service
 The proxy service runs with every profile configuration. It renders the Bahmni Landing Page. Also ProxyPass and ProxyPassReverse configurations are done with this container.
