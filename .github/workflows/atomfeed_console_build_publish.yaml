@@ -30,7 +30,7 @@ jobs:
           https://api.github.com/repos/ICT4H/atomfeed-console/actions/artifacts | \
           jq -r '.artifacts[0].archive_download_url' | \
           xargs curl -L -o atomfeed-console-SNAPSHOT.zip -H "Authorization: token ${{secrets.BAHMNI_PAT}}" &&\
-          unzip atomfeed-console-SNAPSHOT.zip  -d atomfeed-console/resoources/
+          unzip atomfeed-console-SNAPSHOT.zip  -d atomfeed-console/resources/
       - name: Login to DockerHub
         uses: docker/login-action@v1 
         with:
