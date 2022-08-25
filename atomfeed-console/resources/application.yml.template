@@ -1,0 +1,24 @@
+server:
+  port: 9080
+  contextPath: /atomfeed-console
+appConfigs:
+-
+   appName: OpenMRS
+   dbUrl: jdbc:mysql://${OPENMRS_DB_HOST}/${OPENMRS_DB_NAME}
+   dbUser: ${OPENMRS_DB_USERNAME}
+   dbPassword: ${OPENMRS_DB_PASSWORD}
+-
+   appName: Odoo
+   dbUrl: jdbc:postgresql://${ODOO_DB_HOST}/${ODOO_DB_NAME}
+   dbUser: ${ODOO_DB_USER}
+   dbPassword: ${ODOO_DB_PASSWORD}
+-
+   appName: OpenELIS
+   dbUrl: jdbc:postgresql://${OPENELIS_DB_HOST}/clinlims?currentSchema=clinlims
+   dbUser: ${OPENELIS_DB_USER}
+   dbPassword: ${OPENELIS_DB_PASSWORD}
+-
+   appName: Pacs Integration
+   dbUrl: jdbc:postgresql://${PACS_INTEGRATION_DB_HOST}/${PACS_INTEGRATION_DB_NAME}
+   dbUser: ${PACS_INTEGRATION_DB_USERNAME}
+   dbPassword: ${PACS_INTEGRATION_DB_PASSWORD}
