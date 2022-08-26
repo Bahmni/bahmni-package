@@ -1,0 +1,14 @@
+name: Trivy Scan
+on:
+  push:
+    branches: [master]
+jobs:
+  Trivy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Install Trivy
+        run: brew install aquasecurity/trivy/trivy
+      - name: Scan
+        run : trivy fs --severity "MEDIUM,HIGH,CRITICAL" --exit-code 1 .
