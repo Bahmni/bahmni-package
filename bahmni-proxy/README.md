@@ -13,3 +13,15 @@ This directory contains resources for building Docker image for Bahmni Proxy Con
 
      > export GITHUB_RUN_NUMBER=1
 4. Run the build script `./bahmni-proxy/scripts/docker_build.sh`
+
+## Integrate [speech-assistant-package](https://github.com/Bahmni/speech-assistant-package)
+  * [speech-recognition-open-api-proxy](https://github.com/Open-Speech-EkStep/speech-recognition-open-api-proxy) is using websocket protocol
+  * To pass a request from bahmni-proxy to speech-recognition-open-api-proxy, put below lines in *<VirtualHost \*:443>* tag:
+    ```
+    RewriteEngine on 
+    RewriteCond %{HTTP:Upgrade} websocket [NC]
+    RewriteCond %{HTTP:Connection} upgrade [NC]
+    Header set Content-Security-Policy upgrade-insecure-requests
+    RewriteRule ^/?(.*) "ws://vakyansh-proxy:9009/$1" [P,L]
+    ```
+  
