@@ -13,9 +13,20 @@ env:
   BAHMNI_VERSION: 0.94
 
 jobs:
+  Trivy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Install Trivy
+        run: brew install aquasecurity/trivy/trivy
+      - name: Scan
+        run : trivy fs --severity "MEDIUM,HIGH,CRITICAL" --exit-code 1 .
+
   build-upload-artifact:
     name: Build and upload embedded Tomcat Server artifact
     runs-on: ubuntu-latest
+    needs: Trivy
     steps:
       - uses: actions/checkout@v2
       - name: Set up JDK 1.8
@@ -32,7 +43,9 @@ jobs:
 
   trigger-dependent-repos:
     name: Trigger Workflows
-    needs: build-upload-artifact
+    needs: 
+      - build-upload-artifact
+      - Trivy
     runs-on: ubuntu-latest
     strategy:
       matrix:
