@@ -2,6 +2,15 @@ name: Trivy Scan
 on:
   push:
     branches: [master]
+    paths-ignore:
+      - 'atomfeed-console/**'
+      - '.github/workflows/atomfeed_console_build_publish.yaml'
+      - "core/**"
+      - 'bahmni-pacs/**'
+      - '.github/workflows/dcm4chee_build_publish.yml'
+      - 'bahmni-proxy/**'
+      - '.github/workflows/proxy_image_build_publish.yml'
+
 jobs:
   Trivy:
     runs-on: ubuntu-latest
