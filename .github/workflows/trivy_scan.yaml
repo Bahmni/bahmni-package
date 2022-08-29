@@ -1,7 +1,7 @@
 name: Trivy Scan
 on:
   push:
-    branches: [master]
+    branches: [BAH-2193]
     paths-ignore:
       - 'atomfeed-console/**'
       - '.github/workflows/atomfeed_console_build_publish.yaml'
@@ -17,7 +17,5 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-      - name: Install Trivy
-        run: brew install aquasecurity/trivy/trivy
-      - name: Scan
-        run : trivy fs --severity "MEDIUM,HIGH,CRITICAL" --exit-code 1 .
+      - name: Trivy Scan
+        run: ./.github/trivy_scan.sh
