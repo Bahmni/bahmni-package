@@ -181,6 +181,8 @@ services:
     profiles: ['default', 'crater']
     restart: unless-stopped
     working_dir: /var/www/
+    volumes:
+     - 'crater-app-data:/var/www/storage/app/public' 
     environment:
       APP_URL: ${CRATER_APP_URL:?}
       DB_HOST: ${CRATER_DB_HOST:?}
@@ -202,6 +204,8 @@ services:
     image: bahmni/crater-nginx:${CRATER_NGINX_IMAGE_TAG:?}
     profiles: ['default', 'crater']
     restart: unless-stopped
+    volumes:
+     - 'crater-app-data:/var/www/public/storage' 
     ports:
       - 81:80
 
@@ -415,3 +419,4 @@ volumes:
   bahmni-clinical-forms:
   grafana-storage:
   dcm4chee-archive:
+  crater-app-data:
