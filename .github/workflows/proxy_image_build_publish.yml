@@ -16,7 +16,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
       - name: Trivy Scan
-        run: ./.github/trivy_scan.sh
+        run: ./.github/trivy_scan.sh bahmni-proxy .github/workflows/proxy_image_build_publish.yml
 
   docker-build-publish:
     name: Docker Build & Publish

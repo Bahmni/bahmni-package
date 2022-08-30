@@ -15,7 +15,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
       - name: Trivy Scan
-        run: ./.github/trivy_scan.sh
+        run: ./.github/trivy_scan.sh atomfeed-console .github/workflows/atomfeed_console_build_publish.yaml
 
   docker-build-publish:
     name: Docker Build & Publish

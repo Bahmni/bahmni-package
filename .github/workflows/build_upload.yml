@@ -19,7 +19,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
       - name: Trivy Scan
-        run: ./.github/trivy_scan.sh
+        run: ./.github/trivy_scan.sh core
 
   build-upload-artifact:
     name: Build and upload embedded Tomcat Server artifact
