@@ -138,7 +138,7 @@ buildRpm {
 }
 
 dependencies {
-    compile project(":core")
+    compile project(":bahmni-embedded-tomcat")
 }
 
 jar {
