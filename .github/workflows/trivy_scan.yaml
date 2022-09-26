@@ -21,7 +21,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-      - name: Adding homebrew to the Path and install Trivy
-        run:  eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)" && brew install aquasecurity/trivy/trivy
-      - name: Trivy Scan
-        run: ./.github/trivy_scan.sh
+      - name: Adding homebrew to the Path,install Trivy and run scan
+        run:  |
+          eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+          brew install aquasecurity/trivy/trivy
+          ./.github/trivy_scan.sh
