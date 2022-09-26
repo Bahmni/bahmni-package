@@ -1,7 +1,5 @@
 #!/bin/bash
 
-#Install Trivy Scanner
-brew install aquasecurity/trivy/trivy
 #Make an array of input paths
 TARGETS=("$@")
 #Count number of inputs
