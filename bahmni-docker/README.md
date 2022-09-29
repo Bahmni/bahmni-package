@@ -109,7 +109,7 @@ docker-compose --profile logging up -d
 # Profile Configuration
 Bahmni docker-compose has been configured with profiles which allows you to run the required services. More about compose profiles can be found [here](https://docs.docker.com/compose/profiles/). The list of different profiles can be found below.
 
-Note: `proxy` is a generic service and it will start always irrespective of below profiles.
+Note: `proxy,bahmni-config` are generic services and it will start always irrespective of below profiles.
 
 | Profile               | Application                          | Services                                  |
 |:----------------------|:-------------------------------------|:------------------------------------------|
@@ -207,14 +207,19 @@ where `bahmni-docker_odoodb_1` is the name of the odoo postgres container. You s
 
 
 # Overriding Default Config
-Certain services(OpenMRS, OpenELIS, Bahmni Web, Bahmni Reports) of Bahmni comes with default config loaded. You can find the default_config [here](https://github.com/Bahmni/default-config).
+The default configuration comes with [default-config](https://github.com/Bahmni/default-config) image running in bahmni-config service. The configurations will be shared across services like OpenMRS, bahmni-web, openelis, reports.
 
-You can override these configurations by setting the path to your config folder using the `BAHMNI_CONFIG_PATH` environment varibale.
+To override default-config with your implementation specific configuration, it is recommended to build a docker image of your config and use it with the bahmni-config service. 
 
-Note: Make sure your config directory follows the same structure as default_config.
+The steps to build the docker image for your implementation specific config can be found [here](https://github.com/Bahmni/default-config#docker-image-build). Once you have the docker image built you need to update `Bahmni Config Environment Variables` in the [.env](./.env) file.
 
-Once you have created the config files, uncomment the volume mount in the required services which begins with BAHMNI_CONFIG_PATH.
+### Local development on config
+If you are doing local development on configuration, you can mount your local folder also. Follow the step below.
+1. Update the `CONFIG_VOLUME` variable in the .env file with the path of your local config folder.
+2. Comment `bahmni-config` service in docker-compose.yml
+3. Update / Start the containers by running `docker-compose up -d`. If you use any profile, pass the profile option as well.
 
+Note: In production, it is recommended to use a docker image for bahmni-config service.
 
 # Environment Configuration:
 * The list of configurable environment variables can be found in the `.env` file.
