@@ -12,7 +12,8 @@ x-loki-logging: &loki
     loki-retries: "3"
 
 x-log-config: &log-config
-  <<: *default   # update this value to *loki if needed to see logs in grafana dashboard.
+  # update this value to *loki if needed to see logs in grafana dashboard.
+  <<: *default
 
 services:
 
