@@ -201,7 +201,7 @@ task dist_dcm4chee(type: Rpm) {
 }
 
 dependencies {
-    compile project(":core")
+    compile project(":bahmni-embedded-tomcat")
 }
 
 jar {

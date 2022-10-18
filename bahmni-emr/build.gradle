@@ -207,7 +207,7 @@ configurations {
 }
 
 dependencies {
-    compile project(":core")
+    compile project(":bahmni-embedded-tomcat")
     mrsWar "org.openmrs.web:openmrs-webapp:${openmrsVersion}@war"
 }
 

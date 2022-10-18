@@ -10,6 +10,7 @@ This is a Work In Progress directory.
 * [Setup Centralised Logging](#setup-centralised-logging)
 * [Profile Configuration](#profile-configuration)
 * [Running Bahmni with default images](#running-bahmni-with-default-images)
+* [Generating architecture diagram from docker-compose](#generating-architecture-diagram-from-docker-compose)
 * [One-time Setup for Odoo](#one-time-setup-for-odoo)
 * [One-time Setup for OpenMRS](#one-time-setup-for-openmrs)
 * [Odoo not synchronizing old patient data](#odoo-not-synchronizing-old-patient-data)
@@ -21,6 +22,7 @@ This is a Work In Progress directory.
     * [Odoo Connect Configuration](#odoo-connect-configurations)
     * [OpenMRS Configuration](#openmrs-configurations)
     * [Crater Configuration](#crater-configurations)
+    * [Crater-Atomfeed Configuration](#crater-atomfeed-configurations)
     * [Bahmni Web Configuration](#bahmni-web-configurations)
     * [Implementer Interface Configurations](#implementer-interface-configurations)
     * [Bahmni Reports Configurations](#bahmni-reports-configurations)
@@ -163,6 +165,20 @@ Example: COMPOSE_PROFILES=openelis,odoo. You can also pass this as an argument w
 ### Cleaning All Bahmni Application Data
 Warning: Do this step carefully! This will lead to loss of database and application data.
 * From the `bahmni-docker` directory in a terminal run, `docker-compose down -v` . This brings down the containers and destroys the *volumes* attached to the containers.
+
+# Generating architecture diagram from docker-compose
+To generate architecture diagram from docker-compose, run `sh generate_architecture_diagram.sh` command. 
+While running this command, arguments can be passed to generate customized diagram. There are three options available:
+1. --no-networks
+2. --no-ports
+3. --no-volumes
+
+Example:
+```shell
+sh generate_architecture_diagram.sh --no-volumes --no-networks
+```
+
+The diagram will be generated inside the architecture-diagram directory and if there is any existing diagram it will replace it with the newly generated diagram.
 
 # One-time Setup for Odoo
 The below steps needs to be performed only once when Odoo is created.
@@ -307,12 +323,26 @@ By default, the configuration of openmrs and openmrsdb services are set to load 
 | CRATER_COMPANY_NAME             | Company name of the Crater instance (used for automatic installation).                                                                                                            |
 | CRATER_COMPANY_SLUG             | Company slug of the Crater instance (used for automatic installation).                                                                                                            |
 | CRATER_COMPANY_ID               | Company id of the Crater instance (used for automatic installation).                                                                                                              |
+## Crater-Atomfeed Configurations:
+| Variable Name                   | Description                                                                                                                                                                       |
+|:--------------------------------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| CRATER_USERNAME            | This value is used to login to Crater App.       |
+| CRATER_PASSWORD          | This value is used to login to Crater App.  |
+| CRATER_ATOMFEED_DB_USERNAME                  | Username of crater-atomfeed database.                                                                                     |
+| CRATER_ATOMFEED_DB_PASSWORD                  | Password of crater-atomfeed database.                                                                                                                                                                                            |
+| CRATER_ATOMFEED_DB_ROOT_PASSWORD                  | Root Password of crater-atomfeed database.                                                                                                                                                                                            |
+| CRATER_ATOMFEED_DB_HOST            | Host of crater-atomfeed database.                                                                                                                                                      |
+| CRATER_ATOMFEED_DB_PORT              | Port of crater-atomfeed database.                                                                                                                                                |
+| CRATER_ATOMFEED_DB_NAME             | Name of crater-atomfeed database.                                                                                                                                                |
+| CRATER_URL | Url of crater app.                              
 
 ## Bahmni Web Configurations:
 | Variable Name        | Description                                                                                                                                                                                  |
 |:---------------------|:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | BAHMNI_WEB_IMAGE_TAG | This value specifies which image version needs to be used for bahmni-web service. List of tags can be found at [bahmni/bahmni-web - Tags](https://hub.docker.com/r/bahmni/bahmni-web/tags) . |
 | BAHMNI_UI_DIST_PATH  | Set this variable with the path of your dist folder of openmrs-module-bahmniapps when you want to develop on Bahmni UI.                                                                      |
+
+
 
 ## Implementer Interface Configurations:
 | Variable Name                   | Description                                                                                                                                                                                                                   |
