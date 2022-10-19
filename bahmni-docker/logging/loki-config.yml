@@ -1,9 +1,5 @@
 auth_enabled: false
 
-memberlist:
-  join_members:
-    - '{{ include "loki.fullname" . }}-memberlist'
-
 ingester:
   chunk_idle_period: 3m
   chunk_block_size: 262144
