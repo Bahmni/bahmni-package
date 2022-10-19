@@ -301,6 +301,8 @@ services:
     image: grafana/loki:${LOKI_IMAGE_TAG:?}
     ports:
       - "3100:3100"
+    volumes:
+      - ./logging/loki-config.yaml:/etc/loki/local-config.yaml
     command: -config.file=/etc/loki/local-config.yaml
 
   promtail:
