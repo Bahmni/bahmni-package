@@ -451,3 +451,4 @@ volumes:
   grafana-storage:
   dcm4chee-archive:
   crater-app-data:
+  loki:
