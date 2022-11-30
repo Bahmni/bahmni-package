@@ -8,7 +8,7 @@ SETUP_TOKEN=$(curl -s -m 5 -X GET \
     | jq -r '.["setup-token"]'
 )
 
-curl -s -X POST \
+MB_TOKEN=$(curl -s -X POST \
     -H "Content-type: application/json" \
     http://${MB_HOST}:${MB_PORT}/api/setup \
     -d '{
@@ -23,6 +23,7 @@ curl -s -X POST \
         "allow_tracking": false,
         "site_name": "Bahmni Metabase"
     }
-}'
+}' | jq -r '.id')
+
 
 echo -e "\n Admin users created!"
