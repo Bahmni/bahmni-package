@@ -16,7 +16,6 @@ MB_TOKEN=$(curl -s -X POST \
     "user": {
         "email": "'${MB_ADMIN_EMAIL}'",
         "first_name": "'${MB_ADMIN_FIRST_NAME}'",
-        "last_name": "'${MB_ADMIN_LAST_NAME}'",
         "password": "'${MB_ADMIN_PASSWORD}'"
     },
     "prefs": {
