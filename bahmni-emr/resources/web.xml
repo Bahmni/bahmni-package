@@ -81,10 +81,6 @@
     </listener>
 
     <listener>
-        <listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
-    </listener>
-
-    <listener>
         <listener-class>org.openmrs.web.Listener</listener-class>
         <!--  extends ContextLoader -->
     </listener>
