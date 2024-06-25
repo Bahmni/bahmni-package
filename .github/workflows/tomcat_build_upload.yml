@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - master
+      - test-tomcat
     paths:
       - "bahmni-embedded-tomcat/**"
       - "bahmni-embedded-tomcat-10/**"
