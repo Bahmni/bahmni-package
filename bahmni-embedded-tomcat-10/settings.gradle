@@ -1,0 +1,3 @@
+rootProject.name = 'bahmni'
+
+include 'bahmni-embedded-tomcat-10'

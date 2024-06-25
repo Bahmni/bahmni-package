@@ -52,7 +52,9 @@ jobs:
           distribution: "corretto"
           java-version: "17"
       - name: Generate Artifact for bahmni-embedded-tomcat-10
-        run: mvn clean package -f bahmni-embedded-tomcat-10/pom.xml
+        run: |
+          cd bahmni-embedded-tomcat-10
+          gradle clean build
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:

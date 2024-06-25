@@ -1,0 +1,61 @@
+plugins {
+    id 'java'
+}
+group 'org.bahmni.deployment'
+version '1.0-SNAPSHOT'
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
+repositories {
+    mavenCentral()
+    jcenter()
+    maven {
+        url 'https://mavenrepo.openmrs.org/nexus/content/repositories/public' // Use HTTPS instead of HTTP
+    }
+    maven {
+        url 'https://oss.sonatype.org/content/repositories' // Use HTTPS
+    }
+}
+
+def tomcatVersion = '10.1.24'  // Define Tomcat version here
+
+dependencies {
+    implementation "org.apache.tomcat.embed:tomcat-embed-core:${tomcatVersion}"
+    implementation "org.apache.tomcat.embed:tomcat-embed-jasper:${tomcatVersion}"
+    implementation "org.apache.tomcat:tomcat-jasper:${tomcatVersion}"
+    implementation "org.apache.tomcat:tomcat-jasper-el:${tomcatVersion}"
+    implementation "org.apache.tomcat:tomcat-jsp-api:${tomcatVersion}"
+}
+
+jar {
+    duplicatesStrategy = 'exclude'
+
+    manifest {
+        attributes 'Main-Class': 'org.bahmni.deployment.launch.Main'
+    }
+
+    from {
+        configurations.runtimeClasspath.collect {
+            it.isDirectory() ? it : zipTree(it)
+        }
+    }
+
+    exclude 'META-INF/*.RSA', 'META-INF/*.SF','META-INF/*.DSA'
+}
+
+configurations {
+    all {
+        exclude group: 'com.sun.jdmk', module: 'jmxtools'
+        exclude group: 'com.sun.jmx', module: 'jmxri'
+        exclude group: 'javax.jms', module: 'jms'
+        exclude group: 'javax.mail', module: 'mail'
+    }
+}
+
+// Print Tomcat version after project configuration
+gradle.afterProject { project ->
+    println "Built with Apache Tomcat version: ${tomcatVersion}"
+}
