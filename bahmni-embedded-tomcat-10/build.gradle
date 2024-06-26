@@ -28,6 +28,8 @@ dependencies {
     implementation "org.apache.tomcat:tomcat-jasper:${tomcatVersion}"
     implementation "org.apache.tomcat:tomcat-jasper-el:${tomcatVersion}"
     implementation "org.apache.tomcat:tomcat-jsp-api:${tomcatVersion}"
+    implementation "ch.qos.logback:logback-classic:1.5.0"
+    implementation 'javax.servlet:javax.servlet-api:4.0.1'
 }
 
 jar {
