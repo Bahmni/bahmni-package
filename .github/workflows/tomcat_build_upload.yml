@@ -3,7 +3,6 @@ on:
   push:
     branches:
       - master
-      - test-tomcat
     paths:
       - "bahmni-embedded-tomcat/**"
       - "bahmni-embedded-tomcat-10/**"
@@ -55,7 +54,7 @@ jobs:
       - name: Generate Artifact for bahmni-embedded-tomcat-10
         run: |
           cd bahmni-embedded-tomcat-10
-          gradle clean build
+          ./gradlew clean build
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
