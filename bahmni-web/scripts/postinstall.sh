@@ -89,11 +89,16 @@ setupOfflineMetadata(){
      ln -s /opt/bahmni-web/etc/offlineMetadata.json /var/www/html/offlineMetadata.json
 }
 
+removeAutoIndexConf(){
+     mv /etc/httpd/conf.d/autoindex.conf /tmp/
+}
+
 setupConfFiles
 setupCacheDir
 setupClientSideLogging
 setupApps
 setupOfflineMetadata
+removeAutoIndexConf
 
 if [[ "${IMPLEMENTATION_NAME:-default}" = "default" ]]; then
 setupConfigs
