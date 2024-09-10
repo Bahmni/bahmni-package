@@ -2,6 +2,8 @@ name: Build and Publish atomfeed-console Image
 on:
   push:
     branches: [master]
+    tags:
+      - '[0-9]+.[0-9]+.[0-9]+'
     paths:
       - 'atomfeed-console/**'
       - '.github/workflows/atomfeed_console_build_publish.yaml'
@@ -23,16 +25,11 @@ jobs:
     needs: Trivy
     steps:
       - uses: actions/checkout@v4
-      - name: Verify app version
+      - name: Set env.ARTIFACT_VERSION
         run: |
-          APP_VERSION=$(cat atomfeed-console/.appversion)
-          if [ $(git tag -l "$APP_VERSION") ]; then 
-            echo "App version $APP_VERSION already released. Please update app version in package/.appversion to represent next major/minor/patch increment"
-            exit 1
-          else
-            echo "setting artifact version to $(echo $APP_VERSION-${{github.run_number}})"
-            echo "ARTIFACT_VERSION=$(echo $APP_VERSION-${{github.run_number}})" >> $GITHUB_ENV
-          fi
+          wget -q https://raw.githubusercontent.com/Bahmni/bahmni-infra-utils/main/setArtifactVersion.sh && chmod +x setArtifactVersion.sh
+          ./setArtifactVersion.sh
+          rm setArtifactVersion.sh
       - name: Download atomfeed-console jar
         run: |
           curl -H "Accept: application/vnd.github.v3+json" \
