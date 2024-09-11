@@ -28,7 +28,7 @@ jobs:
       - name: Set env.ARTIFACT_VERSION
         run: |
           wget -q https://raw.githubusercontent.com/Bahmni/bahmni-infra-utils/main/setArtifactVersion.sh && chmod +x setArtifactVersion.sh
-          ./setArtifactVersion.sh
+          ./setArtifactVersion.sh "" atomfeed-console/.appversion
           rm setArtifactVersion.sh
       - name: Download atomfeed-console jar
         run: |
