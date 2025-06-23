@@ -16,6 +16,7 @@ public class Main {
 	public static void main(String[] args) throws LifecycleException, ServletException, IOException {
 		Tomcat tomcat = new Tomcat();
 		tomcat.setPort(valueOf(getenv("SERVER_PORT")));
+		tomcat.getConnector();
 		tomcat.setBaseDir(getenv("BASE_DIR"));
 		Context context = tomcat.addWebapp(getenv("CONTEXT_PATH"), new File(getenv("WAR_DIRECTORY")).getAbsolutePath());
 		context.setSessionTimeout(120);
