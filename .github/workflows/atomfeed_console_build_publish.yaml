@@ -17,7 +17,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
       - name: Trivy Scan
-        run: ./.github/trivy_scan.sh atomfeed-console .github/workflows/atomfeed_console_build_publish.yaml
+        run: |
+          wget -q https://raw.githubusercontent.com/Bahmni/bahmni-infra-utils/main/trivy_scan.sh && chmod +x trivy_scan.sh
+          ./trivy_scan.sh atomfeed-console .github/workflows/atomfeed_console_build_publish.yaml
+          rm trivy_scan.sh
 
   docker-build-publish:
     name: Docker Build & Publish

@@ -17,7 +17,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
       - name: Trivy Scan
-        run: ./.github/trivy_scan.sh bahmni-embedded-tomcat
+        run: |
+          wget -q https://raw.githubusercontent.com/Bahmni/bahmni-infra-utils/main/trivy_scan.sh && chmod +x trivy_scan.sh
+          ./trivy_scan.sh bahmni-embedded-tomcat
+          rm trivy_scan.sh
 
   build-upload-artifact:
     name: Build and upload embedded Tomcat Server artifact
