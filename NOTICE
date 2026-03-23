@@ -1,7 +1,17 @@
-Copyright (C) 2013 OpenMRS, Inc
+# NOTICE
 
-This product includes software developed under the stewardship of the Bahmni Coalition, under fiscal sponsorship of OpenMRS, Inc. (http://www.openmrs.org/)
+## Bahmni Package
 
-This product includes software developed at ThoughtWorks, Inc. (http://www.thoughtworks.com/)
+Copyright © 2026 OpenMRS Inc
 
+### Contributors
 
+This repository has got source code generated at Thoughtworks.
+
+### Third-Party Components
+
+This repository includes third-party source code that is licensed separately:
+
+- Gradle Wrapper (`gradlew`, `gradlew.bat`, `gradle/wrapper/*`)
+  Licensed under the Apache License, Version 2.0.
+  Copyright © the original authors.
